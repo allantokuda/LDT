@@ -39,3 +39,6 @@ gem 'jquery-rails'
 
 gem 'execjs'
 gem 'therubyracer'
+gem 'pg'
+gem "haml", "~> 3.1.7"
+
