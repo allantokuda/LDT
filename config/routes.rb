@@ -1,8 +1,11 @@
 LDS::Application.routes.draw do
 
+  
+  root :to => "lds#edit"
+
   get "lds/edit"
 
-  root :to => "lds#edit"
+  match '/example' => "lds#example"
 
   resources :entities
 

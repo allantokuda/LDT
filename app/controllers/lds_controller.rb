@@ -4,9 +4,13 @@ class LdsController < ApplicationController
     @entities = Entity.all
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html
       format.json { render json: @entities }
     end
+  end
+
+  def example
+    self.edit
   end
 
   def new
