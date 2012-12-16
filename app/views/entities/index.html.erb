@@ -2,6 +2,7 @@
 
 <table>
   <tr>
+    <th>Name</th>
     <th>X</th>
     <th>Y</th>
     <th>Width</th>
@@ -13,6 +14,7 @@
 
 <% @entities.each do |entity| %>
   <tr>
+    <td><%= entity.name %></td>
     <td><%= entity.x %></td>
     <td><%= entity.y %></td>
     <td><%= entity.width %></td>

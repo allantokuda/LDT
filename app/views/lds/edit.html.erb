@@ -1,0 +1,13 @@
+<div class="editorbox" style="position: relative;">
+<% @entities.each do |entity| %>
+  <div class="entity" title="<%= entity.name %>" style="width: <%= entity.width %>; height: <%= entity.height %>; position: absolute; left: <%= entity.x %>; top: <%= entity.y %>">
+    Attributes go here
+  </div>
+<% end %>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        $( ".entity" ).dialog();
+    });
+</script>

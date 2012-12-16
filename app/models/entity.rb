@@ -1,3 +1,3 @@
 class Entity < ActiveRecord::Base
-  attr_accessible :height, :width, :x, :y
+  attr_accessible :name, :height, :width, :x, :y
 end

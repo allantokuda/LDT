@@ -1,14 +1,8 @@
 LDS::Application.routes.draw do
 
-  get "lds/new"
+  get "lds/edit"
 
-  get "lds/open"
-
-  get "lds/save"
-
-  get "lds/delete"
-
-  root :to => "lds#new"
+  root :to => "lds#edit"
 
   resources :entities
 
