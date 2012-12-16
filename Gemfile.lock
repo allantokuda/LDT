@@ -41,12 +41,20 @@ GEM
     execjs (1.4.0)
       multi_json (~> 1.0)
     haml (3.1.7)
+    haml-rails (0.3.5)
+      actionpack (>= 3.1, < 4.1)
+      activesupport (>= 3.1, < 4.1)
+      haml (~> 3.1)
+      railties (>= 3.1, < 4.1)
     hike (1.2.1)
     i18n (0.6.1)
     journey (1.0.4)
     jquery-rails (2.1.4)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
+    jquery-ui-rails (2.0.2)
+      jquery-rails
+      railties (>= 3.1.0)
     json (1.7.5)
     mail (2.4.4)
       i18n (>= 0.4.0)
@@ -112,7 +120,9 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   execjs
   haml (~> 3.1.7)
+  haml-rails
   jquery-rails
+  jquery-ui-rails
   pg
   rails (= 3.2.9)
   sass-rails (~> 3.2.3)
