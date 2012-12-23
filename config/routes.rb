@@ -5,6 +5,8 @@ LDS::Application.routes.draw do
 
   get "lds/edit"
 
+  post "lds/save" => "lds#save"
+
   match '/example' => "lds#example"
 
   resources :entities

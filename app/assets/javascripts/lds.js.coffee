@@ -14,11 +14,15 @@ saveLDS = () ->
     lds.entities[index].height = Math.floor($(element).height())
     lds.entities[index].x      = Math.floor($(element).position().left)
     lds.entities[index].y      = Math.floor($(element).position().top)
-    lds.entities[index].attrib = $(element).find("textarea.attributes").html()
+    lds.entities[index].attrib = $(element).find("textarea.attributes").val()
 
-  console.log(JSON.stringify(lds))
+  #encodeData = encodeURIComponent(JSON.stringify(lds))
+  encodeData = JSON.stringify(lds)
+  encodeData = "lds=#{encodeData}"
 
-  $.ajax({ url:"/lds/save?", type:"POST", data:JSON.stringify(lds)})
+  console.log(encodeData)
+
+  $.ajax({ url:"/lds/save?", type:"POST", dataType:"json", data:encodeData })
 
 $(document).ready ->
   $(".entity").each (index, element) ->
