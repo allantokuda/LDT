@@ -3,15 +3,22 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 saveLDS = () ->
-  $("div.ui-dialog").each (index, element) ->
-    entity = {}
-    entity.name   = $(element).find("span.ui-dialog-title").html()
-    entity.width  = Math.floor($(element).width())
-    entity.height = Math.floor($(element).height())
-    entity.x      = Math.floor($(element).position().left)
-    entity.y      = Math.floor($(element).position().top)
+  lds = {}
+  lds.entities = [];
+  lds.relationships = [];
 
-    console.log($.param(entity))
+  $("div.ui-dialog").each (index, element) ->
+    lds.entities[index] = {}
+    lds.entities[index].name   = $(element).find("span.ui-dialog-title").html()
+    lds.entities[index].width  = Math.floor($(element).width())
+    lds.entities[index].height = Math.floor($(element).height())
+    lds.entities[index].x      = Math.floor($(element).position().left)
+    lds.entities[index].y      = Math.floor($(element).position().top)
+    lds.entities[index].attrib = $(element).find("textarea.attributes").html()
+
+  console.log(JSON.stringify(lds))
+
+  $.ajax({ url:"/lds/save?", type:"POST", data:JSON.stringify(lds)})
 
 $(document).ready ->
   $(".entity").each (index, element) ->
