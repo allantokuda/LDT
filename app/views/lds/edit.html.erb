@@ -1,25 +1,16 @@
-<button id="save">Save</button>
+<button id="save_button">Save</button>
 <div class="editorbox" style="position: relative;">
 <% @entities.each do |entity| %>
-  <div class="entity" title="<%= entity.name %>" data-width="<%= entity.width.to_s %>" data-height="<%= entity.height.to_s %>" data-x="<%= entity.x.to_s %>" data-y="<%= entity.y.to_s %>">
-    Attributes go here<BR>
-    Attributes go here<BR>
-    Attributes go here<BR>
-    Attributes go here<BR>
+  <div class="entity" title="<%= entity.name %>" data-name="<%= entity.name %>" data-width="<%= entity.width.to_s %>" data-height="<%= entity.height.to_s %>" data-x="<%= entity.x.to_s %>" data-y="<%= entity.y.to_s %>">
+    <form class="entity-attributes" style="height: 98%; width: 98%;">
+      <textarea name="attributes" style="height: 100%; width: 100%; resize: none; border: none;">
+id
+name
+creation_date
+modification_date
+reference_id
+      </textarea>
+    </form>
   </div>
 <% end %>
 </div>
-
-<script type="text/javascript">
-    $(function() {
-      $( ".entity" ).each (
-        function(index) {
-          var box_width  = parseInt(this.getAttribute("data-width"));
-          var box_height = parseInt(this.getAttribute("data-height"));
-          var box_x      = parseInt(this.getAttribute("data-x"));
-          var box_y      = parseInt(this.getAttribute("data-y"));
-          $(this).dialog({ width: box_width, height: box_height, position: [box_x,box_y] });
-        }
-      )
-    });
-</script>
