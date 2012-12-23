@@ -1,10 +1,11 @@
 class LdsController < ApplicationController
+
   # GET /edit
   def edit
     @entities = Entity.all
 
     respond_to do |format|
-      format.html
+      format.html # edit.html.erb
       format.json { render json: @entities }
     end
   end
