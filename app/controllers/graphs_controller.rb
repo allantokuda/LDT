@@ -35,6 +35,10 @@ class GraphsController < ApplicationController
   # GET /graphs/1/edit
   def edit
     @graph = Graph.find(params[:id])
+    if @snapshot_num
+      @current_snapshot = @graph.snapshot(@snapshot_num)
+      @current_snapshot = @graph.snapshot_newest()
+    end
   end
 
   # POST /graphs

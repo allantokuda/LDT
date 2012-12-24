@@ -1,21 +1,13 @@
 LDS::Application.routes.draw do
 
-  
+  root :to => "graphs#edit"
+
   resources :graph_snapshots
-
-
   resources :graphs
-
-
-  root :to => "lds#edit"
-
-  get "lds/edit"
-
-  post "lds/save" => "lds#save"
+  resources :entities
 
   match '/example' => "lds#example"
 
-  resources :entities
 
   #get "editor/new"
   #get "editor/open"
