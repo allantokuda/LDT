@@ -1,11 +1,9 @@
 <button id="save_button">Save</button>
 <div class="editorbox" style="position: relative;">
 <% @entities.each do |entity| %>
-  <div class="entity" title="<%= entity.name %>" data-name="<%= entity.name %>" data-width="<%= entity.width.to_s %>" data-height="<%= entity.height.to_s %>" data-x="<%= entity.x.to_s %>" data-y="<%= entity.y.to_s %>">
+  <div class="entity" title="<%= entity.name %>" data-id="<%= entity.id %>" data-name="<%= entity.name %>" data-width="<%= entity.width.to_s %>" data-height="<%= entity.height.to_s %>" data-x="<%= entity.x.to_s %>" data-y="<%= entity.y.to_s %>">
     <form class="entity-attributes" style="height: 98%; width: 98%;">
-      <textarea name="attributes" class="attributes" style="height: 100%; width: 100%; resize: none; border: none;">
-<%= entity.attrib %>
-      </textarea>
+      <textarea name="attributes" class="attributes" style="height: 100%; width: 100%; resize: none; border: none;"><%= entity.attrib %></textarea>
     </form>
   </div>
 <% end %>

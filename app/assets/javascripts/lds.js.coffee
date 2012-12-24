@@ -10,6 +10,7 @@ saveLDS = () ->
   $("div.ui-dialog").each (index, element) ->
     lds.entities[index] = {}
     lds.entities[index].name   = $(element).find("span.ui-dialog-title").html()
+    lds.entities[index].id     = $(element).find("div.entity").attr("data-id")
     lds.entities[index].width  = Math.floor($(element).width())
     lds.entities[index].height = Math.floor($(element).height())
     lds.entities[index].x      = Math.floor($(element).position().left)

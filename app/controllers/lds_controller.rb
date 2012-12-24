@@ -32,13 +32,13 @@ class LdsController < ApplicationController
     puts "<<<<<<< DEBUG"
 
     @lds[:entities].each { |e|
-      @entities.find(e.id).update_attributes(
-        :name   => e.name,
-        :x      => e.x,
-        :y      => e.y,
-        :width  => e.width,
-        :height => e.height,
-        :attrib => e.attrib
+      Entity.find(e[:id]).update_attributes(
+        :name   => e[:name],
+        :x      => e[:x],
+        :y      => e[:y],
+        :width  => e[:width],
+        :height => e[:height],
+        :attrib => e[:attrib]
       )
     }
 
