@@ -1,0 +1,29 @@
+%h1 Listing graphs
+
+%table
+  %tr
+    %th Name
+    %th Description
+    %th Creation date
+    %th Short name
+    %th Read password
+    %th Write password
+    %th
+    %th
+    %th
+
+  - @graphs.each do |graph|
+    %tr
+      %td= graph.name
+      %td= graph.description
+      %td= graph.creation_date
+      %td= graph.short_name
+      %td= graph.read_password
+      %td= graph.write_password
+      %td= link_to 'Show', graph
+      %td= link_to 'Edit', edit_graph_path(graph)
+      %td= link_to 'Destroy', graph, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Graph', new_graph_path

@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @graph.name
+%p
+  %b Description:
+  = @graph.description
+%p
+  %b Creation date:
+  = @graph.creation_date
+%p
+  %b Short name:
+  = @graph.short_name
+%p
+  %b Read password:
+  = @graph.read_password
+%p
+  %b Write password:
+  = @graph.write_password
+
+= link_to 'Edit', edit_graph_path(@graph)
+\|
+= link_to 'Back', graphs_path

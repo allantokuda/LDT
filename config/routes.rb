@@ -1,6 +1,12 @@
 LDS::Application.routes.draw do
 
   
+  resources :graph_snapshots
+
+
+  resources :graphs
+
+
   root :to => "lds#edit"
 
   get "lds/edit"

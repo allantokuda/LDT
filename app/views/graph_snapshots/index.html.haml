@@ -1,0 +1,23 @@
+%h1 Listing graph_snapshots
+
+%table
+  %tr
+    %th Modification date
+    %th Tag
+    %th Notes
+    %th
+    %th
+    %th
+
+  - @graph_snapshots.each do |graph_snapshot|
+    %tr
+      %td= graph_snapshot.modification_date
+      %td= graph_snapshot.tag
+      %td= graph_snapshot.notes
+      %td= link_to 'Show', graph_snapshot
+      %td= link_to 'Edit', edit_graph_snapshot_path(graph_snapshot)
+      %td= link_to 'Destroy', graph_snapshot, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Graph snapshot', new_graph_snapshot_path

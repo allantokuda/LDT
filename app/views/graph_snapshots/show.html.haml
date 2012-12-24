@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Modification date:
+  = @graph_snapshot.modification_date
+%p
+  %b Tag:
+  = @graph_snapshot.tag
+%p
+  %b Notes:
+  = @graph_snapshot.notes
+
+= link_to 'Edit', edit_graph_snapshot_path(@graph_snapshot)
+\|
+= link_to 'Back', graph_snapshots_path
