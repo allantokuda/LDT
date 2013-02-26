@@ -58,5 +58,10 @@ module LDS
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    # Recommendation from: http://stackoverflow.com/questions/9440325/rails-3-2-undefined-method-key-for-nilnilclass
+    # Because of meaningless error I was getting after the first load, seemingly related to rails caching
+    config.cache_classes = false
+    config.reload_classes_only_on_change = false
   end
 end

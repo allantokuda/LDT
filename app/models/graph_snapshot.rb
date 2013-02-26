@@ -2,5 +2,5 @@ class GraphSnapshot < ActiveRecord::Base
   attr_accessible :modification_date, :notes, :tag
 
   belongs_to Graph
-  has_many Entitys
+  has_many Entities
 end
