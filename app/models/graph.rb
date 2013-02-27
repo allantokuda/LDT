@@ -1,12 +1,17 @@
 class Graph < ActiveRecord::Base
   attr_accessible :creation_date, :description, :name, :short_name, :read_password, :write_password
 
-  has_many GraphSnapshots
+  has_many :graph_snapshots
+  alias :snapshots :graph_snapshots
 
   def snapshot(num)
-    GraphSnapshots.find(params[:num])
+    self.snapshots.find(num)
   end
   def snapshot_newest()
-    GraphSnapshots.last
+    if self.snapshots.any?
+      self.snapshots.last
+    else
+      self.snapshots.build()
+    end
   end
 end

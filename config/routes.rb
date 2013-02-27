@@ -4,9 +4,9 @@ LDS::Application.routes.draw do
 
   resources :graph_snapshots
   resources :graphs
-  resources :entities
+  #resources :entities
 
-  match '/example' => "lds#example"
+  #match '/example' => "lds#example"
 
 
   #get "editor/new"
