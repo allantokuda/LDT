@@ -1,5 +1,5 @@
 class Graph < ActiveRecord::Base
-  attr_accessible :creation_date, :description, :name, :short_name, :read_password, :write_password
+  attr_accessible :created_at, :description, :name, :short_name, :read_password, :write_password
 
   has_many :graph_snapshots
   alias :snapshots :graph_snapshots

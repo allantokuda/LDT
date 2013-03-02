@@ -18,18 +18,15 @@ ActiveRecord::Schema.define(:version => 20121224033426) do
     t.integer  "y"
     t.integer  "width"
     t.integer  "height"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.string   "name"
     t.string   "attrib"
-    t.integer  "graph"
-    t.integer  "snapshot"
-    t.integer  "local_id"
+    t.integer  "graph_snapshot_id"
   end
 
   create_table "graph_snapshots", :force => true do |t|
-    t.integer  "graph"
-    t.integer  "local_id"
+    t.integer  "graph_id"
     t.string   "tag"
     t.text     "notes"
     t.datetime "created_at", :null => false
@@ -47,11 +44,9 @@ ActiveRecord::Schema.define(:version => 20121224033426) do
   end
 
   create_table "relationships", :force => true do |t|
-    t.integer "graph"
-    t.integer "snapshot"
-    t.integer "local_id"
-    t.integer "entity1"
-    t.integer "entity2"
+    t.integer "graph_snapshot_id"
+    t.integer "entity1_id"
+    t.integer "entity2_id"
   end
 
 end

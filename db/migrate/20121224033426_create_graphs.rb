@@ -11,24 +11,19 @@ class CreateGraphs < ActiveRecord::Migration
     end
 
     create_table :graph_snapshots do |t|
-      t.integer :graph
-      t.integer :local_id
+      t.integer :graph_id
       t.string :tag
       t.text :notes
 
       t.timestamps
     end
 
-    add_column :entities, :graph, :integer
-    add_column :entities, :snapshot, :integer
-    add_column :entities, :local_id, :integer
+    add_column :entities, :graph_snapshot_id, :integer
 
     create_table :relationships do |t|
-      t.integer :graph
-      t.integer :snapshot
-      t.integer :local_id
-      t.integer :entity1
-      t.integer :entity2
+      t.integer :graph_snapshot_id
+      t.integer :entity1_id
+      t.integer :entity2_id
     end
   end
 end

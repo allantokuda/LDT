@@ -18,7 +18,7 @@ class GraphsControllerTest < ActionController::TestCase
 
   test "should create graph" do
     assert_difference('Graph.count') do
-      post :create, graph: { creation_date: @graph.creation_date, description: @graph.description, name: @graph.name, read_password: @graph.read_password, short_name: @graph.short_name, write_password: @graph.write_password }
+      post :create, graph: { creation_date: @graph.created_at, description: @graph.description, name: @graph.name, read_password: @graph.read_password, short_name: @graph.short_name, write_password: @graph.write_password }
     end
 
     assert_redirected_to graph_path(assigns(:graph))
@@ -35,7 +35,7 @@ class GraphsControllerTest < ActionController::TestCase
   end
 
   test "should update graph" do
-    put :update, id: @graph, graph: { creation_date: @graph.creation_date, description: @graph.description, name: @graph.name, read_password: @graph.read_password, short_name: @graph.short_name, write_password: @graph.write_password }
+    put :update, id: @graph, graph: { creation_date: @graph.created_at, description: @graph.description, name: @graph.name, read_password: @graph.read_password, short_name: @graph.short_name, write_password: @graph.write_password }
     assert_redirected_to graph_path(assigns(:graph))
   end
 
