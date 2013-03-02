@@ -11,26 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121224033426) do
+ActiveRecord::Schema.define(:version => 20130302224715) do
 
   create_table "entities", :force => true do |t|
     t.integer  "x"
     t.integer  "y"
     t.integer  "width"
     t.integer  "height"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-    t.string   "name"
-    t.string   "attrib"
-    t.integer  "graph_snapshot_id"
-  end
-
-  create_table "graph_snapshots", :force => true do |t|
-    t.integer  "graph_id"
-    t.string   "tag"
-    t.text     "notes"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "name"
+    t.string   "attrib"
+    t.integer  "graph_id"
   end
 
   create_table "graphs", :force => true do |t|
@@ -44,7 +36,7 @@ ActiveRecord::Schema.define(:version => 20121224033426) do
   end
 
   create_table "relationships", :force => true do |t|
-    t.integer "graph_snapshot_id"
+    t.integer "graph_id"
     t.integer "entity1_id"
     t.integer "entity2_id"
   end

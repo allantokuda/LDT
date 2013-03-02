@@ -1,10 +1,9 @@
 LDS::Application.routes.draw do
 
-  root :to => "graphs#edit"
+  root :to => "graphs#new"
 
-  resources :graph_snapshots
   resources :graphs
-  #resources :entities
+  resources :entities
 
   #match '/example' => "lds#example"
 

@@ -1,10 +1,10 @@
-<h1>Snapshot [<%= @current_snapshot.updated_at %>]</h1>
+<h1>Graph: [<%= @graph.name %>]</h1>
 
 <button id="save_button">Save</button>
 <%= link_to 'Back', graphs_path %>
 
 <div class="editorbox" style="position: relative;">
-<% @current_snapshot.entities.each do |entity| %>
+<% @graph.entities.each do |entity| %>
   <div class="entity" title="<%= entity.name %>" data-id="<%= entity.id %>" data-name="<%= entity.name %>" data-width="<%= entity.width.to_s %>" data-height="<%= entity.height.to_s %>" data-x="<%= entity.x.to_s %>" data-y="<%= entity.y.to_s %>">
     <form class="entity-attributes" style="height: 98%; width: 98%;">
       <textarea name="attributes" class="attributes" style="height: 100%; width: 100%; resize: none; border: none;"><%= entity.attrib %></textarea>

@@ -40,12 +40,6 @@ class GraphsController < ApplicationController
       @graph = Graph.new
       @graph.save
     end
-
-    if params[:snapshot]
-      @current_snapshot = @graph.snapshot(params[:snapshot])
-    else
-      @current_snapshot = @graph.snapshot_newest
-    end
   end
 
   # POST /graphs
