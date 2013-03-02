@@ -11,7 +11,7 @@ class Graph < ActiveRecord::Base
     if self.snapshots.any?
       self.snapshots.last
     else
-      self.snapshots.build()
+      self.snapshots.build
     end
   end
 end
