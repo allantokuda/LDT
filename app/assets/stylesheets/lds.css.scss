@@ -1,3 +1,11 @@
 // Place all the styles related to the LDS controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.short_items {
+  float: left;
+  margin-right: 1em;
+}
+.field input {
+  border: 1px solid black;
+  padding: 3px;
+}

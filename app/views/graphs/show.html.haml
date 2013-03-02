@@ -4,9 +4,6 @@
   %b Name:
   = @graph.name
 %p
-  %b Description:
-  = @graph.description
-%p
   %b Creation date:
   = @graph.created_at
 %p
@@ -18,6 +15,10 @@
 %p
   %b Write password:
   = @graph.write_password
+%p
+  %b Description:
+  %br
+  = @graph.description
 
 = link_to 'Edit', edit_graph_path(@graph)
 \|
