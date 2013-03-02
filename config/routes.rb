@@ -7,12 +7,6 @@ LDS::Application.routes.draw do
 
   #match '/example' => "lds#example"
 
-
-  #get "editor/new"
-  #get "editor/open"
-  #get "editor/save"
-  #get "editor/delete"
-
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

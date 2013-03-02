@@ -3,6 +3,7 @@
 <table>
   <tr>
     <th>Name</th>
+    <th>Graph ID</th>
     <th>X</th>
     <th>Y</th>
     <th>Width</th>
@@ -15,6 +16,7 @@
 <% @entities.each do |entity| %>
   <tr>
     <td><%= entity.name %></td>
+    <td><%= link_to entity.graph_id, graph_path(entity.graph_id) %></td>
     <td><%= entity.x %></td>
     <td><%= entity.y %></td>
     <td><%= entity.width %></td>
