@@ -1,7 +1,35 @@
-<h1>Graph: [<%= @graph.name %>]</h1>
+<div class="header_bar">
+  <div class="right_side">
+    <button id="save_button">Save</button>
+    <a href="#" onclick="$('#settings').show()">Settings</a>
+  </div>
+  <%= link_to '<< All Graphs', graphs_path %>
+  <h1><%= @graph.name %></h1>
+</div>
+<div id="settings">
+  <div style="text-align: right;">
+    <a href="#" onclick="$('#settings').hide()">Close</a>
+  </div>
+  <%= form_for @graph do |f| %>
+  <div class="field">
+    <%= f.label :short_name %><br>
+    <%= f.text_field :short_name %>
+  </div>
+  <div class="field">
+    <%= f.label :read_password %><br>
+    <%= f.text_field :read_password %>
+  </div>
+  <div class="field">
+    <%= f.label :write_password %><br>
+    <%= f.text_field :write_password %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_area :description %>
+  </div>
+  <% end %>
+</div>
 
-<button id="save_button">Save</button>
-<%= link_to 'Back', graphs_path %>
 
 <div class="editorbox" style="position: relative;">
 <% @graph.entities.each do |entity| %>

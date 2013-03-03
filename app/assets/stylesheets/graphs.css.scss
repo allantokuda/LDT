@@ -22,3 +22,28 @@ table.graph_index .graph_title {
   padding: 10px;
   background: #cdf;
 }
+
+.header_bar .right_side {
+  float: right; 
+}
+
+h1 {
+  margin: 0.2em;
+}
+#settings {
+  border: 1px solid black;
+  background: #bce;
+  width: 230px;
+  height: 100%;
+  float: right;
+  clear: both;
+  padding: 10px;
+}
+
+#settings input {
+  width: 210px;
+}
+#settings textarea {
+  width: 210px;
+  height: 200px;
+}

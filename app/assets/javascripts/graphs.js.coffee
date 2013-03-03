@@ -31,7 +31,6 @@ saveGraph = () ->
   else
     $.ajax({ url:"/graphs", type:"POST", dataType:"json", data:encodeData })
 
-
 graphID = () ->
   window.location.pathname.split('/')[2]
 
@@ -42,5 +41,7 @@ $(document).ready ->
     entity_x      = parseInt( $(element).attr("data-x"));
     entity_y      = parseInt( $(element).attr("data-y"));
     $(element).dialog({ width: entity_width, height: entity_height, position: [entity_x,entity_y] });
+
+  $("#settings").hide()
 
   $("#save_button").click -> saveGraph()
