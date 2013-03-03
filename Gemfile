@@ -45,3 +45,6 @@ gem 'pg'
 gem "haml", "~> 3.1.7"
 gem "haml-rails"
 
+group :test, :development do
+  gem 'rspec-rails', '~> 2.0'
+end
