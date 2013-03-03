@@ -63,14 +63,15 @@ class GraphsController < ApplicationController
   def update
     @graph = Graph.find(params[:id])
 
+    newgraph = JSON.parse(params[:graph], :symbolize_names => true)
+
+    newgraph[:entities].each do |e|
+      Entity.update_from_hash(e)
+    end
+
     respond_to do |format|
-      if @graph.update_attributes(params[:graph])
-        format.html { redirect_to @graph, notice: 'Graph was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @graph.errors, status: :unprocessable_entity }
-      end
+      format.html { render :json => "OK" }
+      format.html { render :html => "OK" }
     end
   end
 

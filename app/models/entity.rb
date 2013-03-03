@@ -5,4 +5,17 @@ class Entity < ActiveRecord::Base
   belongs_to :graph
   has_many :relationship_starts, :class_name => Relationship
   has_many :relationship_ends, :class_name => Relationship
+
+  # Send a hash including an entity ID and other attributes
+  # to update an entity accordingly
+  def self.update_from_hash(e)
+    self.find(e[:id]).update_attributes(
+      :name   => e[:name],
+      :x      => e[:x],
+      :y      => e[:y],
+      :width  => e[:width],
+      :height => e[:height],
+      :attrib => e[:attrib]
+    )
+  end
 end
