@@ -1,3 +1,24 @@
 // Place all the styles related to the Graphs controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+body {
+  margin: 0px;
+}
+
+table.graph_index td {
+  padding: 1em;
+}
+table.graph_index .graph_date {
+  color: #888;
+  font-style: italic;
+}
+table.graph_index .graph_title {
+  font-size: 16pt;
+  margin-bottom: 0.1em;
+}
+
+.header_bar {
+  margin: 0px;
+  padding: 10px;
+  background: #cdf;
+}
