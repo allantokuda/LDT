@@ -8,4 +8,3 @@ Feature: graph settings form
     And the settings form is visible
     When I submit a read password "dishwasher"
     Then I see the read password set to "dishwasher"
-

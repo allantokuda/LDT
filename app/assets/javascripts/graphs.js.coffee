@@ -3,7 +3,6 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 saveGraph = () ->
-  currentID = graphID()
   graph = {}
   graph.entities = [];
   graph.relationships = [];
@@ -25,7 +24,6 @@ saveGraph = () ->
   console.log(encodeData)
 
   currentID = graphID()
-
   if currentID
     $.ajax({ url:"/graphs/"+currentID, type:"PUT", dataType:"json", data:encodeData })
   else
