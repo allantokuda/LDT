@@ -1,6 +1,6 @@
 # LDT
 
-LDT stands for "LDS Drawing Tool".  
+LDT stands for "LDS Drawing Tool".
 
 LDS stands for "Logical Data Structure" coined by Professor [John Carlis](http://www.cs.umn.edu/people/faculty/carlis).
 
