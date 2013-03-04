@@ -45,11 +45,14 @@ gem 'pg'
 gem "haml", "~> 3.1.7"
 gem "haml-rails"
 
-group :test, :development do
+group :development do
+  # Needed to expose generators and rake tasks
   gem 'rspec-rails', '~> 2.0'
 end
 
-group :development do
+group :test do
+  gem 'rspec-rails', '~> 2.0'
   gem 'cucumber-rails', :require => false
   gem 'database_cleaner'
+  gem 'launchy'
 end

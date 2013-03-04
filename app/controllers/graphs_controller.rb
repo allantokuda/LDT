@@ -69,6 +69,8 @@ class GraphsController < ApplicationController
       Entity.update_from_hash(e)
     end
 
+    @graph.update_attributes(newgraph[:settings])
+
     respond_to do |format|
       format.html { render :json => "OK" }
       format.html { render :html => "OK" }
