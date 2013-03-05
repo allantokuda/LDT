@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130302224715) do
+ActiveRecord::Schema.define(:version => 20130305042635) do
 
   create_table "entities", :force => true do |t|
     t.integer  "x"
@@ -39,6 +39,11 @@ ActiveRecord::Schema.define(:version => 20130302224715) do
     t.integer "graph_id"
     t.integer "entity1_id"
     t.integer "entity2_id"
+    t.string  "label1"
+    t.string  "label2"
+    t.string  "symbol1"
+    t.string  "symbol2"
+    t.boolean "clockwise"
   end
 
 end
