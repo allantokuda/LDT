@@ -1,4 +1,4 @@
-<div class="header_bar">
+<div id="header_bar">
   <div class="right_side">
     <button id="save_button">Save</button>
     <a href="#" onclick="$('#settings').show()">Settings</a>
@@ -6,6 +6,9 @@
   <%= link_to '<< All Graphs', graphs_path %>
   <h1><%= @graph.name %></h1>
 </div>
+<svg width="100%" height="100%">
+  <path id="relationship1" stroke="black" stroke-width="2" fill="none" />
+</svg>
 <div id="settings">
   <div style="text-align: right;">
     <a href="#" onclick="$('#settings').hide()">Close</a>
