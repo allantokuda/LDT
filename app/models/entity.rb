@@ -3,8 +3,10 @@ class Entity < ActiveRecord::Base
   attr_accessible :graph_id  # Temporary until new button exists on graph editor
 
   belongs_to :graph
-  has_many :relationship_starts, :class_name => Relationship
-  has_many :relationship_ends, :class_name => Relationship
+
+  # Credit: http://blog.hasmanythrough.com/2006/4/21/self-referential-through
+  has_many :relationship_starts, :foreign_key => 'entity1_id', :class_name => 'Relationship'
+  has_many :relationship_ends,   :foreign_key => 'entity2_id', :class_name => 'Relationship'
 
   # Send a hash including an entity ID and other attributes
   # to update an entity accordingly
