@@ -1,4 +1,4 @@
-saveGraph = () ->
+saveGraph = ->
   graph = {}
   graph.entities = getCurrentEntities()
   graph.relationships = getCurrentRelationships()
@@ -14,7 +14,7 @@ saveGraph = () ->
   else
     $.ajax({ url:"/graphs", type:"POST", dataType:"json", data:encodeData })
 
-getCurrentEntities = () ->
+getCurrentEntities = ->
   entities = []
   $("div.ui-dialog").each (index, element) ->
     entities[index] = {}
@@ -27,28 +27,22 @@ getCurrentEntities = () ->
     entities[index].attrib = $(element).find("textarea.attributes").val()
   entities
 
-getCurrentRelationships = () ->
+getCurrentRelationships = ->
   relationships = []
   # Add parameterization code here once relationships are implemented
   relationships
 
-getSettings = () ->
+getSettings = ->
   settings = {}
   $("#settings").find(".field").find("input,textarea").each (index, element) ->
     setting_name = element.name.replace("graph[","").replace("]","")
     settings[setting_name] = element.value
   settings
 
-graphID = () ->
+graphID = ->
   window.location.pathname.split('/')[2]
 
-addRelationshipsToDOM = () ->
-  for relationship, index in window.relationships.length
-    paths = paths + '<path id="relationship' + index + '" stroke="black" stroke-width="2" fill="none" />'
-  
-  $('#relationships').html(paths)
-
-$(document).ready ->
+makeEntitiesDraggable = ->
   $(".entity").each (index, element) ->
     entity_width  = parseInt( $(element).attr("data-width"))
     entity_height = parseInt( $(element).attr("data-height"))
@@ -56,22 +50,22 @@ $(document).ready ->
     entity_y      = parseInt( $(element).attr("data-y"))
     $(element).dialog({ width: entity_width, height: entity_height, position: [entity_x,entity_y] })
 
-  $("#settings").hide()
+addRelationshipsToDOM = ->
+  for relationship, index in window.relationships.length
+    paths = paths + '<path id="relationship' + index + '" stroke="black" stroke-width="2" fill="none" />'
+  $('#relationships').html(paths)
 
-  $("#save_button").click -> saveGraph()
-
-  alerts = 0
-
-  addRelationshipsToDOM
-
+setupEntityDragHandler = ->
   $('.entity').on 'dialogdrag', (event, ui) ->
-
-    alerts += 1
-    console.log( "Moving entity " + event.currentTarget.dataset.id ) if alerts % 30 == 0
-    
     x1 = ui.position.left
     y1 = ui.position.top - $('#header_bar').height()
     x2 = 0 # window.relationships[] # which entity is being dragged??
     y2 = 0 # window.relationships[]
     $('#relationship1').attr('d', "M #{x1} #{y1} L #{x2} #{y2}")
 
+$(document).ready ->
+  makeEntitiesDraggable()
+  addRelationshipsToDOM()
+  setupEntityDragHandler()
+  $("#settings").hide()
+  $("#save_button").click -> saveGraph()
