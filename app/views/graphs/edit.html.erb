@@ -1,8 +1,3 @@
-
-<% javascript_tag do %>
-  window.relationships = <%= j @graph.relationship_starts %>
-<% end %>
-
 <div id="header_bar">
   <div class="right_side">
     <button id="save_button">Save</button>
@@ -11,8 +6,7 @@
   <%= link_to '<< All Graphs', graphs_path %>
   <h1><%= @graph.name %></h1>
 </div>
-<svg width="100%" height="100%">
-  <path id="relationship1" stroke="black" stroke-width="2" fill="none" />
+<svg id="relationships" width="100%" height="100%">
 </svg>
 <div id="settings">
   <div style="text-align: right;">
@@ -48,3 +42,11 @@
   </div>
 <% end %>
 </div>
+
+<%= javascript_tag do %>
+  window.relationships = []
+  <% @graph.relationship_starts.each do |r| %>
+    window.relationships.push({e1: <%=j r.entity1_id.to_s %>, e2: <%=j r.entity2_id.to_s %>})
+  <% end %>
+<% end %>
+

@@ -42,6 +42,12 @@ getSettings = () ->
 graphID = () ->
   window.location.pathname.split('/')[2]
 
+addRelationshipsToDOM = () ->
+  for relationship, index in window.relationships.length
+    paths = paths + '<path id="relationship' + index + '" stroke="black" stroke-width="2" fill="none" />'
+  
+  $('#relationships').html(paths)
+
 $(document).ready ->
   $(".entity").each (index, element) ->
     entity_width  = parseInt( $(element).attr("data-width"))
@@ -54,7 +60,18 @@ $(document).ready ->
 
   $("#save_button").click -> saveGraph()
 
+  alerts = 0
+
+  addRelationshipsToDOM
+
   $('.entity').on 'dialogdrag', (event, ui) ->
-    x = ui.position.left
-    y = ui.position.top - $('#header_bar').height()
-    $('#relationship1').attr('d', "M 0 0 L #{x} #{y}")
+
+    alerts += 1
+    console.log( "Moving entity " + event.currentTarget.dataset.id ) if alerts % 30 == 0
+    
+    x1 = ui.position.left
+    y1 = ui.position.top - $('#header_bar').height()
+    x2 = 0 # window.relationships[] # which entity is being dragged??
+    y2 = 0 # window.relationships[]
+    $('#relationship1').attr('d', "M #{x1} #{y1} L #{x2} #{y2}")
+
