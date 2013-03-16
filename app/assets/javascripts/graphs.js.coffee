@@ -50,11 +50,6 @@ makeEntitiesDraggable = ->
     entity_y      = parseInt( $(element).attr("data-y"))
     $(element).dialog({ width: entity_width, height: entity_height, position: [entity_x,entity_y] })
 
-addRelationshipsToDOM = ->
-  for relationship, index in window.relationships.length
-    paths = paths + '<path id="relationship' + index + '" stroke="black" stroke-width="2" fill="none" />'
-  $('#relationships').html(paths)
-
 setupEntityDragHandler = ->
   $('.entity').on 'dialogdrag', (event, ui) ->
     drawRelationshipsFromEntity(event.currentTarget)
@@ -86,7 +81,6 @@ drawRelationship = (relationship, entity1, entity2) ->
 
 $(document).ready ->
   makeEntitiesDraggable()
-  addRelationshipsToDOM()
   drawAllRelationships()
   setupEntityDragHandler()
   $("#settings").hide()
