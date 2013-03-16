@@ -57,11 +57,23 @@ addRelationshipsToDOM = ->
 
 setupEntityDragHandler = ->
   $('.entity').on 'dialogdrag', (event, ui) ->
-    x1 = ui.position.left
-    y1 = ui.position.top - $('#header_bar').height()
-    x2 = 0 # window.relationships[] # which entity is being dragged??
-    y2 = 0 # window.relationships[]
-    $('#relationship1').attr('d', "M #{x1} #{y1} L #{x2} #{y2}")
+    relationship_starts = JSON.parse(event.currentTarget.dataset.relationship_starts)
+    relationship_ends   = JSON.parse(event.currentTarget.dataset.relationship_ends)
+    for r in relationship_starts
+      x1 = $('#entity' + r.entity2_id).offset().left
+      y1 = $('#entity' + r.entity2_id).offset().top
+      x2 = $('#entity' + r.entity1_id).offset().left
+      y2 = $('#entity' + r.entity1_id).offset().top
+      drawRelationship(r.id, x1, y1, x2, y2)
+    for r in relationship_ends
+      x1 = $('#entity' + r.entity1_id).offset().left
+      y1 = $('#entity' + r.entity1_id).offset().top
+      x2 = $('#entity' + r.entity2_id).offset().left
+      y2 = $('#entity' + r.entity2_id).offset().top
+      drawRelationship(r.id, x1, y1, x2, y2)
+
+drawRelationship = (relationship_id, x1, y1, x2, y2) ->
+  $('#relationship' + relationship_id).attr('d', "M #{x1} #{y1} L #{x2} #{y2}")
 
 $(document).ready ->
   makeEntitiesDraggable()
