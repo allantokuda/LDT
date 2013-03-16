@@ -57,20 +57,27 @@ addRelationshipsToDOM = ->
 
 setupEntityDragHandler = ->
   $('.entity').on 'dialogdrag', (event, ui) ->
-    relationship_starts = JSON.parse(event.currentTarget.dataset.relationship_starts)
-    relationship_ends   = JSON.parse(event.currentTarget.dataset.relationship_ends)
-
-    for r in relationship_starts
-      drawRelationship(r.id, r.entity2_id, r.entity1_id)
-
-    for r in relationship_ends
-      drawRelationship(r.id, r.entity1_id, r.entity2_id)
+    drawRelationshipsFromEntity(event.currentTarget)
 
 entityCoordinates = (entity_id) ->
   e = $('#entity' + entity_id).parent()
   x = e.offset().left + e.width() / 2
   y = e.offset().top  + e.height() / 2
   return {x:x, y:y}
+
+drawRelationshipsFromEntity = (entity_tag) ->
+  relationship_starts = JSON.parse(entity_tag.dataset.relationship_starts)
+  relationship_ends   = JSON.parse(entity_tag.dataset.relationship_ends)
+
+  for r in relationship_starts
+    drawRelationship(r.id, r.entity2_id, r.entity1_id)
+
+  for r in relationship_ends
+    drawRelationship(r.id, r.entity1_id, r.entity2_id)
+
+drawAllRelationships = () ->
+  for e in $('.entity')
+    drawRelationshipsFromEntity(e)
 
 drawRelationship = (relationship, entity1, entity2) ->
   coord1 = entityCoordinates(entity1)
@@ -80,6 +87,7 @@ drawRelationship = (relationship, entity1, entity2) ->
 $(document).ready ->
   makeEntitiesDraggable()
   addRelationshipsToDOM()
+  drawAllRelationships()
   setupEntityDragHandler()
   $("#settings").hide()
   $("#save_button").click -> saveGraph()
