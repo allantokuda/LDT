@@ -59,21 +59,22 @@ setupEntityDragHandler = ->
   $('.entity').on 'dialogdrag', (event, ui) ->
     relationship_starts = JSON.parse(event.currentTarget.dataset.relationship_starts)
     relationship_ends   = JSON.parse(event.currentTarget.dataset.relationship_ends)
-    for r in relationship_starts
-      x1 = $('#entity' + r.entity2_id).offset().left
-      y1 = $('#entity' + r.entity2_id).offset().top
-      x2 = $('#entity' + r.entity1_id).offset().left
-      y2 = $('#entity' + r.entity1_id).offset().top
-      drawRelationship(r.id, x1, y1, x2, y2)
-    for r in relationship_ends
-      x1 = $('#entity' + r.entity1_id).offset().left
-      y1 = $('#entity' + r.entity1_id).offset().top
-      x2 = $('#entity' + r.entity2_id).offset().left
-      y2 = $('#entity' + r.entity2_id).offset().top
-      drawRelationship(r.id, x1, y1, x2, y2)
 
-drawRelationship = (relationship_id, x1, y1, x2, y2) ->
-  $('#relationship' + relationship_id).attr('d', "M #{x1} #{y1} L #{x2} #{y2}")
+    for r in relationship_starts
+      drawRelationship(r.id, r.entity2_id, r.entity1_id)
+
+    for r in relationship_ends
+      drawRelationship(r.id, r.entity1_id, r.entity2_id)
+
+entityCoordinates = (entity_id) ->
+  x = $('#entity' + entity_id).offset().left
+  y = $('#entity' + entity_id).offset().top
+  return {x:x, y:y}
+
+drawRelationship = (relationship, entity1, entity2) ->
+  coord1 = entityCoordinates(entity1)
+  coord2 = entityCoordinates(entity2)
+  $('#relationship' + relationship).attr('d', "M #{coord1.x} #{coord1.y} L #{coord2.x} #{coord2.y}")
 
 $(document).ready ->
   makeEntitiesDraggable()
