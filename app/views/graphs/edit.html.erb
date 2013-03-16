@@ -6,7 +6,7 @@
   <%= link_to '<< All Graphs', graphs_path %>
   <h1><%= @graph.name %></h1>
 </div>
-<svg id="relationships" width="100%" height="100%">
+<svg id="relationships">
   <% @graph.relationship_starts.each do |relationship| %>
     <path id="relationship<%= relationship.id %>" stroke="black" stroke-width="2" fill="none" />
   <% end %>

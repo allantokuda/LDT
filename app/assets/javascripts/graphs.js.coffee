@@ -67,8 +67,9 @@ setupEntityDragHandler = ->
       drawRelationship(r.id, r.entity1_id, r.entity2_id)
 
 entityCoordinates = (entity_id) ->
-  x = $('#entity' + entity_id).offset().left
-  y = $('#entity' + entity_id).offset().top
+  e = $('#entity' + entity_id).parent()
+  x = e.offset().left + e.width() / 2
+  y = e.offset().top  + e.height() / 2
   return {x:x, y:y}
 
 drawRelationship = (relationship, entity1, entity2) ->

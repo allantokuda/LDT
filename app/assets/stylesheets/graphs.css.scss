@@ -21,6 +21,8 @@ table.graph_index .graph_title {
   margin: 0px;
   padding: 10px;
   background: #cdf;
+  width: 100%;
+  position: absolute;
 }
 
 #header_bar .right_side {
@@ -38,6 +40,7 @@ h1 {
   float: right;
   clear: both;
   padding: 10px;
+  z-index: 10;
 }
 
 #settings input {
@@ -46,4 +49,9 @@ h1 {
 #settings textarea {
   width: 210px;
   height: 200px;
+}
+
+#relationships {
+  position: absolute;
+  z-index: -10;
 }
