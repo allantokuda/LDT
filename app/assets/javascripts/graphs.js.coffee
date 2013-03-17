@@ -114,6 +114,8 @@ drawRelationship = (relationship, entity1, entity2) ->
 
   $('#relationship' + relationship).attr('d', svg_path)
 
+MARGIN = 15
+
 relationshipEndpoints = (entity1, entity2) ->
   p1 = {}
   p2 = {}
@@ -121,7 +123,8 @@ relationshipEndpoints = (entity1, entity2) ->
   center1 = entityCoordinates(entity1, 0.5, 0.5)
   center2 = entityCoordinates(entity2, 0.5, 0.5)
 
-  if vertical(center1, center2)
+  if closer_to_vertical_than_horizontal(entity1, entity2)
+
     if center1.y < center2.y
       p1.side = "bottom"
       p2.side = "top"
@@ -132,10 +135,19 @@ relationshipEndpoints = (entity1, entity2) ->
     p1.y = entityCoordinate(entity1, p1.side)
     p2.y = entityCoordinate(entity2, p2.side)
 
-    p1.x = interpolate(center1.y, center1.x, center2.y, center2.x, p1.y)
-    p2.x = interpolate(center1.y, center1.x, center2.y, center2.x, p2.y)
+    if fully_vertical(entity1, entity2)
+      p1.x = Math.round((center1.x + center2.x) / 2)
+      p2.x = p1.x
+    else
+      if center1.x < center2.x
+        p1.x = entityCoordinate(entity1, "right") - MARGIN
+        p2.x = entityCoordinate(entity2, "left" ) + MARGIN
+      else
+        p1.x = entityCoordinate(entity1, "left" ) + MARGIN
+        p2.x = entityCoordinate(entity2, "right") - MARGIN
 
-  else #if horizontal
+  else # closer to horizontal than vertical
+
     if center1.x < center2.x
       p1.side = "right"
       p2.side = "left"
@@ -146,13 +158,59 @@ relationshipEndpoints = (entity1, entity2) ->
     p1.x = entityCoordinate(entity1, p1.side)
     p2.x = entityCoordinate(entity2, p2.side)
 
-    p1.y = interpolate(center1.x, center1.y, center2.x, center2.y, p1.x)
-    p2.y = interpolate(center1.x, center1.y, center2.x, center2.y, p2.x)
+    if fully_horizontal(entity1, entity2)
+      p1.y = Math.round((center1.y + center2.y) / 2)
+      p2.y = p1.y
+    else
+      if center1.y < center2.y
+        p1.y = entityCoordinate(entity1, "bottom") - MARGIN
+        p2.y = entityCoordinate(entity2, "top"   ) + MARGIN
+      else
+        p1.y = entityCoordinate(entity1, "top"   ) + MARGIN
+        p2.y = entityCoordinate(entity2, "bottom") - MARGIN
 
   return [p1,p2]
 
-vertical = (coord1, coord2) ->
-  return Math.abs(coord1.y - coord2.y) > Math.abs(coord1.x - coord2.x)
+closer_to_vertical_than_horizontal = (entity1, entity2) ->
+  entity_positions = [[0,0],[0,1],[1,1],[1,0]]
+  min_dist = null
+
+  # Find closest two corners between the two entities
+  for pos1 in entity_positions
+    coord1 = entityCoordinates(entity1, pos1[0], pos1[1])
+
+    for pos2 in entity_positions
+      coord2 = entityCoordinates(entity2, pos2[0], pos2[1])
+
+      # Manhattan distance for simplicity
+      dist_x = Math.abs(coord1.x - coord2.x)
+      dist_y = Math.abs(coord1.y - coord2.y)
+      dist = dist_x + dist_y
+
+      if min_dist == null or dist < min_dist
+        min_dist = dist
+        result = dist_x < dist_y
+
+  return result
+
+fully_vertical = (entity1, entity2) ->
+  return overlap(
+    entityCoordinate(entity1,"left" ) + MARGIN,
+    entityCoordinate(entity1,"right") - MARGIN,
+    entityCoordinate(entity2,"left" ) + MARGIN,
+    entityCoordinate(entity2,"right") - MARGIN
+  )
+
+fully_horizontal = (entity1, entity2) ->
+  return overlap(
+    entityCoordinate(entity1,"top"   ) + MARGIN,
+    entityCoordinate(entity1,"bottom") - MARGIN,
+    entityCoordinate(entity2,"top"   ) + MARGIN,
+    entityCoordinate(entity2,"bottom") - MARGIN
+  )
+
+overlap = (start1, end1, start2, end2) ->
+  return (end1-start2)*(start1-end2) < 0
 
 # Calculate y3 to pair with given x3 and to make (x3,y3) fall on the line from (x1,y1) to (x2,y2)
 interpolate = (x1,y1,x2,y2,x3) ->
