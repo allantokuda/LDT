@@ -55,14 +55,17 @@ setupEntityHandlers = ->
     $('.entity').on eventType, (event, ui) ->
       drawRelationshipsFromEntity(event.currentTarget)
 
-entityCoordinates = (entity_id, xloc, yloc) ->
+entityBox = (entity_id) ->
   e = $('#entity' + entity_id).parent()
+
+entityCoordinates = (entity_id, xloc, yloc) ->
+  e = entityBox(entity_id)
   x = Math.round(e.offset().left + e.width() * xloc)
   y = Math.round(e.offset().top  + e.height() * yloc)
   return {x:x, y:y}
 
 entityCoordinate = (entity_id, side) ->
-  e = $('#entity' + entity_id).parent()
+  e = entityBox(entity_id)
   switch side
     when "left"   then coord = e.offset().left
     when "right"  then coord = e.offset().left + e.width()
@@ -136,7 +139,7 @@ relationshipEndpoints = (entity1, entity2) ->
     p2.y = entityCoordinate(entity2, p2.side)
 
     if fully_vertical(entity1, entity2)
-      p1.x = Math.round((center1.x + center2.x) / 2)
+      p1.x = vertical_relationship_y_coordinate(entity1, entity2)
       p2.x = p1.x
     else
       if center1.x < center2.x
@@ -159,7 +162,7 @@ relationshipEndpoints = (entity1, entity2) ->
     p2.x = entityCoordinate(entity2, p2.side)
 
     if fully_horizontal(entity1, entity2)
-      p1.y = Math.round((center1.y + center2.y) / 2)
+      p1.y = horizontal_relationship_y_coordinate(entity1, entity2)
       p2.y = p1.y
     else
       if center1.y < center2.y
@@ -170,6 +173,34 @@ relationshipEndpoints = (entity1, entity2) ->
         p2.y = entityCoordinate(entity2, "bottom") - MARGIN
 
   return [p1,p2]
+
+horizontal_relationship_y_coordinate = (entity1, entity2) ->
+  e1 = entityBox(entity1)
+  e2 = entityBox(entity2)
+  height1 = e1.height()
+  height2 = e2.height()
+  top1 = e1.offset().top
+  top2 = e2.offset().top
+  center1 = top1 + height1 / 2
+  center2 = top2 + height2 / 2
+  offset = center2 - center1
+  offset_max = (height1 + height2) / 2 - MARGIN * 2
+  relationship_coord = center1 + (height1 / 2 - MARGIN) * offset / offset_max
+  return Math.abs(relationship_coord)
+
+vertical_relationship_y_coordinate = (entity1, entity2) ->
+  e1 = entityBox(entity1)
+  e2 = entityBox(entity2)
+  width1 = e1.width()
+  width2 = e2.width()
+  left1 = e1.offset().left
+  left2 = e2.offset().left
+  center1 = left1 + width1 / 2
+  center2 = left2 + width2 / 2
+  offset = center2 - center1
+  offset_max = (width1 + width2) / 2 - MARGIN * 2
+  relationship_coord = center1 + (width1 / 2 - MARGIN) * offset / offset_max
+  return Math.abs(relationship_coord)
 
 closer_to_vertical_than_horizontal = (entity1, entity2) ->
   entity_positions = [[0,0],[0,1],[1,1],[1,0]]
