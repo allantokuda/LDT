@@ -54,11 +54,20 @@ setupEntityDragHandler = ->
   $('.entity').on 'dialogdrag', (event, ui) ->
     drawRelationshipsFromEntity(event.currentTarget)
 
-entityCoordinates = (entity_id) ->
+entityCoordinates = (entity_id, xloc, yloc) ->
   e = $('#entity' + entity_id).parent()
-  x = e.offset().left + e.width() / 2
-  y = e.offset().top  + e.height() / 2
+  x = Math.round(e.offset().left + e.width() * xloc)
+  y = Math.round(e.offset().top  + e.height() * yloc)
   return {x:x, y:y}
+
+entityCoordinate = (entity_id, side) ->
+  e = $('#entity' + entity_id).parent()
+  switch side
+    when "left"   then coord = e.offset().left
+    when "right"  then coord = e.offset().left + e.width()
+    when "top"    then coord = e.offset().top
+    when "bottom" then coord = e.offset().top + e.height()
+  return Math.round(coord)
 
 drawRelationshipsFromEntity = (entity_tag) ->
   relationship_starts = JSON.parse(entity_tag.dataset.relationship_starts)
@@ -75,9 +84,50 @@ drawAllRelationships = () ->
     drawRelationshipsFromEntity(e)
 
 drawRelationship = (relationship, entity1, entity2) ->
-  coord1 = entityCoordinates(entity1)
-  coord2 = entityCoordinates(entity2)
-  $('#relationship' + relationship).attr('d', "M #{coord1.x} #{coord1.y} L #{coord2.x} #{coord2.y}")
+  p1 = {}
+  p2 = {}
+
+  center1 = entityCoordinates(entity1, 0.5, 0.5)
+  center2 = entityCoordinates(entity2, 0.5, 0.5)
+
+  SYMBOL_SIZE = 40
+
+  if vertical(center1, center2)
+    if center1.y < center2.y
+      p1.side = "bottom"
+      p2.side = "top"
+    else
+      p1.side = "top"
+      p2.side = "bottom"
+
+    p1.y = entityCoordinate(entity1, p1.side)
+    p2.y = entityCoordinate(entity2, p2.side)
+
+    p1.x = interpolate(center1.y, center1.x, center2.y, center2.x, p1.y)
+    p2.x = interpolate(center1.y, center1.x, center2.y, center2.x, p2.y)
+
+  else #if horizontal
+    if center1.x < center2.x
+      p1.side = "right"
+      p2.side = "left"
+    else
+      p1.side = "left"
+      p2.side = "right"
+
+    p1.x = entityCoordinate(entity1, p1.side)
+    p2.x = entityCoordinate(entity2, p2.side)
+
+    p1.y = interpolate(center1.x, center1.y, center2.x, center2.y, p1.x)
+    p2.y = interpolate(center1.x, center1.y, center2.x, center2.y, p2.x)
+
+  $('#relationship' + relationship).attr('d', "M #{p1.x} #{p1.y} L #{p2.x} #{p2.y}")
+
+vertical = (coord1, coord2) ->
+  return Math.abs(coord1.y - coord2.y) > Math.abs(coord1.x - coord2.x)
+
+# Calculate y3 to pair with given x3 and to make (x3,y3) fall on the line from (x1,y1) to (x2,y2)
+interpolate = (x1,y1,x2,y2,x3) ->
+  return Math.round((x3-x1)/(x2-x1)*(y2-y1)+y1)
 
 $(document).ready ->
   makeEntitiesDraggable()
