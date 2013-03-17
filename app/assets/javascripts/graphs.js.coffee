@@ -50,9 +50,10 @@ makeEntitiesDraggable = ->
     entity_y      = parseInt( $(element).attr("data-y"))
     $(element).dialog({ width: entity_width, height: entity_height, position: [entity_x,entity_y] })
 
-setupEntityDragHandler = ->
-  $('.entity').on 'dialogdrag', (event, ui) ->
-    drawRelationshipsFromEntity(event.currentTarget)
+setupEntityHandlers = ->
+  for eventType in ['dialogdrag', 'dialogresize']
+    $('.entity').on eventType, (event, ui) ->
+      drawRelationshipsFromEntity(event.currentTarget)
 
 entityCoordinates = (entity_id, xloc, yloc) ->
   e = $('#entity' + entity_id).parent()
@@ -160,6 +161,6 @@ interpolate = (x1,y1,x2,y2,x3) ->
 $(document).ready ->
   makeEntitiesDraggable()
   drawAllRelationships()
-  setupEntityDragHandler()
+  setupEntityHandlers()
   $("#settings").hide()
   $("#save_button").click -> saveGraph()
