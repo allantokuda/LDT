@@ -1,15 +1,15 @@
 class window.GraphSaver
   saveGraph: ->
     graph = {}
-    graph.entities = getCurrentEntities()
-    graph.relationships = getCurrentRelationships()
-    graph.settings = getSettings()
+    graph.entities      = @getCurrentEntities()
+    graph.relationships = @getCurrentRelationships()
+    graph.settings      = @getSettings()
 
     #encodeData = encodeURIComponent("graph=" + JSON.stringify(graph))
     encodeData = "graph=" + JSON.stringify(graph)
 
     # PUT update existing graph if it exists; otherwise POST a new one
-    currentID = graphID()
+    currentID = @graphID()
     if currentID
       $.ajax({ url:"/graphs/"+currentID, type:"PUT", dataType:"json", data:encodeData })
     else
