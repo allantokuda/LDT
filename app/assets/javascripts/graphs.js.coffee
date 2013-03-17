@@ -84,13 +84,41 @@ drawAllRelationships = () ->
     drawRelationshipsFromEntity(e)
 
 drawRelationship = (relationship, entity1, entity2) ->
+
+  endpoints = relationshipEndpoints(entity1, entity2)
+  p1 = endpoints[0]
+  p2 = endpoints[1]
+
+  chickenfoot = {}
+  chickenfoot["left"  ] = "m   0  15 l -40 -15 l  40 -15 "
+  chickenfoot["right" ] = "m   0 -15 l  40  15 l -40  15 "
+  chickenfoot["top"   ] = "m -15   0 l  15 -40 l  15  40 "
+  chickenfoot["bottom"] = "m  15   0 l -15  40 l -15 -40 "
+
+  offset = {}
+  offset["left"  ] = {dx:-50, dy:  0}
+  offset["right" ] = {dx: 50, dy:  0}
+  offset["top"   ] = {dx:  0, dy:-50}
+  offset["bottom"] = {dx:  0, dy: 50}
+
+  o1 = offset[p1.side]
+  o2 = offset[p2.side]
+
+  svg_path = "M #{p1.x} #{p1.y} " + chickenfoot[p1.side] +
+             "M #{p2.x} #{p2.y} " + chickenfoot[p2.side] +
+             "M #{p1.x} #{p1.y} " +
+             "L #{p1.x + o1.dx} #{p1.y + o1.dy} " +
+             "L #{p2.x + o2.dx} #{p2.y + o2.dy} " +
+             "L #{p2.x} #{p2.y} "
+
+  $('#relationship' + relationship).attr('d', svg_path)
+
+relationshipEndpoints = (entity1, entity2) ->
   p1 = {}
   p2 = {}
 
   center1 = entityCoordinates(entity1, 0.5, 0.5)
   center2 = entityCoordinates(entity2, 0.5, 0.5)
-
-  SYMBOL_SIZE = 40
 
   if vertical(center1, center2)
     if center1.y < center2.y
@@ -120,7 +148,7 @@ drawRelationship = (relationship, entity1, entity2) ->
     p1.y = interpolate(center1.x, center1.y, center2.x, center2.y, p1.x)
     p2.y = interpolate(center1.x, center1.y, center2.x, center2.y, p2.x)
 
-  $('#relationship' + relationship).attr('d', "M #{p1.x} #{p1.y} L #{p2.x} #{p2.y}")
+  return [p1,p2]
 
 vertical = (coord1, coord2) ->
   return Math.abs(coord1.y - coord2.y) > Math.abs(coord1.x - coord2.x)
