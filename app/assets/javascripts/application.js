@@ -15,3 +15,4 @@
 //= require_tree .
 //= require jquery.ui.dialog
 //= require d3.v3
+//= require graph_ui
