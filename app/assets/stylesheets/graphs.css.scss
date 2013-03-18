@@ -19,10 +19,11 @@ table.graph_index .graph_title {
 
 #header_bar {
   margin: 0px;
-  padding: 10px;
+  padding: 1%;
   background: #cdf;
-  width: 100%;
+  width: 98%;
   position: absolute;
+  z-index: -5;
 }
 
 #header_bar .right_side {

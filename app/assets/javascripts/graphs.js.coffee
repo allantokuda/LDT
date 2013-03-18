@@ -4,5 +4,4 @@ $(document).ready ->
   ui.drawAllRelationships()
   ui.setupEntityHandlers()
   saver = new window.GraphSaver
-  $("#save_button").click -> saver.saveGraph()
-  $("#settings").hide()
+  toolbar = new window.Toolbar(ui, saver)
