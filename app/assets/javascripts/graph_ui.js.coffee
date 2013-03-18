@@ -1,4 +1,10 @@
 class window.GraphUI
+  creatingEntity = false
+
+  constructor: ->
+    ui_instance = this
+    console.log ui_instance
+
   makeEntitiesDraggable: ->
     $(".entity").each (index, element) ->
       entity_width  = parseInt( $(element).attr("data-width"))
@@ -200,3 +206,37 @@ class window.GraphUI
 
   overlap: (start1, end1, start2, end2) ->
     return (end1-start2)*(start1-end2) < 0
+
+  startNewEntity: ->
+    creatingEntity = true
+    $('body').append("<div id='new_entity'><b>New Entity</b><br><ul><li>Click to place</li><li>ESC to cancel</li></div>")
+
+    $(document).on 'mousemove', (e) ->
+      $('#new_entity').css {left: e.pageX - 75, top: e.pageY - 100}
+
+    $(document).keyup (e) ->
+      ui = new window.GraphUI
+      ui.cancelNewEntity e.keyCode == 27
+
+  cancelNewEntity: ->
+    creatingEntity = false
+    $('#new_entity').remove()
+
+  createNewEntity: ->
+    # draw entity in DOM
+    # focus entity name text field for immediate entry
+
+  startNewRelationship: ->
+    creatingRelationship = true
+    console.log 'pick an entity'
+
+  cancelNewRelationship: ->
+    creatingRelationship = false
+    console.log 'relationship creation cancelled'
+
+  pickRelationshipEntity: ->
+    # impement state machine: begin -> 1st picked -> 2nd picked and createNewRelationship() below
+
+  drawNewRelationship: (e1, e2) ->
+    # lookup which entities have been picked, or receive them in argument here
+    # add relationship to DOM in same way as the page loader does
