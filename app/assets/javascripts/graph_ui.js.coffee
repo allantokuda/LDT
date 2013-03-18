@@ -1,5 +1,6 @@
 class window.GraphUI
   creatingEntity = false
+  ending_locations = {}
 
   constructor: ->
     ui_instance = this
@@ -56,6 +57,8 @@ class window.GraphUI
     endpoints = @relationshipEndpoints(entity1, entity2)
     p1 = endpoints[0]
     p2 = endpoints[1]
+    ending_locations["start" + relationship] = p1
+    ending_locations["end"   + relationship] = p2
 
     chickenfoot = {}
     chickenfoot["left"  ] = "m   0  15 l -40 -15 l  40 -15 "
@@ -150,7 +153,7 @@ class window.GraphUI
     offset = center2 - center1
     offset_max = (height1 + height2) / 2 - MARGIN * 2
     relationship_coord = center1 + (height1 / 2 - MARGIN) * offset / offset_max
-    return Math.abs(relationship_coord)
+    return Math.round(relationship_coord)
 
   vertical_relationship_y_coordinate: (entity1, entity2) ->
     e1 = @entityBox(entity1)
@@ -164,7 +167,7 @@ class window.GraphUI
     offset = center2 - center1
     offset_max = (width1 + width2) / 2 - MARGIN * 2
     relationship_coord = center1 + (width1 / 2 - MARGIN) * offset / offset_max
-    return Math.abs(relationship_coord)
+    return Math.round(relationship_coord)
 
   closer_to_vertical_than_horizontal: (entity1, entity2) ->
     entity_positions = [[0,0],[0,1],[1,1],[1,0]]
@@ -240,3 +243,22 @@ class window.GraphUI
   drawNewRelationship: (e1, e2) ->
     # lookup which entities have been picked, or receive them in argument here
     # add relationship to DOM in same way as the page loader does
+
+  relationshipSelect: (e) ->
+    min_dist = null
+    for key in Object.keys(ending_locations)
+      ending = ending_locations[key]
+      dist = Math.round(Math.sqrt(Math.pow(ending.x - e.pageX, 2) + Math.pow(ending.y - e.pageY, 2)))
+      if min_dist == null or dist < min_dist
+        min_dist = dist
+        closest = key
+        ending_pos = ending
+
+    $('#relationship_ending_highlight').remove
+    $('body').append('<div id="relationship_ending_highlight"></div>')
+    switch ending_pos.side
+      when "top"    then offsets = [-20, -40]
+      when "bottom" then offsets = [-20,   0]
+      when "left"   then offsets = [-40, -20]
+      when "right"  then offsets = [  0, -20]
+    $('#relationship_ending_highlight').css {left: (ending_pos.x + offsets[0]); top: (ending_pos.y + offsets[1])}

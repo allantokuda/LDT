@@ -66,3 +66,11 @@ h1 {
   position: absolute;
   padding: 1em;
 }
+
+#relationship_ending_highlight {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  z-index: -20;
+  background-color: #cdf;
+}
