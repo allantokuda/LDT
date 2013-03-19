@@ -1,5 +1,5 @@
 class window.GraphSaver
-  saveGraph: ->
+  @saveGraph: ->
     graph = {}
     graph.entities      = @getCurrentEntities()
     graph.relationships = @getCurrentRelationships()
@@ -15,7 +15,7 @@ class window.GraphSaver
     else
       $.ajax({ url:"/graphs", type:"POST", dataType:"json", data:encodeData })
 
-  getCurrentEntities: ->
+  @getCurrentEntities: ->
     entities = []
     $("div.ui-dialog").each (index, element) ->
       entities[index] = {}
@@ -28,17 +28,17 @@ class window.GraphSaver
       entities[index].attrib = $(element).find("textarea.attributes").val()
     entities
 
-  getCurrentRelationships: ->
+  @getCurrentRelationships: ->
     relationships = []
     # Add parameterization code here once relationships are implemented
     relationships
 
-  getSettings: ->
+  @getSettings: ->
     settings = {}
     $("#settings").find(".field").find("input,textarea").each (index, element) ->
       setting_name = element.name.replace("graph[","").replace("]","")
       settings[setting_name] = element.value
     settings
 
-  graphID: ->
+  @graphID: ->
     window.location.pathname.split('/')[2]

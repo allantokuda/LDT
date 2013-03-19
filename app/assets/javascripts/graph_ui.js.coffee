@@ -1,35 +1,38 @@
 class window.GraphUI
+  ARROWHEAD_MARGIN = 15
+
+  newID = 0
+
   creatingEntity = false
   ending_locations = {}
 
-  constructor: ->
-    ui_instance = this
-    console.log ui_instance
-
-  makeEntitiesDraggable: ->
+  @makeEntitiesDraggable: ->
     $(".entity").each (index, element) ->
-      entity_width  = parseInt( $(element).attr("data-width"))
-      entity_height = parseInt( $(element).attr("data-height"))
-      entity_x      = parseInt( $(element).attr("data-x"))
-      entity_y      = parseInt( $(element).attr("data-y"))
-      $(element).dialog({ width: entity_width, height: entity_height, position: [entity_x,entity_y] })
+      window.GraphUI.makeEntityDraggable(element)
 
-  setupEntityHandlers: ->
+  @makeEntityDraggable: (element) ->
+    entity_width  = parseInt( $(element).attr("data-width"))
+    entity_height = parseInt( $(element).attr("data-height"))
+    entity_x      = parseInt( $(element).attr("data-x"))
+    entity_y      = parseInt( $(element).attr("data-y"))
+    $(element).dialog({ width: entity_width, height: entity_height, position: [entity_x,entity_y] })
+
+  @setupEntityHandlers: ->
     for eventType in ['dialogdrag', 'dialogresize']
       $('.entity').on eventType, (event, ui) ->
-        g = new window.GraphUI
+        g = window.GraphUI
         g.drawRelationshipsFromEntity(event.currentTarget)
 
-  entityBox: (entity_id) ->
+  @entityBox: (entity_id) ->
     e = $('#entity' + entity_id).parent()
 
-  entityCoordinates: (entity_id, xloc, yloc) ->
+  @entityCoordinates: (entity_id, xloc, yloc) ->
     e = @entityBox(entity_id)
     x = Math.round(e.offset().left + e.width() * xloc)
     y = Math.round(e.offset().top  + e.height() * yloc)
     return {x:x, y:y}
 
-  entityCoordinate: (entity_id, side) ->
+  @entityCoordinate: (entity_id, side) ->
     e = @entityBox(entity_id)
     switch side
       when "left"   then coord = e.offset().left
@@ -38,11 +41,11 @@ class window.GraphUI
       when "bottom" then coord = e.offset().top + e.height()
     return Math.round(coord)
 
-  drawAllRelationships: () ->
+  @drawAllRelationships: () ->
     for e in $('.entity')
       @drawRelationshipsFromEntity(e)
 
-  drawRelationshipsFromEntity: (entity_tag) ->
+  @drawRelationshipsFromEntity: (entity_tag) ->
     relationship_starts = JSON.parse(entity_tag.dataset.relationship_starts)
     relationship_ends   = JSON.parse(entity_tag.dataset.relationship_ends)
 
@@ -52,7 +55,7 @@ class window.GraphUI
     for r in relationship_ends
       @drawRelationship(r.id, r.entity1_id, r.entity2_id)
 
-  drawRelationship: (relationship, entity1, entity2) ->
+  @drawRelationship: (relationship, entity1, entity2) ->
 
     endpoints = @relationshipEndpoints(entity1, entity2)
     p1 = endpoints[0]
@@ -84,9 +87,7 @@ class window.GraphUI
 
     $('#relationship' + relationship).attr('d', svg_path)
 
-  MARGIN = 15
-
-  relationshipEndpoints: (entity1, entity2) ->
+  @relationshipEndpoints: (entity1, entity2) ->
     p1 = {}
     p2 = {}
 
@@ -110,11 +111,11 @@ class window.GraphUI
         p2.x = p1.x
       else
         if center1.x < center2.x
-          p1.x = @entityCoordinate(entity1, "right") - MARGIN
-          p2.x = @entityCoordinate(entity2, "left" ) + MARGIN
+          p1.x = @entityCoordinate(entity1, "right") - ARROWHEAD_MARGIN
+          p2.x = @entityCoordinate(entity2, "left" ) + ARROWHEAD_MARGIN
         else
-          p1.x = @entityCoordinate(entity1, "left" ) + MARGIN
-          p2.x = @entityCoordinate(entity2, "right") - MARGIN
+          p1.x = @entityCoordinate(entity1, "left" ) + ARROWHEAD_MARGIN
+          p2.x = @entityCoordinate(entity2, "right") - ARROWHEAD_MARGIN
 
     else # closer to horizontal than vertical
 
@@ -133,15 +134,15 @@ class window.GraphUI
         p2.y = p1.y
       else
         if center1.y < center2.y
-          p1.y = @entityCoordinate(entity1, "bottom") - MARGIN
-          p2.y = @entityCoordinate(entity2, "top"   ) + MARGIN
+          p1.y = @entityCoordinate(entity1, "bottom") - ARROWHEAD_MARGIN
+          p2.y = @entityCoordinate(entity2, "top"   ) + ARROWHEAD_MARGIN
         else
-          p1.y = @entityCoordinate(entity1, "top"   ) + MARGIN
-          p2.y = @entityCoordinate(entity2, "bottom") - MARGIN
+          p1.y = @entityCoordinate(entity1, "top"   ) + ARROWHEAD_MARGIN
+          p2.y = @entityCoordinate(entity2, "bottom") - ARROWHEAD_MARGIN
 
     return [p1,p2]
 
-  horizontal_relationship_y_coordinate: (entity1, entity2) ->
+  @horizontal_relationship_y_coordinate: (entity1, entity2) ->
     e1 = @entityBox(entity1)
     e2 = @entityBox(entity2)
     height1 = e1.height()
@@ -151,11 +152,11 @@ class window.GraphUI
     center1 = top1 + height1 / 2
     center2 = top2 + height2 / 2
     offset = center2 - center1
-    offset_max = (height1 + height2) / 2 - MARGIN * 2
-    relationship_coord = center1 + (height1 / 2 - MARGIN) * offset / offset_max
+    offset_max = (height1 + height2) / 2 - ARROWHEAD_MARGIN * 2
+    relationship_coord = center1 + (height1 / 2 - ARROWHEAD_MARGIN) * offset / offset_max
     return Math.round(relationship_coord)
 
-  vertical_relationship_y_coordinate: (entity1, entity2) ->
+  @vertical_relationship_y_coordinate: (entity1, entity2) ->
     e1 = @entityBox(entity1)
     e2 = @entityBox(entity2)
     width1 = e1.width()
@@ -165,11 +166,11 @@ class window.GraphUI
     center1 = left1 + width1 / 2
     center2 = left2 + width2 / 2
     offset = center2 - center1
-    offset_max = (width1 + width2) / 2 - MARGIN * 2
-    relationship_coord = center1 + (width1 / 2 - MARGIN) * offset / offset_max
+    offset_max = (width1 + width2) / 2 - ARROWHEAD_MARGIN * 2
+    relationship_coord = center1 + (width1 / 2 - ARROWHEAD_MARGIN) * offset / offset_max
     return Math.round(relationship_coord)
 
-  closer_to_vertical_than_horizontal: (entity1, entity2) ->
+  @closer_to_vertical_than_horizontal: (entity1, entity2) ->
     entity_positions = [[0,0],[0,1],[1,1],[1,0]]
     min_dist = null
 
@@ -191,60 +192,81 @@ class window.GraphUI
 
     return result
 
-  fully_vertical: (entity1, entity2) ->
+  @fully_vertical: (entity1, entity2) ->
     return @overlap(
-      @entityCoordinate(entity1,"left" ) + MARGIN,
-      @entityCoordinate(entity1,"right") - MARGIN,
-      @entityCoordinate(entity2,"left" ) + MARGIN,
-      @entityCoordinate(entity2,"right") - MARGIN
+      @entityCoordinate(entity1,"left" ) + ARROWHEAD_MARGIN,
+      @entityCoordinate(entity1,"right") - ARROWHEAD_MARGIN,
+      @entityCoordinate(entity2,"left" ) + ARROWHEAD_MARGIN,
+      @entityCoordinate(entity2,"right") - ARROWHEAD_MARGIN
     )
 
-  fully_horizontal: (entity1, entity2) ->
+  @fully_horizontal: (entity1, entity2) ->
     return @overlap(
-      @entityCoordinate(entity1,"top"   ) + MARGIN,
-      @entityCoordinate(entity1,"bottom") - MARGIN,
-      @entityCoordinate(entity2,"top"   ) + MARGIN,
-      @entityCoordinate(entity2,"bottom") - MARGIN
+      @entityCoordinate(entity1,"top"   ) + ARROWHEAD_MARGIN,
+      @entityCoordinate(entity1,"bottom") - ARROWHEAD_MARGIN,
+      @entityCoordinate(entity2,"top"   ) + ARROWHEAD_MARGIN,
+      @entityCoordinate(entity2,"bottom") - ARROWHEAD_MARGIN
     )
 
-  overlap: (start1, end1, start2, end2) ->
+  @overlap: (start1, end1, start2, end2) ->
     return (end1-start2)*(start1-end2) < 0
 
-  startNewEntity: ->
+  @startNewEntity: ->
     creatingEntity = true
     $('body').append("<div id='new_entity'><b>New Entity</b><br><ul><li>Click to place</li><li>ESC to cancel</li></div>")
 
     $(document).on 'mousemove', (e) ->
       $('#new_entity').css {left: e.pageX - 75, top: e.pageY - 100}
 
-    $(document).keyup (e) ->
-      ui = new window.GraphUI
-      ui.cancelNewEntity e.keyCode == 27
+    $('#new_entity').keyup (e) ->
+      window.GraphUI.cancelNewEntity e.keyCode == 27
 
-  cancelNewEntity: ->
+    $('#new_entity').on 'mouseup', (e) ->
+      window.GraphUI.createNewEntity()
+
+  @cancelNewEntity: ->
     creatingEntity = false
     $('#new_entity').remove()
 
-  createNewEntity: ->
-    # draw entity in DOM
-    # focus entity name text field for immediate entry
+  @createNewEntity: ->
+    ghost = $('#new_entity')
+    real = $('<div/>')
+    real.attr {
+      class: 'entity',
+      id: 'new_entity' + newID
+    }
+    # Really jQuery?  This was the only syntax that seemed to work.
+    real.attr 'title', 'new entity ' + newID
+    real.attr 'data-id', 'new_entity' + newID
+    real.attr 'data-name', 'new entity ' + newID
+    real.attr 'data-width',  ghost.width()
+    real.attr 'data-height', ghost.height()
+    real.attr 'data-x', ghost.offset().left
+    real.attr 'data-y', ghost.offset().top
+    real.attr 'data-relationship_starts', ""
+    real.attr 'data-relationship_ends', ""
 
-  startNewRelationship: ->
+    real.append $('<form class="entity-attributes"><textarea name="attributes" class="attributes"></textarea></form>')
+    real.appendTo $('body')
+    @makeEntityDraggable(real)
+    ghost.remove()
+
+  @startNewRelationship: ->
     creatingRelationship = true
     console.log 'pick an entity'
 
-  cancelNewRelationship: ->
+  @cancelNewRelationship: ->
     creatingRelationship = false
     console.log 'relationship creation cancelled'
 
-  pickRelationshipEntity: ->
+  @pickRelationshipEntity: ->
     # impement state machine: begin -> 1st picked -> 2nd picked and createNewRelationship() below
 
-  drawNewRelationship: (e1, e2) ->
+  @drawNewRelationship: (e1, e2) ->
     # lookup which entities have been picked, or receive them in argument here
     # add relationship to DOM in same way as the page loader does
 
-  relationshipSelect: (e) ->
+  @relationshipSelect: (e) ->
     min_dist = null
     for key in Object.keys(ending_locations)
       ending = ending_locations[key]

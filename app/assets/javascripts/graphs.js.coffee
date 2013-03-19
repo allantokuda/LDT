@@ -1,7 +1,7 @@
 $(document).ready ->
-  ui = new window.GraphUI
+  ui = window.GraphUI
+  saver = window.GraphSaver
+  toolbar = window.Toolbar(ui, saver)
   ui.makeEntitiesDraggable()
   ui.drawAllRelationships()
   ui.setupEntityHandlers()
-  saver = new window.GraphSaver
-  toolbar = new window.Toolbar(ui, saver)

@@ -74,3 +74,15 @@ h1 {
   z-index: -20;
   background-color: #cdf;
 }
+
+form.entity-attributes {
+  height: 98%;
+  width: 98%;
+}
+
+form.entity-attributes textarea {
+  height: 100%;
+  width: 100%;
+  resize: none;
+  border: none;
+}

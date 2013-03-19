@@ -1,8 +1,6 @@
-add relationship display
-	render using a div with selectively visible borders - 1
-	add chicken feet to the correct ends- 2
-	add identifier bars - 2
-	add javascript event handler for entity motion to redraw live - 4
+add chicken feet to the correct ends- 2
+add identifier bars - 2
+add javascript event handler for entity motion to redraw live - 4
 
 add relationship controller
 	CRUD 1
