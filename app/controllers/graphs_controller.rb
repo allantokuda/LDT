@@ -49,7 +49,7 @@ class GraphsController < ApplicationController
 
     respond_to do |format|
       if @graph.save
-        format.html { redirect_to @graph, notice: 'Graph was successfully created.' }
+        format.html { redirect_to edit_graph_path(@graph.id), notice: 'Graph was successfully created.' }
         format.json { render json: @graph, status: :created, location: @graph }
       else
         format.html { render action: "new" }

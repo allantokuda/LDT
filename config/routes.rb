@@ -1,6 +1,6 @@
 LDS::Application.routes.draw do
 
-  root :to => "graphs#new"
+  root :to => "graphs#index"
 
   resources :graphs
   resources :entities
