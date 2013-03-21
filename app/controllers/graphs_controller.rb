@@ -4,9 +4,13 @@ class GraphsController < ApplicationController
   def index
     @graphs = Graph.all
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @graphs }
+    if @graphs.count > 0
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json { render json: @graphs }
+      end
+    else
+      new
     end
   end
 
@@ -24,10 +28,10 @@ class GraphsController < ApplicationController
   # GET /graphs/new
   # GET /graphs/new.json
   def new
-    @graph = Graph.new
+    @graph = Graph.create :name => "Untitled Graph"
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html { redirect_to edit_graph_path(@graph.id) }
       format.json { render json: @graph }
     end
   end
