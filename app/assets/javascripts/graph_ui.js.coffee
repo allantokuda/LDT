@@ -16,6 +16,24 @@ class window.GraphUI
     entity_x      = parseInt( $(element).attr("data-x"))
     entity_y      = parseInt( $(element).attr("data-y"))
     $(element).dialog({ width: entity_width, height: entity_height, position: [entity_x,entity_y] })
+    titlebar = $(element).parent().find('div.ui-dialog-titlebar')
+    titlebar.on 'dblclick', (event, ui) ->
+      titlebar = $(event.currentTarget)
+      span   = titlebar.find('span.ui-dialog-title')
+      dialog = titlebar.parent()
+      entityID = dialog.find('.entity')[0].id
+      titlebar.append("<input id='edit_entity_name' data-entity-id='" + entityID + "' name='entity_name' type='text' value='" + span[0].innerText + "'>")
+      input = titlebar.find('input')
+      input.focus()
+      input.on 'keyup', (e, ui) ->
+        window.GraphUI.renameEntity() if e.keyCode == 13
+        window.GraphUI.cancelRenameEntity() if e.keyCode == 27
+
+  @renameEntity: ->
+    input    = $('#edit_entity_name')
+    entityID = input.attr('data-entity-id')
+    $("#" + entityID).dialog('option', 'title', input[0].value)
+    input.remove()
 
   @setupEntityHandlers: ->
     for eventType in ['dialogdrag', 'dialogresize']
@@ -219,7 +237,7 @@ class window.GraphUI
       $('#new_entity').css {left: e.pageX - 75, top: e.pageY - 100}
 
     $('#new_entity').keyup (e) ->
-      window.GraphUI.cancelNewEntity e.keyCode == 27
+      window.GraphUI.cancelNewEntity if e.keyCode == 27
 
     $('#new_entity').on 'mouseup', (e) ->
       window.GraphUI.createNewEntity()

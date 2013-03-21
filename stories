@@ -1,8 +1,8 @@
-add chicken feet to the correct ends- 2
+make new entities save - 1
+enable New Relationship button - 2
+BUG: selected relationship highlight does not follow drag
+add chicken feet to the correct ends - 2
 add identifier bars - 2
-add javascript event handler for entity motion to redraw live - 4
-
-add relationship controller
-	CRUD 1
-
-make graph title editable again (click and textbox appears)
+allow cardinality and identifier to be selected on relationship endings - 2
+add labels to relationship endings
+convert from textareas to reorderable divs with underlines for identifiers
