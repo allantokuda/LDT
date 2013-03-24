@@ -1,5 +1,7 @@
 class window.GraphSaver
   @saveGraph: ->
+    @postNewEntities()
+
     graph = {}
     graph.entities      = @getCurrentEntities()
     graph.relationships = @getCurrentRelationships()
@@ -18,15 +20,39 @@ class window.GraphSaver
   @getCurrentEntities: ->
     entities = []
     $("div.ui-dialog").each (index, element) ->
-      entities[index] = {}
-      entities[index].name   = $(element).find("span.ui-dialog-title").html()
-      entities[index].id     = $(element).find("div.entity").attr("data-id")
-      entities[index].width  = Math.floor($(element).width())
-      entities[index].height = Math.floor($(element).height())
-      entities[index].x      = Math.floor($(element).position().left)
-      entities[index].y      = Math.floor($(element).position().top)
-      entities[index].attrib = $(element).find("textarea.attributes").val()
+      entities[index] = window.GraphSaver.objectifyEntity(element)
     entities
+
+  @objectifyEntity: (element) ->
+    entity = {}
+    entity.name   = $(element).find("span.ui-dialog-title").html()
+    entity.id     = $(element).find("div.entity").attr("data-id")
+    entity.width  = Math.floor($(element).width())
+    entity.height = Math.floor($(element).height())
+    entity.x      = Math.floor($(element).position().left)
+    entity.y      = Math.floor($(element).position().top)
+    entity.attrib = $(element).find("textarea.attributes").val()
+    entity.graph_id = window.GraphSaver.graphID()
+    console.log ">>>>>>"
+    console.log entity
+    entity
+
+  @postNewEntities: ->
+    $(".newEntity").each (index, element) ->
+      entity = window.GraphSaver.objectifyEntity($(element).parent())
+      encodeData = "entity=" + JSON.stringify(entity)
+      $.ajax '/entities',
+        type:"POST"
+        dataType:"json"
+        data:encodeData
+        error: (jqXHR, textStatus, errorThrown) ->
+          console.log "AJAX Error: "
+          console.log textStatus
+        success: (data, textStatus, jqXHR) ->
+          console.log data.id
+          $(element).attr 'id', 'entity' + data.id
+          $(element).attr 'data-id', data.id
+          $(element).removeClass("newEntity")
 
   @getCurrentRelationships: ->
     relationships = []

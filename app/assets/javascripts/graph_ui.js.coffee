@@ -19,7 +19,6 @@ class window.GraphUI
     $(element).dialog({ width: entity_width, height: entity_height, position: [entity_x,entity_y] })
     titlebar = $(element).parent().find('div.ui-dialog-titlebar')
     titlebar.on 'mousedown', (event) ->
-      console.log event.target
       window.GraphUI.entitySelect(event.target.parentNode)
 
     titlebar.on 'dblclick', (event, ui) ->
@@ -36,6 +35,8 @@ class window.GraphUI
 
   @renameEntity: ->
     input    = $('#edit_entity_name')
+    input.parent().siblings('.newEntity').attr('data-name', input[0].value)
+    input.siblings('.ui-dialog-title').text(input[0].value)
     entityID = input.attr('data-entity-id')
     $("#" + entityID).dialog('option', 'title', input[0].value)
     input.remove()
@@ -254,13 +255,9 @@ class window.GraphUI
   @createNewEntity: ->
     ghost = $('#new_entity')
     real = $('<div/>')
-    real.attr {
-      class: 'entity',
-      id: 'new_entity' + newID
-    }
     # Really jQuery?  This was the only syntax that seemed to work.
+    real.attr 'class', 'entity newEntity'
     real.attr 'title', 'new entity ' + newID
-    real.attr 'data-id', 'new_entity' + newID
     real.attr 'data-name', 'new entity ' + newID
     real.attr 'data-width',  ghost.width()
     real.attr 'data-height', ghost.height()

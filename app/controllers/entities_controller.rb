@@ -40,7 +40,8 @@ class EntitiesController < ApplicationController
   # POST /entities
   # POST /entities.json
   def create
-    @entity = Entity.new(params[:entity])
+    hash = JSON.parse(params[:entity], :symbolize_names => true)
+    @entity = Entity.new(hash)
 
     respond_to do |format|
       if @entity.save
