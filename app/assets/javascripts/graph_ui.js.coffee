@@ -17,6 +17,10 @@ class window.GraphUI
     entity_y      = parseInt( $(element).attr("data-y"))
     $(element).dialog({ width: entity_width, height: entity_height, position: [entity_x,entity_y] })
     titlebar = $(element).parent().find('div.ui-dialog-titlebar')
+    titlebar.on 'mousedown', (event) ->
+      console.log event.target
+      window.GraphUI.entitySelect(event.target.parentNode)
+
     titlebar.on 'dblclick', (event, ui) ->
       titlebar = $(event.currentTarget)
       span   = titlebar.find('span.ui-dialog-title')
@@ -284,6 +288,14 @@ class window.GraphUI
     # lookup which entities have been picked, or receive them in argument here
     # add relationship to DOM in same way as the page loader does
 
+  @entitySelect: (ent) ->
+    window.GraphUI.deselectAll()
+    $(ent).addClass 'selectedEntity'
+
+  @deselectAll: ->
+    $('.selectedEntity').removeClass 'selectedEntity'
+    $('#relationship_ending_highlight').remove()
+
   @relationshipSelect: (e) ->
     min_dist = null
     for key in Object.keys(ending_locations)
@@ -294,7 +306,7 @@ class window.GraphUI
         closest = key
         ending_pos = ending
 
-    $('#relationship_ending_highlight').remove
+    window.GraphUI.deselectAll()
     $('body').append('<div id="relationship_ending_highlight"></div>')
     switch ending_pos.side
       when "top"    then offsets = [-20, -40]
