@@ -1,5 +1,6 @@
 class window.GraphUI
   ARROWHEAD_MARGIN = 15
+  RELATIONSHIP_SELECT_DIST = 50
 
   newID = 0
 
@@ -307,10 +308,11 @@ class window.GraphUI
         ending_pos = ending
 
     window.GraphUI.deselectAll()
-    $('body').append('<div id="relationship_ending_highlight"></div>')
-    switch ending_pos.side
-      when "top"    then offsets = [-20, -40]
-      when "bottom" then offsets = [-20,   0]
-      when "left"   then offsets = [-40, -20]
-      when "right"  then offsets = [  0, -20]
-    $('#relationship_ending_highlight').css {left: (ending_pos.x + offsets[0]); top: (ending_pos.y + offsets[1])}
+    if min_dist < RELATIONSHIP_SELECT_DIST
+      $('body').append('<div id="relationship_ending_highlight"></div>')
+      switch ending_pos.side
+        when "top"    then offsets = [-20, -40]
+        when "bottom" then offsets = [-20,   0]
+        when "left"   then offsets = [-40, -20]
+        when "right"  then offsets = [  0, -20]
+      $('#relationship_ending_highlight').css {left: (ending_pos.x + offsets[0]); top: (ending_pos.y + offsets[1])}
