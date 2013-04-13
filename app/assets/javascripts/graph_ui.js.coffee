@@ -313,3 +313,11 @@ class window.GraphUI
         when "left"   then offsets = [-40, -20]
         when "right"  then offsets = [  0, -20]
       $('#relationship_ending_highlight').css {left: (ending_pos.x + offsets[0]); top: (ending_pos.y + offsets[1])}
+
+  @deleteSelected: ->
+    ent = $('.selectedEntity')
+    rel = $('#relationship_ending_highlight')
+    if ent.length == 1
+      ent.remove()
+    else if rel.length == 1
+      rel.remove()
