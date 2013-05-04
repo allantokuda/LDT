@@ -1,0 +1,35 @@
+<!doctype html>
+<html ng-app="myApp">
+<head>
+<link rel="stylesheet" type="text/css" href="css/ui-lightness/jquery-ui-1.10.3.custom.css">
+<script src="js/jquery-1.9.1.js"></script>
+<script src="js/jquery-ui-1.10.3.custom.js"></script>
+<script src="js/angular.js"></script>
+<script src="js/myscript.js"></script>
+</head>
+      
+<body>
+
+<div ng-controller="AbcController">
+  <div class="hello" style="background: red; padding: 1em;" 
+    ng-style="{left: x+'px', top: y+'px', width: w+'px', height: h+'px'}" 
+    dialog
+  >
+  <table style="position: relative;"><tr>
+    <td>X position</td>
+    <td>Y position</td>
+  </tr><tr>
+    <td><input ng-model="x">
+    <td><input ng-model="y">
+  </tr><tr>
+    <td>Width</td>
+    <td>Height</td>
+  </tr><tr>
+    <td><input ng-model="w">
+    <td><input ng-model="h">
+  </tr></table>
+  </div>
+</div>
+
+</body>
+</html>
