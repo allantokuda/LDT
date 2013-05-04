@@ -7,11 +7,11 @@ function AbcController($scope) {
 
 var myAppModule = angular.module('myApp', []);
 
-angular.module("myApp").directive('dialog', function() {
+angular.module("myApp").directive('rectangle', function() {
   return {
     restrict: 'A',
     link: function(scope, element, attrs) {
-      var options = scope.$eval(attrs.dialog); //allow options to be passed in
+      var options = scope.$eval(attrs.rectangle); //allow options to be passed in
 
       //jQuery UI call to add draggable function to the element
       element.draggable({
