@@ -11,10 +11,13 @@
 <body>
 
 <div ng-controller="AbcController">
+  <!-- TODO: find way to move the explicit style bindings for x,y,w,h into a library -->
   <div class="hello" style="background: red; padding: 1em;" 
     ng-style="{left: x+'px', top: y+'px', width: w+'px', height: h+'px'}" 
     dialog
   >
+
+  <!-- Proof that I have two-way binding through Angular -->
   <table style="position: relative;"><tr>
     <td>X position</td>
     <td>Y position</td>
