@@ -9,6 +9,7 @@
     border: 2px solid black;
     padding: 1em;
   }
+  input { width: 4em; }
 </style>
 <script src="js/jquery-1.9.1.js"></script>
 <script src="js/jquery-ui-1.10.3.custom.js"></script>
@@ -20,22 +21,24 @@
 
 <div ng-controller="AbcController">
   <!-- Proof that I have two-way binding through Angular -->
-  <table><tr>
-    <td>X position</td>
-    <td>Y position</td>
-  </tr><tr>
-    <td><input ng-model="x">
-    <td><input ng-model="y">
-  </tr><tr>
-    <td>Width</td>
-    <td>Height</td>
-  </tr><tr>
-    <td><input ng-model="w">
-    <td><input ng-model="h">
-  </tr></table>
+  <div ng-repeat="rectangle in rectangles">
+    <b>Rectangle {{$index}}</b>
+    <table><tr>
+      <td>X position</td>
+      <td>Y position</td>
+      <td>Width</td>
+      <td>Height</td>
+    </tr><tr>
+      <td><input ng-model="rectangle.x">
+      <td><input ng-model="rectangle.y">
+      <td><input ng-model="rectangle.w">
+      <td><input ng-model="rectangle.h">
+    </tr></table>
+  </div>
 
   <!-- TODO: find way to move the explicit style bindings for x,y,w,h into a library -->
-  <div rectangle class="rectangle" ng-style="{left: x+'px', top: y+'px', width: w+'px', height: h+'px'}"></div>
+  <div ng-repeat="rectangle in rectangles" rectangle class="rectangle"
+       ng-style="{left: rectangles[$index].x+'px', top: rectangles[$index].y+'px', width: rectangles[$index].w+'px', height: rectangles[$index].h+'px'}">Rectangle ID {{$index}}</div>
 </div>
 
 </body>
