@@ -36,9 +36,11 @@
     </tr></table>
   </div>
 
-  <!-- TODO: find way to move the explicit style bindings for x,y,w,h into a library -->
   <div ng-repeat="rectangle in rectangles" rectangle class="rectangle"
-       ng-style="{left: rectangles[$index].x+'px', top: rectangles[$index].y+'px', width: rectangles[$index].w+'px', height: rectangles[$index].h+'px'}">Rectangle ID {{$index}}</div>
+       ng-style="{left:   rectangles[$index].x+'px',
+                  top:    rectangles[$index].y+'px',
+                  width:  rectangles[$index].w+'px',
+                  height: rectangles[$index].h+'px'}">Rectangle ID {{$index}}</div>
 </div>
 
 </body>
