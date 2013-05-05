@@ -16,6 +16,8 @@ angular.module("myApp").directive('rectangle', function() {
       element.draggable({
         // Update Angular model when this happens, because 
         // this jQuery event is outside of the Angular lifecycle
+        // If these could be implemented in pure Angular instead of jQuery,
+        // it should not be necessary to do this.
         drag: function(e,ui) { 
           scope.rectangles[scope.$index].x = ui.position.left
           scope.rectangles[scope.$index].y = ui.position.top
