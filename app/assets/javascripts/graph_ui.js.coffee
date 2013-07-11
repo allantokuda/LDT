@@ -4,8 +4,12 @@ class window.GraphUI
 
   newID = 0
 
-  creatingEntity = false
+  creating_entity = false
   ending_locations = {}
+
+  creating_relationship = false
+  new_relationship_entity = []
+  new_relationship_step = 0
 
   @makeEntitiesDraggable: ->
     $(".entity").each (index, element) ->
@@ -236,7 +240,7 @@ class window.GraphUI
     return (end1-start2)*(start1-end2) < 0
 
   @startNewEntity: ->
-    creatingEntity = true
+    creating_entity = true
     $('body').append("<div id='new_entity'><b>New Entity</b><br><ul><li>Click to place</li><li>ESC to cancel</li></div>")
 
     $(document).on 'mousemove', (e) ->
@@ -249,7 +253,7 @@ class window.GraphUI
       window.GraphUI.createNewEntity()
 
   @cancelNewEntity: ->
-    creatingEntity = false
+    creating_entity = false
     $('#new_entity').remove()
 
   @createNewEntity: ->
@@ -269,21 +273,46 @@ class window.GraphUI
     real.append $('<form class="entity-attributes"><textarea name="attributes" class="attributes"></textarea></form>')
     real.appendTo $('body')
     @makeEntityDraggable(real)
+    @setupNewRelationshipHandlers()
     ghost.remove()
 
   @startNewRelationship: ->
-    creatingRelationship = true
-    console.log 'pick an entity'
+    creating_relationship = true
+
+    # Add flash message prompting user to click on two entities
+    console.log 'Click on two entities to form a relationship'
+
+  @setupNewRelationshipHandlers: ->
+    entities = $('.entity').parent()
+    entities.on 'mousedown', (event) ->
+      if creating_relationship
+        entity = window.GraphUI.findRelatedEntity(event.target)
+        window.GraphUI.pickRelationshipEntity(entity)
+
+  @findRelatedEntity: (element) ->
+    parent    = $(element).parents ('.entity')
+    siblings  = $(element).siblings('.entity')
+    children  = $(element).children('.entity')
+    relatives = $.merge(parent, siblings, children)
+    if relatives.length > 0 then return relatives[0] else return null
 
   @cancelNewRelationship: ->
-    creatingRelationship = false
+    creating_relationship = false
     console.log 'relationship creation cancelled'
 
-  @pickRelationshipEntity: ->
-    # impement state machine: begin -> 1st picked -> 2nd picked and createNewRelationship() below
+  @pickRelationshipEntity: (entity) ->
+    new_relationship_entity[++new_relationship_step] = entity
+    console.log "Adding entity to new relationship (step " + new_relationship_step + ")"
+  
+    if new_relationship_step == 2
+      @drawRelationship('new_relationship', )
+      new_relationship_entity = []
+      new_relationship_step = 0
+      creating_relationship = false
 
-  @drawNewRelationship: (e1, e2) ->
-    # lookup which entities have been picked, or receive them in argument here
+  @createNewRelationship: ->
+    console.log new_relationship_entity[1]
+    console.log new_relationship_entity[2]
     # add relationship to DOM in same way as the page loader does
 
   @entitySelect: (ent) ->

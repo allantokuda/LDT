@@ -5,3 +5,4 @@ $(document).ready ->
   ui.makeEntitiesDraggable()
   ui.drawAllRelationships()
   ui.setupEntityHandlers()
+  ui.setupNewRelationshipHandlers()
