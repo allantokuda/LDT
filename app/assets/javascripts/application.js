@@ -15,6 +15,7 @@
 //= require_tree .
 //= require jquery.ui.dialog
 //= require d3.v3
+//= require underscore
 //= require graph_ui
 //= require graph_saver
 //= require toolbar

@@ -12,8 +12,7 @@ class window.GraphUI
   new_relationship_step = 0
 
   @makeEntitiesDraggable: ->
-    $(".entity").each (index, element) ->
-      window.GraphUI.makeEntityDraggable(element)
+    _.each $(".entity"), @makeEntityDraggable
 
   @makeEntityDraggable: (element) ->
     entity_width  = parseInt( $(element).attr("data-width"))
@@ -303,7 +302,7 @@ class window.GraphUI
   @pickRelationshipEntity: (entity) ->
     new_relationship_entity[++new_relationship_step] = entity
     console.log "Adding entity to new relationship (step " + new_relationship_step + ")"
-  
+
     if new_relationship_step == 2
       @drawRelationship('new_relationship', )
       new_relationship_entity = []
