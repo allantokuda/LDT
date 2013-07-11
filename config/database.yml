@@ -5,11 +5,11 @@ common: &common
 
 development:
   <<: *common
-  database: dev
+  database: lds_dev
 
 test: &test
   <<: *common
-  database: test
+  database: lds_test
 
 production:
   <<: *common
