@@ -1,9 +1,9 @@
 <!doctype html>
-<!-- source: http://plnkr.co/edit/VFbP9h?p=preview -->
-<html ng-app="plunker" >
+<!-- inspiration: http://plnkr.co/edit/VFbP9h?p=preview -->
+<html ng-app="ldt" >
 <head>
   <meta charset="utf-8">
-  <title>AngularJS Plunker</title>
+  <title>LDT v0.2</title>
   <script>document.write("<base href=\"" + document.location + "\" />");</script>
   <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="style.css">
@@ -12,14 +12,14 @@
   <script src="http://code.angularjs.org/1.1.0/angular.js"></script>
   <script src="app.js"></script>
 </head>
-<body ng-controller="MainCtrl">
+<body ng-controller="GraphCtrl">
 
-  <div ng-repeat="box in myboxes">
-  myBox0: {{box }}<br/>
-  x: <input type="text" ng-model="box.x"></input><br/>
-  y: <input type="text" ng-model="box.y"></input><br/>
+  <div ng-repeat="entity in entities">
+  myBox0: {{entity }}<br/>
+  x: <input type="text" ng-model="entity.x"></input><br/>
+  y: <input type="text" ng-model="entity.y"></input><br/>
   </div>
-  <box ng-repeat="box in myboxes">drag me</box>
+  <entity ng-repeat="entity in entities">drag me</entity>
 
 </body>
 </html>

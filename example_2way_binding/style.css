@@ -1,6 +1,6 @@
 /* Put your css in here */
 
-#box {
+.entity {
   display: block;
   padding: 10px;
   background: blue;
