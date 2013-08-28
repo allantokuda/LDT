@@ -31,3 +31,5 @@
   background: #ddd;
   margin: 1px;
 }
+
+#canvas { position: relative; }

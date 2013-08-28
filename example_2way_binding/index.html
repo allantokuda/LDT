@@ -15,8 +15,6 @@
 </head>
 <body ng-controller="GraphCtrl">
 
-  <input ng-model="points">
-
   <div ng-repeat="entity in entities">
   Entity {{$index}}
   <input type="text" ng-model="entity.name"></input>
@@ -27,19 +25,21 @@
   <input type="text" ng-model="entity.attributes"></input>
   </div>
 
-  <div entity class="entity-border" ng-repeat="entity in entities" ng-style="{ top: entity.y + 'px', left: entity.x + 'px', width: entity.width + 'px', height: entity.height + 'px'}">
-    <div class="entity-heading" entity-heading>
-      <span class="entity-name" ng-show="!renaming">{{entity.name}}</span>
-      <input class="entity-name-input" ng-show="renaming" ng-model="entity.name">
+  <div id="canvas">
+    <div entity class="entity-border" ng-repeat="entity in entities" ng-style="{ top: entity.y + 'px', left: entity.x + 'px', width: entity.width + 'px', height: entity.height + 'px'}">
+      <div class="entity-heading" entity-heading>
+        <span class="entity-name" ng-show="!renaming">{{entity.name}}</span>
+        <input class="entity-name-input" ng-show="renaming" ng-model="entity.name">
+      </div>
+      <div class="entity-body">
+        <div class="attribute" ng-repeat="attribute in entity.attributes">{{attribute}}</div>
+      </div>
     </div>
-    <div class="entity-body">
-      <div class="attribute" ng-repeat="attribute in entity.attributes">{{attribute}}</div>
-    </div>
-  </div>
 
-  <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-    <path style="fill:none;stroke:black;stroke-width:2px" ng-attr-d="{{linePath()}}"></path>
-  </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+      <path style="fill:none;stroke:black;stroke-width:2px" ng-attr-d="{{linePath()}}"></path>
+    </svg>
+  </div>
 
 </body>
 </html>

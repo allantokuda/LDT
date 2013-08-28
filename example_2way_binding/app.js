@@ -8,16 +8,17 @@ app.controller('GraphCtrl', function($scope) {
   $scope.entityBeingRenamed = null
 
   var points = [
+
     {x: 30, y: 180},
     {x: 50, y:  80},
     {x: 70, y: 170},
     {x: 90, y:  70}
   ];
 
-  $scope.points = points;
-
   $scope.linePath = function(){
-    return "M" + _.map(points, function(p) { return p.x + "," + p.y }).join(" L")
+    return "M" + _.map($scope.entities, function(e) {
+      return (e.x + e.width / 2) + "," + (e.y + e.height / 2)
+    }).join(" L")
   };
 });
 
