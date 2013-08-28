@@ -1,7 +1,9 @@
+
 var app = angular.module('plunker', []);
 
 app.controller('MainCtrl', function($scope) {
-  $scope.myBox = {x: "50px", y: "50px" };
+  $scope.myBox0 = {x: "50px", y: "50px" };
+  $scope.myBox1 = {x: "40px", y: "70px" };
 });
 
 app.directive('box',function() {
