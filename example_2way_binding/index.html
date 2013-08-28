@@ -15,9 +15,9 @@
 <body ng-controller="GraphCtrl">
 
   <div ng-repeat="entity in entities">
-  myBox0: {{entity }}<br/>
-  x: <input type="text" ng-model="entity.x"></input><br/>
-  y: <input type="text" ng-model="entity.y"></input><br/>
+  Entity {{$index}}
+  <input type="text" ng-model="entity.x"></input>
+  <input type="text" ng-model="entity.y"></input>
   </div>
   <entity ng-repeat="entity in entities">drag me</entity>
 
