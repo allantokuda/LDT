@@ -1,4 +1,3 @@
-
 var app = angular.module('ldt', []);
 
 app.controller('GraphCtrl', function($scope) {
@@ -6,7 +5,7 @@ app.controller('GraphCtrl', function($scope) {
     {x: 250, y: 70, width: 100, height: 130, name: "Supplier", attributes: ["name", "location"] },
     {x: 120, y: 90, width: 100, height: 130, name: "Part",     attributes: ["size", "shape", "color"] }
   ]
-  $scope.renaming = false
+  $scope.entityBeingRenamed = null
 });
 
 app.directive('entity',function() {
@@ -37,9 +36,11 @@ app.directive('entity',function() {
 });
 
 app.directive('entityHeading',function() {
-  return function(scope, element, iAttrs, ctrl) {
-    element.bind('dblclick', function() {
-      console.log(scope.entity.name)
-    })
+  return {
+    link: function(scope, element, iAttrs, ctrl) {
+      element.bind('dblclick', function() {
+        scope.$parent.entityBeingRenamed = scope.entity.name
+      })
+    }
   }
 });
