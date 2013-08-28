@@ -1,10 +1,23 @@
 .entity-body, .entity-heading {
   padding: 10px;
-  background: #ccc;
+  background: #eee;
+}
+
+.entity-body {
+  height: 100%;
+}
+
+.entity-heading {
+  margin-bottom: 2px;
 }
 
 .entity-border {
   display: inline-block;
   padding: 2px;
   background: #777;
+}
+
+.attribute {
+  background: #ddd;
+  margin: 1px;
 }
