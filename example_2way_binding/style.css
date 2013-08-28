@@ -8,6 +8,7 @@
 .entity-heading {
   margin-bottom: 2px;
   border-bottom: 2px solid #777;
+  background: #cdf;
 }
 
 .entity-border {

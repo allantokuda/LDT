@@ -25,8 +25,9 @@
   </div>
 
   <div entity class="entity-border" ng-repeat="entity in entities" ng-style="{ top: entity.y + 'px', left: entity.x + 'px', width: entity.width + 'px', height: entity.height + 'px'}">
-    <div class="entity-heading">
-      {{entity.name}}
+    <div class="entity-heading" entity-heading>
+      <span class="entity-name" ng-show="!renaming">{{entity.name}}</span>
+      <input class="entity-name-input" ng-show="!renaming" ng-model="entity.name">
     </div>
     <div class="entity-body">
       <div class="attribute" ng-repeat="attribute in entity.attributes">{{attribute}}</div>

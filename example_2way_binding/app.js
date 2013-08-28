@@ -6,6 +6,7 @@ app.controller('GraphCtrl', function($scope) {
     {x: 250, y: 70, width: 100, height: 130, name: "Supplier", attributes: ["name", "location"] },
     {x: 120, y: 90, width: 100, height: 130, name: "Part",     attributes: ["size", "shape", "color"] }
   ]
+  $scope.renaming = false
 });
 
 app.directive('entity',function() {
@@ -29,6 +30,14 @@ app.directive('entity',function() {
           scope.entity.height = parseInt(element.css('height'));
         });
       }
+    })
+  }
+});
+
+app.directive('entityHeading',function() {
+  return function(scope, element, iAttrs, ctrl) {
+    element.bind('dblclick', function() {
+      console.log(scope.entity.name)
     })
   }
 });
