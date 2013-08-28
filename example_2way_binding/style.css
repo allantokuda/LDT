@@ -1,0 +1,9 @@
+/* Put your css in here */
+
+#box {
+  display: block;
+  padding: 10px;
+  background: blue;
+  width: 100px;
+  height: 100px;
+}
