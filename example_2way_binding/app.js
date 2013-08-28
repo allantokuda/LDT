@@ -8,24 +8,18 @@ app.controller('GraphCtrl', function($scope) {
 });
 
 app.directive('entity',function() {
-  return {
-    template: '<div class="entity" ng-style="{ top: entity.y, left: entity.x}"><div ng-transclude></div></entity>',
-    restrict: 'E',
-    transclude: true,
-    replace: true,
-    link: function postLink(scope, element, iAttrs, ctrl) {
-      element.draggable({
-          start: function() {
-          },
-          drag: function() {
-            scope.$apply(function read() {
-              scope.entity.x = element.css('left');
-              scope.entity.y = element.css('top');
-            });
-          },
-          stop: function() {
-          }
-        });
-    }
-  };
+  return function postLink(scope, element, iAttrs, ctrl) {
+    element.draggable({
+        start: function() {
+        },
+        drag: function() {
+          scope.$apply(function read() {
+            scope.entity.x = element.css('left');
+            scope.entity.y = element.css('top');
+          });
+        },
+        stop: function() {
+        }
+      });
+  }
 });

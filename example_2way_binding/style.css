@@ -1,9 +1,14 @@
 /* Put your css in here */
 
-.entity {
-  display: block;
+.entity-body {
   padding: 10px;
-  background: blue;
+  background: #ccc;
   width: 100px;
   height: 100px;
+}
+
+.entity-border {
+  display: inline-block;
+  padding: 2px;
+  background: #777;
 }

@@ -19,7 +19,15 @@
   <input type="text" ng-model="entity.x"></input>
   <input type="text" ng-model="entity.y"></input>
   </div>
-  <entity ng-repeat="entity in entities">drag me</entity>
+
+  <div entity class="entity-border" ng-repeat="entity in entities" ng-style="{ top: entity.y, left: entity.x }">
+    <div class="entity-heading">
+      {{entity.name}}
+    </div>
+    <div class="entity-body">
+      <div attribute ng-repeat="attribute in entity.attributes"></div>
+    </div>
+  </div>
 
 </body>
 </html>
