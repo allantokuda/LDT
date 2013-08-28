@@ -22,5 +22,13 @@ app.directive('entity',function() {
         stop: function() {
         }
       });
+    element.resizable({
+      resize: function() {
+        scope.$apply(function read() {
+          scope.entity.width = element.css('width');
+          scope.entity.height = element.css('height');
+        });
+      }
+    })
   }
 });
