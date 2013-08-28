@@ -1,1 +1,3 @@
 when no relationships are defined, a javascript error occurs when clicking in open area
+
+double click titlebar edit -- input box is offset to the right. Should be nearly exact overlay
