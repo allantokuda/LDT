@@ -16,17 +16,14 @@ app.directive('entity',function() {
     link: function postLink(scope, element, iAttrs, ctrl) {
       element.draggable({
           start: function() {
-            console.log('start');
           },
           drag: function() {
-            console.log('drag');
             scope.$apply(function read() {
               scope.entity.x = element.css('left');
               scope.entity.y = element.css('top');
             });
           },
           stop: function() {
-            console.log('stop');
           }
         });
     }
