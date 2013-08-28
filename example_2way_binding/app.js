@@ -3,8 +3,8 @@ var app = angular.module('ldt', []);
 
 app.controller('GraphCtrl', function($scope) {
   $scope.entities = [
-    {x: "50px", y: "50px", width: "100px", height: "100px", name: "Supplier" },
-    {x: "40px", y: "70px", width: "100px", height: "100px", name: "Part"}
+    {x: "50px", y: "50px", width: "100px", height: "100px", name: "Supplier", attributes: ["name", "location"] },
+    {x: "40px", y: "70px", width: "100px", height: "100px", name: "Part",     attributes: ["size", "shape", "color"] }
   ]
 });
 
