@@ -39,8 +39,17 @@ app.directive('entityHeading',function() {
   return {
     link: function(scope, element, iAttrs, ctrl) {
       element.bind('dblclick', function() {
-        scope.$apply( function() { scope.renaming = !scope.renaming } );
+        scope.$apply( function() {
+          scope.renaming = !scope.renaming
+        } );
       })
+      element.keypress(function(e) {
+        scope.$apply( function() {
+          if (e.charCode == 13) {
+            scope.renaming = false;
+          }
+        } )
+      });
     }
   }
 });
