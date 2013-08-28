@@ -3,8 +3,8 @@ var app = angular.module('ldt', []);
 
 app.controller('GraphCtrl', function($scope) {
   $scope.entities = [
-    {x: "50px", y: "50px", width: "100px", height: "100px", name: "Supplier", attributes: ["name", "location"] },
-    {x: "40px", y: "70px", width: "100px", height: "100px", name: "Part",     attributes: ["size", "shape", "color"] }
+    {x: 250, y: 70, width: 100, height: 130, name: "Supplier", attributes: ["name", "location"] },
+    {x: 120, y: 90, width: 100, height: 130, name: "Part",     attributes: ["size", "shape", "color"] }
   ]
 });
 
@@ -15,8 +15,8 @@ app.directive('entity',function() {
         },
         drag: function() {
           scope.$apply(function read() {
-            scope.entity.x = element.css('left');
-            scope.entity.y = element.css('top');
+            scope.entity.x = parseInt(element.css('left'));
+            scope.entity.y = parseInt(element.css('top'));
           });
         },
         stop: function() {
@@ -25,8 +25,8 @@ app.directive('entity',function() {
     element.resizable({
       resize: function() {
         scope.$apply(function read() {
-          scope.entity.width = element.css('width');
-          scope.entity.height = element.css('height');
+          scope.entity.width  = parseInt(element.css('width'));
+          scope.entity.height = parseInt(element.css('height'));
         });
       }
     })

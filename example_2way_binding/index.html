@@ -24,7 +24,7 @@
   <input type="text" ng-model="entity.attributes"></input>
   </div>
 
-  <div entity class="entity-border" ng-repeat="entity in entities" ng-style="{ top: entity.y, left: entity.x, width: entity.width, height: entity.height }">
+  <div entity class="entity-border" ng-repeat="entity in entities" ng-style="{ top: entity.y + 'px', left: entity.x + 'px', width: entity.width + 'px', height: entity.height + 'px'}">
     <div class="entity-heading">
       {{entity.name}}
     </div>
