@@ -11,6 +11,14 @@
   background: #cdf;
 }
 
+.entity-heading input {
+  width: 100%;
+  font-size: inherit;
+  font-family: inherit;
+  margin: -2px;
+  padding: 0;
+}
+
 .entity-border {
   position: absolute;
   display: inline-block;
