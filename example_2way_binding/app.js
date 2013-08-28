@@ -10,8 +10,9 @@ app.controller('GraphCtrl', function($scope) {
 });
 
 app.directive('entity',function() {
-  return function postLink(scope, element, iAttrs, ctrl) {
-    element.draggable({
+  return {
+    link: function (scope, element, iAttrs, ctrl) {
+      element.draggable({
         start: function() {
         },
         drag: function() {
@@ -23,14 +24,15 @@ app.directive('entity',function() {
         stop: function() {
         }
       });
-    element.resizable({
-      resize: function() {
-        scope.$apply(function read() {
-          scope.entity.width  = parseInt(element.css('width'));
-          scope.entity.height = parseInt(element.css('height'));
-        });
-      }
-    })
+      element.resizable({
+        resize: function() {
+          scope.$apply(function read() {
+            scope.entity.width  = parseInt(element.css('width'));
+            scope.entity.height = parseInt(element.css('height'));
+          });
+        }
+      })
+    }
   }
 });
 
