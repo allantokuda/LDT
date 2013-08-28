@@ -7,7 +7,7 @@ app.controller('GraphCtrl', function($scope) {
   ]
   $scope.linePath = function(){
     return "M" + _.map($scope.entities, function(e) {
-      return (e.x + e.width / 2) + "," + (e.y + e.height / 2)
+      return (e.x * 1 + e.width / 2) + "," + (e.y * 1 + e.height / 2)
     }).join(" L")
   };
 });
