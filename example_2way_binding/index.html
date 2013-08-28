@@ -14,7 +14,6 @@
 </head>
 <body ng-controller="GraphCtrl">
 
-  Renaming {{entityBeingRenamed || "nothing"}}
   <div ng-repeat="entity in entities">
   Entity {{$index}}
   <input type="text" ng-model="entity.name"></input>

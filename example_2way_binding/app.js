@@ -39,7 +39,7 @@ app.directive('entityHeading',function() {
   return {
     link: function(scope, element, iAttrs, ctrl) {
       element.bind('dblclick', function() {
-        scope.$parent.entityBeingRenamed = scope.entity.name
+        scope.$apply( function() { scope.renaming = !scope.renaming } );
       })
     }
   }
