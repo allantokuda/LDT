@@ -1,10 +1,6 @@
-/* Put your css in here */
-
-.entity-body {
+.entity-body, .entity-heading {
   padding: 10px;
   background: #ccc;
-  width: 100px;
-  height: 100px;
 }
 
 .entity-border {

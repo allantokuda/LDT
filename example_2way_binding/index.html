@@ -20,7 +20,7 @@
   <input type="text" ng-model="entity.y"></input>
   </div>
 
-  <div entity class="entity-border" ng-repeat="entity in entities" ng-style="{ top: entity.y, left: entity.x }">
+  <div entity class="entity-border" ng-repeat="entity in entities" ng-style="{ top: entity.y, left: entity.x, width: entity.width, height: entity.height }">
     <div class="entity-heading">
       {{entity.name}}
     </div>
