@@ -42,6 +42,9 @@ app.directive('entityHeading',function() {
         scope.$apply( function() {
           scope.renaming = !scope.renaming
         } );
+
+        // Select the whole entity title for fast rename
+        $(element.find("input")[0]).select()
       })
       element.keypress(function(e) {
         scope.$apply( function() {
