@@ -16,19 +16,8 @@ app.controller('GraphCtrl', function($scope) {
 
   $scope.points = points;
 
-  // http://gaslight.co/blog/angular-backed-svgs
-  // http://jsbin.com/UCUtIhe/1/edit
   $scope.linePath = function(){
-    var pathParts = [], currentPoint, i;
-
-    for (i = 0; i < points.length; i++) {
-      currentPoint = points[i];
-      pathParts.push(currentPoint.x + "," + currentPoint.y);
-    }
-
-    pathStr = "M" + pathParts.join(" L");
-    console.log(pathStr)
-    return pathStr
+    return "M" + _.map(points, function(p) { return p.x + "," + p.y }).join(" L")
   };
 });
 
