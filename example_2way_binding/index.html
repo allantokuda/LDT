@@ -13,15 +13,13 @@
   <script src="app.js"></script>
 </head>
 <body ng-controller="MainCtrl">
-  myBox0: {{myBox0 | json}}<br/>
-  myBox1: {{myBox1 | json}}<br/>
-  x: <input type="text" ng-model="myBox0.x"></input><br/>
-  y: <input type="text" ng-model="myBox0.y"></input><br/>
-  x: <input type="text" ng-model="myBox1.x"></input><br/>
-  y: <input type="text" ng-model="myBox1.y"></input><br/>
 
-  <box model="myBox0">drag me</box>
-  <box model="myBox1">drag me</box>
+  <div ng-repeat="box in myboxes">
+  myBox0: {{box }}<br/>
+  x: <input type="text" ng-model="box.x"></input><br/>
+  y: <input type="text" ng-model="box.y"></input><br/>
+  </div>
+  <box ng-repeat="box in myboxes">drag me</box>
 
 </body>
 </html>
