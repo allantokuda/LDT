@@ -2,17 +2,19 @@ var app = angular.module('ldt', []);
 
 app.controller('GraphCtrl', function($scope) {
   // Set initial edit mode
-  $scope.editMode = 'select';
+  $scope.editor = new Object
+  $scope.graph = new Object
+  $scope.editor.mode = 'select';
 
   // Define some test data (TODO: load and persist to server)
-  $scope.entities = [
+  $scope.graph.entities = [
     {x: 120, y: 70, width: 100, height: 130, name: "Supplier", attributes: ["name", "location"] },
     {x: 250, y: 90, width: 100, height: 130, name: "Part",     attributes: ["size", "shape", "color"] }
   ]
 
   // Draw simple chain of relationships for proof of concept
-  $scope.linePath = function(){
-    return "M" + _.map($scope.entities, function(e) {
+  $scope.editor.linePath = function(){
+    return "M" + _.map($scope.graph.entities, function(e) {
       return (e.x * 1 + e.width / 2) + "," + (e.y * 1 + e.height / 2)
     }).join(" L")
   };
@@ -21,19 +23,21 @@ app.controller('GraphCtrl', function($scope) {
   $(window).keypress(function(e) {
     console.log(e)
     switch (e.charCode) {
-      case 13:  /* Enter */ $scope.$apply(function() { $scope.editMode = 'select';      } ); break;
-      case 101: /* e     */ $scope.$apply(function() { $scope.editMode = 'new_entity'; } ); break;
+      case 13:  /* Enter */ $scope.$apply(function() { $scope.editor.mode = 'select';      } ); break;
+      case 101: /* e     */ $scope.$apply(function() { $scope.editor.mode = 'new_entity'; } ); break;
     }
   })
 
   // Respond to click event to complete an action
   $("#canvas").click(function(e) {
-    if ($scope.editMode == 'new_entity') {
-      $scope.$apply(function() {
-        $scope.entities.push({x: e.offsetX, y: e.offsetY, width: 100, height: 130, name: "New Entity", attributes: ["new_entity_id"]})
-        $scope.editMode = 'select'
-      })
-    }
+    $scope.$apply(function() {
+      if ($scope.editor.mode == 'new_entity') {
+        console.log(e)
+        // FIXME: offsetX,offsetY give the wrong result for positioning a new entity if you click inside an existing entity.
+        $scope.graph.entities.push({x: e.offsetX, y: e.offsetY, width: 100, height: 130, name: "New Entity", attributes: ["new_entity_id"]})
+      }
+      $scope.editor.mode = 'select'
+    })
   });
 });
 
@@ -57,6 +61,13 @@ app.directive('entity',function() {
           });
         }
       })
+      element.click(function(e) {
+        console.log('clicked ' + scope.entity.name)
+        scope.$apply(function() {
+          console.log(scope)
+          scope.editor.mode = 'entity'
+        })
+      })
     }
   }
 });
@@ -68,7 +79,7 @@ app.directive('entityHeading',function() {
       element.bind('dblclick', function() {
         scope.$apply( function() {
           scope.renaming = !scope.renaming
-        } );
+        });
 
         // Select the whole entity title for fast rename
         $(element.find("input")[0]).select()

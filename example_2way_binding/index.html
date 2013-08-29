@@ -26,10 +26,10 @@
   <input type="text" ng-model="entity.attributes"></input>
   </div>
   -->
-  <p>{{editMode}}</p>
+  <p>{{editor.mode}}</p>
 
   <div canvas id="canvas">
-    <div entity class="entity-border" ng-repeat="entity in entities" ng-style="{ top: entity.y + 'px', left: entity.x + 'px', width: entity.width + 'px', height: entity.height + 'px'}">
+    <div entity class="entity-border" ng-repeat="entity in graph.entities" ng-style="{ top: entity.y + 'px', left: entity.x + 'px', width: entity.width + 'px', height: entity.height + 'px'}">
       <div class="entity-heading" entity-heading>
         <span class="entity-name" ng-show="!renaming">{{entity.name}}</span>
         <input class="entity-name-input" ng-show="renaming" ng-model="entity.name">
@@ -40,7 +40,7 @@
     </div>
 
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-      <path relationship style="fill:none;stroke:black;stroke-width:2px" ng-attr-d="{{linePath()}}"></path>
+      <path relationship style="fill:none;stroke:black;stroke-width:2px" ng-attr-d="{{editor.linePath()}}"></path>
     </svg>
   </div>
 
