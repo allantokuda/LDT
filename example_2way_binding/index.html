@@ -15,6 +15,7 @@
 </head>
 <body ng-controller="GraphCtrl">
 
+  <!--
   <div ng-repeat="entity in entities">
   Entity {{$index}}
   <input type="text" ng-model="entity.name"></input>
@@ -24,8 +25,10 @@
   <input type="text" ng-model="entity.height"></input>
   <input type="text" ng-model="entity.attributes"></input>
   </div>
+  -->
+  <p>{{editMode}}</p>
 
-  <div id="canvas">
+  <div canvas id="canvas">
     <div entity class="entity-border" ng-repeat="entity in entities" ng-style="{ top: entity.y + 'px', left: entity.x + 'px', width: entity.width + 'px', height: entity.height + 'px'}">
       <div class="entity-heading" entity-heading>
         <span class="entity-name" ng-show="!renaming">{{entity.name}}</span>

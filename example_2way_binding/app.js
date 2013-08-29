@@ -2,14 +2,33 @@ var app = angular.module('ldt', []);
 
 app.controller('GraphCtrl', function($scope) {
   $scope.entities = [
-    {x: 250, y: 70, width: 100, height: 130, name: "Supplier", attributes: ["name", "location"] },
-    {x: 120, y: 90, width: 100, height: 130, name: "Part",     attributes: ["size", "shape", "color"] }
+    {x: 120, y: 70, width: 100, height: 130, name: "Supplier", attributes: ["name", "location"] },
+    {x: 250, y: 90, width: 100, height: 130, name: "Part",     attributes: ["size", "shape", "color"] }
   ]
   $scope.linePath = function(){
     return "M" + _.map($scope.entities, function(e) {
       return (e.x * 1 + e.width / 2) + "," + (e.y * 1 + e.height / 2)
     }).join(" L")
   };
+
+  $scope.editMode = 'ready';
+
+  $(window).keypress(function(e) {
+    console.log(e)
+    switch (e.charCode) {
+      case 13:  /* Enter */ $scope.$apply(function() { $scope.editMode = 'select';      } ); break;
+      case 101: /* e     */ $scope.$apply(function() { $scope.editMode = 'new_entity'; } ); break;
+    }
+  })
+
+  $("#canvas").click(function(e) {
+    if ($scope.editMode == 'new_entity') {
+      $scope.$apply(function() {
+        $scope.entities.push({x: e.offsetX, y: e.offsetY, width: 100, height: 130, name: "New Entity", attributes: ["new_entity_id"]})
+        $scope.editMode = 'select'
+      })
+    }
+  });
 });
 
 app.directive('entity',function() {
