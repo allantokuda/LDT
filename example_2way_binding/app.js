@@ -1,18 +1,23 @@
 var app = angular.module('ldt', []);
 
 app.controller('GraphCtrl', function($scope) {
+  // Set initial edit mode
+  $scope.editMode = 'select';
+
+  // Define some test data (TODO: load and persist to server)
   $scope.entities = [
     {x: 120, y: 70, width: 100, height: 130, name: "Supplier", attributes: ["name", "location"] },
     {x: 250, y: 90, width: 100, height: 130, name: "Part",     attributes: ["size", "shape", "color"] }
   ]
+
+  // Draw simple chain of relationships for proof of concept
   $scope.linePath = function(){
     return "M" + _.map($scope.entities, function(e) {
       return (e.x * 1 + e.width / 2) + "," + (e.y * 1 + e.height / 2)
     }).join(" L")
   };
 
-  $scope.editMode = 'ready';
-
+  // Switch modes using keyboard
   $(window).keypress(function(e) {
     console.log(e)
     switch (e.charCode) {
@@ -21,6 +26,7 @@ app.controller('GraphCtrl', function($scope) {
     }
   })
 
+  // Respond to click event to complete an action
   $("#canvas").click(function(e) {
     if ($scope.editMode == 'new_entity') {
       $scope.$apply(function() {
@@ -31,6 +37,7 @@ app.controller('GraphCtrl', function($scope) {
   });
 });
 
+// Setup entities to be draggable and resizable, and bind to the scope
 app.directive('entity',function() {
   return {
     link: function (scope, element, iAttrs, ctrl) {
@@ -54,6 +61,7 @@ app.directive('entity',function() {
   }
 });
 
+// Setup entity headings to be double-click renamable
 app.directive('entityHeading',function() {
   return {
     link: function(scope, element, iAttrs, ctrl) {
@@ -77,6 +85,8 @@ app.directive('entityHeading',function() {
   }
 });
 
+// Setup relationships to be "selectable" when you click on them
+// TODO: replace with canvas click event to pick the nearest relationship
 app.directive('relationship',function() {
   return {
     link: function(scope, element, iAttrs, ctrl) {
