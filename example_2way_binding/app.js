@@ -13,8 +13,8 @@ app.controller('GraphCtrl', function($scope) {
   e.push({id: 2, x: 120, y: 190, width: 100, height: 130, name: "Inventory", attributes: ["quantity"] })
 
   r = $scope.graph.relationships = []
-  r.push({ entity1_id: 0, entity2_id: 2, label1: true, label2: false, symbol1: 'one', symbol2: 'many' })
-  r.push({ entity1_id: 1, entity2_id: 2, label1: true, label2: false, symbol1: 'one', symbol2: 'many' })
+  r.push({ id: 0, entity1_id: 0, entity2_id: 2, label1: true, label2: false, symbol1: 'one', symbol2: 'many' })
+  r.push({ id: 1, entity1_id: 1, entity2_id: 2, label1: true, label2: false, symbol1: 'one', symbol2: 'many' })
 
   function entityCenterCoord(e) {
     return (e.x * 1 + e.width / 2) + "," + (e.y * 1 + e.height / 2)
@@ -33,10 +33,11 @@ app.controller('GraphCtrl', function($scope) {
 
   // Switch modes using keyboard
   $(window).keypress(function(e) {
-    console.log(e)
+    console.log(e.charCode)
     switch (e.charCode) {
-      case 13:  /* Enter */ $scope.$apply(function() { $scope.editor.mode = 'select';      } ); break;
+      case 13:  /* Enter */ $scope.$apply(function() { $scope.editor.mode = 'select'; } ); break;
       case 101: /* e     */ $scope.$apply(function() { $scope.editor.mode = 'new_entity'; } ); break;
+      case 114: /* r     */ $scope.$apply(function() { $scope.editor.mode = 'new_relationship_start'; } ); break;
     }
   })
 
@@ -46,11 +47,24 @@ app.controller('GraphCtrl', function($scope) {
       if ($scope.editor.mode == 'new_entity') {
         console.log(e)
         // FIXME: offsetX,offsetY give the wrong result for positioning a new entity if you click inside an existing entity.
-        $scope.graph.entities.push({x: e.offsetX, y: e.offsetY, width: 100, height: 130, name: "New Entity", attributes: ["new_entity_id"]})
+        num = $scope.graph.entities.length
+        $scope.graph.entities.push({id: num, x: e.offsetX, y: e.offsetY, width: 100, height: 130, name: "New Entity", attributes: ["new_entity_id"]})
       }
       $scope.editor.mode = 'select'
     })
   });
+
+  $scope.beginRelationship = function(entity) {
+    $scope.editor.newRelationshipStart = entity
+    $scope.editor.mode = 'new_relationship_end'
+  }
+
+  $scope.endRelationship = function(entity) {
+    num = $scope.graph.relationships.length
+    start_id = $scope.editor.newRelationshipStart.id
+    $scope.graph.relationships.push({id: num, entity1_id: start_id, entity2_id: entity.id, symbol1: '?', symbol2: '?'})
+    $scope.editor.mode = 'select'
+  }
 });
 
 // Setup entities to be draggable and resizable, and bind to the scope
@@ -74,11 +88,14 @@ app.directive('entity',function() {
         }
       })
       element.click(function(e) {
-        console.log('clicked ' + scope.entity.name)
         scope.$apply(function() {
-          console.log(scope)
-          scope.editor.mode = 'entity'
+          switch(scope.editor.mode) {
+            case 'select':                 scope.editor.mode = 'entity'; break;
+            case 'new_relationship_start': scope.beginRelationship(scope.entity); break;
+            case 'new_relationship_end':   scope.endRelationship(scope.entity); break;
+          }
         })
+        e.stopPropagation();
       })
     }
   }
