@@ -1,0 +1,74 @@
+ENGINEERING
+	clean up directives
+		import testing library
+			write tests for directives
+
+COMPLETE A BARE BONES CRUD UI
+
+	select entity (visibly)
+		delete entity (by keypress) -- ensure new entities don't get duplicate IDs
+
+	draw relationship as L-shape
+		select relationship ending by proximity click on canvas
+			delete a relationship: select relationship ending, hit "D"
+			draw relationship ending symbols (default '?')
+			set keys for changing ending symbols: 1, m, ?, i
+
+		show editable graph name, random string identifier, and preferences
+			save graph (by keypress)
+			re-edit graph (setup URL accepting graph ID string)
+
+BUILD THE DREAM
+	set "scale" (Carlis) on columns with keypresses
+		scaffold an application with all entities associated. Each entity has a full crud interface, plus an "Add ___" button to add many-relationship objects. When adding an object that has parent entities, treat their attributes as attributes of the child being added.
+			add button for generating a fake data row (mark as fake)
+				add "delete all fake data" button
+
+	example data table appears per entity, bring up by command
+		edit example data
+		pre-fill example data with auto-faker library
+
+MAKE UI SCALE
+	add scroll
+	add zoom
+
+MAKE UI FASTER TO USE
+	add entity and relationship at same time, with preset symbols, based on keystrokes. 'm' adds a has-many relationship from the selected entity. Also '1', and just 'h' (has) which puts down '?' symbols.
+
+MAKE UI PRESENTABLE
+	add toolbar
+		add new entity
+		add new relationship
+		hover to indicate hotkeys
+
+	draw new entity "ghost" connected to mouse
+	draw new relationship "ghost" connected to mouse
+
+MAKE UI NICER TO USE
+	resize entity from top or left
+
+MULTI-SELECT
+	box-select multiple entities and relationship endings together
+	delete multi-selected entities and relationship endings together
+	move multi-selected entities together (ignore selected relationships which cannot be individually moved)
+
+KEYBOARD SHORTCUTS
+	auto-select a relationship ending when creating
+	set key for switching to opposite ending
+
+COMPLETE LDS FUNCTIONALITY FOR CARLIS
+	Add labels
+	Add 'b' key for 'be' relationships and ensure they go both ways (and do not accept a label, many endings)
+	when setting an identifier, kill the opposite end identifier
+
+INDICATE SYNTAX ERRORS
+	duplicate entity names are indicated as a syntax error (highlight in red, hover text)
+	duplicate attribute names within an entity are indicated as a syntax error
+	entity without identifier is indicated as a syntax error (highlight in red, hover text)
+
+OFFER LDS EVOLUTION SUGGESTIONS (highlight in yellow, hover text)
+	many-to-many suggests adding an intersection entity
+	double click suggested intersections to add an intersection (new entity attached to mouse, drop to place)
+	pick up on plural attributes and highlight as suggestions to promote to entity
+	double click suggested promotions to promote (new entity attached to mouse, drop to place)
+
