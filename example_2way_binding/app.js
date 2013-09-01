@@ -7,16 +7,28 @@ app.controller('GraphCtrl', function($scope) {
   $scope.editor.mode = 'select';
 
   // Define some test data (TODO: load and persist to server)
-  $scope.graph.entities = [
-    {x: 120, y: 70, width: 100, height: 130, name: "Supplier", attributes: ["name", "location"] },
-    {x: 250, y: 90, width: 100, height: 130, name: "Part",     attributes: ["size", "shape", "color"] }
-  ]
+  e = $scope.graph.entities = []
+  e.push({id: 0, x:  20, y:  20, width: 100, height: 130, name: "Supplier",  attributes: ["name", "location"] })
+  e.push({id: 1, x: 220, y:  20, width: 100, height: 130, name: "Part",      attributes: ["size", "shape", "color"] })
+  e.push({id: 2, x: 120, y: 190, width: 100, height: 130, name: "Inventory", attributes: ["quantity"] })
 
-  // Draw simple chain of relationships for proof of concept
+  r = $scope.graph.relationships = []
+  r.push({ entity1_id: 0, entity2_id: 2, label1: true, label2: false, symbol1: 'one', symbol2: 'many' })
+  r.push({ entity1_id: 1, entity2_id: 2, label1: true, label2: false, symbol1: 'one', symbol2: 'many' })
+
+  function entityCenterCoord(e) {
+    return (e.x * 1 + e.width / 2) + "," + (e.y * 1 + e.height / 2)
+  }
+
+  // Draw a simple line for each relationship
+  // TODO: Put in fancier logic for drawing L-shaped relationships
   $scope.editor.linePath = function(){
-    return "M" + _.map($scope.graph.entities, function(e) {
-      return (e.x * 1 + e.width / 2) + "," + (e.y * 1 + e.height / 2)
-    }).join(" L")
+    return _.map($scope.graph.relationships, function(relationship) {
+      e1 = _.find($scope.graph.entities, function(e) { return e.id == relationship.entity1_id })
+      e2 = _.find($scope.graph.entities, function(e) { return e.id == relationship.entity2_id })
+
+      return "M" + entityCenterCoord(e1) + " L" + entityCenterCoord(e2)
+    }).join(" ")
   };
 
   // Switch modes using keyboard
