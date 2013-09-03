@@ -3,25 +3,19 @@
 /* Controllers */
 
 angular.module('myApp.controllers', []).
-  controller('MyCtrl1', [function() {
-
-  }])
-  .controller('MyCtrl2', [function() {
-
-  }])
-  .controller('GraphCtrl', function($scope) {
+  controller('GraphCtrl', function($scope) {
     // Set initial edit mode
     $scope.editor = new Object
     $scope.graph = new Object
     $scope.editor.mode = 'select';
 
     // Define some test data (TODO: load and persist to server)
-    e = $scope.graph.entities = []
+    var e = $scope.graph.entities = []
     e.push({id: 0, x:  20, y:  20, width: 100, height: 130, name: "Supplier",  attributes: ["name", "location"] })
     e.push({id: 1, x: 220, y:  20, width: 100, height: 130, name: "Part",      attributes: ["size", "shape", "color"] })
     e.push({id: 2, x: 120, y: 190, width: 100, height: 130, name: "Inventory", attributes: ["quantity"] })
 
-    r = $scope.graph.relationships = []
+    var r = $scope.graph.relationships = []
     r.push({ id: 0, entity1_id: 0, entity2_id: 2, label1: true, label2: false, symbol1: 'one', symbol2: 'many' })
     r.push({ id: 1, entity1_id: 1, entity2_id: 2, label1: true, label2: false, symbol1: 'one', symbol2: 'many' })
 
@@ -33,8 +27,8 @@ angular.module('myApp.controllers', []).
     // TODO: Put in fancier logic for drawing L-shaped relationships
     $scope.editor.linePath = function(){
       return _.map($scope.graph.relationships, function(relationship) {
-        e1 = _.find($scope.graph.entities, function(e) { return e.id == relationship.entity1_id })
-        e2 = _.find($scope.graph.entities, function(e) { return e.id == relationship.entity2_id })
+        var e1 = _.find($scope.graph.entities, function(e) { return e.id == relationship.entity1_id })
+        var e2 = _.find($scope.graph.entities, function(e) { return e.id == relationship.entity2_id })
 
         return "M" + entityCenterCoord(e1) + " L" + entityCenterCoord(e2)
       }).join(" ")
@@ -56,7 +50,7 @@ angular.module('myApp.controllers', []).
         if ($scope.editor.mode == 'new_entity') {
           console.log(e)
           // FIXME: offsetX,offsetY give the wrong result for positioning a new entity if you click inside an existing entity.
-          num = $scope.graph.entities.length
+          var num = $scope.graph.entities.length
           $scope.graph.entities.push({id: num, x: e.offsetX, y: e.offsetY, width: 100, height: 130, name: "New Entity", attributes: ["new_entity_id"]})
         }
         $scope.editor.mode = 'select'
@@ -69,8 +63,8 @@ angular.module('myApp.controllers', []).
     }
 
     $scope.endRelationship = function(entity) {
-      num = $scope.graph.relationships.length
-      start_id = $scope.editor.newRelationshipStart.id
+      var num = $scope.graph.relationships.length
+      var start_id = $scope.editor.newRelationshipStart.id
       $scope.graph.relationships.push({id: num, entity1_id: start_id, entity2_id: entity.id, symbol1: '?', symbol2: '?'})
       $scope.editor.mode = 'select'
     }

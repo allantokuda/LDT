@@ -1,20 +1,28 @@
 <!doctype html>
 <!-- inspiration: http://plnkr.co/edit/VFbP9h?p=preview -->
-<html ng-app="ldt" >
+<html ng-app="myApp">
 <head>
   <meta charset="utf-8">
   <title>LDT v0.2</title>
   <script>document.write("<base href=\"" + document.location + "\" />");</script>
-  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="app/css/jquery-ui.css">
   <link rel="stylesheet" href="style.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>
-  <script src="http://code.angularjs.org/1.1.5/angular.js"></script>
-  <script src="http://underscorejs.org/underscore.js"></script>
+  <script src="app/lib/jquery.js"></script>
+  <script src="app/lib/jquery-ui.js"></script>
+  <script src="app/lib/angular/angular.js"></script>
+  <script src="app/lib/underscore.js"></script>
+
+  <script src="app/js/app.js"></script>
+  <script src="app/js/services.js"></script>
+  <script src="app/js/controllers.js"></script>
+  <script src="app/js/filters.js"></script>
+  <script src="app/js/directives.js"></script>
+
   <script src="app.js"></script>
 </head>
 <body ng-controller="GraphCtrl">
 
+  <!-- DEBUG -->
   <!--
   <div ng-repeat="entity in entities">
   Entity {{$index}}

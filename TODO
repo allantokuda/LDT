@@ -2,6 +2,8 @@ ENGINEERING
 	clean up directives
 		import testing library
 			write tests for directives
+  see if jqueryUI "selected" is worth using
+  hand pick jqueryUI modules I actually need
 
 COMPLETE A BARE BONES CRUD UI
 
@@ -43,6 +45,8 @@ MAKE UI PRESENTABLE
 
 	draw new entity "ghost" connected to mouse
 	draw new relationship "ghost" connected to mouse
+
+  make entity not resizable below minimum sizing
 
 MAKE UI NICER TO USE
 	resize entity from top or left

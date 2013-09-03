@@ -44,3 +44,28 @@ app.directive('entity',function() {
   }
 });
 
+
+// Setup entity headings to be double-click renamable
+app.directive('entityHeading',function() {
+  return {
+    link: function(scope, element, iAttrs, ctrl) {
+      element.bind('dblclick', function() {
+        scope.$apply( function() {
+          scope.renaming = !scope.renaming
+        });
+
+        // Select the whole entity title for fast rename
+        $(element.find("input")[0]).select()
+      })
+      element.keypress(function(e) {
+        // scope.$apply seemed to be relevant here: http://stackoverflow.com/questions/14477904/how-to-create-on-change-directive-for-angularjs
+        scope.$apply( function() {
+          if (e.charCode == 13) {
+            scope.renaming = false;
+          }
+        } )
+      });
+    }
+  }
+});
+
