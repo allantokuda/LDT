@@ -1,28 +1,54 @@
 <!doctype html>
-<html lang="en" ng-app="myApp">
+<!-- inspiration: http://plnkr.co/edit/VFbP9h?p=preview -->
+<html ng-app="myApp">
 <head>
   <meta charset="utf-8">
-  <title>My AngularJS App</title>
-  <link rel="stylesheet" href="css/app.css"/>
-</head>
-<body>
-  <ul class="menu">
-    <li><a href="#/view1">view1</a></li>
-    <li><a href="#/view2">view2</a></li>
-  </ul>
-
-  <div ng-view></div>
-
-  <div>Angular seed app: v<span app-version></span></div>
-
-  <!-- In production use:
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-  -->
+  <title>LDT v0.2</title>
+  <script>document.write("<base href=\"" + document.location + "\" />");</script>
+  <link rel="stylesheet" href="css/jquery-ui.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="lib/jquery.js"></script>
+  <script src="lib/jquery-ui.js"></script>
   <script src="lib/angular/angular.js"></script>
+  <script src="lib/underscore.js"></script>
+
   <script src="js/app.js"></script>
   <script src="js/services.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
+</head>
+<body ng-controller="GraphCtrl">
+
+  <!-- DEBUG -->
+  <!--
+  <div ng-repeat="entity in entities">
+  Entity {{$index}}
+  <input type="text" ng-model="entity.name"></input>
+  <input type="text" ng-model="entity.x"></input>
+  <input type="text" ng-model="entity.y"></input>
+  <input type="text" ng-model="entity.width"></input>
+  <input type="text" ng-model="entity.height"></input>
+  <input type="text" ng-model="entity.attributes"></input>
+  </div>
+  -->
+  <p>{{editor.mode}}</p>
+
+  <div canvas id="canvas">
+    <div entity class="entity-border" ng-repeat="entity in graph.entities" ng-style="{ top: entity.y + 'px', left: entity.x + 'px', width: entity.width + 'px', height: entity.height + 'px'}">
+      <div class="entity-heading" entity-heading>
+        <span class="entity-name" ng-show="!renaming">{{entity.name}}</span>
+        <input class="entity-name-input" ng-show="renaming" ng-model="entity.name">
+      </div>
+      <div class="entity-body">
+        <div class="attribute" ng-repeat="attribute in entity.attributes">{{attribute}}</div>
+      </div>
+    </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+      <path relationship style="fill:none;stroke:black;stroke-width:2px" ng-attr-d="{{editor.linePath()}}"></path>
+    </svg>
+  </div>
+
 </body>
 </html>
