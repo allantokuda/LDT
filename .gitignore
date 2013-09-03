@@ -19,3 +19,5 @@
 
 # exuberant ctags
 tags
+
+node_modules
