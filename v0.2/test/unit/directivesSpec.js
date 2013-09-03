@@ -16,4 +16,14 @@ describe('directives', function() {
       });
     });
   });
+
+  describe('entity', function() {
+    it('should make the div draggable and resizable', function() {
+      inject(function($compile, $rootScope) {
+        var element = $compile('<div entity></div>')($rootScope);
+        expect(element).toHaveClass('ui-draggable')
+        expect(element).toHaveClass('ui-resizable')
+      });
+    });
+  });
 });
