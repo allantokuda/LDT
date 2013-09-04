@@ -5,18 +5,6 @@
 describe('directives', function() {
   beforeEach(module('myApp.directives'));
 
-  describe('app-version', function() {
-    it('should print current version', function() {
-      module(function($provide) {
-        $provide.value('version', 'TEST_VERSION');
-      });
-      inject(function($compile, $rootScope) {
-        var element = $compile('<span app-version></span>')($rootScope);
-        expect(element.text()).toEqual('TEST_VERSION');
-      });
-    });
-  });
-
   describe('entity', function() {
     // source: http://docs.angularjs.org/guide/dev_guide.unit-testing
     var $compile;
@@ -33,11 +21,20 @@ describe('directives', function() {
     });
 
     it('should bind the element position to the scope variable', function() {
-      var element = $compile('<div entity style="position: absolute" ng-style="{ top: entity.y + \'px\', left: entity.x + \'px\' }"></div>')($rootScope);
-      element.scope().entity = { x: '120', y: '90' }
+      var element = $compile('<div entity ng-style="{ top: entity.y + \'px\', left: entity.x + \'px\' }"></div>')($rootScope);
+      element.scope().entity = { x: 120, y: 90 }
       element.scope().$digest()
       expect(element.css('left')).toBe('120px')
       expect(element.css('top')).toBe('90px')
     })
+
+    it('should bind the element size to the scope variable', function() {
+      var element = $compile('<div entity ng-style="{ width: entity.width + \'px\', height: entity.height + \'px\' }"></div>')($rootScope);
+      element.scope().entity = { width: 110, height: 80 }
+      element.scope().$digest()
+      expect(element.css('width')).toBe('110px')
+      expect(element.css('height')).toBe('80px')
+    })
+
   });
 });
