@@ -26,17 +26,19 @@ angular.module('myApp.controllers', []).
     // Draw a simple line for each relationship
     // TODO: Put in fancier logic for drawing L-shaped relationships
     $scope.editor.linePath = function(){
-      return _.map($scope.graph.relationships, function(relationship) {
-        var e1 = _.find($scope.graph.entities, function(e) { return e.id == relationship.entity1_id })
-        var e2 = _.find($scope.graph.entities, function(e) { return e.id == relationship.entity2_id })
+      if ($scope.graph.entities.length > 0)
+        return _.map($scope.graph.relationships, function(relationship) {
+          var e1 = _.find($scope.graph.entities, function(e) { return e.id == relationship.entity1_id })
+          var e2 = _.find($scope.graph.entities, function(e) { return e.id == relationship.entity2_id })
 
-        return "M" + entityCenterCoord(e1) + " L" + entityCenterCoord(e2)
-      }).join(" ")
+          if (e1 && e2) return "M" + entityCenterCoord(e1) + " L" + entityCenterCoord(e2)
+        }).join(" ")
+      else
+        return ''
     };
 
     // Switch modes using keyboard
     $(window).keypress(function(e) {
-      console.log(e.charCode)
       switch (e.charCode) {
         case 13:  /* Enter */ $scope.$apply(function() { $scope.editor.mode = 'select'; } ); break;
         case 101: /* e     */ $scope.$apply(function() { $scope.editor.mode = 'new_entity'; } ); break;
@@ -48,7 +50,6 @@ angular.module('myApp.controllers', []).
     $("#canvas").click(function(e) {
       $scope.$apply(function() {
         if ($scope.editor.mode == 'new_entity') {
-          console.log(e)
           // FIXME: offsetX,offsetY give the wrong result for positioning a new entity if you click inside an existing entity.
           var num = $scope.graph.entities.length
           $scope.graph.entities.push({id: num, x: e.offsetX, y: e.offsetY, width: 100, height: 130, name: "New Entity", attributes: ["new_entity_id"]})
