@@ -1,13 +1,6 @@
-ENGINEERING
-	clean up directives
-		import testing library
-			write tests for directives
-  see if jqueryUI "selected" is worth using
-  hand pick jqueryUI modules I actually need
-
 COMPLETE A BARE BONES CRUD UI
 
-	select entity (visibly)
+	select entity (visibly) -- CAN'T use jQuery 'selectable' because it conflicts with draggable
 		delete entity (by keypress) -- ensure new entities don't get duplicate IDs
 
 	draw relationship as L-shape

@@ -28,8 +28,16 @@
 }
 
 .attribute {
-  background: #ddd;
   margin: 1px;
 }
 
 #canvas { position: relative; }
+
+#canvas div.selected {
+  display: inline-block;
+  background: #fd8;
+}
+
+#canvas div.selected .entity-heading {
+  background: #fb0;
+}

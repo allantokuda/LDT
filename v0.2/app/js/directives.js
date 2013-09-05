@@ -10,6 +10,12 @@ app.directive('appVersion', ['version', function(version) {
     };
   }]);
 
+app.directive('entitySet',function() {
+  return function(scope, element, iAttrs, ctrl) {
+    element.selectable();
+  }
+})
+
 // Setup entities to be draggable and resizable, and bind to the scope
 app.directive('entity',function() {
   return {
@@ -32,14 +38,27 @@ app.directive('entity',function() {
       })
       element.click(function(e) {
         scope.$apply(function() {
-          switch(scope.editor.mode) {
-            case 'select':                 scope.editor.mode = 'entity'; break;
-            case 'new_relationship_start': scope.beginRelationship(scope.entity); break;
-            case 'new_relationship_end':   scope.endRelationship(scope.entity); break;
-          }
+          //switch(scope.editor.mode) {
+            //case 'select':
+              _.each(element.siblings(), function(sibling) {
+                $(sibling).removeClass('selected');
+              })
+              element.addClass('selected');
+              //scope.editor.mode = 'entity';
+              //break;
+            //case 'new_relationship_start': scope.beginRelationship(scope.entity); break;
+            //case 'new_relationship_end':   scope.endRelationship(scope.entity); break;
+          //}
         })
         e.stopPropagation();
       })
+      //element.selectable(); //{
+        // click: function() {
+        //   scope.$apply(function read() {
+        //     console.log('selected')
+        //   });
+        // }
+      //})
     }
   }
 });
