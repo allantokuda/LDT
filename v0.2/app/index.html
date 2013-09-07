@@ -35,7 +35,10 @@
   <p>{{editor.mode}}</p>
 
   <div canvas id="canvas">
-    <div entity class="entity-border" ng-repeat="entity in graph.entities" ng-style="{ top: entity.y + 'px', left: entity.x + 'px', width: entity.width + 'px', height: entity.height + 'px'}">
+    <div move-with="entity" resize-with="entity" select-with="entity"
+       class="entity-border" ng-repeat="entity in graph.entities"
+       ng-style="{ left: entity.x, top: entity.y, width: entity.width, height: entity.height }">
+
       <div class="entity-heading" entity-heading>
         <span class="entity-name" ng-show="!renaming">{{entity.name}}</span>
         <input class="entity-name-input" ng-show="renaming" ng-model="entity.name">

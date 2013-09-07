@@ -16,26 +16,43 @@ app.directive('entitySet',function() {
   }
 })
 
-// Setup entities to be draggable and resizable, and bind to the scope
-app.directive('entity',function() {
+// Setup entities to be draggable and bind their position to the scope
+app.directive('moveWith',function() {
   return {
     link: function (scope, element, iAttrs, ctrl) {
       element.draggable({
         drag: function() {
           scope.$apply(function read() {
-            scope.entity.x = parseInt(element.css('left'));
-            scope.entity.y = parseInt(element.css('top'));
+            scope[iAttrs.moveWith].x = parseInt(element.css('left'));
+            scope[iAttrs.moveWith].y = parseInt(element.css('top'));
           });
         },
       });
+    }
+  }
+});
+
+// Setup entities to be draggable and bind their position to the scope
+app.directive('resizeWith',function() {
+  return {
+    link: function (scope, element, iAttrs, ctrl) {
       element.resizable({
         resize: function() {
           scope.$apply(function read() {
-            scope.entity.width  = parseInt(element.css('width'));
-            scope.entity.height = parseInt(element.css('height'));
+            scope[iAttrs.moveWith].width = parseInt(element.css('width'));
+            scope[iAttrs.moveWith].height = parseInt(element.css('height'));
           });
-        }
-      })
+        },
+      });
+    }
+  }
+});
+
+
+// Setup entities to be draggable and resizable, and bind to the scope
+app.directive('selectWith',function() {
+  return {
+    link: function (scope, element, iAttrs, ctrl) {
       element.click(function(e) {
         scope.$apply(function() {
           //switch(scope.editor.mode) {
@@ -52,13 +69,6 @@ app.directive('entity',function() {
         })
         e.stopPropagation();
       })
-      //element.selectable(); //{
-        // click: function() {
-        //   scope.$apply(function read() {
-        //     console.log('selected')
-        //   });
-        // }
-      //})
     }
   }
 });
