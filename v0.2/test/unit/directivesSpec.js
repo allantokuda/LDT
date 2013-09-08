@@ -67,39 +67,46 @@ describe('directives', function() {
 
     var scope, parent_element, sibling;
 
-    beforeEach(inject(function(_$compile_, _$rootScope_){
-      parent_element = $compile('<div id="canvas"><div select-with="entity" id="element"></div><div select-with="other-entity" id="sibling" ng-class="entity.selected ? \'selected\' : \'\'"></div></div>')($rootScope);
+    beforeEach(inject(function(){
+      parent_element = $compile('<div><div select-with="entity" id="element"></div><div select-with="other-entity" id="sibling" ng-class="entity.selected ? \'selected\' : \'\'"></div></div>')($rootScope);
       element = parent_element.find('#element')
       sibling = parent_element.find('#sibling')
-      element.trigger('click')
       scope = element.scope()
-      scope.entity = {}
-      scope.$digest()
+
     }));
 
-    it('should set a selection class', function() {
+    it('- when clicked - should add class "selected"', function() {
+      element.trigger('click')
       expect(element).toHaveClass('selected')
     });
 
-    it('should remove selection class from all others of its type', function() {
+    it('- when clicked - should remove class "selected" from its siblings', function() {
+      element.trigger('click')
       expect(sibling[0].className).toNotMatch(/selected/)
+    });
+
+    it('- when sibling is clicked - should remove class "selected"', function() {
       sibling.trigger('click')
       expect(element[0].className).toNotMatch(/selected/)
       expect(sibling[0].className).toMatch(/selected/)
     });
 
-    xit('should remove selection class when scope selected = false', function() {
+    it('- when scope "selected" variable is set true - should add class "selected"', function() {
+      scope.$apply(function() { scope.entity.selected = true })
+      expect(element).toHaveClass('selected')
+    });
+
+    xit('- when scope "selected" variable is set false - should remove "selected" class', function() {
       expect(element[0].className).toMatch(/selected/)
-      console.log(element.scope())
-      element.scope().entity.selected = false
-      element.scope().$digest()
+      scope.entity.selected = false
+      scope.$digest()
       expect(element[0].className).toNotMatch(/selected/)
     })
 
     // this needs to go into a directive for the parent canvas div
     xit('should lose selection class when parent is clicked', function() {
       expect(element[0].className).toMatch(/selected/)
-      $(parent_element).trigger('click')
+      parent_element.trigger('click')
       expect(element[0].className).toNotMatch(/selected/)
     });
 

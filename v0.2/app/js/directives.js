@@ -53,29 +53,45 @@ app.directive('resizeWith',function() {
 app.directive('selectWith',function() {
   return {
     link: function (scope, element, iAttrs, ctrl) {
+      var scopeVarName = iAttrs.selectWith
+
+      if (typeof(scope[scopeVarName]) == 'undefined')
+        scope[scopeVarName] = {}
+
+      var scopeVar = scope[scopeVarName];
+      scopeVar.selected = false
+
+      //Setup class to watch the scope
+      scope.$watch(scopeVarName + '.selected', function(selected) {
+        if (scopeVar.selected)
+          element.addClass('selected')
+        else
+          element.removeClass('selected')
+      });
+
       element.click(function(e) {
-        scope.$apply(function() {
-          //switch(scope.editor.mode) {
-            //case 'select':
-              _.each(element.siblings(), function(sibling) {
-                $(sibling).removeClass('selected');
-              })
-              element.addClass('selected');
-              //scope.editor.mode = 'entity';
-              //break;
-            //case 'new_relationship_start': scope.beginRelationship(scope.entity); break;
-            //case 'new_relationship_end':   scope.endRelationship(scope.entity); break;
-          //}
-        })
+        // Deselect all first
+        element.parent().trigger('click')
+
+        scope.$apply( function() { scopeVar.selected = true })
+
+        // Don't allow parent to get the click again
         e.stopPropagation();
       });
+
       element.parent().click(function(e) {
-        element.removeClass('selected')
+        scope.$apply( function() { scopeVar.selected = false })
       });
     }
   }
 });
 
+
+// Add directive for relationship endpoint clicking
+          //switch(scope.editor.mode) {
+            //case 'new_relationship_start': scope.beginRelationship(scope.entity); break;
+            //case 'new_relationship_end':   scope.endRelationship(scope.entity); break;
+          //}
 
 // Setup entity headings to be double-click renamable
 app.directive('entityHeading',function() {
