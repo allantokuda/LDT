@@ -65,13 +65,16 @@ describe('directives', function() {
   describe('selectWith', function() {
     // source: http://docs.angularjs.org/guide/dev_guide.unit-testing
 
-    var parent_element, sibling;
+    var scope, parent_element, sibling;
 
     beforeEach(inject(function(_$compile_, _$rootScope_){
-      parent_element = $compile('<div id="canvas"><div select-with="entity" id="element"></div><div select-with="other-entity" id="sibling"></div></div>')($rootScope);
+      parent_element = $compile('<div id="canvas"><div select-with="entity" id="element"></div><div select-with="other-entity" id="sibling" ng-class="entity.selected ? \'selected\' : \'\'"></div></div>')($rootScope);
       element = parent_element.find('#element')
       sibling = parent_element.find('#sibling')
       element.trigger('click')
+      scope = element.scope()
+      scope.entity = {}
+      scope.$digest()
     }));
 
     it('should set a selection class', function() {
@@ -84,6 +87,14 @@ describe('directives', function() {
       expect(element[0].className).toNotMatch(/selected/)
       expect(sibling[0].className).toMatch(/selected/)
     });
+
+    xit('should remove selection class when scope selected = false', function() {
+      expect(element[0].className).toMatch(/selected/)
+      console.log(element.scope())
+      element.scope().entity.selected = false
+      element.scope().$digest()
+      expect(element[0].className).toNotMatch(/selected/)
+    })
 
     // this needs to go into a directive for the parent canvas div
     xit('should lose selection class when parent is clicked', function() {

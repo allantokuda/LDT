@@ -28,6 +28,13 @@ describe('GraphCtrl', function(){
     expect(scope.editor.linePath()).toBe('')
   });
 
+  it('should set all entities deselected when deselect() is called', function() {
+    scope.editor.deselectAll();
+    _.map(scope.graph.entities, function(entity) {
+      expect(entity.selected).toBe(false)
+    });
+  });
+
   describe('keybindings', function() {
 
     var key_event = $.Event('keypress')

@@ -69,5 +69,11 @@ angular.module('myApp.controllers', []).
       $scope.graph.relationships.push({id: num, entity1_id: start_id, entity2_id: entity.id, symbol1: '?', symbol2: '?'})
       $scope.editor.mode = 'select'
     }
+
+    $scope.editor.deselectAll = function() {
+      _.each($scope.graph.entities, function(entity) {
+        entity.selected = false;
+      })
+    }
   });
 

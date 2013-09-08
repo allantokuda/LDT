@@ -68,7 +68,10 @@ app.directive('selectWith',function() {
           //}
         })
         e.stopPropagation();
-      })
+      });
+      element.parent().click(function(e) {
+        element.removeClass('selected')
+      });
     }
   }
 });

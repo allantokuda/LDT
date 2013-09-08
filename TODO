@@ -1,3 +1,11 @@
+ANGULAR stuff
+
+  get tests passing
+  reenable creating relationships -- selectWith needs to not handle this anymore
+  directives should not setup callbacks that change the DOM directly... or should they?
+  split up controllers, top level "editorCtrl" and "graphCtrl" inside it
+
+
 COMPLETE A BARE BONES CRUD UI
 
 	select entity (visibly) -- CAN'T use jQuery 'selectable' because it conflicts with draggable

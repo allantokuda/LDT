@@ -34,9 +34,15 @@
   -->
   <p>{{editor.mode}}</p>
 
+  <!-- CANVAS element
+  Scope watches: none
+  UI events:
+    select mode: left click deselects all entities, and potentially selects a relationship
+    new entity mode: create entity
+  -->
   <div canvas id="canvas">
-    <div move-with="entity" resize-with="entity" select-with="entity"
-       class="entity-border" ng-repeat="entity in graph.entities"
+    <div class="entity-border" ng-repeat="entity in graph.entities"
+       move-with="entity" resize-with="entity" select-with="entity"
        ng-style="{ left: entity.x, top: entity.y, width: entity.width, height: entity.height }">
 
       <div class="entity-heading" entity-heading>
@@ -47,6 +53,7 @@
         <div class="attribute" ng-repeat="attribute in entity.attributes">{{attribute}}</div>
       </div>
     </div>
+
 
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
       <path relationship style="fill:none;stroke:black;stroke-width:2px" ng-attr-d="{{editor.linePath()}}"></path>
