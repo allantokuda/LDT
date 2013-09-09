@@ -21,7 +21,7 @@ angular.module('myApp.controllers', []).
 
     function entityCenterCoord(e) {
       return (e.x * 1 + e.width / 2) + "," + (e.y * 1 + e.height / 2)
-    }
+    };
 
     // Draw a simple line for each relationship
     // TODO: Put in fancier logic for drawing L-shaped relationships
@@ -54,11 +54,20 @@ angular.module('myApp.controllers', []).
           var num = $scope.graph.entities.length
           $scope.graph.entities.push({id: num, x: e.offsetX, y: e.offsetY, width: 100, height: 130, name: "New Entity", attributes: ["new_entity_id"]})
         }
-        $scope.editor.mode = 'select'
       })
     });
 
+    $scope.handleEntityClick = function(entity) {
+      console.log($scope.editor.mode)
+      switch($scope.editor.mode) {
+        case 'new_relationship_start': $scope.beginRelationship(entity); break;
+        case 'new_relationship_end':   $scope.endRelationship(entity); break;
+      }
+      console.log($scope.editor.mode)
+    };
+
     $scope.beginRelationship = function(entity) {
+      console.log('begin')
       $scope.editor.newRelationshipStart = entity
       $scope.editor.mode = 'new_relationship_end'
     }

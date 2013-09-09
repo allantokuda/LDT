@@ -41,7 +41,7 @@
     new entity mode: create entity
   -->
   <div canvas id="canvas">
-    <div class="entity-border" ng-repeat="entity in graph.entities"
+    <div class="entity-border" ng-repeat="entity in graph.entities" ng-click="handleEntityClick(entity)"
        move-with="entity" resize-with="entity" select-with="entity"
        ng-style="{ left: entity.x, top: entity.y, width: entity.width, height: entity.height }">
 
