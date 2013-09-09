@@ -11,9 +11,9 @@ angular.module('myApp.controllers', []).
 
     // Define some test data (TODO: load and persist to server)
     var e = $scope.graph.entities = []
-    e.push({id: 0, x:  20, y:  20, width: 100, height: 130, name: "Supplier",  attributes: ["name", "location"] })
-    e.push({id: 1, x: 220, y:  20, width: 100, height: 130, name: "Part",      attributes: ["size", "shape", "color"] })
-    e.push({id: 2, x: 120, y: 190, width: 100, height: 130, name: "Inventory", attributes: ["quantity"] })
+    e.push({id: 0, x:  20, y:  20, width: 100, height: 130, name: "Supplier",  attributes: "name\nlocation" })
+    e.push({id: 1, x: 220, y:  20, width: 100, height: 130, name: "Part",      attributes: "size\nshape\ncolor" })
+    e.push({id: 2, x: 120, y: 190, width: 100, height: 130, name: "Inventory", attributes: "quantity" })
 
     var r = $scope.graph.relationships = []
     r.push({ id: 0, entity1_id: 0, entity2_id: 2, label1: true, label2: false, symbol1: 'one', symbol2: 'many' })
@@ -39,11 +39,12 @@ angular.module('myApp.controllers', []).
 
     // Switch modes using keyboard
     $(window).keypress(function(e) {
-      if ($scope.editor.mode == 'select')
+      if (e.charCode == 13) /* Enter */
+          $scope.$apply(function() { $scope.editor.mode = 'select'; } );
+      else if ($scope.editor.mode == 'select')
         switch (e.charCode) {
-          case 13:  /* Enter */ $scope.$apply(function() { $scope.editor.mode = 'select'; } ); break;
-          case 101: /* e     */ $scope.$apply(function() { $scope.editor.mode = 'new_entity'; } ); break;
-          case 114: /* r     */ $scope.$apply(function() { $scope.editor.mode = 'new_relationship_start'; } ); break;
+          case 101: /* e */ $scope.$apply(function() { $scope.editor.mode = 'new_entity'; } ); break;
+          case 114: /* r */ $scope.$apply(function() { $scope.editor.mode = 'new_relationship_start'; } ); break;
         }
     })
 

@@ -10,11 +10,21 @@ app.directive('appVersion', ['version', function(version) {
     };
   }]);
 
-app.directive('entitySet',function() {
-  return function(scope, element, iAttrs, ctrl) {
-    element.selectable();
+app.directive('catchInput',function() {
+  return {
+    link: function(scope, element, iAttrs, ctrl) {
+      //Don't allow clicks to change mode
+      element.click(function(e) {
+        e.stopPropagation();
+      });
+      //Don't allow renaming keypresses to change mode
+      element.keypress(function(e) {
+        e.stopPropagation();
+      });
+    }
   }
-})
+});
+
 
 // Setup entities to be draggable and bind their position to the scope
 app.directive('moveWith',function() {
@@ -90,13 +100,8 @@ app.directive('selectWith',function() {
 });
 
 
-// Add directive for relationship endpoint clicking
-          //switch(scope.editor.mode) {
-            //case 'new_relationship_start': scope.beginRelationship(scope.entity); break;
-            //case 'new_relationship_end':   scope.endRelationship(scope.entity); break;
-          //}
-
-app.directive('entityHeading',function() {
+/*
+app.directive('entitySection',function() {
   return {
     link: function(scope, element, iAttrs, ctrl) {
       element.bind('dblclick', function() {
@@ -116,16 +121,6 @@ app.directive('entityHeading',function() {
         });
       });
 
-      //Don't allow clicks to change mode
-      element.click(function(e) {
-        e.stopPropagation();
-      });
-
-      //Don't allow renaming keypresses to change mode
-      element.keypress(function(e) {
-        e.stopPropagation();
-      });
-
       element.closest('#canvas').click(function() {
         scope.renaming = false;
       });
@@ -133,3 +128,4 @@ app.directive('entityHeading',function() {
   }
 });
 
+*/
