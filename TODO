@@ -1,20 +1,20 @@
 ANGULAR stuff
 
   directive shared by:
-    entity select (on single click, apply "selected-entity" class, remove it from all other "selectable" classes)
-    entity rename (on double click, apply "renaming-entity" class, remove it from all other "entity-heading" classes)
-    attribute select (on single click, apply "selected-attribute" class, remove it from all other "selectable" classes)
-    attribute rename (on double click, apply "renaming-entity" class, remove it from all other "entity-heading" classes)
-    relationship select (on single click, apply "selected-relationship" class, remove it from all other "selectable" classes)
-    relationship ending select (on single click, apply "selected-relationship-ending" class, remove it from all other "selectable" classes)
+    entity select
+    attribute select
+    relationship select
+    relationship ending select
+    entity rename (on double click)
+    attribute edit (on double click)
 
   split up controllers, top level "editorCtrl" and "graphCtrl" inside it
 
 
 COMPLETE A BARE BONES CRUD UI
 
-	select entity (visibly) -- CAN'T use jQuery 'selectable' because it conflicts with draggable
-		delete entity (by keypress) -- ensure new entities don't get duplicate IDs
+  Enable attributes edit
+  delete entity (by keypress) -- ensure new entities don't get duplicate IDs
 
 	draw relationship as L-shape
 		select relationship ending by proximity click on canvas
