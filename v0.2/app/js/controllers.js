@@ -39,11 +39,12 @@ angular.module('myApp.controllers', []).
 
     // Switch modes using keyboard
     $(window).keypress(function(e) {
-      switch (e.charCode) {
-        case 13:  /* Enter */ $scope.$apply(function() { $scope.editor.mode = 'select'; } ); break;
-        case 101: /* e     */ $scope.$apply(function() { $scope.editor.mode = 'new_entity'; } ); break;
-        case 114: /* r     */ $scope.$apply(function() { $scope.editor.mode = 'new_relationship_start'; } ); break;
-      }
+      if ($scope.editor.mode == 'select')
+        switch (e.charCode) {
+          case 13:  /* Enter */ $scope.$apply(function() { $scope.editor.mode = 'select'; } ); break;
+          case 101: /* e     */ $scope.$apply(function() { $scope.editor.mode = 'new_entity'; } ); break;
+          case 114: /* r     */ $scope.$apply(function() { $scope.editor.mode = 'new_relationship_start'; } ); break;
+        }
     })
 
     // Respond to click event to complete an action
@@ -58,16 +59,13 @@ angular.module('myApp.controllers', []).
     });
 
     $scope.handleEntityClick = function(entity) {
-      console.log($scope.editor.mode)
       switch($scope.editor.mode) {
         case 'new_relationship_start': $scope.beginRelationship(entity); break;
         case 'new_relationship_end':   $scope.endRelationship(entity); break;
       }
-      console.log($scope.editor.mode)
     };
 
     $scope.beginRelationship = function(entity) {
-      console.log('begin')
       $scope.editor.newRelationshipStart = entity
       $scope.editor.mode = 'new_relationship_end'
     }

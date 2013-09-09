@@ -57,31 +57,31 @@ app.directive('selectWith',function() {
 
       //Define variable if not externally defined
       if (typeof(scope[scopeVarName]) == 'undefined')
-        scope[scopeVarName] = {}
+        scope[scopeVarName] = {};
 
       var scopeVar = scope[scopeVarName];
-      scopeVar.selected = false
+      scopeVar.selected = false;
 
       //Setup class to watch the scope
       scope.$watch(scopeVarName + '.selected', function(selected) {
         if (scopeVar.selected)
-          element.addClass('selected')
+          element.addClass('selected');
         else
-          element.removeClass('selected')
+          element.removeClass('selected');
       });
 
       element.click(function(e) {
         // Deselect all first
-        element.parent().trigger('click')
+        element.parent().trigger('click');
 
-        scope.$apply( function() { scopeVar.selected = true })
+        scope.$apply( function() { scopeVar.selected = true });
 
         // Don't allow parent to get the click again
         e.stopPropagation();
       });
 
       element.parent().click(function(e) {
-        scope.$apply( function() { scopeVar.selected = false })
+        scope.$apply( function() { scopeVar.selected = false });
       });
     }
   }
@@ -94,25 +94,38 @@ app.directive('selectWith',function() {
             //case 'new_relationship_end':   scope.endRelationship(scope.entity); break;
           //}
 
-// Setup entity headings to be double-click renamable
 app.directive('entityHeading',function() {
   return {
     link: function(scope, element, iAttrs, ctrl) {
       element.bind('dblclick', function() {
         scope.$apply( function() {
-          scope.renaming = !scope.renaming
+          scope.renaming = !scope.renaming;
         });
 
         // Select the whole entity title for fast rename
-        $(element.find("input")[0]).select()
+        $(element.find("input")[0]).select();
       })
       element.keypress(function(e) {
         // scope.$apply seemed to be relevant here: http://stackoverflow.com/questions/14477904/how-to-create-on-change-directive-for-angularjs
-        scope.$apply( function() {
+        scope.$apply(function() {
           if (e.charCode == 13) {
             scope.renaming = false;
           }
-        } )
+        });
+      });
+
+      //Don't allow clicks to change mode
+      element.click(function(e) {
+        e.stopPropagation();
+      });
+
+      //Don't allow renaming keypresses to change mode
+      element.keypress(function(e) {
+        e.stopPropagation();
+      });
+
+      element.closest('#canvas').click(function() {
+        scope.renaming = false;
       });
     }
   }
