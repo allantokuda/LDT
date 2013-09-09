@@ -53,8 +53,9 @@ app.directive('resizeWith',function() {
 app.directive('selectWith',function() {
   return {
     link: function (scope, element, iAttrs, ctrl) {
-      var scopeVarName = iAttrs.selectWith
+      var scopeVarName = iAttrs.selectWith;
 
+      //Define variable if not externally defined
       if (typeof(scope[scopeVarName]) == 'undefined')
         scope[scopeVarName] = {}
 

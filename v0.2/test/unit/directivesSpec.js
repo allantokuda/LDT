@@ -68,27 +68,51 @@ describe('directives', function() {
     var scope, parent_element, sibling;
 
     beforeEach(inject(function(){
-      parent_element = $compile('<div><div select-with="entity" id="element"></div><div select-with="other-entity" id="sibling" ng-class="entity.selected ? \'selected\' : \'\'"></div></div>')($rootScope);
+      parent_element = $compile('<div><div select-with="entity" id="element"></div><div select-with="sibling" id="sibling"></div></div>')($rootScope);
       element = parent_element.find('#element')
       sibling = parent_element.find('#sibling')
       scope = element.scope()
-
     }));
+
+    describe('response to click events', function() {
+
+      // Element selected, which of them gets clicked, and expected selection status afterward
+      var scenarios = [
+        { startSelected: false, elementToClick: '#element', endSelected: true  },
+        { startSelected: false, elementToClick: '#sibling', endSelected: false },
+        { startSelected:  true, elementToClick: '#element', endSelected: true  },
+        { startSelected:  true, elementToClick: '#sibling', endSelected: false },
+      ]
+
+      _.each(scenarios, function(scenario) {
+        describe('- given that the element is ' + (scenario.startSelected ? '' : 'not ') + 'selected, ' +
+                    'when ' + scenario.elementToClick + ' is clicked', function() {
+
+          it('should ' + (scenario.endSelected ? '' : 'not ') + 'have the "selected" class', function() {
+            if (scenario.startSelected)
+              element.addClass('selected')
+
+            parent_element.find(scenario.elementToClick).trigger('click')
+
+            if (scenario.endSelected)
+              expect(element).toHaveClass('selected')
+            else
+              expect(element[0].className).toNotMatch('selected')
+          });
+
+          it('should set scope "selected" variable to ' + scenario.endSelected, function() {
+            scope.entity.selected = scenario.startSelected
+            parent_element.find(scenario.elementToClick).trigger('click')
+            expect(scope.entity.selected).toBe(scenario.endSelected)
+          });
+        });
+      });
+
+    });
 
     it('- when clicked - should add class "selected"', function() {
       element.trigger('click')
       expect(element).toHaveClass('selected')
-    });
-
-    it('- when clicked - should remove class "selected" from its siblings', function() {
-      element.trigger('click')
-      expect(sibling[0].className).toNotMatch(/selected/)
-    });
-
-    it('- when sibling is clicked - should remove class "selected"', function() {
-      sibling.trigger('click')
-      expect(element[0].className).toNotMatch(/selected/)
-      expect(sibling[0].className).toMatch(/selected/)
     });
 
     it('- when scope "selected" variable is set true - should add class "selected"', function() {
@@ -96,7 +120,21 @@ describe('directives', function() {
       expect(element).toHaveClass('selected')
     });
 
-    xit('- when scope "selected" variable is set false - should remove "selected" class', function() {
+    it('- when clicked - should remove class "selected" from its siblings', function() {
+      sibling.addClass('selected')
+      element.trigger('click')
+      expect(sibling[0].className).toNotMatch('selected')
+    });
+
+    it('- when sibling is clicked - should remove class "selected"', function() {
+      element.addClass('selected')
+      sibling.trigger('click')
+      expect(sibling).toHaveClass('selected')
+      expect(element[0].className).toNotMatch(/selected/)
+    });
+
+    it('- when scope "selected" variable is set false - should remove "selected" class', function() {
+      element.addClass('selected')
       expect(element[0].className).toMatch(/selected/)
       scope.entity.selected = false
       scope.$digest()
@@ -104,13 +142,14 @@ describe('directives', function() {
     })
 
     // this needs to go into a directive for the parent canvas div
-    xit('should lose selection class when parent is clicked', function() {
+    it('should lose selection class when parent is clicked', function() {
+      element.addClass('selected')
       expect(element[0].className).toMatch(/selected/)
       parent_element.trigger('click')
       expect(element[0].className).toNotMatch(/selected/)
     });
 
-    xit('should set up a click binding that sets a scope variable', function() {
+    it('should set up a click binding that sets a scope variable', function() {
       element.trigger('click')
       element.scope().$digest()
       expect(element.scope().entity.selected).toBe(true)
