@@ -53,9 +53,9 @@ app.directive('resizeWith',function() {
 app.directive('selectWith',function() {
   return {
     link: function (scope, element, iAttrs, ctrl) {
-      var regex = /([\w\d]+) as ([\w\d]+)/
+      var regex = /([\w\d]+) as ([\w\d]+)(?: in ([.#-\w\d]+))?/
       var matches = regex.exec(iAttrs.selectWith);
-      var params = _.object(['eventName', 'varName'], [matches[1], matches[2]]);
+      var params = _.object(['eventName', 'varName', 'parentID'], matches.slice(1,4));
 
       //Define variable if not externally defined
       if (typeof(scope[params.varName]) == 'undefined')
@@ -73,8 +73,8 @@ app.directive('selectWith',function() {
       });
 
       element.bind(params.eventName, function(e) {
-        // Deselect all first
-        element.parent().trigger('click');
+        // Deselect all other selectables first
+        element.parents(params.parentID).trigger('click');
 
         scope.$apply( function() { scopeVar.selected = true });
 
@@ -82,7 +82,7 @@ app.directive('selectWith',function() {
         e.stopPropagation();
       });
 
-      element.parent().click(function(e) {
+      element.parents(params.parentID).click(function(e) {
         scope.$apply( function() { scopeVar.selected = false });
       });
     }

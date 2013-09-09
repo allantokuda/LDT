@@ -85,12 +85,57 @@ describe('directives', function() {
       });
     });
 
-    it('should lose selection class when parent is clicked', function() {
+    it('becomes deselected when parent is clicked', function() {
       element.addClass('selected')
-      expect(element[0].className).toMatch(/selected/)
       parent_element.trigger('click')
       expect(element[0].className).toNotMatch(/selected/)
     });
 
+    describe('when a grandparent deselector is defined', function() {
+      var testDOM, greatgrandparent_element, grandparent_element, cousin_element;
+
+      beforeEach(inject(function() {
+        testDOM = $compile(
+          '<div id="greatgrandparent">' +
+            '<div id="grandparent">' +
+              '<div id="parent">' +
+                '<div id="element" select-with="click as entity in #grandparent"></div>' +
+              '</div>' +
+              '<div id="uncle">' +
+                '<div id="cousin" select=with="click as cousin in #grandparent"></div>' +
+              '</div>' +
+            '</div>' +
+          '</div>'
+        )($rootScope);
+
+        greatgrandparent_element = testDOM.find('#greatgrandparent');
+        grandparent_element      = testDOM.find('#grandparent');
+        parent_element           = testDOM.find('#parent')
+        cousin_element           = testDOM.find('#cousin');
+        element                  = testDOM.find('#element');
+
+        element.addClass('selected')
+      }));
+
+      it('deselects when the parent is clicked', function() {
+        parent_element.trigger('click')
+        expect(element[0].className).toNotMatch('selected')
+      });
+
+      it('deselects when the grandparent is clicked', function() {
+        grandparent_element.trigger('click')
+        expect(element[0].className).toNotMatch('selected')
+      });
+
+      it('does NOT deselect when a great-grandparent is clicked', function() {
+        greatgrandparent_element.trigger('click')
+        expect(element).toNotMatch('selected')
+      });
+
+      it('deselects when a cousin is clicked', function() {
+        cousin_element.trigger('click')
+        expect(element[0].className).toNotMatch('selected')
+      });
+    });
   });
 });
