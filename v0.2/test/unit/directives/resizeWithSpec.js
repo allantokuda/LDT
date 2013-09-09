@@ -15,16 +15,16 @@ describe('directives', function() {
     );
 
     it('should make the element resizable', function() {
-      expect(element).toHaveClass('ui-resizable')
+      expect(element).toHaveClass('ui-resizable');
     });
 
     it('should bind a scope variable to the element size', function() {
-      element.scope().entity = {}
-      element.scope().entity.width = 150
-      element.scope().entity.height = 200
-      element.scope().$digest()
-      expect(element.css('width')).toBe('150px')
-      expect(element.css('height')).toBe('200px')
+      element.scope().entity = {};
+      element.scope().entity.width = 150;
+      element.scope().entity.height = 200;
+      element.scope().$digest();
+      expect(element.css('width')).toBe('150px');
+      expect(element.css('height')).toBe('200px');
     });
   })
 });
