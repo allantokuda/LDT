@@ -1,8 +1,13 @@
 ANGULAR stuff
 
-  get tests passing
-  reenable creating relationships -- selectWith needs to not handle this anymore
-  directives should not setup callbacks that change the DOM directly... or should they?
+  directive shared by:
+    entity select (on single click, apply "selected-entity" class, remove it from all other "selectable" classes)
+    entity rename (on double click, apply "renaming-entity" class, remove it from all other "entity-heading" classes)
+    attribute select (on single click, apply "selected-attribute" class, remove it from all other "selectable" classes)
+    attribute rename (on double click, apply "renaming-entity" class, remove it from all other "entity-heading" classes)
+    relationship select (on single click, apply "selected-relationship" class, remove it from all other "selectable" classes)
+    relationship ending select (on single click, apply "selected-relationship-ending" class, remove it from all other "selectable" classes)
+
   split up controllers, top level "editorCtrl" and "graphCtrl" inside it
 
 
