@@ -45,11 +45,11 @@
        move-with="entity" resize-with="entity" select-with="click as entity in #canvas"
        ng-style="{ left: entity.x, top: entity.y, width: entity.width, height: entity.height }">
 
-      <div class="entity-heading" select-with="dblclick as heading in #canvas">
+      <div class="entity-heading" select-with="dblclick as heading in #canvas" auto-focus="input on dblclick">
         <span class="entity-name" ng-show="!heading.selected">{{entity.name}}</span>
         <input catch-input class="entity-name-input" ng-show="heading.selected" ng-model="entity.name">
       </div>
-      <div class="entity-body" select-with="dblclick as body in #canvas" ng-style="{ height: (entity.height - 70) + 'px' }">
+      <div class="entity-body" select-with="dblclick as body in #canvas" ng-style="{ height: (entity.height - 70) + 'px' }" forward-event="dblclick to textarea">
         <pre class="attribute" ng-show="!body.selected">{{entity.attributes}}</pre>
         <textarea catch-input class="attribute-input" ng-show="body.selected" ng-model="entity.attributes" ng-style="{ height: (entity.height - 70) + 'px' }"></textarea>
       </div>

@@ -26,6 +26,43 @@ app.directive('catchInput',function() {
 });
 
 
+app.directive('autoFocus',function() {
+  return {
+    link: function(scope, element, iAttrs, ctrl) {
+      var regex = /([.#-\w\d]+) on ([\w]+)/
+      var matches = regex.exec(iAttrs.autoFocus);
+      var params = _.object(['targetSelector', 'eventName'], matches.slice(1,3));
+
+      element.bind(params.eventName, function(e) {
+        // Select the whole entity title for fast rename
+        $(element.find(params.targetSelector)[0]).select();
+      })
+    }
+  }
+});
+
+
+// Would be nice to automatically highlight the attribute that was double-clicked.
+/*
+app.directive('forwardEvent',function() {
+  return {
+    link: function(scope, element, iAttrs, ctrl) {
+      var regex = /([\w]+) to ([.#-\w\d]+)/
+      var matches = regex.exec(iAttrs.forwardEvent);
+      var params = _.object(['eventName', 'targetSelector'], matches.slice(1,3));
+
+      element.bind(params.eventName, function(e) {
+        // Trigger another event on child when parent event occurs (danger... recursive event firing)
+        console.log(e)
+        var child = element.find(params.targetSelector)
+        child.bind(params.eventName, function(e) { e.stopPropagation(); });
+        child.trigger(e);
+      })
+    }
+  }
+});
+*/
+
 // Setup entities to be draggable and bind their position to the scope
 app.directive('moveWith',function() {
   return {
@@ -100,32 +137,3 @@ app.directive('selectWith',function() {
 });
 
 
-/*
-app.directive('entitySection',function() {
-  return {
-    link: function(scope, element, iAttrs, ctrl) {
-      element.bind('dblclick', function() {
-        scope.$apply( function() {
-          scope.renaming = !scope.renaming;
-        });
-
-        // Select the whole entity title for fast rename
-        $(element.find("input")[0]).select();
-      })
-      element.keypress(function(e) {
-        // scope.$apply seemed to be relevant here: http://stackoverflow.com/questions/14477904/how-to-create-on-change-directive-for-angularjs
-        scope.$apply(function() {
-          if (e.charCode == 13) {
-            scope.renaming = false;
-          }
-        });
-      });
-
-      element.closest('#canvas').click(function() {
-        scope.renaming = false;
-      });
-    }
-  }
-});
-
-*/
