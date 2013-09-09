@@ -53,24 +53,26 @@ app.directive('resizeWith',function() {
 app.directive('selectWith',function() {
   return {
     link: function (scope, element, iAttrs, ctrl) {
-      var scopeVarName = iAttrs.selectWith;
+      var regex = /([\w\d]+) as ([\w\d]+)/
+      var matches = regex.exec(iAttrs.selectWith);
+      var params = _.object(['eventName', 'varName'], [matches[1], matches[2]]);
 
       //Define variable if not externally defined
-      if (typeof(scope[scopeVarName]) == 'undefined')
-        scope[scopeVarName] = {};
+      if (typeof(scope[params.varName]) == 'undefined')
+        scope[params.varName] = {};
 
-      var scopeVar = scope[scopeVarName];
+      var scopeVar = scope[params.varName];
       scopeVar.selected = false;
 
       //Setup class to watch the scope
-      scope.$watch(scopeVarName + '.selected', function(selected) {
+      scope.$watch(params.varName + '.selected', function(selected) {
         if (scopeVar.selected)
           element.addClass('selected');
         else
           element.removeClass('selected');
       });
 
-      element.click(function(e) {
+      element.bind(params.eventName, function(e) {
         // Deselect all first
         element.parent().trigger('click');
 
