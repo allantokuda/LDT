@@ -8,6 +8,7 @@ angular.module('myApp.controllers', []).
     $scope.editor = new Object
     $scope.graph = new Object
     $scope.editor.mode = 'select';
+    $scope.editor.buildingRelationship = false;
 
     // Define some test data (TODO: load and persist to server)
     var e = $scope.graph.entities = []
@@ -43,10 +44,25 @@ angular.module('myApp.controllers', []).
           $scope.$apply(function() { $scope.editor.mode = 'select'; } );
       else if ($scope.editor.mode == 'select')
         switch (e.charCode) {
-          case 101: /* e */ $scope.$apply(function() { $scope.editor.mode = 'new_entity'; } ); break;
-          case 114: /* r */ $scope.$apply(function() { $scope.editor.mode = 'new_relationship_start'; } ); break;
+          case 101: /* e */
+            $scope.$apply(function() {
+              $scope.editor.mode = 'new_entity';
+            });
+            break;
+
+          case 114: /* r */
+            $scope.$apply(function() {
+              $scope.editor.mode = 'new_relationship_start';
+              $scope.editor.buildingRelationship = true;
+              $scope.editor.entityOverlayMessage = 'click to begin relationship';
+            });
+            break;
         }
     })
+
+    $scope.editor.buildingRelationship = function() {
+      return _.contains(['new_relationship_start', 'new_relationship_end'], $scope.editor.mode)
+    }
 
     // Respond to click event to complete an action
     $("#canvas").click(function(e) {
@@ -54,17 +70,34 @@ angular.module('myApp.controllers', []).
         if ($scope.editor.mode == 'new_entity') {
           // FIXME: offsetX,offsetY give the wrong result for positioning a new entity if you click inside an existing entity.
           var num = $scope.graph.entities.length
-          $scope.graph.entities.push({id: num, x: e.offsetX, y: e.offsetY, width: 100, height: 130, name: "New Entity", attributes: ["new_entity_id"]})
+          $scope.graph.entities.push({id: num, x: e.offsetX, y: e.offsetY, width: 120, height: 150, name: "New Entity", attributes: "new_entity_id"})
         }
+        $scope.editor.mode = 'select'
+        $scope.editor.entityOverlayMessage = '';
+        $scope.editor.buildingRelationship = false;
       })
     });
 
+    $scope.editor.entityOverlayMessage = function() {
+      switch($scope.editor.mode) {
+        case 'new_relationship_start':
+        case 'new_relationship_end': 'click to end relationship'; break;
+      }
+
+    }
+
     $scope.handleEntityClick = function(entity) {
       switch($scope.editor.mode) {
-        case 'new_relationship_start': $scope.beginRelationship(entity); break;
-        case 'new_relationship_end':   $scope.endRelationship(entity); break;
+        case 'new_relationship_start':
+          $scope.beginRelationship(entity);
+          $scope.editor.entityOverlayMessage = 'click to end relationship';
+          break;
+        case 'new_relationship_end':
+          $scope.endRelationship(entity);
+          $scope.editor.buildingRelationship = false;
+          break;
       }
-    };
+    }
 
     $scope.beginRelationship = function(entity) {
       $scope.editor.newRelationshipStart = entity

@@ -41,10 +41,12 @@
     new entity mode: create entity
   -->
   <div canvas id="canvas">
-    <div class="entity-border" ng-repeat="entity in graph.entities" ng-click="handleEntityClick(entity)"
+    <div class="entity-border" ng-repeat="entity in graph.entities"
        move-with="entity" resize-with="entity" select-with="click as entity in #canvas"
        ng-style="{ left: entity.x, top: entity.y, width: entity.width, height: entity.height }">
-
+      <div class="select-shield" ng-show="editor.buildingRelationship" catch-input ng-click="handleEntityClick(entity)">
+        <br><br>{{editor.entityOverlayMessage}}
+      </div>
       <div class="entity-heading" select-with="dblclick as heading in #canvas" auto-focus="input on dblclick">
         <span class="entity-name" ng-show="!heading.selected">{{entity.name}}</span>
         <input catch-input class="entity-name-input" ng-show="heading.selected" ng-model="entity.name">

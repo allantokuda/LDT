@@ -29,8 +29,6 @@ describe('directives', function() {
       otherInput.focus()
       otherInput.select()
       element.trigger('dblclick')
-      console.log(myInput.focused)
-      console.log(otherInput.focused)
       expect(myInput).toBeFocused
       expect(myInput).toBeSelected
     });

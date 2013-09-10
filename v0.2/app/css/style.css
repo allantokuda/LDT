@@ -1,11 +1,24 @@
-.entity-body, .entity-heading {
-  padding: 10px;
+#canvas { position: relative; }
+
+.entity-border.selected {
+  display: inline-block;
+  background: #fd8;
 }
 
-.entity-body {
+.selected .entity-heading {
+  background: #fb0;
+}
+
+.entity-border {
+  position: absolute;
+  display: inline-block;
+  padding: 0px;
+  background: #eee;
+  border: 2px solid #777;
 }
 
 .entity-heading {
+  padding: 10px;
   margin-bottom: 2px;
   border-bottom: 2px solid #777;
   background: #cdf;
@@ -19,6 +32,10 @@
   padding: 0;
 }
 
+.entity-body {
+  padding: 10px;
+}
+
 .entity-body textarea {
   width: 100%;
   height: 100%;
@@ -30,14 +47,6 @@
 }
 
 
-.entity-border {
-  position: absolute;
-  display: inline-block;
-  padding: 0px;
-  background: #eee;
-  border: 2px solid #777;
-}
-
 .attribute, .attribute-input  {
   margin: 1px;
   font-family: inherit;
@@ -46,13 +55,19 @@
   height: 100%;
 }
 
-#canvas { position: relative; }
-
-#canvas div.entity-border.selected {
-  display: inline-block;
-  background: #fd8;
+.select-shield {
+  background: rgba(255,255,255,0.75);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  text-align: center;
 }
 
-#canvas div.selected .entity-heading {
-  background: #fb0;
+.select-shield:hover {
+  background: rgba(238,255,230,0.75);
 }
+
+.select-shield.new-relationship-endpoint {
+  background: rgba(198,255,192,0.75);
+}
+
