@@ -35,20 +35,23 @@ describe('GraphCtrl', function(){
     });
   });
 
+  // This logic is now handled by directives. Consider e2e test instead.
+  /*
   describe('keybindings', function() {
 
     var key_event = $.Event('keypress')
 
     it('should switch to new entity mode when the "e" key is pressed', function() {
-      key_event.charCode = 101;
+      key_event.charCode = 'e'.charCodeAt(0);
       $(window).trigger(key_event);
       expect(scope.editor.mode).toBe('new_entity')
     });
 
     it('should switch to new relationship start mode when the "r" key is pressed', function() {
-      key_event.charCode = 114;
+      key_event.charCode = 'r'.charCodeAt(0);
       $(window).trigger(key_event);
       expect(scope.editor.mode).toBe('new_relationship_start')
     });
   });
+  */
 });

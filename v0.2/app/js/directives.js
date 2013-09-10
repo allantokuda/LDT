@@ -137,3 +137,25 @@ app.directive('selectWith',function() {
 });
 
 
+app.directive('action',function() {
+  return {
+    link: function(scope, element, iAttrs, ctrl) {
+      element.click(function(e) {
+        var actionName = element[0].innerText.replace(' ', '').replace(/^(.)/, function(c) { return c.toLowerCase() });
+        scope[actionName]();
+      })
+    }
+  }
+});
+
+app.directive('hotkey',function() {
+  return {
+    link: function(scope, element, iAttrs, ctrl) {
+      $(window).keypress(function(e) {
+        console.log(e)
+        if (e.charCode == iAttrs.hotkey.charCodeAt(0))
+          element.trigger('click')
+      });
+    }
+  }
+});

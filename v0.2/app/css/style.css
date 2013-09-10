@@ -1,4 +1,15 @@
+body {
+  margin: 0px;
+}
+
 #canvas { position: relative; }
+
+#toolbar {
+  background: #eee;
+  border-bottom: #999;
+  margin: 0px;
+  padding: 5px;
+}
 
 .entity-border.selected {
   display: inline-block;

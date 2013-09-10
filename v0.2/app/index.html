@@ -32,7 +32,14 @@
   <input type="text" ng-model="entity.attributes"></input>
   </div>
   -->
-  <p>{{editor.mode}}</p>
+  <div id="toolbar">
+    <button action hotkey="s">Select</button>
+    <button action hotkey="e">New Entity</button>
+    <button action hotkey="r">New Relationship</button>
+    <button action hotkey="d">Delete</button>
+    <button action>Save</button>
+    <span>{{editor.mode}}</span>
+  </div>
 
   <!-- CANVAS element
   Scope watches: none

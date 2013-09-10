@@ -38,28 +38,6 @@ angular.module('myApp.controllers', []).
         return ''
     };
 
-    // Switch modes using keyboard
-    $(window).keypress(function(e) {
-      if (e.charCode == 13) /* Enter */
-          $scope.$apply(function() { $scope.editor.mode = 'select'; } );
-      else if ($scope.editor.mode == 'select')
-        switch (e.charCode) {
-          case 101: /* e */
-            $scope.$apply(function() {
-              $scope.editor.mode = 'new_entity';
-            });
-            break;
-
-          case 114: /* r */
-            $scope.$apply(function() {
-              $scope.editor.mode = 'new_relationship_start';
-              $scope.editor.buildingRelationship = true;
-              $scope.editor.entityOverlayMessage = 'click to begin relationship';
-            });
-            break;
-        }
-    })
-
     $scope.editor.buildingRelationship = function() {
       return _.contains(['new_relationship_start', 'new_relationship_end'], $scope.editor.mode)
     }
@@ -97,6 +75,32 @@ angular.module('myApp.controllers', []).
           $scope.editor.buildingRelationship = false;
           break;
       }
+    }
+
+    $scope.select = function() {
+      $scope.$apply(function() {
+        $scope.editor.mode = 'select';
+        $scope.editor.buildingRelationship = false;
+      });
+    }
+
+    $scope.newEntity = function() {
+      $scope.$apply(function() {
+        $scope.editor.mode = 'new_entity';
+        $scope.editor.buildingRelationship = false;
+      });
+    }
+
+    $scope.newRelationship = function() {
+      $scope.$apply(function() {
+        $scope.editor.mode = 'new_relationship_start';
+        $scope.editor.buildingRelationship = true;
+        $scope.editor.entityOverlayMessage = 'click to begin relationship';
+      });
+    }
+
+    $scope.delete = function() {
+      $scope.editor.mode = 'delete'
     }
 
     $scope.beginRelationship = function(entity) {
