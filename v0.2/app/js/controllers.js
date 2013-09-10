@@ -8,7 +8,7 @@ angular.module('myApp.controllers', []).
     $scope.editor = new Object
     $scope.graph = new Object
     $scope.editor.mode = 'select';
-    $scope.editor.buildingRelationship = false;
+    $scope.editor.entityOverlay = false;
 
     // Define some test data (TODO: load and persist to server)
     var e = $scope.graph.entities = []
@@ -38,10 +38,6 @@ angular.module('myApp.controllers', []).
         return ''
     };
 
-    $scope.editor.buildingRelationship = function() {
-      return _.contains(['new_relationship_start', 'new_relationship_end'], $scope.editor.mode)
-    }
-
     // Respond to click event to complete an action
     $("#canvas").click(function(e) {
       $scope.$apply(function() {
@@ -52,7 +48,7 @@ angular.module('myApp.controllers', []).
         }
         $scope.editor.mode = 'select'
         $scope.editor.entityOverlayMessage = '';
-        $scope.editor.buildingRelationship = false;
+        $scope.editor.entityOverlay = false;
       })
     });
 
@@ -72,7 +68,11 @@ angular.module('myApp.controllers', []).
           break;
         case 'new_relationship_end':
           $scope.endRelationship(entity);
-          $scope.editor.buildingRelationship = false;
+          $scope.editor.entityOverlay = false;
+          break;
+        case 'delete':
+          $scope.deleteEntity(entity);
+          $scope.editor.entityOverlay = false;
           break;
       }
     }
@@ -80,27 +80,31 @@ angular.module('myApp.controllers', []).
     $scope.select = function() {
       $scope.$apply(function() {
         $scope.editor.mode = 'select';
-        $scope.editor.buildingRelationship = false;
+        $scope.editor.entityOverlay = false;
       });
     }
 
     $scope.newEntity = function() {
       $scope.$apply(function() {
         $scope.editor.mode = 'new_entity';
-        $scope.editor.buildingRelationship = false;
+        $scope.editor.entityOverlay = false;
       });
     }
 
     $scope.newRelationship = function() {
       $scope.$apply(function() {
         $scope.editor.mode = 'new_relationship_start';
-        $scope.editor.buildingRelationship = true;
+        $scope.editor.entityOverlay = true;
         $scope.editor.entityOverlayMessage = 'click to begin relationship';
       });
     }
 
     $scope.delete = function() {
-      $scope.editor.mode = 'delete'
+      $scope.$apply(function() {
+        $scope.editor.mode = 'delete'
+        $scope.editor.entityOverlay = true;
+        $scope.editor.entityOverlayMessage = 'click to delete';
+      });
     }
 
     $scope.beginRelationship = function(entity) {
@@ -113,6 +117,18 @@ angular.module('myApp.controllers', []).
       var start_id = $scope.editor.newRelationshipStart.id
       $scope.graph.relationships.push({id: num, entity1_id: start_id, entity2_id: entity.id, symbol1: '?', symbol2: '?'})
       $scope.editor.mode = 'select'
+    }
+
+    $scope.deleteEntity = function(entity_to_delete) {
+      // Remove all connected relationships
+      $scope.graph.relationships = _.reject($scope.graph.relationships, function(r) {
+        return r.entity1_id == entity_to_delete.id || r.entity2_id == entity_to_delete.id
+      });
+
+      // Remove entity
+      $scope.graph.entities = _.reject($scope.graph.entities, function(e) {
+        return e.id == entity_to_delete.id
+      });
     }
 
     $scope.editor.deselectAll = function() {

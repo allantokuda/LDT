@@ -1,3 +1,17 @@
+Delete-Click
+or
+Click-Delete?
+
+New Relationship - Click - Click
+or
+Click - New Relationship - Click
+
+
+select-first logic used in Gmail. And just about every other editor out there.
+Answer: DOESN'T MATTER. Reverse it later if desired. Make it WORK first!
+I might even want BOTH MODES anyway!
+
+
 ANGULAR stuff
 
   directive shared by:
@@ -13,7 +27,6 @@ ANGULAR stuff
 
 COMPLETE A BARE BONES CRUD UI
 
-  Enable attributes edit
   delete entity (by keypress) -- ensure new entities don't get duplicate IDs
 
 	draw relationship as L-shape

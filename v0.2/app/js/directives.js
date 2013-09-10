@@ -152,7 +152,6 @@ app.directive('hotkey',function() {
   return {
     link: function(scope, element, iAttrs, ctrl) {
       $(window).keypress(function(e) {
-        console.log(e)
         if (e.charCode == iAttrs.hotkey.charCodeAt(0))
           element.trigger('click')
       });
