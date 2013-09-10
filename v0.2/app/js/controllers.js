@@ -5,23 +5,25 @@
 angular.module('myApp.controllers', []).
   controller('GraphCtrl', function($scope) {
     // Set initial edit mode
-    $scope.editor = new Object
-    $scope.graph = new Object
+    $scope.editor = new Object;
+    $scope.graph = new Object;
     $scope.editor.mode = 'select';
     $scope.editor.entityOverlay = false;
 
     // Define some test data (TODO: load and persist to server)
-    var e = $scope.graph.entities = []
-    e.push({id: 0, x:  20, y:  20, width: 100, height: 130, name: "Supplier",  attributes: "name\nlocation" })
-    e.push({id: 1, x: 220, y:  20, width: 100, height: 130, name: "Part",      attributes: "size\nshape\ncolor" })
-    e.push({id: 2, x: 120, y: 190, width: 100, height: 130, name: "Inventory", attributes: "quantity" })
+    var e = $scope.graph.entities = [];
+    e.push({id: 0, x:  20, y:  20, width: 100, height: 130, name: "Supplier",  attributes: "name\nlocation" });
+    e.push({id: 1, x: 220, y:  20, width: 100, height: 130, name: "Part",      attributes: "size\nshape\ncolor" });
+    e.push({id: 2, x: 120, y: 190, width: 100, height: 130, name: "Inventory", attributes: "quantity" });
+    $scope.graph.next_entity_id = 3;
 
-    var r = $scope.graph.relationships = []
-    r.push({ id: 0, entity1_id: 0, entity2_id: 2, label1: true, label2: false, symbol1: 'one', symbol2: 'many' })
-    r.push({ id: 1, entity1_id: 1, entity2_id: 2, label1: true, label2: false, symbol1: 'one', symbol2: 'many' })
+    var r = $scope.graph.relationships = [];
+    r.push({ id: 0, entity1_id: 0, entity2_id: 2, label1: true, label2: false, symbol1: 'one', symbol2: 'many' });
+    r.push({ id: 1, entity1_id: 1, entity2_id: 2, label1: true, label2: false, symbol1: 'one', symbol2: 'many' });
+    $scope.graph.next_relationship_id = 2;
 
     function entityCenterCoord(e) {
-      return (e.x * 1 + e.width / 2) + "," + (e.y * 1 + e.height / 2)
+      return (e.x * 1 + e.width / 2) + "," + (e.y * 1 + e.height / 2);
     };
 
     // Draw a simple line for each relationship
@@ -43,10 +45,17 @@ angular.module('myApp.controllers', []).
       $scope.$apply(function() {
         if ($scope.editor.mode == 'new_entity') {
           // FIXME: offsetX,offsetY give the wrong result for positioning a new entity if you click inside an existing entity.
-          var num = $scope.graph.entities.length
-          $scope.graph.entities.push({id: num, x: e.offsetX, y: e.offsetY, width: 120, height: 150, name: "New Entity", attributes: "new_entity_id"})
+          $scope.graph.entities.push({
+            id: $scope.graph.next_entity_id++,
+            x: e.offsetX,
+            y: e.offsetY,
+            width: 120,
+            height: 150,
+            name: "New Entity",
+            attributes: "new_entity_id"
+          })
         }
-        $scope.editor.mode = 'select'
+        $scope.editor.mode = 'select';
         $scope.editor.entityOverlayMessage = '';
         $scope.editor.entityOverlay = false;
       })
@@ -113,9 +122,13 @@ angular.module('myApp.controllers', []).
     }
 
     $scope.endRelationship = function(entity) {
-      var num = $scope.graph.relationships.length
-      var start_id = $scope.editor.newRelationshipStart.id
-      $scope.graph.relationships.push({id: num, entity1_id: start_id, entity2_id: entity.id, symbol1: '?', symbol2: '?'})
+      $scope.graph.relationships.push({
+        id: $scope.editor.next_relationship_id++,
+        entity1_id: $scope.editor.newRelationshipStart.id,
+        entity2_id: entity.id,
+        symbol1: '?',
+        symbol2: '?'
+      });
       $scope.editor.mode = 'select'
     }
 
