@@ -20,8 +20,6 @@ ANGULAR stuff
 
 COMPLETE A BARE BONES CRUD UI
 
-  delete entity (by keypress) -- ensure new entities don't get duplicate IDs
-
 	draw relationship as L-shape
 		select relationship ending by proximity click on canvas
 			delete a relationship: select relationship ending, hit "D"
