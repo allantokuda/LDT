@@ -40,23 +40,6 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         });
       }
 
-      //TODO remove this method
-      entity.nearestCorner = function(point) {
-        return _.reduce(corners,
-          function(nearest, corner) {
-            //Manhattan distance
-            dist = Math.pow(point.x - corner.x, 2) +
-                   Math.pow(point.x - corner.x, 2)
-
-            if (nearest == null || dist < nearest.dist)
-              return {dist: dist, corner: corner}
-            else
-              return nearest
-          },
-          null // start with unknown nearest corner
-        ).corner;
-      }
-
       entity.nearestSide = function(other) {
         // Distance expressions are positive when the entities are separated,
         // and negative when the entities overlap.
@@ -211,8 +194,6 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       _.each($scope.graph.relationships, function(r) {
         decorateRelationship(r).requestEndpoints();
       })
-
-      console.log($scope.graph.decoratedEntities)
 
       // Each entity negotiates its relationships' requests
       // to choose actual attachment points
