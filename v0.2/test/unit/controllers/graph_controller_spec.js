@@ -20,8 +20,7 @@ describe('GraphCtrl', function(){
     it('should calculate a straight horizontal path', function() {
       scope.graph.entities[1].x = 200
       scope.$digest();
-      expect(scope.graph.linePaths).toEqual(['M50,50 L250,50'])
-      //expect(scope.graph.linePaths).toBe(['M100,50 L200,50'])
+      expect(scope.graph.linePaths).toEqual(['M100,50 L130,50 L170,50 L200,50'])
     });
 
     it('should be blank if no relationships are defined', function() {

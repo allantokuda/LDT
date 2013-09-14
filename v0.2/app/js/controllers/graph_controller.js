@@ -2,7 +2,8 @@
 
 angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
 
-    var ARROWHEAD_SIZE = 20
+    var ARROWHEAD_LENGTH = 30
+    var ARROWHEAD_WIDTH = 20
     var SIDES = ['top', 'bottom', 'left', 'right'];
 
 
@@ -89,9 +90,9 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       entity.default_endpoint_bounds = function(side) {
         var offset;
         if (side == 'top' || side == 'bottom')
-          offset = Math.round((this.width  - ARROWHEAD_SIZE) / 2);
+          offset = Math.round((this.width  - ARROWHEAD_WIDTH) / 2);
         else
-          offset = Math.round((this.height - ARROWHEAD_SIZE) / 2);
+          offset = Math.round((this.height - ARROWHEAD_WIDTH) / 2);
 
         return {min: -offset, max: offset}
       }
@@ -102,14 +103,25 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         var center_to_center = this.along(side, other_entity.center()) -
                                this.along(side, this.center());
 
-        var max_straight_line_offset = (this.span(side) + other_entity.span(side)) / 2 - ARROWHEAD_SIZE
-        var ideal_offset = Math.round((this.span(side) - ARROWHEAD_SIZE) / 2 *
+        var max_straight_line_offset = (this.span(side) + other_entity.span(side)) / 2 - ARROWHEAD_WIDTH
+        var ideal_offset = Math.round((this.span(side) - ARROWHEAD_WIDTH) / 2 *
                            center_to_center / max_straight_line_offset)
+
+        var outward_vector;
+        switch(side) {
+          case 'top':    outward_vector = {x: 0, y:-1}; break;
+          case 'bottom': outward_vector = {x: 0, y: 1}; break;
+          case 'left':   outward_vector = {x:-1, y: 0}; break;
+          case 'right':  outward_vector = {x: 1, y: 0}; break;
+        }
 
         var endpoint = {
           relationship_id: relationship_id,
-          ideal_offset: ideal_offset
+          side:            side,
+          ideal_offset:    ideal_offset,
+          outward_vector:  outward_vector
         }
+        //Store endpoint in entity and also return it for reference by the relationship
         this.endpoints[side].push(endpoint);
         return endpoint;
       }
@@ -151,25 +163,12 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
           // Finally close up the allowed area for the next relationship.
           // Connection point is above center so bring down the max
           if (endpoint.ideal_offset > 0)
-            this.endpoint_bounds[side].max = endpoint.assigned_offset - ARROWHEAD_SIZE
+            this.endpoint_bounds[side].max = endpoint.assigned_offset - ARROWHEAD_WIDTH
           // Connection point is below center so bring up the min
           else
-            this.endpoint_bounds[side].min = endpoint.assigned_offset + ARROWHEAD_SIZE
+            this.endpoint_bounds[side].min = endpoint.assigned_offset + ARROWHEAD_WIDTH
         },this));
       }
-
-      // To be called by each relationship to get its final (negotiated) endpoint coordinates
-      //entity.finalEndpoint = function(relationship_id) {
-      //  var coordinates;
-      //  _.each(SIDES, function(side) {
-      //    endpoint = _.find(endpoints[side], function(endpoint) {
-      //      endpoint.relationship_id = relationship_id
-      //    });
-      //    if (endpoint != undefined)
-      //      coordinates = [endpoint.x, endpoint.y]
-      //  });
-      //  return coordinates
-      //}
 
       entity.initialize = function() {
         this.endpoints = _.object(SIDES, [[], [], [], []]);
@@ -234,11 +233,21 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
 
     function calculateLinePaths() {
       $scope.graph.linePaths = _.map($scope.graph.decoratedRelationships, function(r) {
+        var arrowTip = []
+        arrowTip[0] = r.endpoint1
+        arrowTip[1] = r.endpoint2
 
-        // TODO finish filling in linepath logic
+        var arrowBase = _.map(arrowTip, function(tip) {
+          return {
+            x: (tip.x + tip.outward_vector.x * ARROWHEAD_LENGTH),
+            y: (tip.y + tip.outward_vector.y * ARROWHEAD_LENGTH)
+          }
+        });
 
-        return "M" + r.endpoint1.x + ',' + r.endpoint1.y +
-              " L" + r.endpoint2.x + ',' + r.endpoint2.y
+        return "M" +  arrowTip[0].x + ',' +  arrowTip[0].y +
+              " L" + arrowBase[0].x + ',' + arrowBase[0].y +
+              " L" + arrowBase[1].x + ',' + arrowBase[1].y +
+              " L" +  arrowTip[1].x + ',' +  arrowTip[1].y
       });
     }
 
