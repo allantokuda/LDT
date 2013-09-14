@@ -35,11 +35,6 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       entity.center = function() {
         return this.coordinates(0.5,0.5)
       }
-      entity.corners = function() {
-        return _.map( [[0,0],[0,1],[1,1],[1,0]], function(loc) {
-          this.coordinates(loc[0], loc[1])
-        });
-      }
 
       entity.nearestSide = function(other) {
         // Distance expressions are positive when the entities are separated,
@@ -135,7 +130,7 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       entity.negotiateEndpoints = function(side) {
         // Give priority to endpoints that want the greatest offset from center
         this.endpoints[side] = _.sortBy(this.endpoints[side], function(endpoint) {
-          Math.abs(endpoint.ideal_offset)
+          return -Math.abs(endpoint.ideal_offset)
         });
 
         // Place each endpoint in the above priority
