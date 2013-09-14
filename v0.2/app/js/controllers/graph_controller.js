@@ -102,7 +102,7 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         var center_to_center = this.along(side, other_entity.center()) -
                                this.along(side, this.center());
 
-        var max_straight_line_offset = (this.height + other_entity.height) / 2 - ARROWHEAD_SIZE
+        var max_straight_line_offset = (this.span(side) + other_entity.span(side)) / 2 - ARROWHEAD_SIZE
         var ideal_offset = Math.round((this.span(side) - ARROWHEAD_SIZE) / 2 *
                            center_to_center / max_straight_line_offset)
 
