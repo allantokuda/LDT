@@ -2,6 +2,10 @@
 
 angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
 
+    var ARROWHEAD_SIZE = 20
+    var SIDES = ['top', 'bottom', 'left', 'right'];
+
+
     // Allow tests to pass on this scope alone, though this scope will actually
     // inherit the definition so that the parent scope can use it. TODO: rearchitect this.
     if (typeof($scope.graph) == 'undefined')
@@ -20,6 +24,7 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     $scope.graph.next_relationship_id = 2;
 
     function decoratedEntity(entity) {
+
       entity.coordinates = function(xloc,yloc) {
         return {
           x: Math.round(this.x + this.width  * xloc),
@@ -29,8 +34,139 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       entity.center = function() {
         return this.coordinates(0.5,0.5)
       }
+      entity.corners = function() {
+        return _.map( [[0,0],[0,1],[1,1],[1,0]], function(loc) {
+          this.coordinates(loc[0], loc[1])
+        });
+      }
+      entity.nearestCorner = function(point) {
+        return _.reduce(corners,
+          function(closest, corner) {
+            //Manhattan distance
+            dist = Math.pow(point.x - corner.x, 2) +
+                   Math.pow(point.x - corner.x, 2)
+
+            if (closest == null || dist < closest.dist)
+              return {dist: dist, corner: corner}
+            else
+              return closest
+          },
+          null // start with unknown closest corner
+        ).corner;
+      }
+      entity.nearestSide = function(point) {
+        return _.reduce([
+          { name: 'top',    dist: Math.abs(point.y - this.y              ) },
+          { name: 'bottom', dist: Math.abs(point.y - this.y - this.height) },
+          { name: 'left',   dist: Math.abs(point.x - this.x              ) },
+          { name: 'right',  dist: Math.abs(point.x - this.x - this.width ) }
+        ], function(closest, side) {
+          if (closest == null || side.dist < closest.dist)
+            return side
+          else
+            return closest
+        }, null).name;
+      }
+
+      entity.along = function(side, point) {
+        if (side == 'top' || side == 'bottom')
+          return point.x
+        else
+          return point.y
+      }
+
+      entity.default_endpoint_bounds = function(side) {
+        var offset;
+        if (side == 'top' || side == 'bottom')
+          offset = this.width / 2 - ARROWHEAD_SIZE / 2;
+        else
+          offset = this.height / 2 - ARROWHEAD_SIZE / 2;
+
+        return {min: -offset, max: offset}
+      }
+
+      // To be called by each relationship, to get a list of needing relationships
+      entity.requestEndpoint = function(relationship_id, other_entity) {
+        var side = this.nearestSide(other_entity.center);
+        var center_to_center = this.along(side, other_entity.center) -
+                               this.along(side, this.center);
+
+        var max_straight_line_offset = (this.height + other_entity.height) / 2 - ARROWHEAD_SIZE
+        var ideal_offset = (this.height - ARROWHEAD_SIZE) / 2 *
+                           center_to_center / max_straight_line_offset
+
+        this.endpoints[side].push({
+          relationship_id: relationship_id,
+          ideal_offset: ideal_offset
+        })
+      }
+
+      entity.negotiateEndpointsOnEachSide = function() {
+        callFunc = function(side) { this.negotiateEndpoints(side) }
+        _.each(SIDES, _.bind(callFunc, this))
+      }
+
+      // To be called once per draw, AFTER all relationships have made an endpoint request
+      entity.negotiateEndpoints = function(side) {
+        // Sort all endpoints on this side of the entity
+        _.sortBy(this.endpoints[side], function(endpoint) {
+          Math.abs(endpoint.ideal_offset)
+        });
+
+        // Loop through each endpoint
+        _.each(this.endpoints[side], function(endpoint) {
+
+          // Ideal offset falls naturally in the allowed area -> let it be exactly there
+          if(ideal_offset > this.endpoint_bounds[side].min &&
+             ideal_offset < this.endpoint_bounds[side].max) {
+            endpoint.offset = ideal_offset
+
+          // Ideal offset is below the allowed area
+          } else if (ideal_offset <= this.endpoint_bounds[side].min) {
+            endpoint.offset = this.endpoint_bounds[side].min
+
+          // Ideal offset is above the allowed area
+          } else if (ideal_offset >= this.endpoint_bounds[side].max) {
+            endpoint.offset = this.endpoint_bounds[side].max
+          }
+
+          // Finally close up the allowed area for the next relationship.
+          // Connection point is above center so bring down the max
+          if (ideal_offset > 0)
+            this.endpoint_bounds[side].max = ideal_offset - ARROWHEAD_SIZE
+          // Connection point is below center so bring up the min
+          else
+            this.endpoint_bounds[side].min = ideal_offset + ARROWHEAD_SIZE
+        });
+      }
+
+      // To be called by each relationship to get its final (negotiated) endpoint
+      entity.finalEndpoint = function(relationship_id) {
+      }
+
+      entity.initialize = function() {
+        this.endpoints = _.object(SIDES, [[], [], [], []]);
+        var boundsFunc = function(side) {
+          return this.default_endpoint_bounds(side)
+        };
+        this.endpoint_bounds = _.object(SIDES, _.map(SIDES, _.bind(boundsFunc, this)));
+      }
+
+      entity.initialize();
 
       return entity;
+    }
+
+    function decoratedRelationship(relationship) {
+      relationship.entity1 = entityByID(relationship.entity1_id)
+      relationship.entity2 = entityByID(relationship.entity2_id)
+
+      relationship.requestEndpoints = function() {
+        this.entity1.requestEndpoint(this.id, this.entity2)
+        this.entity2.requestEndpoint(this.id, this.entity1)
+      }
+
+      return relationship;
     }
 
     function entityByID(id) {
@@ -43,51 +179,34 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
 
     // Expensive watch operation here, but it seems to work well for this application.
     // http://stackoverflow.com/questions/14712089/how-to-deep-watch-an-array-in-angularjs
-    $scope.$watch(stringifyGraph, calculateLinePaths);
+    $scope.$watch(stringifyGraph, layoutGraph);
 
     function stringifyGraph() {
       return JSON.stringify($scope.graph.entities) +
              JSON.stringify($scope.graph.relationships)
     }
 
-    function calculateLinePaths() {
-      $scope.graph.linePaths = _.map($scope.graph.relationships, function(r) {
-        var entity1 = entityByID(r.entity1_id)
-        var entity2 = entityByID(r.entity2_id)
+    function layoutGraph() {
+      _.each($scope.graph.relationships, function(r) {
+        decoratedRelationship(r).requestEndpoints();
+      })
 
-        if (entity1 != undefined && entity2 != undefined) {
-          // TODO finish filling in linepath logic
+      _.each($scope.graph.entities, function(e) {
+        decoratedEntity(e).negotiateEndpoints();
+      })
 
-          return "M" + entity1.center().x + ',' + entity1.center().y +
-                " L" + entity2.center().x + ',' + entity2.center().y
-        } else { return "" }
-      });
+      calculateLinePaths();
     }
 
-    $scope.closer_to_vertical_than_horizontal = function(entity1, entity2) {
-      entity_positions = [[0,0],[0,1],[1,1],[1,0]]
-      min_dist = null
+    function calculateLinePaths() {
+      $scope.graph.linePaths = _.map($scope.graph.relationships, function(r) {
+        r = decoratedRelationship(r);
 
-      // Find closest two corners between the two entities
-      for (pos1 in entity_positions) {
-        coord1 = entityCoordinates(entity1, pos1[0], pos1[1])
+        // TODO finish filling in linepath logic
 
-        for (pos2 in entity_positions) {
-          coord2 = entityCoordinates(entity2, pos2[0], pos2[1])
-
-          // Manhattan distance for simplicity
-          dist_x = Math.abs(coord1.x - coord2.x)
-          dist_y = Math.abs(coord1.y - coord2.y)
-          dist = dist_x + dist_y
-
-          if (min_dist == null || dist < min_dist) {
-            min_dist = dist
-            result = dist_x < dist_y
-          }
-        }
-      }
-
-      return result;
+        return "M" + r.entity1.center().x + ',' + r.entity1.center().y +
+              " L" + r.entity2.center().x + ',' + r.entity2.center().y
+      });
     }
 
 

@@ -3,10 +3,9 @@ v0.2 drawRelationship algorithm
 PASS 1: requestEndpoints
   for each relationship:
     for each endpoint entity on that relationship:
-      assign an "endpoint" to the entity with data:
+      assign an "endpoint" to the entity (by side) with data:
         relationship ID
-        side
-        center-to-center offset
+        ideal offset
 
 PASS 2: positionEndpoints
   for each entity:
