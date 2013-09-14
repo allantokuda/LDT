@@ -25,13 +25,13 @@ body {
   display: inline-block;
   padding: 0px;
   background: #eee;
-  border: 2px solid #777;
+  border: 1px solid black;
 }
 
 .entity-heading {
   padding: 10px;
   margin-bottom: 2px;
-  border-bottom: 2px solid #777;
+  border-bottom: 1px solid black;
   background: #cdf;
 }
 
@@ -85,7 +85,7 @@ body {
 path.relationship {
   fill:none;
   stroke:black;
-  stroke-width:2px
+  stroke-width:1px
 }
 
 path.click-area {
