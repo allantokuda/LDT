@@ -89,9 +89,9 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       entity.default_endpoint_bounds = function(side) {
         var offset;
         if (side == 'top' || side == 'bottom')
-          offset = this.width / 2 - ARROWHEAD_SIZE / 2;
+          offset = Math.round((this.width  - ARROWHEAD_SIZE) / 2);
         else
-          offset = this.height / 2 - ARROWHEAD_SIZE / 2;
+          offset = Math.round((this.height - ARROWHEAD_SIZE) / 2);
 
         return {min: -offset, max: offset}
       }
