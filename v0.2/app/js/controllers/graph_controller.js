@@ -23,7 +23,7 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     r.push({ id: 1, entity1_id: 1, entity2_id: 2, label1: true, label2: false, symbol1: 'one', symbol2: 'many' });
     $scope.graph.next_relationship_id = 2;
 
-    function decoratedEntity(entity) {
+    function decorateEntity(entity) {
 
       entity.coordinates = function(xloc,yloc) {
         return {
@@ -39,32 +39,40 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
           this.coordinates(loc[0], loc[1])
         });
       }
+
+      //TODO remove this method
       entity.nearestCorner = function(point) {
         return _.reduce(corners,
-          function(closest, corner) {
+          function(nearest, corner) {
             //Manhattan distance
             dist = Math.pow(point.x - corner.x, 2) +
                    Math.pow(point.x - corner.x, 2)
 
-            if (closest == null || dist < closest.dist)
+            if (nearest == null || dist < nearest.dist)
               return {dist: dist, corner: corner}
             else
-              return closest
+              return nearest
           },
-          null // start with unknown closest corner
+          null // start with unknown nearest corner
         ).corner;
       }
-      entity.nearestSide = function(point) {
-        return _.reduce([
-          { name: 'top',    dist: Math.abs(point.y - this.y              ) },
-          { name: 'bottom', dist: Math.abs(point.y - this.y - this.height) },
-          { name: 'left',   dist: Math.abs(point.x - this.x              ) },
-          { name: 'right',  dist: Math.abs(point.x - this.x - this.width ) }
-        ], function(closest, side) {
-          if (closest == null || side.dist < closest.dist)
+
+      entity.nearestSide = function(other) {
+        // Distance expressions are positive when the entities are separated,
+        // and negative when the entities overlap.
+        var outward_distances = [
+          { name: 'left',   dist: this.x - other.x - other.width  },
+          { name: 'top',    dist: this.y - other.y - other.height },
+          { name: 'right',  dist: other.x - this.x - this.width  },
+          { name: 'bottom', dist: other.y - this.y - this.height }
+        ]
+        return _.reduce(outward_distances, function(nearest, side) {
+          //Counterintuitive, but the "nearest" side actually has the GREATEST
+          //outward distance to the other entity's opposing side.
+          if (nearest == null || side.dist > nearest.dist)
             return side
           else
-            return closest
+            return nearest
         }, null).name;
       }
 
@@ -73,6 +81,14 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
           return point.x
         else
           return point.y
+      }
+
+      // Think of widths and heights abstractly as "spans"
+      entity.span = function(side) {
+        if (side == 'top' || side == 'bottom')
+          return this.width
+        else
+          return this.height
       }
 
       entity.default_endpoint_bounds = function(side) {
@@ -87,22 +103,24 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
 
       // To be called by each relationship, to get a list of needing relationships
       entity.requestEndpoint = function(relationship_id, other_entity) {
-        var side = this.nearestSide(other_entity.center);
-        var center_to_center = this.along(side, other_entity.center) -
-                               this.along(side, this.center);
+        var side = this.nearestSide(other_entity);
+        var center_to_center = this.along(side, other_entity.center()) -
+                               this.along(side, this.center());
 
         var max_straight_line_offset = (this.height + other_entity.height) / 2 - ARROWHEAD_SIZE
-        var ideal_offset = (this.height - ARROWHEAD_SIZE) / 2 *
-                           center_to_center / max_straight_line_offset
+        var ideal_offset = Math.round((this.span(side) - ARROWHEAD_SIZE) / 2 *
+                           center_to_center / max_straight_line_offset)
 
-        this.endpoints[side].push({
+        console.log('relationship ' + relationship_id + ' requests attachment of ' + other_entity.name + ' to ' + side + ' of ' + this.name)
+        var endpoint = {
           relationship_id: relationship_id,
           ideal_offset: ideal_offset
-        })
+        }
+        this.endpoints[side].push(endpoint);
       }
 
       entity.negotiateEndpointsOnEachSide = function() {
-        callFunc = function(side) { this.negotiateEndpoints(side) }
+        var callFunc = function(side) { this.negotiateEndpoints(side) }
         _.each(SIDES, _.bind(callFunc, this))
       }
 
@@ -114,30 +132,30 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         });
 
         // Loop through each endpoint
-        _.each(this.endpoints[side], function(endpoint) {
+        _.each(this.endpoints[side], _.bind(function(endpoint) {
 
           // Ideal offset falls naturally in the allowed area -> let it be exactly there
-          if(ideal_offset > this.endpoint_bounds[side].min &&
-             ideal_offset < this.endpoint_bounds[side].max) {
-            endpoint.offset = ideal_offset
+          if(endpoint.ideal_offset > this.endpoint_bounds[side].min &&
+             endpoint.ideal_offset < this.endpoint_bounds[side].max) {
+            endpoint.offset = endpoint.ideal_offset
 
           // Ideal offset is below the allowed area
-          } else if (ideal_offset <= this.endpoint_bounds[side].min) {
+          } else if (endpoint.ideal_offset <= this.endpoint_bounds[side].min) {
             endpoint.offset = this.endpoint_bounds[side].min
 
           // Ideal offset is above the allowed area
-          } else if (ideal_offset >= this.endpoint_bounds[side].max) {
+          } else if (endpoint.ideal_offset >= this.endpoint_bounds[side].max) {
             endpoint.offset = this.endpoint_bounds[side].max
           }
 
           // Finally close up the allowed area for the next relationship.
           // Connection point is above center so bring down the max
-          if (ideal_offset > 0)
-            this.endpoint_bounds[side].max = ideal_offset - ARROWHEAD_SIZE
+          if (endpoint.ideal_offset > 0)
+            this.endpoint_bounds[side].max = endpoint.ideal_offset - ARROWHEAD_SIZE
           // Connection point is below center so bring up the min
           else
-            this.endpoint_bounds[side].min = ideal_offset + ARROWHEAD_SIZE
-        });
+            this.endpoint_bounds[side].min = endpoint.ideal_offset + ARROWHEAD_SIZE
+        },this));
       }
 
       // To be called by each relationship to get its final (negotiated) endpoint
@@ -157,9 +175,10 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       return entity;
     }
 
-    function decoratedRelationship(relationship) {
-      relationship.entity1 = entityByID(relationship.entity1_id)
-      relationship.entity2 = entityByID(relationship.entity2_id)
+    function decorateRelationship(relationship) {
+
+      relationship.entity1 = decoratedEntityByID(relationship.entity1_id)
+      relationship.entity2 = decoratedEntityByID(relationship.entity2_id)
 
       relationship.requestEndpoints = function() {
         this.entity1.requestEndpoint(this.id, this.entity2)
@@ -169,12 +188,10 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       return relationship;
     }
 
-    function entityByID(id) {
-      return decoratedEntity(
-        _.find($scope.graph.entities, function(e) {
-          return e.id == id
-        })
-      );
+    function decoratedEntityByID(id) {
+      return _.find($scope.graph.decoratedEntities, function(e) {
+        return e.id == id
+      });
     }
 
     // Expensive watch operation here, but it seems to work well for this application.
@@ -187,12 +204,21 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     }
 
     function layoutGraph() {
+      // Recreate decorated entities
+      $scope.graph.decoratedEntities = _.map( $scope.graph.entities, decorateEntity );
+
+      // Each relationship requests an endpoint from each of its entities.
+      // Only need decorated relationship momentarily, so don't bother storing it in the scope
       _.each($scope.graph.relationships, function(r) {
-        decoratedRelationship(r).requestEndpoints();
+        decorateRelationship(r).requestEndpoints();
       })
 
-      _.each($scope.graph.entities, function(e) {
-        decoratedEntity(e).negotiateEndpoints();
+      console.log($scope.graph.decoratedEntities)
+
+      // Each entity negotiates its relationships' requests
+      // to choose actual attachment points
+      _.each($scope.graph.decoratedEntities, function(e) {
+        e.negotiateEndpointsOnEachSide();
       })
 
       calculateLinePaths();
@@ -200,7 +226,7 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
 
     function calculateLinePaths() {
       $scope.graph.linePaths = _.map($scope.graph.relationships, function(r) {
-        r = decoratedRelationship(r);
+        r = decorateRelationship(r);
 
         // TODO finish filling in linepath logic
 
@@ -224,7 +250,7 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
 
     $scope.graph.createRelationship = function(entity1, entity2) {
       $scope.graph.relationships.push({
-        id: $scope.editor.next_relationship_id++,
+        id: $scope.graph.next_relationship_id++,
         entity1_id: entity1.id,
         entity2_id: entity2.id,
         symbol1: '?',
