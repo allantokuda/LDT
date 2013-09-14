@@ -19,16 +19,26 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     r.push({ id: 1, entity1_id: 1, entity2_id: 2, label1: true, label2: false, symbol1: 'one', symbol2: 'many' });
     $scope.graph.next_relationship_id = 2;
 
-    function entityCoordinates(entity, xloc, yloc) {
-      var x = Math.round(entity.x + entity.width  * xloc)
-      var y = Math.round(entity.y + entity.height * yloc)
-      return {x:x, y:y}
-    };
+    function decoratedEntity(entity) {
+      entity.coordinates = function(xloc,yloc) {
+        return {
+          x: Math.round(this.x + this.width  * xloc),
+          y: Math.round(this.y + this.height * yloc)
+        }
+      }
+      entity.center = function() {
+        return this.coordinates(0.5,0.5)
+      }
 
-    function entityByID(get_id) {
-      return _.find($scope.graph.entities, function(entity) {
-        return entity.id == get_id
-      });
+      return entity;
+    }
+
+    function entityByID(id) {
+      return decoratedEntity(
+        _.find($scope.graph.entities, function(e) {
+          return e.id == id
+        })
+      );
     }
 
     // Expensive watch operation here, but it seems to work well for this application.
@@ -46,14 +56,11 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         var entity2 = entityByID(r.entity2_id)
 
         if (entity1 != undefined && entity2 != undefined) {
-          var center1 = entityCoordinates(entity1, 0.5, 0.5)
-          var center2 = entityCoordinates(entity2, 0.5, 0.5)
-
           // TODO finish filling in linepath logic
 
-          return "M" + center1.x + ',' + center1.y +
-                " L" + center2.x + ',' + center2.y
-        } else { "" }
+          return "M" + entity1.center().x + ',' + entity1.center().y +
+                " L" + entity2.center().x + ',' + entity2.center().y
+        } else { return "" }
       });
     }
 
