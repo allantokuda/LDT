@@ -144,7 +144,9 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
           }
 
           // Assign global coordinates for use by relationsihp draw
-          endpoint.coordinates = this.sideCenterOffsetCoordinates(side, endpoint.assigned_offset);
+          var coordinates = this.sideCenterOffsetCoordinates(side, endpoint.assigned_offset);
+          endpoint.x = coordinates.x
+          endpoint.y = coordinates.y
 
           // Finally close up the allowed area for the next relationship.
           // Connection point is above center so bring down the max
@@ -228,18 +230,15 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       })
 
       calculateLinePaths();
-
-      console.log($scope.graph.decoratedEntities);
     }
 
     function calculateLinePaths() {
-      $scope.graph.linePaths = _.map($scope.graph.relationships, function(r) {
-        r = decorateRelationship(r);
+      $scope.graph.linePaths = _.map($scope.graph.decoratedRelationships, function(r) {
 
         // TODO finish filling in linepath logic
 
-        return "M" + r.entity1.center().x + ',' + r.entity1.center().y +
-              " L" + r.entity2.center().x + ',' + r.entity2.center().y
+        return "M" + r.endpoint1.x + ',' + r.endpoint1.y +
+              " L" + r.endpoint2.x + ',' + r.endpoint2.y
       });
     }
 
