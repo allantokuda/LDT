@@ -68,7 +68,8 @@
 
 
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-      <path relationship style="fill:none;stroke:black;stroke-width:2px" ng-attr-d="{{graph.linePath()}}"></path>
+      <path class="click-area"   ng-repeat="linePath in graph.linePaths" ng-attr-d="{{linePath}}"></path>
+      <path class="relationship" ng-repeat="linePath in graph.linePaths" ng-attr-d="{{linePath}}"></path>
     </svg>
   </div>
 

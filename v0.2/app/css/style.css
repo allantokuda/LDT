@@ -82,3 +82,14 @@ body {
   background: rgba(198,255,192,0.75);
 }
 
+path.relationship {
+  fill:none;
+  stroke:black;
+  stroke-width:2px
+}
+
+path.click-area {
+  fill:none;
+  stroke:none;
+  stroke-width:20px
+}

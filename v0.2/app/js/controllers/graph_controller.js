@@ -1,7 +1,5 @@
 'use strict';
 
-/* Controllers */
-
 angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
 
     // Allow tests to pass on this scope alone, though this scope will actually
@@ -21,23 +19,70 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     r.push({ id: 1, entity1_id: 1, entity2_id: 2, label1: true, label2: false, symbol1: 'one', symbol2: 'many' });
     $scope.graph.next_relationship_id = 2;
 
-    function entityCenterCoord(e) {
-      return (e.x * 1 + e.width / 2) + "," + (e.y * 1 + e.height / 2);
+    function entityCoordinates(entity, xloc, yloc) {
+      var x = Math.round(entity.x + entity.width  * xloc)
+      var y = Math.round(entity.y + entity.height * yloc)
+      return {x:x, y:y}
     };
 
-    // Draw a simple line for each relationship
-    // TODO: Put in fancier logic for drawing L-shaped relationships
-    $scope.graph.linePath = function(){
-      if ($scope.graph.entities.length > 0)
-        return _.map($scope.graph.relationships, function(relationship) {
-          var e1 = _.find($scope.graph.entities, function(e) { return e.id == relationship.entity1_id })
-          var e2 = _.find($scope.graph.entities, function(e) { return e.id == relationship.entity2_id })
+    function entityByID(get_id) {
+      return _.find($scope.graph.entities, function(entity) {
+        return entity.id == get_id
+      });
+    }
 
-          if (e1 && e2) return "M" + entityCenterCoord(e1) + " L" + entityCenterCoord(e2)
-        }).join(" ")
-      else
-        return ''
-    };
+    // Expensive watch operation here, but it seems to work well for this application.
+    // http://stackoverflow.com/questions/14712089/how-to-deep-watch-an-array-in-angularjs
+    $scope.$watch(stringifyGraph, calculateLinePaths);
+
+    function stringifyGraph() {
+      return JSON.stringify($scope.graph.entities) +
+             JSON.stringify($scope.graph.relationships)
+    }
+
+    function calculateLinePaths() {
+      $scope.graph.linePaths = _.map($scope.graph.relationships, function(r) {
+        var entity1 = entityByID(r.entity1_id)
+        var entity2 = entityByID(r.entity2_id)
+
+        if (entity1 != undefined && entity2 != undefined) {
+          var center1 = entityCoordinates(entity1, 0.5, 0.5)
+          var center2 = entityCoordinates(entity2, 0.5, 0.5)
+
+          // TODO finish filling in linepath logic
+
+          return "M" + center1.x + ',' + center1.y +
+                " L" + center2.x + ',' + center2.y
+        } else { "" }
+      });
+    }
+
+    $scope.closer_to_vertical_than_horizontal = function(entity1, entity2) {
+      entity_positions = [[0,0],[0,1],[1,1],[1,0]]
+      min_dist = null
+
+      // Find closest two corners between the two entities
+      for (pos1 in entity_positions) {
+        coord1 = entityCoordinates(entity1, pos1[0], pos1[1])
+
+        for (pos2 in entity_positions) {
+          coord2 = entityCoordinates(entity2, pos2[0], pos2[1])
+
+          // Manhattan distance for simplicity
+          dist_x = Math.abs(coord1.x - coord2.x)
+          dist_y = Math.abs(coord1.y - coord2.y)
+          dist = dist_x + dist_y
+
+          if (min_dist == null || dist < min_dist) {
+            min_dist = dist
+            result = dist_x < dist_y
+          }
+        }
+      }
+
+      return result;
+    }
+
 
     $scope.graph.createEntity = function(locX,locY) {
       $scope.graph.entities.push({

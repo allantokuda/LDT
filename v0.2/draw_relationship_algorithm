@@ -1,0 +1,24 @@
+v0.2 drawRelationship algorithm
+
+PASS 1: requestEndpoints
+  for each relationship:
+    for each endpoint entity on that relationship:
+      assign an "endpoint" to the entity with data:
+        relationship ID
+        side
+        center-to-center offset
+
+PASS 2: positionEndpoints
+  for each entity:
+    for each side on the entity:
+      sort the endpoints by ABSOLUTE VALUE of center-to-center offset (largest first)
+      initialize max,min bounds
+      for each endpoint, in sort order:
+        place in ideal location within the remaining bounds
+        reduce remaining bounds accordingly
+
+PASS 3: drawPositionedRelationships
+  for each relationship:
+    get endpoint from each entity, including assigned location
+    draw the relationship
+
