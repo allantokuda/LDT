@@ -6,7 +6,6 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     var ARROWHEAD_WIDTH = 20
     var SIDES = ['top', 'bottom', 'left', 'right'];
 
-
     // Allow tests to pass on this scope alone, though this scope will actually
     // inherit the definition so that the parent scope can use it. TODO: rearchitect this.
     if (typeof($scope.graph) == 'undefined')
