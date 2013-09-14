@@ -66,6 +66,18 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
           return point.y
       }
 
+      entity.sideCenterOffsetCoordinates = function(side, centerOffset) {
+        var xCoord = this.x + this.width  / 2 + centerOffset
+        var yCoord = this.y + this.height / 2 + centerOffset
+
+        switch(side) {
+          case 'top':    return { x: xCoord, y: this.y }; break;
+          case 'bottom': return { x: xCoord, y: this.y + this.height }; break;
+          case 'left':   return { y: yCoord, x: this.x }; break;
+          case 'right':  return { y: yCoord, x: this.x + this.width  }; break;
+        }
+      }
+
       // Think of widths and heights abstractly as "spans"
       entity.span = function(side) {
         if (side == 'top' || side == 'bottom')
@@ -99,6 +111,7 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
           ideal_offset: ideal_offset
         }
         this.endpoints[side].push(endpoint);
+        return endpoint;
       }
 
       entity.negotiateEndpointsOnEachSide = function() {
@@ -119,7 +132,7 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
           // Ideal offset falls naturally in the allowed area -> let it be exactly there
           if(endpoint.ideal_offset > this.endpoint_bounds[side].min &&
              endpoint.ideal_offset < this.endpoint_bounds[side].max) {
-            endpoint.assigned_offset = endpoint.ideal_offset
+            endpoint.assigned_offset = endpoint.ideal_offset;
 
           // Ideal offset is below the allowed area
           } else if (endpoint.ideal_offset <= this.endpoint_bounds[side].min) {
@@ -129,6 +142,9 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
           } else if (endpoint.ideal_offset >= this.endpoint_bounds[side].max) {
             endpoint.assigned_offset = this.endpoint_bounds[side].max
           }
+
+          // Assign global coordinates for use by relationsihp draw
+          endpoint.coordinates = this.sideCenterOffsetCoordinates(side, endpoint.assigned_offset);
 
           // Finally close up the allowed area for the next relationship.
           // Connection point is above center so bring down the max
@@ -140,9 +156,18 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         },this));
       }
 
-      // To be called by each relationship to get its final (negotiated) endpoint
-      entity.finalEndpoint = function(relationship_id) {
-      }
+      // To be called by each relationship to get its final (negotiated) endpoint coordinates
+      //entity.finalEndpoint = function(relationship_id) {
+      //  var coordinates;
+      //  _.each(SIDES, function(side) {
+      //    endpoint = _.find(endpoints[side], function(endpoint) {
+      //      endpoint.relationship_id = relationship_id
+      //    });
+      //    if (endpoint != undefined)
+      //      coordinates = [endpoint.x, endpoint.y]
+      //  });
+      //  return coordinates
+      //}
 
       entity.initialize = function() {
         this.endpoints = _.object(SIDES, [[], [], [], []]);
@@ -163,8 +188,8 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       relationship.entity2 = decoratedEntityByID(relationship.entity2_id)
 
       relationship.requestEndpoints = function() {
-        this.entity1.requestEndpoint(this.id, this.entity2)
-        this.entity2.requestEndpoint(this.id, this.entity1)
+        this.endpoint1 = this.entity1.requestEndpoint(this.id, this.entity2)
+        this.endpoint2 = this.entity2.requestEndpoint(this.id, this.entity1)
       }
 
       return relationship;
@@ -187,12 +212,13 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
 
     function layoutGraph() {
       // Recreate decorated entities
-      $scope.graph.decoratedEntities = _.map( $scope.graph.entities, decorateEntity );
+      $scope.graph.decoratedEntities      = _.map($scope.graph.entities,      decorateEntity);
+      $scope.graph.decoratedRelationships = _.map($scope.graph.relationships, decorateRelationship);
 
       // Each relationship requests an endpoint from each of its entities.
       // Only need decorated relationship momentarily, so don't bother storing it in the scope
-      _.each($scope.graph.relationships, function(r) {
-        decorateRelationship(r).requestEndpoints();
+      _.each($scope.graph.decoratedRelationships, function(r) {
+        r.requestEndpoints();
       })
 
       // Each entity negotiates its relationships' requests
@@ -202,6 +228,8 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       })
 
       calculateLinePaths();
+
+      console.log($scope.graph.decoratedEntities);
     }
 
     function calculateLinePaths() {
