@@ -1,37 +1,22 @@
+Enter finishes renaming entity
+Rename begins immediately on entity creation
+Tab finishes rename and moves to edit attributes
+Print layout doesn't show toolbar
 Investigate: layoutGraph is getting called twice
 
-
-Delete-Click or Click-Delete?
-New Relationship - Click - Click or Click - New Relationship - Click ?
-select-first logic used in Gmail. And just about every other editor out there.
-Answer: DOESN'T MATTER. Reverse it later if desired. Make it WORK first!
-I might even want BOTH MODES anyway!
-
-
-ANGULAR stuff
-
-  directive shared by:
-    entity select
-    attribute select
-    relationship select
-    relationship ending select
-    entity rename (on double click)
-    attribute edit (on double click)
-
-  split up controllers, top level "editorCtrl" and "graphCtrl" inside it
+BUG: relationships vanish below a certain y-coordinate.
 
 
 COMPLETE A BARE BONES CRUD UI
 
-	draw relationship as L-shape
-		select relationship ending by proximity click on canvas
-			delete a relationship: select relationship ending, hit "D"
-			draw relationship ending symbols (default '?')
-			set keys for changing ending symbols: 1, m, ?, i
+  select relationship ending by proximity click on canvas
+    delete a relationship: select relationship ending, hit "D"
+    draw relationship ending symbols (default '?')
+    set keys for changing ending symbols: 1, m, ?, i
 
-		show editable graph name, random string identifier, and preferences
-			save graph (by keypress)
-			re-edit graph (setup URL accepting graph ID string)
+  show editable graph name, random string identifier, and preferences
+    save graph (by keypress)
+    re-edit graph (setup URL accepting graph ID string)
 
 BUILD THE DREAM
 	set "scale" (Carlis) on columns with keypresses
