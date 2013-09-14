@@ -111,7 +111,6 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         var ideal_offset = Math.round((this.span(side) - ARROWHEAD_SIZE) / 2 *
                            center_to_center / max_straight_line_offset)
 
-        console.log('relationship ' + relationship_id + ' requests attachment of ' + other_entity.name + ' to ' + side + ' of ' + this.name)
         var endpoint = {
           relationship_id: relationship_id,
           ideal_offset: ideal_offset
@@ -126,35 +125,35 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
 
       // To be called once per draw, AFTER all relationships have made an endpoint request
       entity.negotiateEndpoints = function(side) {
-        // Sort all endpoints on this side of the entity
-        _.sortBy(this.endpoints[side], function(endpoint) {
+        // Give priority to endpoints that want the greatest offset from center
+        this.endpoints[side] = _.sortBy(this.endpoints[side], function(endpoint) {
           Math.abs(endpoint.ideal_offset)
         });
 
-        // Loop through each endpoint
+        // Place each endpoint in the above priority
         _.each(this.endpoints[side], _.bind(function(endpoint) {
 
           // Ideal offset falls naturally in the allowed area -> let it be exactly there
           if(endpoint.ideal_offset > this.endpoint_bounds[side].min &&
              endpoint.ideal_offset < this.endpoint_bounds[side].max) {
-            endpoint.offset = endpoint.ideal_offset
+            endpoint.assigned_offset = endpoint.ideal_offset
 
           // Ideal offset is below the allowed area
           } else if (endpoint.ideal_offset <= this.endpoint_bounds[side].min) {
-            endpoint.offset = this.endpoint_bounds[side].min
+            endpoint.assigned_offset = this.endpoint_bounds[side].min
 
           // Ideal offset is above the allowed area
           } else if (endpoint.ideal_offset >= this.endpoint_bounds[side].max) {
-            endpoint.offset = this.endpoint_bounds[side].max
+            endpoint.assigned_offset = this.endpoint_bounds[side].max
           }
 
           // Finally close up the allowed area for the next relationship.
           // Connection point is above center so bring down the max
           if (endpoint.ideal_offset > 0)
-            this.endpoint_bounds[side].max = endpoint.ideal_offset - ARROWHEAD_SIZE
+            this.endpoint_bounds[side].max = endpoint.assigned_offset - ARROWHEAD_SIZE
           // Connection point is below center so bring up the min
           else
-            this.endpoint_bounds[side].min = endpoint.ideal_offset + ARROWHEAD_SIZE
+            this.endpoint_bounds[side].min = endpoint.assigned_offset + ARROWHEAD_SIZE
         },this));
       }
 
