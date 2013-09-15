@@ -2,6 +2,14 @@ body {
   margin: 0px;
 }
 
+#graph-name {
+  margin: 0.5em;
+  margin-left: 15px;
+  padding-left: 15px;
+  font-size: 16pt;
+  border: none;
+}
+
 #canvas { position: relative; }
 
 #toolbar {
@@ -9,6 +17,7 @@ body {
   border-bottom: #999;
   margin: 0px;
   padding: 5px;
+  padding-left: 30px;
 }
 
 .entity-border.selected {
@@ -45,6 +54,7 @@ body {
 
 .entity-body {
   padding: 10px;
+  padding-top: 5px;
 }
 
 .entity-body textarea {
@@ -57,15 +67,16 @@ body {
   padding: 0;
 }
 
-.entity-body p.attribute {
+.entity-body .attribute span {
   margin: 0;
   font-family: inherit;
   font-size: inherit;
   cursor: pointer;
+  display: inline;
 }
 
-.entity-body p.attribute.identifier {
-  text-decoration: underline;
+.entity-body .attribute.identifier span {
+  border-bottom: 1px solid black;
 }
 
 

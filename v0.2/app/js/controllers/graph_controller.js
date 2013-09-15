@@ -32,6 +32,8 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     r.push({ id: 1, entity1_id: 1, entity2_id: 2, label1: true, label2: false, symbol1: 'none', symbol2: 'chickenfoot' });
     $scope.graph.next_relationship_id = 2;
 
+    $scope.graph.name = "Untitled graph"
+
 
     // Expensive watch operation here, but it seems to work well for this application.
     // http://stackoverflow.com/questions/14712089/how-to-deep-watch-an-array-in-angularjs

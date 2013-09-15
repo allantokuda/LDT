@@ -155,6 +155,7 @@ app.directive('hotkey',function() {
         if (e.charCode == iAttrs.hotkey.charCodeAt(0))
           element.trigger('click')
       });
+      element.attr('title', 'hotkey: ' + iAttrs.hotkey)
     }
   }
 });

@@ -1,26 +1,25 @@
-Wish list:
-  Score the endpoints based on the severity of their angles instead of pure offset.
-    (The closer of 2 entities loses the negotiation sooner than it should.)
-  Arrowheads should "squish" together when there's not enough space
-
-Enter finishes renaming entity
-Rename begins immediately on entity creation
-Tab finishes rename and moves to edit attributes
-Print layout doesn't show toolbar
-Investigate: layoutGraph is getting called twice
-
-BUG: relationships vanish below a certain y-coordinate.
-
-BUG/Feature: Multiple relationships between 2 entities always cross each other
-
-Feature: Make reflexive relationships float around the entity away from other relationships
-Feature: add an identifier squiggle, toggled by Command-Shift-Click
+Bugs
+  Double click doesn't edit attribute (need to click near border)
+  Relationships vanish below a certain y-coordinate.
+  Multiple relationships between 2 entities always cross each other
 
 COMPLETE A BARE BONES CRUD UI
 
-  show editable graph name, random string identifier, and preferences
-    save graph (by keypress)
+    save graph (by keypress) -- create random string identifier
     re-edit graph (setup URL accepting graph ID string)
+
+Backlog:
+
+  Score the endpoints based on the severity of their angles instead of pure offset.  (The closer of 2 entities loses the negotiation sooner than it should.)
+  Arrowheads should "squish" together when there's not enough space
+  Enter finishes renaming entity
+  Rename begins immediately on entity creation
+  Tab finishes rename and moves to edit attributes
+  Print layout doesn't show toolbar
+  Investigate: layoutGraph is getting called twice
+  Feature: Make reflexive relationships float around the entity away from other relationships
+  Feature: add an identifier squiggle, toggled by Command-Shift-Click
+
 
 BUILD THE DREAM
 	set "scale" (Carlis) on columns with keypresses
@@ -32,6 +31,10 @@ BUILD THE DREAM
 		edit example data
 		pre-fill example data with auto-faker library
 
+SECURITY
+  Add password protection for access
+  Add password protection for edit
+
 MAKE UI SCALE
 	add scroll
 	add zoom
@@ -40,14 +43,9 @@ MAKE UI FASTER TO USE
 	add entity and relationship at same time, with preset symbols, based on keystrokes. 'm' adds a has-many relationship from the selected entity. Also '1', and just 'h' (has) which puts down '?' symbols.
 
 MAKE UI PRESENTABLE
-	add toolbar
-		add new entity
-		add new relationship
-		hover to indicate hotkeys
-
+  place entity by its center instead of corner
 	draw new entity "ghost" connected to mouse
 	draw new relationship "ghost" connected to mouse
-
   make entity not resizable below minimum sizing
 
 MAKE UI NICER TO USE
