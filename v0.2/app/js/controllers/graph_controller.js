@@ -294,7 +294,7 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         width: 120,
         height: 150,
         name: "New Entity",
-        attributes: "new_entity_id"
+        attributes: ""
       })
     }
 
