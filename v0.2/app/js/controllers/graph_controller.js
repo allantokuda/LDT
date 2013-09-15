@@ -61,7 +61,6 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         e.negotiateEndpointsOnEachSide();
       })
 
-      setupAttributes();
       setupArrowheads();
     }
 
@@ -262,7 +261,6 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         }).join(' L');
     }
 
-
     function decoratedEntityByID(id) {
       return _.find($scope.graph.decoratedEntities, function(e) {
         return e.id == id
@@ -281,27 +279,15 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       return attributeName + '*';
     }
 
-    // Make attributes accessible directly off the scope for convenience in rendering
-    function setupAttributes() {
-      $scope.graph.attributes = {}
-      _.each($scope.graph.entities, function(entity) {
-        var splitAttributes = entity.attributes.split("\n");
-        $scope.graph.attributes[entity.id] = _.map(splitAttributes, function(attributeName) {
-          var lastChar = attributeName.substr(attributeName.length - 1);
-          var idClass;
-
-          if (isIdentifier(attributeName)) {
-            idClass = 'identifier';
-            attributeName = attributeName.substr(0, attributeName.length - 1);
-          } else {
-            idClass = '';
-          }
-
-          return _.object(['text', 'class'], [attributeName, idClass]);
-        });
-      });
+    // Would love to eliminate these helpers. The attributes stopped responding to a double click event
+    // when I sent an attribute object with this information pre-populated. Calling these helpers instead
+    // somehow solved the problem.
+    $scope.removeIdentifierIfPresent = function(attributeName) {
+      return isIdentifier(attributeName) ? removeIdentifier(attributeName) : attributeName;
     }
-
+    $scope.cssClass = function(attributeName) {
+      return isIdentifier(attributeName) ? 'identifier' : '';
+    }
 
     // Make arrowheads accessible directly off the scope for convenience in rendering
     function setupArrowheads() {
