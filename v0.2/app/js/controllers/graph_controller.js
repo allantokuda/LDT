@@ -8,7 +8,7 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
 
     var ARROWHEAD = {
       none: [['M',0,0]],
-      '?': [['M',0,0]],
+      '?': [['M',0.7,-0.3], ['L',0.7,-0.7], ['L',1.1,-0.7], ['L',1.1,-0.5], ['L',1.3,-0.5], ['M',1.5,-0.5], ['L',1.7,-0.5]],
       chickenfoot: [['M',0,1], ['L',2,0], ['L',0,-1]],
       identifier:  [['M',2.5,1], ['L',-2.5,1]],
       chickenfoot_identifier:  [['M',0,1], ['L',2,0], ['L',0,-1], ['M',2.5,1], ['L',2.5,-1]]
