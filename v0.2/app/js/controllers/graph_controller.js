@@ -11,7 +11,7 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       none: [['M',0,0]],
       '?': [['M',0.7,-0.3], ['L',0.7,-0.7], ['L',1.1,-0.7], ['L',1.1,-0.5], ['L',1.3,-0.5], ['M',1.5,-0.5], ['L',1.7,-0.5]],
       chickenfoot: [['M',0,1], ['L',2,0], ['L',0,-1]],
-      identifier:  [['M',2.5,1], ['L',-2.5,1]],
+      identifier:  [['M',2.5,1], ['L',2.5,-1]],
       chickenfoot_identifier:  [['M',0,1], ['L',2,0], ['L',0,-1], ['M',2.5,1], ['L',2.5,-1]]
     };
 
@@ -270,14 +270,15 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     function setupArrowheads() {
       $scope.graph.arrowheads = []
       _.each($scope.graph.decoratedRelationships, function(r) {
-        decorateEndpoint(r.endpoint1, r.symbol1);
-        decorateEndpoint(r.endpoint2, r.symbol2);
+        decorateEndpoint(r.endpoint1, r.symbol1, 1);
+        decorateEndpoint(r.endpoint2, r.symbol2, 2);
         $scope.graph.arrowheads.push(r.endpoint1);
         $scope.graph.arrowheads.push(r.endpoint2);
       });
     }
 
-    function decorateEndpoint(endpoint, symbol) {
+    function decorateEndpoint(endpoint, symbol, relationship_ending) {
+      endpoint.relationship_ending = relationship_ending
       endpoint.symbol = symbol
       endpoint.path = renderArrowhead(endpoint.symbol, endpoint.side, endpoint.x, endpoint.y)
       endpoint.box  = renderArrowhead('box',           endpoint.side, endpoint.x, endpoint.y)
@@ -296,6 +297,32 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       var svg = _.map(arrowhead, function(point) { return point.render(); } ).join(' ')
 
       return svg;
+    }
+
+    $scope.graph.switchArrow = function(arrow, switchIdentifier) {
+      var relationship = _.find($scope.graph.relationships, function(r) {
+        return r.id == arrow.relationship_id
+      });
+      var symbol = relationship['symbol' + arrow.relationship_ending]
+
+      if (switchIdentifier) {
+        switch(symbol) {
+          case 'none':                   symbol = 'identifier'; break;
+          case 'identifier':             symbol = 'none'; break;
+          case 'chickenfoot':            symbol = 'chickenfoot_identifier'; break;
+          case 'chickenfoot_identifier': symbol = 'chickenfoot'; break;
+          case '?':                      symbol = 'identifier'; break;
+        }
+      } else {
+        switch(symbol) {
+          case 'none':                   symbol = 'chickenfoot'; break;
+          case 'chickenfoot':            symbol = 'none'; break;
+          case 'identifier':             symbol = 'chickenfoot_identifier'; break;
+          case 'chickenfoot_identifier': symbol = 'chickenfoot'; break;
+          case '?':                      symbol = 'none'; break;
+        }
+      }
+      relationship['symbol' + arrow.relationship_ending] = symbol;
     }
 
     function pointObject(data_array) {

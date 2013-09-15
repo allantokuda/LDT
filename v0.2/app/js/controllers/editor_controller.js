@@ -40,6 +40,17 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
     }
   }
 
+  $scope.switchArrow = function(arrow, ev) {
+    console.log(ev)
+    if ($scope.editor.mode == 'select') {
+      // Use shift key to toggler identifier
+      if (ev.shiftKey)
+        $scope.graph.switchArrow(arrow,true);
+      else
+        $scope.graph.switchArrow(arrow);
+    }
+  }
+
   // Action buttons / hotkeys
 
   $scope.select = function() {

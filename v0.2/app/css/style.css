@@ -111,7 +111,7 @@ path.click-area {
   stroke: none;
 }
 
-path.click-area:hover {
+#canvas.select path.click-area:hover {
   fill: rgba(255,255,0,0.30);
   stroke: none;
 }
