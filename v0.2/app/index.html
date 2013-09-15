@@ -70,7 +70,7 @@
       <path class="relationship" ng-repeat="r in graph.decoratedRelationships" ng-attr-d="{{r.svgPath()}}"></path>
       <path class="click-path"   ng-repeat="r in graph.decoratedRelationships" ng-attr-d="{{r.svgPath()}}" ng-click="handleRelationshipClick(r)" catch-input></path>
       <path class="arrowhead"    ng-repeat="a in graph.arrowheads" ng-attr-d="{{a.path}}"></path>
-      <rect class="click-rect"   ng-repeat="a in graph.arrowheads" ng-attr-width="{{a.rect.width}}" ng-attr-height="{{a.rect.height}}" ng-attr-x="{{a.rect.x}}" ng-attr-y="{{a.rect.y}}" catch-input/>
+      <path class="click-area"   ng-repeat="a in graph.arrowheads" ng-attr-d="{{a.box}}"></path>
     </svg>
   </div>
 

@@ -7,6 +7,7 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     var SIDES = ['top', 'bottom', 'left', 'right'];
 
     var ARROWHEAD = {
+      box: [['M',0,1.5],['L',4,1.5],['L',4,-1.5],['L',0,-1.5],['L',0,1.5]],
       none: [['M',0,0]],
       '?': [['M',0.7,-0.3], ['L',0.7,-0.7], ['L',1.1,-0.7], ['L',1.1,-0.5], ['L',1.3,-0.5], ['M',1.5,-0.5], ['L',1.7,-0.5]],
       chickenfoot: [['M',0,1], ['L',2,0], ['L',0,-1]],
@@ -279,7 +280,7 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     function decorateEndpoint(endpoint, symbol) {
       endpoint.symbol = symbol
       endpoint.path = renderArrowhead(endpoint.symbol, endpoint.side, endpoint.x, endpoint.y)
-      endpoint.rect = {x:0, y:0, width:20, height:30} // dummy value
+      endpoint.box  = renderArrowhead('box',           endpoint.side, endpoint.x, endpoint.y)
     }
 
     function renderArrowhead(symbol, side, x, y) {

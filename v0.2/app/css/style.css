@@ -89,7 +89,7 @@ body {
                                     { background: rgba(170,255,170,0.75); }
 
 path.relationship, path.arrowhead {
-  fill:none;
+  fill: none;
   stroke: black;
   stroke-width: 1px
 }
@@ -106,7 +106,12 @@ path.click-path { fill: none; stroke: none; }
   stroke: rgba(255,170,170,0.75);
 }
 
-path.click-rect {
-  fill: none;
+path.click-area {
+  fill: rgba(255,255,255,0);
+  stroke: none;
+}
+
+path.click-area:hover {
+  fill: rgba(255,255,0,0.30);
   stroke: none;
 }
