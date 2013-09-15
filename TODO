@@ -14,15 +14,12 @@ BUG: relationships vanish below a certain y-coordinate.
 BUG/Feature: Multiple relationships between 2 entities always cross each other
 
 Feature: Make reflexive relationships float around the entity away from other relationships
+Feature: take identifier off opposite end of relationship when adding it (but not when removing)
 
 
 COMPLETE A BARE BONES CRUD UI
 
-  change a symbol: 'w', click relationship endpoint (swap between 1 and many)
-  add an identifier bar: 'q', click endpoint
   add an identifier squiggle: 'q', '2', click endpoint
-  draw relationship ending symbols (default '?')
-  set keys for changing ending symbols: 1, m, ?, i
 
   show editable graph name, random string identifier, and preferences
     save graph (by keypress)
