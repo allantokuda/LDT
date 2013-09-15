@@ -187,6 +187,26 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         this.endpoint2 = this.entity2.requestEndpoint(this.id, this.entity1)
       }
 
+      relationship.svgPath = function() {
+
+        var arrowTip = []
+        arrowTip[0] = this.endpoint1
+        arrowTip[1] = this.endpoint2
+
+        var arrowBase = _.map(arrowTip, function(tip) {
+          return {
+            x: (tip.x + tip.outward_vector.x * ARROWHEAD_LENGTH),
+            y: (tip.y + tip.outward_vector.y * ARROWHEAD_LENGTH)
+          }
+        });
+
+        return "M" +  arrowTip[0].x + ',' +  arrowTip[0].y +
+              " L" + arrowBase[0].x + ',' + arrowBase[0].y +
+              " L" + arrowBase[1].x + ',' + arrowBase[1].y +
+              " L" +  arrowTip[1].x + ',' +  arrowTip[1].y
+      }
+
+
       return relationship;
     }
 
@@ -222,11 +242,20 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         e.negotiateEndpointsOnEachSide();
       })
 
-      calculateLinePaths();
+      calculateRelationshipPaths();
+      calculateArrowheadPaths();
+      calculateArrowheadBoxes();
     }
 
-    function calculateLinePaths() {
-      $scope.graph.linePaths = _.map($scope.graph.decoratedRelationships, function(r) {
+    //function svgPolyline(points) {
+    //  if (points.length >= 2)
+    //    return "M" + _.map(points, function(point) {
+    //      point.x + ',' + point.y
+    //    }).join(' L');
+    //}
+
+    function calculateRelationshipPaths() {
+      $scope.graph.relationshipPaths = _.map($scope.graph.decoratedRelationships, function(r) {
         var arrowTip = []
         arrowTip[0] = r.endpoint1
         arrowTip[1] = r.endpoint2
@@ -243,6 +272,17 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
               " L" + arrowBase[1].x + ',' + arrowBase[1].y +
               " L" +  arrowTip[1].x + ',' +  arrowTip[1].y
       });
+    }
+
+    function calculateArrowheadPaths() {
+      $scope.graph.arrowheadPaths = []
+      _.each($scope.graph.decoratedRelationships, function(r) {
+        $scope.graph.arrowheadPaths.push(
+        );
+      });
+
+    }
+    function calculateArrowheadBoxes() {
     }
 
 
@@ -279,6 +319,19 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         return e.id == entity_to_delete.id
       });
     }
+
+    $scope.graph.deleteRelationship = function(relationship_to_delete) {
+      console.log(relationship_to_delete)
+      $scope.graph.relationships = _.reject($scope.graph.relationships, function(r) {
+        return r.id == relationship_to_delete.id
+      });
+    }
+
+
+    $scope.graph.relationshipPaths = []
+    $scope.graph.arrowheadBoxes = []
+    $scope.graph.arrowheadPaths = []
+
 
     $scope.deselectAll = function() {
       _.each($scope.graph.entities, function(entity) {

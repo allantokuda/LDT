@@ -1,3 +1,8 @@
+Wish list:
+  Score the endpoints based on the severity of their angles instead of pure offset.
+    (The closer of 2 entities loses the negotiation sooner than it should.)
+  Arrowheads should "squish" together when there's not enough space
+
 Enter finishes renaming entity
 Rename begins immediately on entity creation
 Tab finishes rename and moves to edit attributes
@@ -9,10 +14,12 @@ BUG: relationships vanish below a certain y-coordinate.
 
 COMPLETE A BARE BONES CRUD UI
 
-  select relationship ending by proximity click on canvas
-    delete a relationship: select relationship ending, hit "D"
-    draw relationship ending symbols (default '?')
-    set keys for changing ending symbols: 1, m, ?, i
+  delete a relationship: hit "d", select relationship
+  change a symbol: 'w', click relationship endpoint (swap between 1 and many)
+  add an identifier bar: 'q', click endpoint
+  add an identifier squiggle: 'q', '2', click endpoint
+  draw relationship ending symbols (default '?')
+  set keys for changing ending symbols: 1, m, ?, i
 
   show editable graph name, random string identifier, and preferences
     save graph (by keypress)

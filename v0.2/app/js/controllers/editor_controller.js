@@ -4,7 +4,7 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
 
   $scope.editor = new Object;
   $scope.editor.mode = 'select';
-  $scope.editor.entityOverlay = false;
+  $scope.editor.overlay = false;
   $scope.graph = new Object;
 
   // Click event handlers
@@ -17,7 +17,7 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
 
     $scope.editor.mode = 'select';
     $scope.editor.entityOverlayMessage = '';
-    $scope.editor.entityOverlay = false;
+    $scope.editor.overlay = false;
   }
 
   $scope.handleEntityClick = function(entity) {
@@ -29,13 +29,21 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
         break;
       case 'new_relationship_end':
         $scope.graph.createRelationship($scope.editor.newRelationshipStart, entity)
-        $scope.editor.entityOverlay = false;
+        $scope.editor.overlay = false;
         $scope.editor.mode = 'select'
         break;
       case 'delete':
         $scope.graph.deleteEntity(entity);
-        $scope.editor.entityOverlay = false;
+        $scope.editor.overlay = false;
         break;
+    }
+  }
+
+  $scope.handleRelationshipClick = function(relationship) {
+    if ($scope.editor.mode == 'delete') {
+      $scope.graph.deleteRelationship(relationship);
+      $scope.editor.overlay = false;
+      $scope.editor.mode = 'select';
     }
   }
 
@@ -44,21 +52,21 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
   $scope.select = function() {
     $scope.$apply(function() {
       $scope.editor.mode = 'select';
-      $scope.editor.entityOverlay = false;
+      $scope.editor.overlay = false;
     });
   }
 
   $scope.newEntity = function() {
     $scope.$apply(function() {
       $scope.editor.mode = 'new_entity';
-      $scope.editor.entityOverlay = false;
+      $scope.editor.overlay = false;
     });
   }
 
   $scope.newRelationship = function() {
     $scope.$apply(function() {
       $scope.editor.mode = 'new_relationship_start';
-      $scope.editor.entityOverlay = true;
+      $scope.editor.overlay = true;
       $scope.editor.entityOverlayMessage = 'click to begin relationship';
     });
   }
@@ -66,7 +74,7 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
   $scope.delete = function() {
     $scope.$apply(function() {
       $scope.editor.mode = 'delete'
-      $scope.editor.entityOverlay = true;
+      $scope.editor.overlay = true;
       $scope.editor.entityOverlayMessage = 'click to delete';
     });
   }
