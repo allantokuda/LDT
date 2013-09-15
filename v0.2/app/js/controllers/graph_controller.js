@@ -6,6 +6,14 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     var ARROWHEAD_WIDTH = 20
     var SIDES = ['top', 'bottom', 'left', 'right'];
 
+    var ARROWHEAD = {
+      none: [['M',0,0]],
+      '?': [['M',0,0]],
+      chickenfoot: [['M',0,1], ['L',2,0], ['L',0,-1]],
+      identifier:  [['M',2.5,1], ['L',-2.5,1]],
+      chickenfoot_identifier:  [['M',0,1], ['L',2,0], ['L',0,-1], ['M',2.5,1], ['L',2.5,-1]]
+    };
+
     // Allow tests to pass on this scope alone, though this scope will actually
     // inherit the definition so that the parent scope can use it. TODO: rearchitect this.
     if (typeof($scope.graph) == 'undefined')
@@ -19,11 +27,45 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     $scope.graph.next_entity_id = 3;
 
     var r = $scope.graph.relationships = [];
-    r.push({ id: 0, entity1_id: 0, entity2_id: 2, label1: true, label2: false, symbol1: 'one', symbol2: 'many' });
-    r.push({ id: 1, entity1_id: 1, entity2_id: 2, label1: true, label2: false, symbol1: 'one', symbol2: 'many' });
+    r.push({ id: 0, entity1_id: 0, entity2_id: 2, label1: true, label2: false, symbol1: 'none', symbol2: 'chickenfoot' });
+    r.push({ id: 1, entity1_id: 1, entity2_id: 2, label1: true, label2: false, symbol1: 'none', symbol2: 'chickenfoot' });
     $scope.graph.next_relationship_id = 2;
 
-    function decorateEntity(entity) {
+
+    // Expensive watch operation here, but it seems to work well for this application.
+    // http://stackoverflow.com/questions/14712089/how-to-deep-watch-an-array-in-angularjs
+    $scope.$watch(stringifyGraph, layoutGraph);
+
+    function stringifyGraph() {
+      return JSON.stringify($scope.graph.entities) +
+             JSON.stringify($scope.graph.relationships)
+    }
+
+    function layoutGraph() {
+      // Recreate decorated entities
+      $scope.graph.decoratedEntities      = _.map($scope.graph.entities,      decorateEntity);
+      $scope.graph.decoratedRelationships = _.map($scope.graph.relationships, decorateRelationship);
+
+      // Each relationship requests an endpoint from each of its entities.
+      // Only need decorated relationship momentarily, so don't bother storing it in the scope
+      _.each($scope.graph.decoratedRelationships, function(r) {
+        r.requestEndpoints();
+      })
+
+      // Each entity negotiates its relationships' requests
+      // to choose actual attachment points
+      _.each($scope.graph.decoratedEntities, function(e) {
+        e.negotiateEndpointsOnEachSide();
+      })
+
+      setupArrowheads();
+    }
+
+
+
+    function decorateEntity(e) {
+      // Clone the object so the scope watch only needs to watch the base data
+      var entity = $.extend({}, e);
 
       entity.coordinates = function(xloc,yloc) {
         return {
@@ -177,7 +219,10 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       return entity;
     }
 
-    function decorateRelationship(relationship) {
+    function decorateRelationship(r) {
+
+      // Clone the object so the scope watch only needs to watch the base data
+      var relationship = $.extend({}, r);
 
       relationship.entity1 = decoratedEntityByID(relationship.entity1_id)
       relationship.entity2 = decoratedEntityByID(relationship.entity2_id)
@@ -200,15 +245,19 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
           }
         });
 
-        return "M" +  arrowTip[0].x + ',' +  arrowTip[0].y +
-              " L" + arrowBase[0].x + ',' + arrowBase[0].y +
-              " L" + arrowBase[1].x + ',' + arrowBase[1].y +
-              " L" +  arrowTip[1].x + ',' +  arrowTip[1].y
+        return svgPolyline([arrowTip[0], arrowBase[0], arrowBase[1], arrowTip[1]]);
       }
-
 
       return relationship;
     }
+
+    function svgPolyline(points) {
+      if (points.length >= 2)
+        return "M" + _.map(points, function(point) {
+          return point.x + ',' + point.y
+        }).join(' L');
+    }
+
 
     function decoratedEntityByID(id) {
       return _.find($scope.graph.decoratedEntities, function(e) {
@@ -216,75 +265,58 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       });
     }
 
-    // Expensive watch operation here, but it seems to work well for this application.
-    // http://stackoverflow.com/questions/14712089/how-to-deep-watch-an-array-in-angularjs
-    $scope.$watch(stringifyGraph, layoutGraph);
-
-    function stringifyGraph() {
-      return JSON.stringify($scope.graph.entities) +
-             JSON.stringify($scope.graph.relationships)
-    }
-
-    function layoutGraph() {
-      // Recreate decorated entities
-      $scope.graph.decoratedEntities      = _.map($scope.graph.entities,      decorateEntity);
-      $scope.graph.decoratedRelationships = _.map($scope.graph.relationships, decorateRelationship);
-
-      // Each relationship requests an endpoint from each of its entities.
-      // Only need decorated relationship momentarily, so don't bother storing it in the scope
+    // Make arrowheads accessible directly off the scope for convenience in rendering
+    function setupArrowheads() {
+      $scope.graph.arrowheads = []
       _.each($scope.graph.decoratedRelationships, function(r) {
-        r.requestEndpoints();
-      })
-
-      // Each entity negotiates its relationships' requests
-      // to choose actual attachment points
-      _.each($scope.graph.decoratedEntities, function(e) {
-        e.negotiateEndpointsOnEachSide();
-      })
-
-      calculateRelationshipPaths();
-      calculateArrowheadPaths();
-      calculateArrowheadBoxes();
-    }
-
-    //function svgPolyline(points) {
-    //  if (points.length >= 2)
-    //    return "M" + _.map(points, function(point) {
-    //      point.x + ',' + point.y
-    //    }).join(' L');
-    //}
-
-    function calculateRelationshipPaths() {
-      $scope.graph.relationshipPaths = _.map($scope.graph.decoratedRelationships, function(r) {
-        var arrowTip = []
-        arrowTip[0] = r.endpoint1
-        arrowTip[1] = r.endpoint2
-
-        var arrowBase = _.map(arrowTip, function(tip) {
-          return {
-            x: (tip.x + tip.outward_vector.x * ARROWHEAD_LENGTH),
-            y: (tip.y + tip.outward_vector.y * ARROWHEAD_LENGTH)
-          }
-        });
-
-        return "M" +  arrowTip[0].x + ',' +  arrowTip[0].y +
-              " L" + arrowBase[0].x + ',' + arrowBase[0].y +
-              " L" + arrowBase[1].x + ',' + arrowBase[1].y +
-              " L" +  arrowTip[1].x + ',' +  arrowTip[1].y
+        decorateEndpoint(r.endpoint1, r.symbol1);
+        decorateEndpoint(r.endpoint2, r.symbol2);
+        $scope.graph.arrowheads.push(r.endpoint1);
+        $scope.graph.arrowheads.push(r.endpoint2);
       });
     }
 
-    function calculateArrowheadPaths() {
-      $scope.graph.arrowheadPaths = []
-      _.each($scope.graph.decoratedRelationships, function(r) {
-        $scope.graph.arrowheadPaths.push(
-        );
+    function decorateEndpoint(endpoint, symbol) {
+      endpoint.symbol = symbol
+      endpoint.path = renderArrowhead(endpoint.symbol, endpoint.side, endpoint.x, endpoint.y)
+      endpoint.rect = {x:0, y:0, width:20, height:30} // dummy value
+    }
+
+    function renderArrowhead(symbol, side, x, y) {
+      // Convert array of arrays into array of objects
+      var arrowhead = _.map(ARROWHEAD[symbol], pointObject)
+
+      // Translate and rotate the arrowhead into place (point by point)
+      _.each(arrowhead, function(pathSegment) {
+        scaleTranslateAndRotate(pathSegment, side, x, y);
       });
 
-    }
-    function calculateArrowheadBoxes() {
+      // Render the arrowhead by calling render on each of its points, and joining resulting strings
+      var svg = _.map(arrowhead, function(point) { return point.render(); } ).join(' ')
+
+      return svg;
     }
 
+    function pointObject(data_array) {
+      var point_object = _.object(['command', 'x', 'y'], data_array);
+      point_object.render = function() {
+        return this.command + this.x + ',' + this.y;
+      }
+      return point_object;
+    }
+
+    function scaleTranslateAndRotate(point, side, baseX, baseY) {
+      var newX, newY, scale;
+      scale = Math.round(ARROWHEAD_WIDTH / 2);
+      switch(side) {
+        case 'right':  newX = baseX + scale * point.x; newY = baseY + scale * point.y; break;
+        case 'left':   newX = baseX - scale * point.x; newY = baseY - scale * point.y; break;
+        case 'top':    newX = baseX + scale * point.y; newY = baseY - scale * point.x; break;
+        case 'bottom': newX = baseX - scale * point.y; newY = baseY + scale * point.x; break;
+      }
+      point.x = newX;
+      point.y = newY;
+    }
 
     $scope.graph.createEntity = function(locX,locY) {
       $scope.graph.entities.push({
@@ -325,12 +357,6 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         return r.id == relationship_to_delete.id
       });
     }
-
-
-    $scope.graph.relationshipPaths = []
-    $scope.graph.arrowheadBoxes = []
-    $scope.graph.arrowheadPaths = []
-
 
     $scope.deselectAll = function() {
       _.each($scope.graph.entities, function(entity) {
