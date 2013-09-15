@@ -321,7 +321,6 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     }
 
     $scope.graph.deleteRelationship = function(relationship_to_delete) {
-      console.log(relationship_to_delete)
       $scope.graph.relationships = _.reject($scope.graph.relationships, function(r) {
         return r.id == relationship_to_delete.id
       });

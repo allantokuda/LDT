@@ -67,20 +67,26 @@ body {
 }
 
 .select-shield {
-  background: rgba(255,255,255,0.75);
   position: absolute;
   width: 100%;
   height: 100%;
   text-align: center;
 }
 
-.select-shield:hover {
-  background: rgba(238,255,230,0.75);
-}
+#canvas.select     .select-shield,
+#canvas.new_entity .select-shield   { display: none; }
 
-.select-shield.new-relationship-endpoint {
-  background: rgba(198,255,192,0.75);
-}
+#canvas.delete .select-shield       { background: rgba(255,230,230,0.75); }
+#canvas.delete .select-shield:hover { background: rgba(255,170,170,0.75); }
+#canvas.delete .select-shield:hover { background: rgba(255,170,170,0.75); }
+
+#canvas.new_relationship_start .select-shield,
+#canvas.new_relationship_end   .select-shield
+                                    { background: rgba(230,255,230,0.75); }
+
+#canvas.new_relationship_start .select-shield:hover,
+#canvas.new_relationship_end   .select-shield:hover
+                                    { background: rgba(170,255,170,0.75); }
 
 path.relationship, path.arrowhead {
   fill:none;
@@ -88,17 +94,19 @@ path.relationship, path.arrowhead {
   stroke-width: 1px
 }
 
-path.click-path {
+path.click-path { fill: none; stroke: none; }
+
+#canvas.delete path.click-path {
   fill: none;
-  stroke: rgba(237,237,237,0.75);
+  stroke: rgba(255,230,230,0.75);
   stroke-width: 20px;
 }
 
-path.click-path:hover {
-  stroke: rgba(198,255,192,0.75);
+#canvas.delete path.click-path:hover {
+  stroke: rgba(255,170,170,0.75);
 }
 
 path.click-rect {
-  fill: #eee;
+  fill: none;
   stroke: none;
 }

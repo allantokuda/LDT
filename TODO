@@ -11,10 +11,13 @@ Investigate: layoutGraph is getting called twice
 
 BUG: relationships vanish below a certain y-coordinate.
 
+BUG/Feature: Multiple relationships between 2 entities always cross each other
+
+Feature: Make reflexive relationships float around the entity away from other relationships
+
 
 COMPLETE A BARE BONES CRUD UI
 
-  delete a relationship: hit "d", select relationship
   change a symbol: 'w', click relationship endpoint (swap between 1 and many)
   add an identifier bar: 'q', click endpoint
   add an identifier squiggle: 'q', '2', click endpoint

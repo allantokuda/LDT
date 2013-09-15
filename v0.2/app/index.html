@@ -49,11 +49,11 @@
     select mode: left click deselects all entities, and potentially selects a relationship
     new entity mode: create entity
   -->
-  <div canvas id="canvas" ng-controller="GraphCtrl" ng-click="handleCanvasClick($event)">
+  <div canvas id="canvas" ng-controller="GraphCtrl" ng-click="handleCanvasClick($event)" ng-class="editor.mode">
     <div class="entity-border" ng-repeat="entity in graph.entities"
        move-with="entity" resize-with="entity" select-with="click as entity in #canvas"
        ng-style="{ left: entity.x, top: entity.y, width: entity.width, height: entity.height }">
-      <div class="select-shield" ng-show="editor.overlay" catch-input ng-click="handleEntityClick(entity)">
+      <div class="select-shield" catch-input ng-click="handleEntityClick(entity)">
         <br><br>{{editor.entityOverlayMessage}}
       </div>
       <div class="entity-heading" select-with="dblclick as heading in #canvas" auto-focus="input on dblclick">
@@ -68,7 +68,7 @@
 
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
       <path class="relationship" ng-repeat="r in graph.decoratedRelationships" ng-attr-d="{{r.svgPath()}}"></path>
-      <path class="click-path"   ng-repeat="r in graph.decoratedRelationships" ng-attr-d="{{r.svgPath()}}" ng-click="handleRelationshipClick(r)" ng-show="editor.overlay" catch-input></path>
+      <path class="click-path"   ng-repeat="r in graph.decoratedRelationships" ng-attr-d="{{r.svgPath()}}" ng-click="handleRelationshipClick(r)" catch-input></path>
       <path class="arrowhead"    ng-repeat="path in graph.arrowheadPaths" ng-attr-d="{{path}}"></path>
       <rect class="click-rect"   ng-repeat="rect in graph.arrowheadBoxes" ng-attr-width="{{rect.width}}" ng-attr-height="{{rect.height}}" ng-attr-x="{{rect.x}}" ng-attr-y="{{rect.y}}" catch-input/>
     </svg>
