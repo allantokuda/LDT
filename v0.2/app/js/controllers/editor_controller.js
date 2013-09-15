@@ -40,8 +40,13 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
     }
   }
 
+  $scope.handleAttributeClick = function(entityID, attributeIndex, ev) {
+    if ($scope.editor.mode == 'select' && ev.shiftKey) {
+      $scope.graph.toggleAttributeIdentifier(entityID, attributeIndex);
+    }
+  }
+
   $scope.switchArrow = function(arrow, ev) {
-    console.log(ev)
     if ($scope.editor.mode == 'select') {
       // Use shift key to toggler identifier
       if (ev.shiftKey)

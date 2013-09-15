@@ -14,12 +14,9 @@ BUG: relationships vanish below a certain y-coordinate.
 BUG/Feature: Multiple relationships between 2 entities always cross each other
 
 Feature: Make reflexive relationships float around the entity away from other relationships
-Feature: take identifier off opposite end of relationship when adding it (but not when removing)
-
+Feature: add an identifier squiggle, toggled by Command-Shift-Click
 
 COMPLETE A BARE BONES CRUD UI
-
-  add an identifier squiggle: 'q', '2', click endpoint
 
   show editable graph name, random string identifier, and preferences
     save graph (by keypress)

@@ -9,9 +9,9 @@ describe('GraphCtrl', function(){
 
     scope.graph.relationships = [{entity1_id: 0, entity2_id: 1, symbol1: 'none', symbol2: 'chickenfoot'}];
     scope.graph.entities = [
-      {id: 0, x: 0, y: 0, width: 100, height: 120},
-      {id: 1, x: 0, y: 0, width: 100, height: 120},
-      {id: 2, x: 0, y: 0, width: 100, height: 120}
+      {id: 0, x: 0, y: 0, width: 100, height: 120, name: 'thing',  attributes: 'size\nshape'},
+      {id: 1, x: 0, y: 0, width: 100, height: 120, name: 'gadget', attributes: 'shape'},
+      {id: 2, x: 0, y: 0, width: 100, height: 120, name: 'doodad', attributes: ''}
     ];
   }));
 

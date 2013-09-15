@@ -57,9 +57,20 @@ body {
   padding: 0;
 }
 
+.entity-body p.attribute {
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
 
-.attribute, .attribute-input  {
-  margin: 1px;
+.entity-body p.attribute.identifier {
+  text-decoration: underline;
+}
+
+
+.attribute-input  {
+  margin: 0;
   font-family: inherit;
   font-size: inherit;
   width: 100%;

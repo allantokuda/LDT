@@ -22,8 +22,8 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
 
     // Define some test data (TODO: load and persist to server)
     var e = $scope.graph.entities = [];
-    e.push({id: 0, x:  20, y:  20, width: 100, height: 130, name: "Supplier",  attributes: "name\nlocation" });
-    e.push({id: 1, x: 220, y:  20, width: 100, height: 130, name: "Part",      attributes: "size\nshape\ncolor" });
+    e.push({id: 0, x:  20, y:  20, width: 100, height: 130, name: "Supplier",  attributes: "name*\nlocation" });
+    e.push({id: 1, x: 220, y:  20, width: 100, height: 130, name: "Part",      attributes: "type*\nsize\ncolor" });
     e.push({id: 2, x: 120, y: 190, width: 100, height: 130, name: "Inventory", attributes: "quantity" });
     $scope.graph.next_entity_id = 3;
 
@@ -59,6 +59,7 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         e.negotiateEndpointsOnEachSide();
       })
 
+      setupAttributes();
       setupArrowheads();
     }
 
@@ -266,6 +267,40 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       });
     }
 
+    function isIdentifier(attributeName) {
+      return attributeName.substr(attributeName.length - 1) == '*';
+    }
+
+    function removeIdentifier(attributeName) {
+      return attributeName.substr(0,attributeName.length - 1);
+    }
+
+    function addIdentifier(attributeName) {
+      return attributeName + '*';
+    }
+
+    // Make attributes accessible directly off the scope for convenience in rendering
+    function setupAttributes() {
+      $scope.graph.attributes = {}
+      _.each($scope.graph.entities, function(entity) {
+        var splitAttributes = entity.attributes.split("\n");
+        $scope.graph.attributes[entity.id] = _.map(splitAttributes, function(attributeName) {
+          var lastChar = attributeName.substr(attributeName.length - 1);
+          var idClass;
+
+          if (isIdentifier(attributeName)) {
+            idClass = 'identifier';
+            attributeName = attributeName.substr(0, attributeName.length - 1);
+          } else {
+            idClass = '';
+          }
+
+          return _.object(['text', 'class'], [attributeName, idClass]);
+        });
+      });
+    }
+
+
     // Make arrowheads accessible directly off the scope for convenience in rendering
     function setupArrowheads() {
       $scope.graph.arrowheads = []
@@ -299,6 +334,23 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       return svg;
     }
 
+    $scope.graph.toggleAttributeIdentifier = function(entityID, attributeIndex) {
+      var entity = _.find($scope.graph.entities, function(e) { return e.id == entityID });
+      var splitAttributes = entity.attributes.split("\n");
+
+      if (attributeIndex < splitAttributes.length) {
+        var attributeName = splitAttributes[attributeIndex];
+
+        if (isIdentifier(attributeName))
+          attributeName = removeIdentifier(attributeName);
+        else
+          attributeName = addIdentifier(attributeName);
+
+        splitAttributes[attributeIndex] = attributeName;
+        entity.attributes = splitAttributes.join("\n");
+      }
+    };
+
     $scope.graph.switchArrow = function(arrow, switchIdentifier) {
       var relationship = _.find($scope.graph.relationships, function(r) {
         return r.id == arrow.relationship_id
@@ -318,7 +370,7 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
           case 'none':                   symbol = 'chickenfoot'; break;
           case 'chickenfoot':            symbol = 'none'; break;
           case 'identifier':             symbol = 'chickenfoot_identifier'; break;
-          case 'chickenfoot_identifier': symbol = 'chickenfoot'; break;
+          case 'chickenfoot_identifier': symbol = 'identifier'; break;
           case '?':                      symbol = 'none'; break;
         }
       }
