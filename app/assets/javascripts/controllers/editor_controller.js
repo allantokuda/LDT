@@ -85,6 +85,30 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
     });
   }
 
+  $scope.save = function () {
+
+    var graphData = { id: $scope.graph.id, name: $scope.graph.name }
+    graphData.entities      = $scope.graph.entities;
+    graphData.relationships = $scope.graph.relationships;
+
+    var encodeData = "graph=" + JSON.stringify(graphData);
+
+    if (graphData.id)
+      $.ajax({ url:"/graphs/"+graphData.id, type:"PUT", dataType:"json", data:encodeData })
+    else
+      $.ajax({
+        url:"/graphs", type:"POST", dataType:"json", data:encodeData,
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.log("AJAX Error: ");
+          console.log(textStatus);
+        },
+        success: function(data, textStatus, jqXHR) {
+          console.log(data.id);
+          $scope.graph.id = data.id
+        }
+      });
+  }
+
   function setMode(mode) {
     $scope.editor.mode = mode;
 

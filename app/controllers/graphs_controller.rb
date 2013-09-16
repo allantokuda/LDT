@@ -49,7 +49,7 @@ class GraphsController < ApplicationController
   # POST /graphs
   # POST /graphs.json
   def create
-    @graph = Graph.new(params[:graph])
+    @graph = Graph.new_from_request params[:graph]
 
     respond_to do |format|
       if @graph.save
@@ -66,17 +66,10 @@ class GraphsController < ApplicationController
   # PUT /graphs/1.json
   def update
     @graph = Graph.find(params[:id])
-
-    newgraph = JSON.parse(params[:graph], :symbolize_names => true)
-
-    newgraph[:entities].each do |e|
-      Entity.update_from_hash(e)
-    end
-
-    @graph.update_attributes(newgraph[:settings])
+    @graph.update_attributes_from_request(params[:graph])
 
     respond_to do |format|
-      format.html { render :json => "OK" }
+      format.json { render :json => "OK" }
       format.html { render :html => "OK" }
     end
   end

@@ -26,6 +26,7 @@ gem 'libv8', '~> 3.11.8'
 gem 'pg'
 gem "haml", "~> 3.1.7"
 gem "haml-rails"
+gem 'pry'
 
 group :development do
   # Needed to expose generators and rake tasks
