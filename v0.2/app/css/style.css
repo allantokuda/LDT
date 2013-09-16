@@ -20,6 +20,8 @@ body {
   padding-left: 30px;
 }
 
+new-entity-button
+
 .entity-border.selected {
   display: inline-block;
   background: #fd8;
@@ -95,20 +97,33 @@ body {
   text-align: center;
 }
 
-#canvas.select     .select-shield,
-#canvas.new_entity .select-shield   { display: none; }
+body.select     .select-shield,
+body.new_entity .select-shield   { display: none; }
 
-#canvas.delete .select-shield       { background: rgba(255,230,230,0.75); }
-#canvas.delete .select-shield:hover { background: rgba(255,170,170,0.75); }
-#canvas.delete .select-shield:hover { background: rgba(255,170,170,0.75); }
+body.delete .select-shield       { background: rgba(255,230,230,0.75); }
+body.delete .select-shield:hover { background: rgba(255,170,170,0.75); }
+body.delete .select-shield:hover { background: rgba(255,170,170,0.75); }
 
-#canvas.new_relationship_start .select-shield,
-#canvas.new_relationship_end   .select-shield
+body.new_relationship_start .select-shield,
+body.new_relationship_end   .select-shield
                                     { background: rgba(230,255,230,0.75); }
 
-#canvas.new_relationship_start .select-shield:hover,
-#canvas.new_relationship_end   .select-shield:hover
+body.new_relationship_start .select-shield:hover,
+body.new_relationship_end   .select-shield:hover
                                     { background: rgba(170,255,170,0.75); }
+
+#toolbar button {
+  background: inherit;
+  border: none;
+  padding: 0.5em 1em;
+}
+
+body.select #select-button,
+body.new_entity #new-entity-button,
+body.new_relationship_start #new-relationship-button,
+body.new_relationship_end   #new-relationship-button,
+body.delete #delete-button
+ { background-color: #bbb; }
 
 path.relationship, path.arrowhead {
   fill: none;
@@ -118,13 +133,13 @@ path.relationship, path.arrowhead {
 
 path.click-path { fill: none; stroke: none; }
 
-#canvas.delete path.click-path {
+body.delete path.click-path {
   fill: none;
   stroke: rgba(255,230,230,0.75);
   stroke-width: 20px;
 }
 
-#canvas.delete path.click-path:hover {
+body.delete path.click-path:hover {
   stroke: rgba(255,170,170,0.75);
 }
 
@@ -133,7 +148,7 @@ path.click-area {
   stroke: none;
 }
 
-#canvas.select path.click-area:hover {
+body.select path.click-area:hover {
   fill: rgba(255,255,0,0.30);
   stroke: none;
 }
