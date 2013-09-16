@@ -15,7 +15,11 @@
 //= require_tree .
 //= require jquery.ui.dialog
 //= require d3.v3
+//= require angular
 //= require underscore
-//= require graph_ui
-//= require graph_saver
-//= require toolbar
+//= require app
+//= require services
+//= require controllers/editor_controller
+//= require controllers/graph_controller
+//= require filters
+//= require directives
