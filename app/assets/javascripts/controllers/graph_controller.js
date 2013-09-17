@@ -16,23 +16,24 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     };
 
     // Allow tests to pass on this scope alone, though this scope will actually
-    // inherit the definition so that the parent scope can use it. TODO: rearchitect this.
+    // inherit the definition so that the parent scope can use it.
     if (typeof($scope.graph) == 'undefined')
       $scope.graph = new Object;
 
-    // Define some test data (TODO: load and persist to server)
-    var e = $scope.graph.entities = [];
-    e.push({id: 0, x:  20, y:  20, width: 100, height: 130, name: "Supplier",  attributes: "name*\nlocation" });
-    e.push({id: 1, x: 220, y:  20, width: 100, height: 130, name: "Part",      attributes: "type*\nsize\ncolor" });
-    e.push({id: 2, x: 120, y: 190, width: 100, height: 130, name: "Inventory", attributes: "quantity" });
-    $scope.graph.next_entity_id = 3;
+    // Setup initial graph when starting new
+    if (typeof($scope.graph.name) == 'undefined') {
+      $scope.graph.name = "Untitled graph"
+      $scope.graph.entities = []
+      $scope.graph.relationships = []
+    }
 
-    var r = $scope.graph.relationships = [];
-    r.push({ id: 0, entity1_id: 0, entity2_id: 2, label1: true, label2: false, symbol1: 'none', symbol2: 'chickenfoot' });
-    r.push({ id: 1, entity1_id: 1, entity2_id: 2, label1: true, label2: false, symbol1: 'none', symbol2: 'chickenfoot' });
-    $scope.graph.next_relationship_id = 2;
+    $scope.graph.next_entity_id = _.max($scope.graph.entities, function(e) { return e.id }) + 1;
+    if ($scope.graph.next_entity_id == -Infinity)
+      $scope.graph.next_entity_id = 1
 
-    $scope.graph.name = "Untitled graph"
+    $scope.graph.next_relationship_id = _.max($scope.graph.entities, function(e) { return e.id }) + 1;
+    if ($scope.graph.next_relationship_id == -Infinity)
+      $scope.graph.next_relationship_id = 1
 
 
     // Expensive watch operation here, but it seems to work well for this application.

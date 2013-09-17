@@ -4,7 +4,6 @@ BUGS
   layoutGraph is getting called twice (investigate)
 
 MUST HAVE FOR FIRST DEMO
-  Empty graph at start
 	Labeled relationship endings
   Create random string identifier for graph and make this the path
 	draw new entity "ghost" connected to mouse
