@@ -41,11 +41,15 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     $scope.$watch(stringifyGraph, layoutGraph);
 
     function stringifyGraph() {
-      return JSON.stringify($scope.graph.entities) +
+      return $scope.graph.name +
+             JSON.stringify($scope.graph.entities) +
              JSON.stringify($scope.graph.relationships)
     }
 
     function layoutGraph() {
+      // Let editor know there are changes
+      $scope.edited();
+
       // Recreate decorated entities
       $scope.graph.decoratedEntities      = _.map($scope.graph.entities,      decorateEntity);
       $scope.graph.decoratedRelationships = _.map($scope.graph.relationships, decorateRelationship);

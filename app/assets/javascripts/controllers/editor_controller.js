@@ -108,9 +108,14 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
     });
   }
 
+  $scope.edited = function() {
+    $('#save-button').text('Save')
+  }
+
   $scope.save = function () {
 
     $('#save-button').css('background','#999');
+    $('#save-button').text('Saving...')
 
     var graphData = { id: $scope.graph.id, name: $scope.graph.name }
     graphData.entities      = $scope.graph.entities;
@@ -120,12 +125,12 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
 
     if (graphData.id) {
       $.ajax({ url:"/graphs/"+graphData.id, type:"PUT", dataType:"json", data:encodeData,
-        success: function(data) {
+        complete: function(data) {
           console.log('hello?');
           $('#save-button').css('background', 'inherit');
+          $('#save-button').text('Saved')
         }
       })
-      console.log('hello!')
       }
     else
       $.ajax({
@@ -136,6 +141,7 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
         },
         success: function(data, textStatus, jqXHR) {
           $('#save-button').css('background', 'inherit');
+          $('#save-button').text('Saved')
           console.log(data.id);
           $scope.graph.id = data.id
         }
