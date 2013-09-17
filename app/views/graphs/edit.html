@@ -23,15 +23,9 @@
     <button action id="save-button">Save</button>
   </div>
 
-  <!-- CANVAS element
-  Scope watches: none
-  UI events:
-    select mode: left click deselects all entities, and potentially selects a relationship
-    new entity mode: create entity
-  -->
   <div canvas id="canvas" ng-controller="GraphCtrl" ng-click="handleCanvasClick($event)">
     <div class="entity-border" ng-repeat="entity in graph.entities"
-       move-with="entity" resize-with="entity" select-with="click as entity in #canvas"
+       move-with="entity" resize-with="entity"
        ng-style="{ left: entity.x, top: entity.y, width: entity.width, height: entity.height }">
       <div class="select-shield" catch-input ng-click="handleEntityClick(entity)">
         <br><br>{{editor.entityOverlayMessage}}
