@@ -5,6 +5,29 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
   $scope.editor = new Object;
   $scope.graph = new Object;
 
+  var graphID = /graphs\/(\d+)\/edit/.exec(window.location.pathname)[1]
+
+  if (graphID)
+    $.ajax({ url:"/graphs/"+graphID, type:"GET", dataType:"json",
+      error: function(jqXHR, textStatus, errorThrown) {
+        console.log("AJAX Error: ");
+        console.log(textStatus);
+      },
+      success: function(data, textStatus, jqXHR) {
+        $scope.$apply(function() {
+          $scope.graph.id = graphID;
+          $scope.graph.name = data.name;
+          $scope.graph.entities = data.entities;
+          $scope.graph.relationships = data.relationships;
+        });
+
+        console.log(data);
+      }
+    })
+
+  console.log(graphID)
+
+
   // Click event handlers
 
   $scope.handleCanvasClick = function(ev) {
@@ -87,14 +110,23 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
 
   $scope.save = function () {
 
+    $('#save-button').css('background','#999');
+
     var graphData = { id: $scope.graph.id, name: $scope.graph.name }
     graphData.entities      = $scope.graph.entities;
     graphData.relationships = $scope.graph.relationships;
 
     var encodeData = "graph=" + JSON.stringify(graphData);
 
-    if (graphData.id)
-      $.ajax({ url:"/graphs/"+graphData.id, type:"PUT", dataType:"json", data:encodeData })
+    if (graphData.id) {
+      $.ajax({ url:"/graphs/"+graphData.id, type:"PUT", dataType:"json", data:encodeData,
+        success: function(data) {
+          console.log('hello?');
+          $('#save-button').css('background', 'inherit');
+        }
+      })
+      console.log('hello!')
+      }
     else
       $.ajax({
         url:"/graphs", type:"POST", dataType:"json", data:encodeData,
@@ -103,6 +135,7 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
           console.log(textStatus);
         },
         success: function(data, textStatus, jqXHR) {
+          $('#save-button').css('background', 'inherit');
           console.log(data.id);
           $scope.graph.id = data.id
         }

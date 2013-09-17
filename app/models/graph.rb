@@ -7,6 +7,13 @@ class Graph < ActiveRecord::Base
     self.new(self.parse_base_parameters(params_graph_json))
   end
 
+  def self.find_and_parse(graph_id)
+    graph = self.find(graph_id)
+    graph[:entities]      = JSON.parse graph[:entities]
+    graph[:relationships] = JSON.parse graph[:relationships]
+    graph
+  end
+
   def update_attributes_from_request(params_graph_json)
     update_attributes(self.class.parse_base_parameters(params_graph_json))
   end

@@ -17,7 +17,7 @@ class GraphsController < ApplicationController
   # GET /graphs/1
   # GET /graphs/1.json
   def show
-    @graph = Graph.find(params[:id])
+    @graph = Graph.find_and_parse(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -38,12 +38,6 @@ class GraphsController < ApplicationController
 
   # GET /graphs/1/edit
   def edit
-    if params[:id]
-      @graph = Graph.find(params[:id])
-    else
-      @graph = Graph.new
-      @graph.save
-    end
   end
 
   # POST /graphs
