@@ -19,6 +19,7 @@
     <button action hotkey="e" id="new-entity-button">New <u>E</u>ntity</button>
     <button action hotkey="r" id="new-relationship-button">New <u>R</u>elationship</button>
     <button action hotkey="d" id="delete-button"><u>D</u>elete</button>
+    <button action hotkey="l" id="label-button"><u>L</u>abel</button>
     <span class="toolbar-separator">&nbsp;</span>
     <button action id="save-button">Save</button>
   </div>
@@ -43,7 +44,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
       <path class="relationship" ng-repeat="r in graph.decoratedRelationships" ng-attr-d="{{r.svgPath()}}"></path>
       <path class="arrowhead"    ng-repeat="a in graph.arrowheads" ng-attr-d="{{a.path}}"></path>
-      <path class="click-area"   ng-repeat="a in graph.arrowheads" ng-attr-d="{{a.box}}" ng-click="switchArrow(a,$event)"></path>
+      <path class="click-area"   ng-repeat="a in graph.arrowheads" ng-attr-d="{{a.box}}" ng-click="handleArrowClick(a,$event)" catch-input></path>
       <path class="click-path"   ng-repeat="r in graph.decoratedRelationships" ng-attr-d="{{r.svgPath()}}" ng-click="handleRelationshipClick(r)" catch-input></path>
     </svg>
   </div>

@@ -127,11 +127,14 @@ new-entity-button
   padding: 0.5em 1em;
 }
 
+/* Mode and sub-mode indication in toolbar */
 #editor.select #select-button,
 #editor.new_entity #new-entity-button,
 #editor.new_relationship_start #new-relationship-button,
 #editor.new_relationship_end   #new-relationship-button,
-#editor.delete #delete-button
+#editor.delete #delete-button,
+#editor.label_pick #label-button,
+#editor.label_enter #label-button
  { background-color: #bbb; }
 
 path.relationship, path.arrowhead {
@@ -157,7 +160,11 @@ path.click-area {
   stroke: none;
 }
 
-#editor.select path.click-area:hover {
+#editor.label_pick path.click-area {
   fill: rgba(255,255,0,0.30);
   stroke: none;
+}
+
+#editor.label_pick path.click-area:hover {
+  fill: rgba(255,230,0,0.70);
 }

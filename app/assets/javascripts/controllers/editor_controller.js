@@ -69,44 +69,19 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
     }
   }
 
-  $scope.switchArrow = function(arrow, ev) {
-    if ($scope.editor.mode == 'select') {
-      // Use shift key to toggler identifier
-      if (ev.shiftKey)
-        $scope.graph.switchArrow(arrow,true);
-      else
-        $scope.graph.switchArrow(arrow);
+  $scope.handleArrowClick = function(arrow, ev) {
+    switch($scope.editor.mode) {
+      case 'select':
+        // Use shift key to toggler identifier
+        $scope.graph.switchArrow(arrow,ev.shiftKey);
+        break;
+      case 'label_pick':
+        console.log('apply label');
+        setMode('label_enter');
+        break;
     }
   }
 
-  // Action buttons / hotkeys
-
-  $scope.select = function() {
-    $scope.$apply(function() {
-      $scope.editor.mode = 'select';
-      $scope.editor.entityOverlayMessage = '';
-    });
-  }
-
-  $scope.newEntity = function() {
-    $scope.$apply(function() {
-      $scope.editor.mode = 'new_entity';
-      $scope.editor.entityOverlayMessage = '';
-    });
-  }
-
-  $scope.newRelationship = function() {
-    $scope.$apply(function() {
-      $scope.editor.mode = 'new_relationship_start';
-      $scope.editor.entityOverlayMessage = 'click to begin relationship';
-    });
-  }
-
-  $scope.delete = function() {
-    $scope.$apply(function() {
-      setMode('delete')
-    });
-  }
 
   $scope.edited = function() {
     $('#save-button').text('Save')
@@ -148,6 +123,14 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
       });
   }
 
+  // Action buttons / hotkeys
+
+  $scope.select          = function() { $scope.$apply(setMode('select')) }
+  $scope.newEntity       = function() { $scope.$apply(setMode('new_entity')); }
+  $scope.newRelationship = function() { $scope.$apply(setMode('new_relationship_start')); }
+  $scope.delete          = function() { $scope.$apply(setMode('delete')); }
+  $scope.label           = function() { $scope.$apply(setMode('label_pick')); }
+
   function setMode(mode) {
     $scope.editor.mode = mode;
 
@@ -156,7 +139,9 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
       new_entity: '',
       new_relationship_start: 'click to start relationship',
       new_relationship_end: 'click to end relationship',
-      delete: 'click to delete'
+      delete: 'click to delete',
+      label_pick: '',
+      label_enter: ''
     }
 
     $scope.editor.entityOverlayMessage = modeMessages[mode];
