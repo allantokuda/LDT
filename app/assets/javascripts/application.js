@@ -12,10 +12,9 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require_tree .
 //= require jquery.ui.dialog
 //= require d3.v3
-//= require angular
+//= require angular/angular
 //= require underscore
 //= require app
 //= require services

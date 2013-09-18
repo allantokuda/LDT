@@ -21,7 +21,7 @@
     <button action hotkey="d" id="delete-button"><u>D</u>elete</button>
     <button action hotkey="l" id="label-button"><u>L</u>abel</button>
     <span class="toolbar-separator">&nbsp;</span>
-    <button action id="save-button">Save</button>
+    <button action id="save-button">{{ editor.saveButtonText }}</button>
   </div>
 
   <div canvas id="canvas" ng-controller="GraphCtrl" ng-click="handleCanvasClick($event)">
@@ -47,6 +47,13 @@
       <path class="click-area"   ng-repeat="a in graph.arrowheads" ng-attr-d="{{a.box}}" ng-click="handleArrowClick(a,$event)" catch-input></path>
       <path class="click-path"   ng-repeat="r in graph.decoratedRelationships" ng-attr-d="{{r.svgPath()}}" ng-click="handleRelationshipClick(r)" catch-input></path>
     </svg>
+
+    <div class="label" ng-repeat="label in graph.labels" select-with="dblclick as lbl in #canvas"
+         ng-click="handleLabelClick(label.id,$event)" catch-input ng-style="{ left: label.x, top: label.y }">
+         <span ng-show="!lbl.selected" ng-style="{ float: label.direction }" catch-input>{{label.text}}</span>
+      <input ng-model="label.text" ng-show="lbl.selected" ng-click="handleLabelClick(label.id,$event)">
+    </div>
+
   </div>
 
 </div>

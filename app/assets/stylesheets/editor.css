@@ -168,3 +168,14 @@ path.click-area {
 #editor.label_pick path.click-area:hover {
   fill: rgba(255,230,0,0.70);
 }
+
+#canvas div.label {
+  position: absolute;
+  display: inline-block;
+  width: 1px;
+}
+
+#canvas div.label span {
+  display: block;
+  background: rgba(255,255,255,0.8);
+}

@@ -14,6 +14,7 @@ class GraphsController < ApplicationController
     end
   end
 
+  # Calling this from frontend AJAX
   # GET /graphs/1
   # GET /graphs/1.json
   def show
@@ -28,7 +29,7 @@ class GraphsController < ApplicationController
   # GET /graphs/new
   # GET /graphs/new.json
   def new
-    @graph = Graph.create :name => "Untitled Graph"
+    @graph = Graph.create
 
     respond_to do |format|
       format.html { redirect_to edit_graph_path(@graph.id) }
@@ -43,10 +44,10 @@ class GraphsController < ApplicationController
   # POST /graphs
   # POST /graphs.json
   def create
-    @graph = Graph.new_from_request params[:graph]
+    @graph = Graph.create_from_request params[:graph]
 
     respond_to do |format|
-      if @graph.save
+      if @graph
         format.html { redirect_to edit_graph_path(@graph.id), notice: 'Graph was successfully created.' }
         format.json { render json: @graph, status: :created, location: @graph }
       else

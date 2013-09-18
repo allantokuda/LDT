@@ -5,7 +5,17 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
   $scope.editor = new Object;
   $scope.graph = new Object;
 
-  var graphID = /graphs\/(\d+)\/edit/.exec(window.location.pathname)[1]
+  $scope.graph.changeToggler = false
+  $scope.$watch('graph.changeToggler', function() {
+    $scope.editor.saveButtonText = 'Save';
+  });
+  $scope.editor.saveButtonText = 'Save';
+
+  var graphID;
+  var path_regex = /graphs\/(\d+)\/edit/
+  var matches = path_regex.exec(window.location.pathname)
+  if (matches != null)
+    graphID = matches[1]
 
   if (graphID)
     $.ajax({ url:"/graphs/"+graphID, type:"GET", dataType:"json",
@@ -19,13 +29,17 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
           $scope.graph.name = data.name;
           $scope.graph.entities = data.entities;
           $scope.graph.relationships = data.relationships;
-        });
 
-        console.log(data);
+          //TEMPORARY: put labels on all endpoints
+          _.each($scope.graph.relationships, function(r) {
+            r.label1 = 'be';
+            r.label2 = 'be';
+          });
+
+          $scope.graph.initialize();
+        });
       }
     })
-
-  console.log(graphID)
 
 
   // Click event handlers
@@ -76,21 +90,14 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
         $scope.graph.switchArrow(arrow,ev.shiftKey);
         break;
       case 'label_pick':
-        console.log('apply label');
         setMode('label_enter');
         break;
     }
   }
 
-
-  $scope.edited = function() {
-    $('#save-button').text('Save')
-  }
-
   $scope.save = function () {
 
-    $('#save-button').css('background','#999');
-    $('#save-button').text('Saving...')
+    $scope.$apply(function() { $scope.editor.saveButtonText = 'Saving...' });
 
     var graphData = { id: $scope.graph.id, name: $scope.graph.name }
     graphData.entities      = $scope.graph.entities;
@@ -101,9 +108,7 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
     if (graphData.id) {
       $.ajax({ url:"/graphs/"+graphData.id, type:"PUT", dataType:"json", data:encodeData,
         complete: function(data) {
-          console.log('hello?');
-          $('#save-button').css('background', 'inherit');
-          $('#save-button').text('Saved')
+          $scope.$apply(function() { $scope.editor.saveButtonText = 'Saved' });
         }
       })
       }
@@ -115,9 +120,7 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
           console.log(textStatus);
         },
         success: function(data, textStatus, jqXHR) {
-          $('#save-button').css('background', 'inherit');
-          $('#save-button').text('Saved')
-          console.log(data.id);
+          $scope.$apply(function() { $scope.editor.saveButtonText = 'Saved' });
           $scope.graph.id = data.id
         }
       });

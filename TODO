@@ -1,4 +1,5 @@
 BUGS
+  Firefox: whole site not working (not loading directives?)
   Relationships vanish below a certain y-coordinate.
   Multiple relationships between 2 entities always cross each other
   layoutGraph is getting called twice (investigate)

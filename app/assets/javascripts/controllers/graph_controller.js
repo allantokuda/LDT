@@ -20,21 +20,24 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     if (typeof($scope.graph) == 'undefined')
       $scope.graph = new Object;
 
-    // Setup initial graph when starting new
-    if (typeof($scope.graph.name) == 'undefined') {
-      $scope.graph.name = "Untitled graph"
-      $scope.graph.entities = []
-      $scope.graph.relationships = []
+    $scope.graph.initialize = function() {
+
+      if (typeof($scope.graph.name) == 'undefined') {
+        $scope.graph.name = "Untitled graph"
+        $scope.graph.entities = []
+        $scope.graph.relationships = []
+      }
+
+      $scope.graph.next_entity_id = _.max($scope.graph.entities, function(e) { return e.id }) + 1;
+      if ($scope.graph.next_entity_id == -Infinity)
+        $scope.graph.next_entity_id = 1
+
+      $scope.graph.next_relationship_id = _.max($scope.graph.entities, function(e) { return e.id }) + 1;
+      if ($scope.graph.next_relationship_id == -Infinity)
+        $scope.graph.next_relationship_id = 1
+
+      $scope.graph.changeToggler = false
     }
-
-    $scope.graph.next_entity_id = _.max($scope.graph.entities, function(e) { return e.id }) + 1;
-    if ($scope.graph.next_entity_id == -Infinity)
-      $scope.graph.next_entity_id = 1
-
-    $scope.graph.next_relationship_id = _.max($scope.graph.entities, function(e) { return e.id }) + 1;
-    if ($scope.graph.next_relationship_id == -Infinity)
-      $scope.graph.next_relationship_id = 1
-
 
     // Expensive watch operation here, but it seems to work well for this application.
     // http://stackoverflow.com/questions/14712089/how-to-deep-watch-an-array-in-angularjs
@@ -47,8 +50,8 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     }
 
     function layoutGraph() {
-      // Let editor know there are changes
-      $scope.edited();
+      // Let editor watch for changes
+      $scope.graph.changeToggler = !$scope.graph.changeToggler;
 
       // Recreate decorated entities
       $scope.graph.decoratedEntities      = _.map($scope.graph.entities,      decorateEntity);
@@ -67,9 +70,9 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       })
 
       setupArrowheads();
+
+      setupLabels();
     }
-
-
 
     function decorateEntity(e) {
       // Clone the object so the scope watch only needs to watch the base data
@@ -228,23 +231,25 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     }
 
     function decorateRelationship(r) {
-
       // Clone the object so the scope watch only needs to watch the base data
       var relationship = $.extend({}, r);
 
-      relationship.entity1 = decoratedEntityByID(relationship.entity1_id)
-      relationship.entity2 = decoratedEntityByID(relationship.entity2_id)
+      relationship.entity1 = decoratedEntityByID(relationship.entity1_id);
+      relationship.entity2 = decoratedEntityByID(relationship.entity2_id);
 
       relationship.requestEndpoints = function() {
-        this.endpoint1 = this.entity1.requestEndpoint(this.id, this.entity2)
-        this.endpoint2 = this.entity2.requestEndpoint(this.id, this.entity1)
+        this.endpoint1 = this.entity1.requestEndpoint(this.id, this.entity2);
+        this.endpoint2 = this.entity2.requestEndpoint(this.id, this.entity1);
+        this.endpoint1.label = this.label1;
+        this.endpoint2.label = this.label2;
+        this.endpoints = [this.endpoint1, this.endpoint2]
       }
 
       relationship.svgPath = function() {
 
         var arrowTip = []
-        arrowTip[0] = this.endpoint1
-        arrowTip[1] = this.endpoint2
+        arrowTip[0] = this.endpoint1;
+        arrowTip[1] = this.endpoint2;
 
         var arrowBase = _.map(arrowTip, function(tip) {
           return {
@@ -302,6 +307,27 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         decorateEndpoint(r.endpoint2, r.symbol2, 2);
         $scope.graph.arrowheads.push(r.endpoint1);
         $scope.graph.arrowheads.push(r.endpoint2);
+      });
+    }
+
+    function setupLabels() {
+      $scope.graph.labels = [];
+      _.each($scope.graph.decoratedRelationships, function(r) {
+        _.each(r.endpoints, function(endpoint) {
+          var offset, direction;
+          switch(endpoint.side) {
+            case 'top':    offset = { x:   5, y: -50 }; direction = 'left';  break;
+            case 'bottom': offset = { x:   5, y:  30 }; direction = 'left';  break;
+            case 'left':   offset = { x: -32, y:   2 }; direction = 'right'; break;
+            case 'right':  offset = { x:  32, y: -20 }; direction = 'left';  break;
+          }
+          $scope.graph.labels.push({
+            text: endpoint.label,
+            x: endpoint.x + offset.x,
+            y: endpoint.y + offset.y,
+            direction: direction
+          });
+        });
       });
     }
 
