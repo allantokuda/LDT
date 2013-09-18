@@ -36,7 +36,8 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       if ($scope.graph.next_relationship_id == -Infinity)
         $scope.graph.next_relationship_id = 1
 
-      $scope.graph.changeToggler = false
+      if (typeof($scope.graph) == 'undefined')
+        $scope.graph.changeToggler = false
     }
 
     // Expensive watch operation here, but it seems to work well for this application.
@@ -144,7 +145,7 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         return {min: -offset, max: offset}
       }
 
-      // To be called by each relationship, to get a list of needing relationships
+      // Called by each relationship, to let the entity know that the relationship needs and endpoint
       entity.requestEndpoint = function(relationship_id, other_entity) {
         var side = this.nearestSide(other_entity);
         var center_to_center = this.along(side, other_entity.center()) -
