@@ -22,22 +22,27 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
 
     $scope.graph.initialize = function() {
 
-      if (typeof($scope.graph.name) == 'undefined') {
+      if (typeof($scope.graph.name) == 'undefined')
         $scope.graph.name = "Untitled graph"
+
+      if (typeof($scope.graph.entities) == 'undefined')
         $scope.graph.entities = []
+
+      if (typeof($scope.graph.relationships) == 'undefined')
         $scope.graph.relationships = []
-      }
-
-      $scope.graph.next_entity_id = _.max($scope.graph.entities, function(e) { return e.id }) + 1;
-      if ($scope.graph.next_entity_id == -Infinity)
-        $scope.graph.next_entity_id = 1
-
-      $scope.graph.next_relationship_id = _.max($scope.graph.entities, function(e) { return e.id }) + 1;
-      if ($scope.graph.next_relationship_id == -Infinity)
-        $scope.graph.next_relationship_id = 1
 
       if (typeof($scope.graph) == 'undefined')
         $scope.graph.changeToggler = false
+
+      $scope.graph.next_entity_id       = nextID($scope.graph.entities);
+      $scope.graph.next_relationship_id = nextID($scope.graph.relationships);
+    }
+
+    function nextID(set) {
+      if (set.length > 0)
+        return _.max(set, function(item) { return item.id }).id + 1;
+      else
+        return 0;
     }
 
     // Expensive watch operation here, but it seems to work well for this application.
@@ -51,6 +56,7 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     }
 
     function layoutGraph() {
+
       // Let editor watch for changes
       $scope.graph.changeToggler = !$scope.graph.changeToggler;
 
@@ -174,8 +180,9 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         return endpoint;
       }
 
+
       entity.negotiateEndpointsOnEachSide = function() {
-        var callFunc = function(side) { this.negotiateEndpoints(side) }
+        var callFunc = function(side) { this.negotiateEndpoints(side); }
         _.each(SIDES, _.bind(callFunc, this))
       }
 
