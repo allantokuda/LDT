@@ -21,7 +21,9 @@
     <button action hotkey="d" id="delete-button"><u>D</u>elete</button>
     <button action hotkey="l" id="label-button"><u>L</u>abel</button>
     <span class="toolbar-separator">&nbsp;</span>
-    <button action id="save-button">{{ editor.saveButtonText }}</button>
+    <button action hotkey="c-s" id="save-button">{{ editor.saveButtonText }}</button>
+    <button action hotkey="c-o" id="open-button">Open</button>
+    <button action hotkey="c-n" id="new-button">New</button>
   </div>
 
   <div canvas id="canvas" ng-controller="GraphCtrl" ng-click="handleCanvasClick($event)">

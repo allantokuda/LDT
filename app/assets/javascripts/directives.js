@@ -142,7 +142,7 @@ app.directive('action',function() {
     link: function(scope, element, iAttrs, ctrl) {
       element.click(function(e) {
         var actionName = element[0].innerText.replace(' ', '').replace(/^(.)/, function(c) { return c.toLowerCase() });
-        scope[actionName]();
+        scope[actionName + 'Command']();
       })
     }
   }

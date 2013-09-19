@@ -126,13 +126,16 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
       });
   }
 
+
   // Action buttons / hotkeys
 
-  $scope.select          = function() { $scope.$apply(setMode('select')) }
-  $scope.newEntity       = function() { $scope.$apply(setMode('new_entity')); }
-  $scope.newRelationship = function() { $scope.$apply(setMode('new_relationship_start')); }
-  $scope.delete          = function() { $scope.$apply(setMode('delete')); }
-  $scope.label           = function() { $scope.$apply(setMode('label_pick')); }
+  $scope.newCommand             = function() { window.location = '/graphs/new' }
+  $scope.openCommand            = function() { window.location = '/graphs/' }
+  $scope.selectCommand          = function() { $scope.$apply(setMode('select')) }
+  $scope.newEntityCommand       = function() { $scope.$apply(setMode('new_entity')); }
+  $scope.newRelationshipCommand = function() { $scope.$apply(setMode('new_relationship_start')); }
+  $scope.deleteCommand          = function() { $scope.$apply(setMode('delete')); }
+  $scope.labelCommand           = function() { $scope.$apply(setMode('label_pick')); }
 
   function setMode(mode) {
     $scope.editor.mode = mode;
