@@ -95,7 +95,7 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
     }
   }
 
-  $scope.save = function () {
+  $scope.saveCommand = function () {
 
     $scope.$apply(function() { $scope.editor.saveButtonText = 'Saving...' });
 
