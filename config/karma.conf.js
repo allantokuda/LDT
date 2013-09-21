@@ -13,8 +13,11 @@ module.exports = function(config){
       'app/assets/javascripts/app.js',
       'app/assets/javascripts/services.js',
       'app/assets/javascripts/filters.js',
+      'app/assets/javascripts/entity.js',
       'app/assets/javascripts/directives.js',
       'app/assets/javascripts/controllers/*.js',
+      'app/assets/javascripts/factories/*.js',
+      'app/assets/javascripts/models/*.js',
       'test/unit/**/*.js',
       'test/lib/jasmine-jquery.js'
     ],
