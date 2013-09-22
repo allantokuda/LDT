@@ -7,6 +7,7 @@ window.Endpoint = function(endpoint) {
   this.other_entity = endpoint.other_entity;
 
   this.relationship.setEndpoint(this);
+  this.entity.attachEndpoint(this);
 
   /* LOGIC MAY NEED TO GO INTO ENDPOINT OR RELATIONSHIP CLASS
   var center_to_center = side.along(endpoint.other_entity.center()) -

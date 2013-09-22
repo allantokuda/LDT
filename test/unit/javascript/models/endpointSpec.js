@@ -21,4 +21,11 @@ describe('Endpoint', function() {
   it('reports to a relationship', function() {
     expect(r.endpoints[0]).toBe(endpoint);
   });
+
+  it('reports to an entity', function() {
+    expect(apple.endpoints[0]).toBe(endpoint);
+  });
+
+  it('relocates itself on the most desirable side of its entity', function() {
+  });
 });
