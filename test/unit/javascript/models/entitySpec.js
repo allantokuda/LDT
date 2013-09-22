@@ -55,19 +55,4 @@ describe('Entity', function() {
     expect(e.nearestSide(entityOnBottom).name).toBe('bottom')
   });
 
-  // This now needs to be in the endpoint test
-  xit('assigns an endpoint to a side', function() {
-    var endpointOnRight  = { other_entity: entityOnRight }
-    var endpointOnBottom = { other_entity: entityOnBottom }
-    e.attachEndpoint(endpointOnRight);
-    e.attachEndpoint(endpointOnBottom);
-    e.assignEndpointsToSides();
-    expect(e.sides['right'].endpoints.length).toBe(1);
-    expect(e.sides['right'].endpoints[0]).toBe(endpointOnRight);
-    expect(e.sides['bottom'].endpoints.length).toBe(1);
-    expect(e.sides['bottom'].endpoints[0]).toBe(endpointOnBottom);
-    expect(e.sides['top'].endpoints.length).toBe(0);
-    expect(e.sides['left'].endpoints.length).toBe(0);
-  });
-
 });

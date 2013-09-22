@@ -12,7 +12,7 @@ describe('Relationship', function() {
     endpoint1 = new window.Endpoint({
       relationship: r,
       entity: entity1,
-      other_entity: entity2,
+      otherEntity: entity2,
       label: 'supplies',
       symbol: 'none'
     });
@@ -20,7 +20,7 @@ describe('Relationship', function() {
     endpoint2 = new window.Endpoint({
       relationship: r,
       entity: entity2,
-      other_entity: entity1,
+      otherEntity: entity1,
       label: 'supplied by',
       symbol: 'chickenfoot'
     });

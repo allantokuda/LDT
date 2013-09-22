@@ -6,13 +6,13 @@ describe('Endpoint', function() {
   beforeEach(function() {
     r = new window.Relationship(0);
 
-    apple = new window.Entity({ name: 'apple' });
-    tree  = new window.Entity({ name: 'tree' });
+    tree  = new window.Entity({ name: 'tree' , x: 0, y:   0, width: 100, height: 100 });
+    apple = new window.Entity({ name: 'apple', x: 0, y: 200, width: 100, height: 100 });
 
     endpoint = new window.Endpoint({
       relationship: r,
       entity: apple,
-      other_entity: tree,
+      otherEntity: tree,
       label: 'fruit of',
       symbol: 'chickenfoot'
     });
@@ -27,5 +27,7 @@ describe('Endpoint', function() {
   });
 
   it('relocates itself on the most desirable side of its entity', function() {
+    endpoint.relocate();
+    expect(apple.sides['top'].endpoints[0]).toBe(endpoint);
   });
 });
