@@ -15,8 +15,12 @@ describe('Entity', function() {
   var entityOnBottom = new window.Entity({ x:  100, y:  300, width: 100, height: 100 });
 
   it('has the same attributes as its input hash', function() {
-    expect(e.name).toEqual('Test')
-    expect(e.x).toEqual(100)
+    expect(e.name).toBe('Test')
+    expect(e.x).toBe(100)
+    expect(e.y).toBe(100)
+    expect(e.width).toBe(120)
+    expect(e.height).toBe(120)
+    expect(e.attributes).toBe('abc\ndef')
   });
 
   it('knows its center point coordinates', function() {
@@ -24,10 +28,10 @@ describe('Entity', function() {
   });
 
   it('has four side objects', function() {
-    expect(e.sides['top'].name).toEqual('top')
-    expect(e.sides['left'].name).toEqual('left')
-    expect(e.sides['right'].name).toEqual('right')
-    expect(e.sides['bottom'].name).toEqual('bottom')
+    expect(e.sides['top'].name).toBe('top')
+    expect(e.sides['left'].name).toBe('left')
+    expect(e.sides['right'].name).toBe('right')
+    expect(e.sides['bottom'].name).toBe('bottom')
 
     expect(e.sides['top'].endpoints).toEqual([])
     expect(e.sides['left'].endpoints).toEqual([])
