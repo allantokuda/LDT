@@ -36,14 +36,16 @@ window.Side = function(entity, sideName) {
     bottom: function(other) { return other.y - this.entity.y - this.entity.height }
   })[sideName];
 
+  this.centerOffsetCoordinates = ({
+    top:     function(offset) { return { x: this.entity.x + this.entity.width  / 2 + offset, y: this.entity.y                      }; },
+    bottom:  function(offset) { return { x: this.entity.x + this.entity.width  / 2 + offset, y: this.entity.y + this.entity.height }; },
+    left:    function(offset) { return { y: this.entity.y + this.entity.height / 2 + offset, x: this.entity.x                      }; },
+    right:   function(offset) { return { y: this.entity.y + this.entity.height / 2 + offset, x: this.entity.x + this.entity.width  }; }
+  })[sideName];
+
   this.span = ({
     horizontal: function() { return this.entity.width;  },
     vertical:   function() { return this.entity.height; },
-  })[this.orientation];
-
-  this.centerOffsetCoordinates = ({
-    horizontal: function(offset) { return { x: this.entity.x + this.entity.width  / 2 + offset, y: this.entity.y + this.entity.height }; },
-    vertical:   function(offset) { return { y: this.entity.y + this.entity.height / 2 + offset, x: this.entity.x + this.entity.width  }; }
   })[this.orientation];
 
   this.along = ({
