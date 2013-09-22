@@ -26,7 +26,10 @@ window.Entity = function(entity) {
   }
 
   this.nearestSide = function(other) {
-    return _.min(this.sides, function(side) { side.outwardDistance(other) });
+    return _.max(
+      _.values(this.sides),
+      function(side) { return side.outwardDistance(other) }
+    );
   }
 
   this.attachEndpoint = function(endpoint) {

@@ -36,19 +36,19 @@ describe('Entity', function() {
   });
 
   it('knows when another entity is on its right', function() {
-    expect(e.nearestSide(entityOnRight)).toBe(e.sides['right'])
+    expect(e.nearestSide(entityOnRight).name).toBe('right')
   });
 
   it('knows when another entity is on its left', function() {
-    expect(e.nearestSide(entityOnLeft)).toBe(e.sides['left'])
+    expect(e.nearestSide(entityOnLeft).name).toBe('left')
   });
 
   it('knows when another entity is above it', function() {
-    expect(e.nearestSide(entityOnTop)).toBe(e.sides['top'])
+    expect(e.nearestSide(entityOnTop).name).toBe('top')
   });
 
   it('knows when another entity is below it', function() {
-    expect(e.nearestSide(entityOnBottom)).toBe(e.sides['bottom'])
+    expect(e.nearestSide(entityOnBottom).name).toBe('bottom')
   });
 
   // This now needs to be in the endpoint test
