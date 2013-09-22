@@ -41,4 +41,9 @@ describe('Side', function() {
     expect(  topSide.span()).toEqual(100);
     expect(rightSide.span()).toEqual(80);
   });
+
+  it('chooses the lateral component of a given coordinate pair', function() {
+    expect(  topSide.along({ x:10, y:50 })).toBe(10);
+    expect(rightSide.along({ x:10, y:50 })).toBe(50);
+  });
 });
