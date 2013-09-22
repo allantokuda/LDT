@@ -2,12 +2,12 @@
 
 describe('Entity', function() {
   var e = new window.Entity({
-      name: 'Test',
-      attributes: 'abc\ndef',
-      x: 100,
-      y: 100,
-      width: 120,
-      height: 120
+    name: 'Test',
+    attributes: 'abc\ndef',
+    x: 100,
+    y: 100,
+    width: 120,
+    height: 120
   });
   var entityOnRight  = new window.Entity({ x:  300, y:  100, width: 100, height: 100 });
   var entityOnLeft   = new window.Entity({ x: -300, y:  100, width: 100, height: 100 });

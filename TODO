@@ -6,11 +6,9 @@ BUGS
   layoutGraph is getting called twice (investigate)
 
 MUST HAVE FOR FIRST DEMO
-  New and browse buttons
 	Labeled relationship endings
   Persona
   Create random string identifier for graph and make this the path
-	draw new entity "ghost" connected to mouse
   Score the endpoints based on the severity of their angles instead of pure offset.  (The closer of 2 entities loses the negotiation sooner than it should.)
   Password protection for access
   Password protection for edit
@@ -30,12 +28,49 @@ REARCHITECTURE FOR PERFORMANCE
     It tells the other entity that a change has occurred (method name: 'remoteChange', provides pointer to itself as an argument)
       Remove entity receives 'remoteChange' and DOES NOT need to propagate another call because it's already 1 level deep, and also has received a pointer to the other entity
         Remote entity determines the side and position of JUST THAT endpoint
-        Remote entity renegotates all its endpoint locations on JUST THAT side
+        Remote entity renegotates all its endpoint locations on ALL sides
     It determines the sides and positions of ALL of its endpoints
     It renegotiates all of its endpoint locations on ALL sides
 
+  FACTORIES
+    Entity factory
+      Inputs: ID, x, y, width, height, name, attributes
+      Output: object with same attributes, plus:
+        "sides" hash with keys top, bottom, left, right.
+          Each side is an object which contains an empty list of endpoints, plus functions:
+
+    Relationship factory
+      Inputs: ID, entity1 object, entity2 object
+      Output: Relationship object with references to two Endpoint objects
+
+    Graph factory
+      Purpose:
+        Orchestrate download, contruction, and interconnection of all graph items,
+        such that that they are consumable by directives such as ng-repeat.
+        All consumed data should be pre-calculated, and directly modifiable for
+        observation by other directives -- not calculated on demand.
+      Input: graph ID to fetch
+      Output: graph object with fully interconnected arrays:
+        entities
+        sides
+        relationships
+        endpoints
+
+      Approach:
+        1. AJAX-download graph JSON from server by its ID
+        2. map entity primitives to Entity objects using EntityFactory
+        3. map relationship primitives to Relationship objects using RelationshipFactory
+        4. create array of direct references to all Endpoints in the Relationships
+
+
+
+
+
+
+
 
 BACKLOG
+	draw new entity "ghost" connected to mouse
   Arrowheads should "squish" together when there's not enough space
 	Pan: click and drag the canvas in select mode
   Enter finishes renaming entity

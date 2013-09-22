@@ -1,12 +1,10 @@
-window.Endpoint = function(relationship, entity, label, symbol) {
+window.Endpoint = function(endpoint) {
 
-  this.entity = entity;
-  this.relationship = relationship;
-  this.label = label;
-  this.symbol = symbol;
-  this.other_entity = relationship.other(entity)
-
-  var side = this.nearestSide(other_entity);
+  this.entity       = endpoint.entity;
+  this.relationship = endpoint.relationship;
+  this.label        = endpoint.label;
+  this.symbol       = endpoint.symbol;
+  this.other_entity = endpoint.other_entity;
 
   /* LOGIC MAY NEED TO GO INTO ENDPOINT OR RELATIONSHIP CLASS
   var center_to_center = side.along(endpoint.other_entity.center()) -

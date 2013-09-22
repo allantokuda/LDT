@@ -1,12 +1,18 @@
-window.Relationship = function(r) {
+window.Relationship = function(id) {
 
-  this.id = r.id;
-  this.entities = [r.entity1, r.entity2];
-  this.endpoints = [
-    new Endpoint(self, r.entity1, r.label1, r.symbol1),
-    new Endpoint(self, r.entity2, r.label2, r.symbol2)
-  ];
+  this.id = id;
+  this.num = 0;
+  this.endpoints = [];
+  this.entities = [];
 
+  // Allow the context (graph) to supply two endpoints
+  this.setEndpoint = function(endpoint) {
+    this.endpoints[this.num] = endpoint;
+    this.entities[this.num] = endpoint.entity;
+    this.num++;
+  }
+
+  // Just move this to the endpoint class so the logic is not needed...
   this.other = function(entity) {
     if      (entities[0] == entity) return entities[1];
     else if (entities[1] == entity) return entities[0];
