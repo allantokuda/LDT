@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Side', function() {
-  var side, endpoint;
+  var topSide, rightSide, endpoint;
 
   beforeEach(function() {
     endpoint = new window.Endpoint({
@@ -12,21 +12,28 @@ describe('Side', function() {
       symbol: 'chickenfoot'
     });
 
-    side = new window.Side(endpoint.entity, 'top');
+    topSide   = new window.Side(endpoint.entity, 'top');
+    rightSide = new window.Side(endpoint.entity, 'right');
   });
 
   it('accepts endpoints', function() {
-    side.addEndpoint(endpoint);
-    expect(side.endpoints[0]).toBe(endpoint);
+    topSide.addEndpoint(endpoint);
+    expect(topSide.endpoints[0]).toBe(endpoint);
   });
 
   it('removes endpoints', function() {
-    side.addEndpoint(endpoint);
-    side.removeEndpoint(endpoint);
-    expect(side.endpoints.length).toBe(0);
+    topSide.addEndpoint(endpoint);
+    topSide.removeEndpoint(endpoint);
+    expect(topSide.endpoints.length).toBe(0);
   });
 
   it('knows its outward vector', function() {
-    expect(side.outwardVector).toEqual({x:0, y:-1});
+    expect(  topSide.outwardVector).toEqual({x:0, y:-1});
+    expect(rightSide.outwardVector).toEqual({x:1, y: 0});
+  });
+
+  it('knows its orientation', function() {
+    expect(  topSide.orientation).toBe('horizontal');
+    expect(rightSide.orientation).toBe('vertical');
   });
 });

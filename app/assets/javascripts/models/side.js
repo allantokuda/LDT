@@ -15,7 +15,7 @@ window.Side = function(entity, sideName) {
     this.endpoints.push(endpointToAdd);
   }
 
-  this.direction = ({
+  this.orientation = ({
     top:    'horizontal',
     bottom: 'horizontal',
     left:   'vertical',
@@ -39,17 +39,17 @@ window.Side = function(entity, sideName) {
   this.span = ({
     horizontal: function() { return this.entity.width;  },
     vertical:   function() { return this.entity.height; },
-  })[this.direction];
+  })[this.orientation];
 
   this.centerOffsetCoordinates = ({
     horizontal: function(offset) { return { x: this.entity.x + this.entity.width  / 2 + offset, y: this.entity.y + this.entity.height }; },
     vertical:   function(offset) { return { y: this.entity.y + this.entity.height / 2 + offset, x: this.entity.x + this.entity.width  }; }
-  })[this.direction];
+  })[this.orientation];
 
   this.along = ({
     horizontal: function(point) { return point.x; },
     vertical:   function(point) { return point.y; },
-  })[this.direction];
+  })[this.orientation];
 
   this.maxOffset = function() {
     return (this.span - this.ARROWHEAD_WIDTH) / 2;
