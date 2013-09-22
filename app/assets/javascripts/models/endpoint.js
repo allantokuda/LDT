@@ -6,6 +6,8 @@ window.Endpoint = function(endpoint) {
   this.symbol       = endpoint.symbol;
   this.other_entity = endpoint.other_entity;
 
+  this.relationship.setEndpoint(this);
+
   /* LOGIC MAY NEED TO GO INTO ENDPOINT OR RELATIONSHIP CLASS
   var center_to_center = side.along(endpoint.other_entity.center()) -
                          side.along(this.center());
