@@ -5,7 +5,7 @@ describe('Side', function() {
 
   beforeEach(function() {
     endpoint = new window.Endpoint({
-      entity:       new window.Entity({name: 'foo'}),
+      entity:       new window.Entity({name: 'foo', width: 100, height: 80}),
       otherEntity:  new window.Entity({name: 'bar'}),
       relationship: new window.Relationship(0),
       label: 'foo',
@@ -35,5 +35,10 @@ describe('Side', function() {
   it('knows its orientation', function() {
     expect(  topSide.orientation).toBe('horizontal');
     expect(rightSide.orientation).toBe('vertical');
+  });
+
+  it('determines its span (length)', function() {
+    expect(  topSide.span()).toEqual(100);
+    expect(rightSide.span()).toEqual(80);
   });
 });
