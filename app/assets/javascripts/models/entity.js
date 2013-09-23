@@ -45,4 +45,8 @@ window.Entity = function(entity) {
       side.negotiateEndpoints();
     });
   }
+
+  this.stringGeom = function() {
+    return [this.x, this.y, this.width, this.height].join(',')
+  }
 }
