@@ -12,13 +12,10 @@ window.Relationship = function(id) {
     this.num++;
   }
 
-  // Just move this to the endpoint class so the logic is not needed...
-  this.other = function(entity) {
-    if      (entities[0] == entity) return entities[1];
-    else if (entities[1] == entity) return entities[0];
-    else
-      return undefined;
-  };
+  this.crosslink = function() {
+    this.endpoints[0].partner = this.endpoints[1];
+    this.endpoints[1].partner = this.endpoints[0];
+  }
 
   this.saveObject = function() {
     return {

@@ -31,11 +31,14 @@ describe('Relationship', function() {
   });
 
   it('accepts endpoints', function() {
-    r.setEndpoint(endpoint1);
-    r.setEndpoint(endpoint2);
     expect(r.endpoints[0]).toBe(endpoint1);
     expect(r.endpoints[1]).toBe(endpoint2);
   });
 
+  it('makes its endpoints aware of each other', function() {
+    r.crosslink();
+    expect(endpoint1.partner).toBe(endpoint2);
+    expect(endpoint2.partner).toBe(endpoint1);
+  });
 
 });

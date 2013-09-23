@@ -10,11 +10,13 @@ window.Side = function(entity, sideName) {
 
   this.removeEndpoint = function(endpointToDelete) {
     this.endpoints = _.reject(this.endpoints, function(endpoint) { return endpoint == endpointToDelete });
+    endpointToDelete.side = undefined;
   }
 
   this.addEndpoint = function(endpointToAdd) {
     this.removeEndpoint(endpointToAdd);
     this.endpoints.push(endpointToAdd);
+    endpointToAdd.side = this;
   }
 
   this.orientation = ({
@@ -50,14 +52,20 @@ window.Side = function(entity, sideName) {
     vertical:   function() { return this.entity.height; },
   })[this.orientation];
 
-  this.along = ({
+  this.parallelCoordinate = ({
     horizontal: function(point) { return point.x; },
     vertical:   function(point) { return point.y; },
+  })[this.orientation];
+
+  this.perpendicularCoordinate = ({
+    horizontal: function(point) { return point.y; },
+    vertical:   function(point) { return point.x; },
   })[this.orientation];
 
   this.maxOffset = function() {
     return Math.round((this.span() - window.ARROWHEAD_WIDTH) / 2);
   }
+
 
   this.negotiateEndpoints = function() {
     // Reset bounds
@@ -66,23 +74,24 @@ window.Side = function(entity, sideName) {
 
     // Sort endpoints by priority
     this.endpoints = _.sortBy(this.endpoints, function(endpoint) {
-      return -Math.abs(endpoint.ideal_offset)
+      endpoint.calculateIdeals();
+      return -Math.abs(100 * endpoint.idealAngle + endpoint.idealOffset);
     });
 
     // Place each endpoint, in priority order
-    _.each(this.endpoints, _.bind(function(endpoint) {
+    _.each(this.endpoints, function(endpoint) {
 
       // Ideal offset falls naturally in the allowed area -> let it be exactly there
-      if(endpoint.ideal_offset > lowerBound &&
-         endpoint.ideal_offset < upperBound) {
-        endpoint.assigned_offset = endpoint.ideal_offset;
+      if(endpoint.idealOffset > lowerBound &&
+         endpoint.idealOffset < upperBound) {
+        endpoint.assigned_offset = endpoint.idealOffset;
 
       // Ideal offset is below the allowed area
-      } else if (endpoint.ideal_offset <= lowerBound) {
+      } else if (endpoint.idealOffset <= lowerBound) {
         endpoint.assigned_offset = lowerBound
 
       // Ideal offset is above the allowed area
-      } else if (endpoint.ideal_offset >= upperBound) {
+      } else if (endpoint.idealOffset >= upperBound) {
         endpoint.assigned_offset = upperBound
       }
 
@@ -93,12 +102,12 @@ window.Side = function(entity, sideName) {
 
       // Finally, close up the allowed area for the next endpoint.
       // Connection point is above center so bring down the upper bound
-      if (endpoint.ideal_offset > 0)
+      if (endpoint.idealOffset > 0)
         upperBound = endpoint.assigned_offset - window.ARROWHEAD_WIDTH
       // Connection point is below center so bring up the lower bound
       else
         lowerBound = endpoint.assigned_offset + window.ARROWHEAD_WIDTH
-    },this));
+    },this);
 
   };
 }
