@@ -40,10 +40,10 @@ describe('Side', function() {
   });
 
   it('determines its span (length)', function() {
-    expect(   topSide.span()).toEqual(100);
-    expect(bottomSide.span()).toEqual(100);
-    expect(  leftSide.span()).toEqual(80);
-    expect( rightSide.span()).toEqual(80);
+    expect(   topSide.span()).toBe(100);
+    expect(bottomSide.span()).toBe(100);
+    expect(  leftSide.span()).toBe(80);
+    expect( rightSide.span()).toBe(80);
   });
 
   it('chooses the lateral component of a given coordinate pair', function() {
@@ -58,5 +58,12 @@ describe('Side', function() {
     expect(bottomSide.centerOffsetCoordinates(7)).toEqual({ x:  57, y: 80 });
     expect(  leftSide.centerOffsetCoordinates(7)).toEqual({ x:   0, y: 47 });
     expect( rightSide.centerOffsetCoordinates(7)).toEqual({ x: 100, y: 47 });
+  });
+
+  it('calculates maximum offset allowed by an endpoint', function() {
+    expect(   topSide.maxOffset()).toBe(40);
+    expect(bottomSide.maxOffset()).toBe(40);
+    expect(  leftSide.maxOffset()).toBe(30);
+    expect( rightSide.maxOffset()).toBe(30);
   });
 });

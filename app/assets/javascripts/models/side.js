@@ -1,4 +1,6 @@
 window.SIDENAMES = ['top', 'bottom', 'left', 'right'];
+window.ARROWHEAD_LENGTH = 30
+window.ARROWHEAD_WIDTH = 20
 
 window.Side = function(entity, sideName) {
 
@@ -54,7 +56,7 @@ window.Side = function(entity, sideName) {
   })[this.orientation];
 
   this.maxOffset = function() {
-    return (this.span - this.ARROWHEAD_WIDTH) / 2;
+    return Math.round((this.span() - window.ARROWHEAD_WIDTH) / 2);
   }
 
   this.negotiateEndpoints = function() {
@@ -92,10 +94,10 @@ window.Side = function(entity, sideName) {
       // Finally, close up the allowed area for the next endpoint.
       // Connection point is above center so bring down the upper bound
       if (endpoint.ideal_offset > 0)
-        upperBound = endpoint.assigned_offset - this.ARROWHEAD_WIDTH
+        upperBound = endpoint.assigned_offset - window.ARROWHEAD_WIDTH
       // Connection point is below center so bring up the lower bound
       else
-        lowerBound = endpoint.assigned_offset + this.ARROWHEAD_WIDTH
+        lowerBound = endpoint.assigned_offset + window.ARROWHEAD_WIDTH
     },this));
 
   };
