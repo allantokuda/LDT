@@ -14,6 +14,22 @@ describe('Entity', function() {
   var entityOnTop    = new window.Entity({ x:  100, y: -300, width: 100, height: 100 });
   var entityOnBottom = new window.Entity({ x:  100, y:  300, width: 100, height: 100 });
 
+  var r = new window.Relationship(0)
+  var endpoint1 = new window.Endpoint({
+    entity: e,
+    otherEntity: entityOnRight,
+    relationship: r,
+    label: '',
+    symbol: ''
+  });
+  var endpoint2 = new window.Endpoint({
+    entity: entityOnRight,
+    otherEntity: e,
+    relationship: r,
+    label: '',
+    symbol: ''
+  });
+
   it('has the same attributes as its input hash', function() {
     expect(e.name).toBe('Test')
     expect(e.x).toBe(100)
@@ -57,6 +73,21 @@ describe('Entity', function() {
 
   it('returns a string representing its geometry', function() {
     expect(e.stringGeom()).toBe('100,100,120,120');
+  });
+
+  it('triggers updates to its endpoints and associated entities\' endpoints', function() {
+
+    r.crosslink();
+
+    // move endpoints to wrong sides, to represent the state before a movement occurred
+    e.sides['top'].addEndpoint(endpoint1);
+    entityOnRight.sides['bottom'].addEndpoint(endpoint2);
+
+    e.triggerUpdate();
+
+    expect(endpoint1.side.name).toBe('right');
+    expect(endpoint2.side.name).toBe('left');
+
   });
 
 });

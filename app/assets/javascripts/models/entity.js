@@ -41,7 +41,7 @@ window.Entity = function(entity) {
   }
 
   this.negotiateEndpointsOnEachSide = function() {
-    _.each(side, function(side) {
+    _.each(_.values(this.sides), function(side) {
       side.negotiateEndpoints();
     });
   }
@@ -49,4 +49,17 @@ window.Entity = function(entity) {
   this.stringGeom = function() {
     return [this.x, this.y, this.width, this.height].join(',')
   }
+
+  this.updateAssociations = function() {
+    _.each(this.endpoints, function(endpoint) {
+      endpoint.partner.relocate();
+      endpoint.entity.negotiateEndpointsOnEachSide();
+    });
+  };
+
+  this.triggerUpdate = function() {
+    this.assignEndpointsToSides();
+    this.updateAssociations();
+    this.negotiateEndpointsOnEachSide();
+  };
 }
