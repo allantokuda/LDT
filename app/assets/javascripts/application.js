@@ -18,6 +18,11 @@
 //= require underscore
 //= require app
 //= require services
+//= require models/entity
+//= require models/relationship
+//= require models/side
+//= require models/endpoint
+//= require models/arrow
 //= require controllers/editor_controller
 //= require controllers/graph_controller
 //= require filters

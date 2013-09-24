@@ -27,13 +27,54 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
         $scope.$apply(function() {
           $scope.graph.id = graphID;
           $scope.graph.name = data.name;
-          $scope.graph.entities = data.entities;
-          $scope.graph.relationships = data.relationships;
 
-          //TEMPORARY: put labels on all endpoints
-          _.each($scope.graph.relationships, function(r) {
-            r.label1 = 'be';
-            r.label2 = 'be';
+          $scope.graph.entities = [];
+          $scope.graph.relationships = [];
+          $scope.graph.endpoints = [];
+          $scope.graph.arrowheads = [];
+
+          _.each(data.entities, function(hash) {
+            $scope.graph.entities.push(new window.Entity(hash));
+          });
+
+          _.each(data.relationships, function(hash) {
+             var relationship = new window.Relationship(hash.id);
+             var entity1 = _.find($scope.graph.entities, function(e){
+               return e.id == hash.entity1_id;
+             });
+             var entity2 = _.find($scope.graph.entities, function(e){
+               return e.id == hash.entity2_id;
+             });
+
+             var endpoint1 = new window.Endpoint({
+               entity: entity1,
+               otherEntity: entity2,
+               relationship: relationship,
+               label: hash.label1,
+               symbol: hash.symbol1,
+             });
+
+             var endpoint2 = new window.Endpoint({
+               entity: entity2,
+               otherEntity: entity1,
+               relationship: relationship,
+               label: hash.label2,
+               symbol: hash.symbol2,
+             });
+
+             relationship.crosslink();
+
+             $scope.graph.relationships.push(relationship);
+             $scope.graph.endpoints.push(endpoint1);
+             $scope.graph.endpoints.push(endpoint2);
+          });
+
+          _.each($scope.graph.entities, function(entity) {
+            entity.assignEndpointsToSides();
+          });
+
+          _.each($scope.graph.entities, function(entity) {
+            entity.negotiateEndpointsOnEachSide();
           });
 
           $scope.graph.initialize();
