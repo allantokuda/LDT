@@ -17,6 +17,30 @@ window.Relationship = function(id) {
     this.endpoints[1].partner = this.endpoints[0];
   }
 
+  this.svgPath = function() {
+
+    var arrowTip = []
+    arrowTip[0] = this.endpoints[0];
+    arrowTip[1] = this.endpoints[1];
+
+    var arrowBase = _.map(arrowTip, function(tip) {
+      return {
+        x: (tip.x + tip.side.outwardVector.x * ARROWHEAD_LENGTH),
+        y: (tip.y + tip.side.outwardVector.y * ARROWHEAD_LENGTH)
+      }
+    });
+
+    function svgPolyline(points) {
+      if (points.length >= 2)
+        return "M" + _.map(points, function(point) {
+          return point.x + ',' + point.y
+        }).join(' L');
+    }
+
+    return svgPolyline([arrowTip[0], arrowBase[0], arrowBase[1], arrowTip[1]]);
+  }
+
+
   this.saveObject = function() {
     return {
       id: id,
