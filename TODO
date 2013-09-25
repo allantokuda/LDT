@@ -5,11 +5,6 @@ BUGS
   Multiple relationships between 2 entities always cross each other
   layoutGraph is getting called twice (investigate)
 
-Flawless endpoint negotiation:
-  Endpoints are sorted by:
-    1: angle they would take, in the absence of other endpoints;
-    2: if multiple endpoints would be at angle == 0, sort between them based on where the endpoint would be placed on the side (old "ideal offset").
-
 MUST HAVE FOR FIRST DEMO
 	Labeled relationship endings
   Persona
@@ -17,6 +12,11 @@ MUST HAVE FOR FIRST DEMO
   Score the endpoints based on the severity of their angles instead of pure offset.  (The closer of 2 entities loses the negotiation sooner than it should.)
   Password protection for access
   Password protection for edit
+
+Flawless endpoint negotiation:
+  Endpoints are sorted by:
+    1: angle they would take, in the absence of other endpoints;
+    2: if multiple endpoints would be at angle == 0, sort between them based on where the endpoint would be placed on the side (old "ideal offset").
 
 REARCHITECTURE FOR PERFORMANCE
   Create graph.endpoints empty collection of objects in memory when page loads

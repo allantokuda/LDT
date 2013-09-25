@@ -175,7 +175,24 @@ path.click-area {
   width: 1px;
 }
 
-#canvas div.label span {
+#canvas div.label div {
   display: block;
+  position: absolute;
+  width: 1px;
+}
+
+#canvas div.label.top    div { left:  5px; top: -45px; }
+#canvas div.label.bottom div { left:  5px; top:  27px; }
+#canvas div.label.right  div { left: 30px; top: -20px; }
+#canvas div.label.left   div { left: -32px; top: 5px; }
+
+/* Ensure text is readable when it overlaps a diagonal relationship */
+#canvas div.label div span {
   background: rgba(255,255,255,0.8);
 }
+
+/* Just for arrowheads on the left side of an entity, have text flow to the right */
+#canvas div.label.left div span {
+  float: right;
+}
+
