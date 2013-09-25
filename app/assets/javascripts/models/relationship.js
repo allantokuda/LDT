@@ -1,15 +1,15 @@
 window.Relationship = function(id) {
 
   this.id = id;
-  this.num = 0;
+  this.numEndpoints = 0;
   this.endpoints = [];
   this.entities = [];
 
   // Allow the context (graph) to supply two endpoints
   this.setEndpoint = function(endpoint) {
-    this.endpoints[this.num] = endpoint;
-    this.entities[this.num] = endpoint.entity;
-    this.num++;
+    this.endpoints[this.numEndpoints] = endpoint;
+    this.entities[this.numEndpoints] = endpoint.entity;
+    this.numEndpoints++;
   }
 
   this.crosslink = function() {
@@ -40,16 +40,15 @@ window.Relationship = function(id) {
     return svgPolyline([arrowTip[0], arrowBase[0], arrowBase[1], arrowTip[1]]);
   }
 
-
   this.saveObject = function() {
     return {
-      id: id,
-      entity1: entities[0],
-      entity2: entities[1],
-      symbol1: endpoints[0].symbol,
-      symbol2: endpoints[1].symbol,
-      label1:  endpoints[0].label,
-      label2:  endpoints[1].label,
+      id         : this.id,
+      entity1_id : this.entities[0].id,
+      entity2_id : this.entities[1].id,
+      symbol1    : this.endpoints[0].symbol,
+      symbol2    : this.endpoints[1].symbol,
+      label1     : this.endpoints[0].label,
+      label2     : this.endpoints[1].label,
     };
   };
 }

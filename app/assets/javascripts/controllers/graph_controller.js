@@ -151,6 +151,11 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     }
 
     $scope.graph.deleteRelationship = function(relationship_to_delete) {
+      // Remove all connected arrowheads
+      $scope.graph.arrowheads = _.reject($scope.graph.arrowheads, function(arrowhead) {
+        return arrowhead.endpoint.relationship == relationship_to_delete
+      });
+
       // Remove all connected endpoints
       $scope.graph.endpoints = _.reject($scope.graph.endpoints, function(endpoint) {
         return endpoint.relationship == relationship_to_delete

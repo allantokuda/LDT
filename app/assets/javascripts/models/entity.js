@@ -11,6 +11,18 @@ window.Entity = function(entity) {
   this.endpoints = [];
   this.sides = {};
 
+  this.saveObject = function() {
+    return {
+      id         : this.id,
+      x          : this.x,
+      y          : this.y,
+      width      : this.width,
+      height     : this.height,
+      name       : this.name,
+      attributes : this.attributes
+    };
+  };
+
   _.each(window.SIDENAMES, _.bind(function(sideName) {
     this.sides[sideName] = new window.Side(this, sideName);
   },this));
@@ -62,4 +74,5 @@ window.Entity = function(entity) {
     this.updateAssociations();
     this.negotiateEndpointsOnEachSide();
   };
+
 }

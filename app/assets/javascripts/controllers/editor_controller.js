@@ -148,8 +148,8 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
     $scope.$apply(function() { $scope.editor.saveButtonText = 'Saving...' });
 
     var graphData = { id: $scope.graph.id, name: $scope.graph.name }
-    graphData.entities      = $scope.graph.entities;
-    graphData.relationships = $scope.graph.relationships;
+    graphData.entities      = _.map($scope.graph.entities,      function(e) { return e.saveObject(); });
+    graphData.relationships = _.map($scope.graph.relationships, function(r) { return r.saveObject(); });
 
     var encodeData = "graph=" + JSON.stringify(graphData);
 

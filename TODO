@@ -1,7 +1,6 @@
 
 MUST HAVE FOR FIRST DEMO
-  Save
-	Labeled relationship endings
+  Update save button when ANY change made
   Persona
   Create random string identifier for graph and make this the path
   Score the endpoints based on the severity of their angles instead of pure offset.  (The closer of 2 entities loses the negotiation sooner than it should.)
