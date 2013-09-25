@@ -166,18 +166,29 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     $scope.graph.deleteEntity = function(entity_to_delete) {
       // Remove all connected relationships
       $scope.graph.relationships = _.reject($scope.graph.relationships, function(r) {
-        return r.entity1_id == entity_to_delete.id || r.entity2_id == entity_to_delete.id
+        return r.entities[0] == entity_to_delete || r.entities[1] == entity_to_delete;
+      });
+
+      // Remove all connected endpoints
+      $scope.graph.endpoints = _.reject($scope.graph.endpoints, function(endpoint) {
+        return endpoint.entity == entity_to_delete;
       });
 
       // Remove entity
       $scope.graph.entities = _.reject($scope.graph.entities, function(e) {
-        return e.id == entity_to_delete.id
+        return e == entity_to_delete;
       });
     }
 
     $scope.graph.deleteRelationship = function(relationship_to_delete) {
+      // Remove all connected endpoints
+      $scope.graph.endpoints = _.reject($scope.graph.endpoints, function(endpoint) {
+        return endpoint.relationship == relationship_to_delete
+      });
+
+      // Remove relationship
       $scope.graph.relationships = _.reject($scope.graph.relationships, function(r) {
-        return r.id == relationship_to_delete.id
+        return r == relationship_to_delete
       });
     }
 
