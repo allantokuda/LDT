@@ -118,7 +118,7 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     }
 
     $scope.graph.createEntity = function(locX,locY) {
-      $scope.graph.entities.push({
+      $scope.graph.entities.push(new Entity({
         id: $scope.graph.next_entity_id++,
         x: locX,
         y: locY,
@@ -126,17 +126,41 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         height: 150,
         name: "New Entity",
         attributes: ""
-      })
+      }))
     }
 
     $scope.graph.createRelationship = function(entity1, entity2) {
-      $scope.graph.relationships.push({
-        id: $scope.graph.next_relationship_id++,
-        entity1_id: entity1.id,
-        entity2_id: entity2.id,
-        symbol1: '?',
-        symbol2: '?'
+      var id = $scope.graph.next_relationship_id++;
+      var r = new Relationship(id);
+
+      var endpoint1 = new Endpoint({
+        entity: entity1,
+        otherEntity: entity2,
+        relationship: r,
+        label: '',
+        symbol: '?'
       });
+
+      var endpoint2 = new Endpoint({
+        entity: entity2,
+        otherEntity: entity1,
+        relationship: r,
+        label: '',
+        symbol: '?'
+      });
+
+      r.crosslink();
+
+      $scope.graph.relationships.push(r);
+      $scope.graph.endpoints.push(endpoint1);
+      $scope.graph.endpoints.push(endpoint2);
+
+
+      entity1.assignEndpointsToSides();
+      entity2.assignEndpointsToSides();
+
+      entity1.negotiateEndpointsOnEachSide();
+      entity2.negotiateEndpointsOnEachSide();
     }
 
     $scope.graph.deleteEntity = function(entity_to_delete) {

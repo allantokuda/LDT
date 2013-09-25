@@ -1,10 +1,10 @@
 window.Endpoint = function(endpoint) {
 
   this.entity       = endpoint.entity;
+  this.otherEntity  = endpoint.otherEntity;
   this.relationship = endpoint.relationship;
   this.label        = endpoint.label;
   this.symbol       = endpoint.symbol;
-  this.otherEntity  = endpoint.otherEntity;
 
   // Two-way attach to one entity and one relationship, "permanently"
   // (i.e. until deleted by user command).
