@@ -52,8 +52,10 @@
 
     <div class="label" ng-class="endpoint.side.name" ng-repeat="endpoint in graph.endpoints" select-with="dblclick as lbl in #canvas"
          ng-click="handleLabelClick(label.id,$event)" catch-input ng-style="{ left: endpoint.x, top: endpoint.y }">
-         <div><span ng-show="!lbl.selected" catch-input>{{endpoint.label}}</span></div>
-      <input ng-model="label.text" ng-show="lbl.selected" ng-click="handleLabelClick(label.id,$event)">
+      <div>
+        <span ng-show="!lbl.selected" catch-input>{{endpoint.label}}</span>
+        <input ng-model="endpoint.label" ng-show="lbl.selected" ng-click="handleLabelClick(label.id,$event)">
+      </div>
     </div>
 
   </div>

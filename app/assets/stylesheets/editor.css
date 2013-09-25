@@ -187,12 +187,16 @@ path.click-area {
 #canvas div.label.left   div { left: -32px; top: 5px; }
 
 /* Ensure text is readable when it overlaps a diagonal relationship */
-#canvas div.label div span {
+#canvas div.label div span,
+#canvas div.label div input {
   background: rgba(255,255,255,0.8);
+  white-space: nowrap;
 }
 
 /* Just for arrowheads on the left side of an entity, have text flow to the right */
-#canvas div.label.left div span {
+#canvas div.label.left div span,
+#canvas div.label.left div input {
   float: right;
+  text-align: right;
 }
 
