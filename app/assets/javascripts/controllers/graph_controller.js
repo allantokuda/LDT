@@ -63,17 +63,6 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
       return isIdentifier(attributeName) ? 'identifier' : '';
     }
 
-    // Make arrowheads accessible directly off the scope for convenience in rendering
-    function setupArrowheads() {
-      $scope.graph.arrowheads = []
-      _.each($scope.graph.decoratedRelationships, function(r) {
-        decorateEndpoint(r.endpoint1, r.symbol1, 1);
-        decorateEndpoint(r.endpoint2, r.symbol2, 2);
-        $scope.graph.arrowheads.push(r.endpoint1);
-        $scope.graph.arrowheads.push(r.endpoint2);
-      });
-    }
-
     $scope.graph.toggleAttributeIdentifier = function(entityID, attributeIndex) {
       var entity = _.find($scope.graph.entities, function(e) { return e.id == entityID });
       var splitAttributes = entity.attributes.split("\n");
@@ -90,32 +79,6 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         entity.attributes = splitAttributes.join("\n");
       }
     };
-
-    $scope.graph.switchArrow = function(arrow, switchIdentifier) {
-      var relationship = _.find($scope.graph.relationships, function(r) {
-        return r.id == arrow.relationship_id
-      });
-      var symbol = relationship['symbol' + arrow.relationship_ending]
-
-      if (switchIdentifier) {
-        switch(symbol) {
-          case 'none':                   symbol = 'identifier'; break;
-          case 'identifier':             symbol = 'none'; break;
-          case 'chickenfoot':            symbol = 'chickenfoot_identifier'; break;
-          case 'chickenfoot_identifier': symbol = 'chickenfoot'; break;
-          case '?':                      symbol = 'identifier'; break;
-        }
-      } else {
-        switch(symbol) {
-          case 'none':                   symbol = 'chickenfoot'; break;
-          case 'chickenfoot':            symbol = 'none'; break;
-          case 'identifier':             symbol = 'chickenfoot_identifier'; break;
-          case 'chickenfoot_identifier': symbol = 'identifier'; break;
-          case '?':                      symbol = 'none'; break;
-        }
-      }
-      relationship['symbol' + arrow.relationship_ending] = symbol;
-    }
 
     $scope.graph.createEntity = function(locX,locY) {
       $scope.graph.entities.push(new Entity({

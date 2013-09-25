@@ -135,7 +135,7 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
     switch($scope.editor.mode) {
       case 'select':
         // Use shift key to toggler identifier
-        $scope.graph.switchArrow(arrow,ev.shiftKey);
+        arrow.switchType(ev.shiftKey);
         break;
       case 'label_pick':
         setMode('label_enter');

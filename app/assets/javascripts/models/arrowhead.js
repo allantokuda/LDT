@@ -45,6 +45,26 @@ window.Arrowhead = function(endpoint) {
     var type = this.endpoint.symbol;
     var side = this.endpoint.side.name;
     var position = "M" + this.endpoint.x + ',' + this.endpoint.y + ' '
-    position + window.arrowheadSVG['box'][side];
+    return position + window.arrowheadSVG['box'][side];
+  }
+
+  this.switchType = function(switchIdentifier) {
+    if (switchIdentifier) {
+      switch(this.endpoint.symbol) {
+        case 'none':                   this.endpoint.symbol = 'identifier'; break;
+        case 'identifier':             this.endpoint.symbol = 'none'; break;
+        case 'chickenfoot':            this.endpoint.symbol = 'chickenfoot_identifier'; break;
+        case 'chickenfoot_identifier': this.endpoint.symbol = 'chickenfoot'; break;
+        case '?':                      this.endpoint.symbol = 'identifier'; break;
+      }
+    } else {
+      switch(this.endpoint.symbol) {
+        case 'none':                   this.endpoint.symbol = 'chickenfoot'; break;
+        case 'chickenfoot':            this.endpoint.symbol = 'none'; break;
+        case 'identifier':             this.endpoint.symbol = 'chickenfoot_identifier'; break;
+        case 'chickenfoot_identifier': this.endpoint.symbol = 'identifier'; break;
+        case '?':                      this.endpoint.symbol = 'none'; break;
+      }
+    }
   }
 }
