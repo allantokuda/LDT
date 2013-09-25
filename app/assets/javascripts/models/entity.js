@@ -53,7 +53,7 @@ window.Entity = function(entity) {
   this.updateAssociations = function() {
     _.each(this.endpoints, function(endpoint) {
       endpoint.partner.relocate();
-      endpoint.entity.negotiateEndpointsOnEachSide();
+      endpoint.partner.entity.negotiateEndpointsOnEachSide();
     });
   };
 

@@ -29,7 +29,7 @@
   <div canvas id="canvas" ng-controller="GraphCtrl" ng-click="handleCanvasClick($event)">
     <div class="entity-border" ng-repeat="entity in graph.entities"
        move-with="entity" resize-with="entity"
-       ng-style="{ left: entity.x, top: entity.y, width: entity.width, height: entity.height }">
+       ng-style="{ left: entity.x, top: entity.y, width: entity.width, height: entity.height }" ng-controller="EntityCtrl">
       <div class="select-shield" catch-input ng-click="handleEntityClick(entity)">
         <br><br>{{editor.entityOverlayMessage}}
       </div>

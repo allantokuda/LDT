@@ -25,5 +25,6 @@
 //= require models/arrow
 //= require controllers/editor_controller
 //= require controllers/graph_controller
+//= require controllers/entity_controller
 //= require filters
 //= require directives
