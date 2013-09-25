@@ -1,0 +1,24 @@
+Endpoint negotiation:
+  Endpoints are sorted by:
+    1: angle they would take, in the absence of other endpoints;
+    2: if multiple endpoints would be at angle == 0, sort between them based on where the endpoint would be placed on the side (old "ideal offset").
+  In sorted order, they are placed as close as possible to their individually ideal locations.
+
+Loaded data structure management:
+  Create graph.endpoints empty collection of objects in memory when page loads
+  When creating new relationship: add two endpoints, assign each an entityID and relationship ID, and assign
+  Update graph.endpoints when entities change
+  Create graph.drivenRelationships collection whose items each directly reference two endpoint objects
+
+  Reverse pointers also created: entities get a list of their endpoints; endpoints know their relationships
+
+  When entity changes its size or position (method name: 'change'),
+    It asks each of its endpoints what the associated entity is
+      Endpoint asks its relationship what the other endpoint is (provides a pointer to itself as an argument)
+        Relationship looks at its list of two items and figures out which one is NOT the one that asked
+    It tells the other entity that a change has occurred (method name: 'remoteChange', provides pointer to itself as an argument)
+      Remove entity receives 'remoteChange' and DOES NOT need to propagate another call because it's already 1 level deep, and also has received a pointer to the other entity
+        Remote entity determines the side and position of JUST THAT endpoint
+        Remote entity renegotates all its endpoint locations on ALL sides
+    It determines the sides and positions of ALL of its endpoints
+    It renegotiates all of its endpoint locations on ALL sides

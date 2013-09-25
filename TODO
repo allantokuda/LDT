@@ -1,11 +1,6 @@
-BUGS
-  Label is not persisting becuause it's being written to the decorated copy
-  Firefox: whole site not working (not loading directives?)
-  Relationships vanish below a certain y-coordinate.
-  Multiple relationships between 2 entities always cross each other
-  layoutGraph is getting called twice (investigate)
 
 MUST HAVE FOR FIRST DEMO
+  Save
 	Labeled relationship endings
   Persona
   Create random string identifier for graph and make this the path
@@ -13,64 +8,10 @@ MUST HAVE FOR FIRST DEMO
   Password protection for access
   Password protection for edit
 
-Flawless endpoint negotiation:
-  Endpoints are sorted by:
-    1: angle they would take, in the absence of other endpoints;
-    2: if multiple endpoints would be at angle == 0, sort between them based on where the endpoint would be placed on the side (old "ideal offset").
-
-REARCHITECTURE FOR PERFORMANCE
-  Create graph.endpoints empty collection of objects in memory when page loads
-  When creating new relationship: add two endpoints, assign each an entityID and relationship ID, and assign
-  Update graph.endpoints when entities change
-  Create graph.drivenRelationships collection whose items each directly reference two endpoint objects
-
-  Reverse pointers also created: entities get a list of their endpoints; endpoints know their relationships
-
-  When entity changes its size or position (method name: 'change'),
-    It asks each of its endpoints what the associated entity is
-      Endpoint asks its relationship what the other endpoint is (provides a pointer to itself as an argument)
-        Relationship looks at its list of two items and figures out which one is NOT the one that asked
-    It tells the other entity that a change has occurred (method name: 'remoteChange', provides pointer to itself as an argument)
-      Remove entity receives 'remoteChange' and DOES NOT need to propagate another call because it's already 1 level deep, and also has received a pointer to the other entity
-        Remote entity determines the side and position of JUST THAT endpoint
-        Remote entity renegotates all its endpoint locations on ALL sides
-    It determines the sides and positions of ALL of its endpoints
-    It renegotiates all of its endpoint locations on ALL sides
-
-  FACTORIES
-    Entity factory
-      Inputs: ID, x, y, width, height, name, attributes
-      Output: object with same attributes, plus:
-        "sides" hash with keys top, bottom, left, right.
-          Each side is an object which contains an empty list of endpoints, plus functions:
-
-    Relationship factory
-      Inputs: ID, entity1 object, entity2 object
-      Output: Relationship object with references to two Endpoint objects
-
-    Graph factory
-      Purpose:
-        Orchestrate download, contruction, and interconnection of all graph items,
-        such that that they are consumable by directives such as ng-repeat.
-        All consumed data should be pre-calculated, and directly modifiable for
-        observation by other directives -- not calculated on demand.
-      Input: graph ID to fetch
-      Output: graph object with fully interconnected arrays:
-        entities
-        sides
-        relationships
-        endpoints
-
-      Approach:
-        1. AJAX-download graph JSON from server by its ID
-        2. map entity primitives to Entity objects using EntityFactory
-        3. map relationship primitives to Relationship objects using RelationshipFactory
-        4. create array of direct references to all Endpoints in the Relationships
-
-
-
-
-
+BUGS
+  Firefox: whole site not working (not loading directives?)
+  Relationships vanish below a certain y-coordinate.
+  Multiple relationships between 2 entities always cross each other
 
 
 
