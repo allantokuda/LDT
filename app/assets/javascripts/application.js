@@ -22,7 +22,7 @@
 //= require models/relationship
 //= require models/side
 //= require models/endpoint
-//= require models/arrow
+//= require models/arrowhead
 //= require controllers/editor_controller
 //= require controllers/graph_controller
 //= require controllers/entity_controller

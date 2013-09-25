@@ -20,23 +20,31 @@ _.each(_.pairs(window.ARROWHEAD), function(pair) {
   _.each(['top', 'bottom', 'left', 'right'], function(sideName) {
     window.arrowheadSVG[type][sideName] = _.map(points, function(point) {
       var x = {
-        top:    point[0] + ( scale * point[1]) + ',' + ( scale * point[2]),
-        bottom: point[0] + (-scale * point[1]) + ',' + (-scale * point[2]),
-        left:   point[0] + ( scale * point[1]) + ',' + (-scale * point[2]),
-        right:  point[0] + (-scale * point[1]) + ',' + ( scale * point[2])
+        top:    point[0] + (-scale * point[2]) + ',' + (-scale * point[1]),
+        bottom: point[0] + ( scale * point[2]) + ',' + ( scale * point[1]),
+        left:   point[0] + (-scale * point[1]) + ',' + ( scale * point[2]),
+        right:  point[0] + ( scale * point[1]) + ',' + (-scale * point[2])
       }
       return x[sideName];
     }).join(' ');
   });
 });
 
-window.Arrow = function(endpoint) {
+window.Arrowhead = function(endpoint) {
 
   this.endpoint = endpoint;
-  this.type = 'none';
 
-  this.render = function() {
-    this.side = this.endpoint.side;
-    this.svgPath = "M" + this.x + ',' + this.y + ' ' + window.arrowheadSVG[type][side];
+  this.svgPath = function() {
+    var type = this.endpoint.symbol;
+    var side = this.endpoint.side.name;
+    var position = "M" + this.endpoint.x + ',' + this.endpoint.y + ' '
+    return position + window.arrowheadSVG[type][side];
+  }
+
+  this.boxPath = function() {
+    var type = this.endpoint.symbol;
+    var side = this.endpoint.side.name;
+    var position = "M" + this.endpoint.x + ',' + this.endpoint.y + ' '
+    position + window.arrowheadSVG['box'][side];
   }
 }

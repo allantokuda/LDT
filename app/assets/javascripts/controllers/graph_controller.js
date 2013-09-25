@@ -149,12 +149,19 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
         symbol: '?'
       });
 
+      var arrowhead1 = new Arrowhead(endpoint1);
+      var arrowhead2 = new Arrowhead(endpoint2);
+
       r.crosslink();
+
+      endpoint1.arrowhead = arrowhead1;
+      endpoint2.arrowhead = arrowhead2;
 
       $scope.graph.relationships.push(r);
       $scope.graph.endpoints.push(endpoint1);
       $scope.graph.endpoints.push(endpoint2);
-
+      $scope.graph.arrowheads.push(arrowhead1);
+      $scope.graph.arrowheads.push(arrowhead2);
 
       entity1.assignEndpointsToSides();
       entity2.assignEndpointsToSides();
