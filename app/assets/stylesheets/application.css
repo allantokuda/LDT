@@ -13,6 +13,7 @@
  *= require lds
  *= require graphs
  *= require entities
+ *= require endpoints
  *= require scaffolds
  *= require editor
  */

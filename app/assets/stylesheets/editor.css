@@ -22,88 +22,17 @@ body {
   padding-left: 30px;
 }
 
+#toolbar button {
+  background: inherit;
+  border: none;
+  padding: 0.5em 1em;
+}
+
 span.toolbar-separator {
   display: inline-block;
   width: 2px;
   height: 20px;
   background: #ccc;
-}
-
-new-entity-button
-
-.entity-border.selected {
-  display: inline-block;
-  background: #fd8;
-}
-
-.selected .entity-heading {
-  background: #fb0;
-}
-
-.entity-border {
-  position: absolute;
-  display: inline-block;
-  padding: 0px;
-  background: #eee;
-  border: 1px solid black;
-}
-
-.entity-heading {
-  padding: 10px;
-  margin-bottom: 2px;
-  border-bottom: 1px solid black;
-  background: #cdf;
-}
-
-.entity-heading input {
-  width: 100%;
-  font-size: inherit;
-  font-family: inherit;
-  margin: -2px;
-  padding: 0;
-}
-
-.entity-body {
-  padding: 10px;
-  padding-top: 5px;
-}
-
-.entity-body textarea {
-  width: 100%;
-  height: 100%;
-  resize: none;
-  font-size: inherit;
-  font-family: inherit;
-  margin: 0px;
-  padding: 0;
-}
-
-.entity-body .attribute span {
-  margin: 0;
-  font-family: inherit;
-  font-size: inherit;
-  cursor: pointer;
-  display: inline;
-}
-
-.entity-body .attribute.identifier span {
-  border-bottom: 1px solid black;
-}
-
-
-.attribute-input  {
-  margin: 0;
-  font-family: inherit;
-  font-size: inherit;
-  width: 100%;
-  height: 100%;
-}
-
-.select-shield {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  text-align: center;
 }
 
 #editor.select     .select-shield,
@@ -120,12 +49,6 @@ new-entity-button
 #editor.new_relationship_start .select-shield:hover,
 #editor.new_relationship_end   .select-shield:hover
                                     { background: rgba(170,255,170,0.75); }
-
-#toolbar button {
-  background: inherit;
-  border: none;
-  padding: 0.5em 1em;
-}
 
 /* Mode and sub-mode indication in toolbar */
 #editor.select #select-button,
@@ -155,11 +78,6 @@ path.click-path { fill: none; stroke: none; }
   stroke: rgba(255,170,170,0.75);
 }
 
-path.click-area {
-  fill: rgba(255,255,255,0);
-  stroke: none;
-}
-
 #editor.label_pick path.click-area {
   fill: rgba(255,255,0,0.30);
   stroke: none;
@@ -169,34 +87,8 @@ path.click-area {
   fill: rgba(255,230,0,0.70);
 }
 
-#canvas div.label {
-  position: absolute;
-  display: inline-block;
-  width: 1px;
-}
-
-#canvas div.label div {
-  display: block;
-  position: absolute;
-  width: 1px;
-}
-
-#canvas div.label.top    div { left:  5px; top: -45px; }
-#canvas div.label.bottom div { left:  5px; top:  27px; }
-#canvas div.label.right  div { left: 30px; top: -20px; }
-#canvas div.label.left   div { left: -32px; top: 5px; }
-
-/* Ensure text is readable when it overlaps a diagonal relationship */
-#canvas div.label div span,
-#canvas div.label div input {
-  background: rgba(255,255,255,0.8);
-  white-space: nowrap;
-}
-
-/* Just for arrowheads on the left side of an entity, have text flow to the right */
-#canvas div.label.left div span,
-#canvas div.label.left div input {
-  float: right;
-  text-align: right;
+path.click-area {
+  fill: rgba(255,255,255,0);
+  stroke: none;
 }
 
