@@ -209,6 +209,15 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
     $scope.editor.entityOverlayMessage = modeMessages[mode];
   }
 
+  $('#signin' ).click(function() { navigator.id.request(); });
+  $('#signout').click(function() { navigator.id.request(); });
+
+  var signoutLink = document.getElementById('signout');
+  if (signoutLink) {
+    signoutLink.onclick = function() { navigator.id.logout(); };
+  }
+
+
   setMode('select');
 })
 

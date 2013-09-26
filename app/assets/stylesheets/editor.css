@@ -105,3 +105,12 @@ path.click-area {
   padding: 5px;
   color: #888;
 }
+
+#account {
+  text-align: right;
+  padding: 0.5em;
+  padding-right: 2em;
+  display: block;
+  float: right;
+  width: 150px;
+}
