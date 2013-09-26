@@ -5,12 +5,6 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
   $scope.editor = new Object;
   $scope.graph = new Object;
 
-  $scope.graph.changeToggler = false
-  $scope.$watch('graph.changeToggler', function() {
-    $scope.editor.saveButtonText = 'Save';
-  });
-  $scope.editor.saveButtonText = 'Save';
-
   var graphID;
   var path_regex = /graphs\/(\d+)\/edit/
   var matches = path_regex.exec(window.location.pathname)
@@ -144,9 +138,26 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
     }
   }
 
-  $scope.saveCommand = function () {
+  $scope.notifySaving = function() {
+    $('#save-message').show();
+    $scope.$apply(function() {
+      $scope.editor.saveMessage = 'Saving...'
+    });
+  }
 
-    $scope.$apply(function() { $scope.editor.saveButtonText = 'Saving...' });
+  $scope.notifySaved = function() {
+    $scope.$apply(function() {
+      $scope.editor.saveMessage = 'Saved'
+    });
+
+    setTimeout(function() {
+      $('#save-message').fadeOut();
+    }, 3000);
+  }
+
+  $scope.saveCommand = function() {
+
+    $scope.notifySaving();
 
     var graphData = { id: $scope.graph.id, name: $scope.graph.name }
     graphData.entities      = _.map($scope.graph.entities,      function(e) { return e.saveObject(); });
@@ -154,13 +165,10 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
 
     var encodeData = "graph=" + JSON.stringify(graphData);
 
-    if (graphData.id) {
+    if (graphData.id)
       $.ajax({ url:"/graphs/"+graphData.id, type:"PUT", dataType:"json", data:encodeData,
-        complete: function(data) {
-          $scope.$apply(function() { $scope.editor.saveButtonText = 'Saved' });
-        }
+        complete: function() { $scope.notifySaved(); }
       })
-      }
     else
       $.ajax({
         url:"/graphs", type:"POST", dataType:"json", data:encodeData,
@@ -169,7 +177,7 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
           console.log(textStatus);
         },
         success: function(data, textStatus, jqXHR) {
-          $scope.$apply(function() { $scope.editor.saveButtonText = 'Saved' });
+          $scope.notifySaved();
           $scope.graph.id = data.id
         }
       });

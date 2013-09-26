@@ -100,3 +100,8 @@ path.click-area {
   stroke: none;
 }
 
+#save-message {
+  float: right;
+  padding: 5px;
+  color: #888;
+}

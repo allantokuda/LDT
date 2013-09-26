@@ -13,6 +13,7 @@
   <input type="text" style="width: 140px" ng-model="entity.attributes"></input>
   </div>
   -->
+  <div id="save-message">{{ editor.saveMessage }}</div>
   <input id="graph-name" ng-model="graph.name" catch-input>
   <div id="toolbar">
     <button action hotkey="s" id="select-button"><u>S</u>elect</button>
@@ -21,7 +22,7 @@
     <button action hotkey="d" id="delete-button"><u>D</u>elete</button>
     <button action hotkey="l" id="label-button"><u>L</u>abel</button>
     <span class="toolbar-separator">&nbsp;</span>
-    <button action hotkey="c-s" id="save-button">{{ editor.saveButtonText }}</button>
+    <button action hotkey="c-s" id="save-button">Save</button>
     <button action hotkey="c-o" id="open-button">Open</button>
     <button action hotkey="c-n" id="new-button">New</button>
   </div>
