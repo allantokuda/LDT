@@ -4,6 +4,12 @@ body {
   font-size: 13px;
 }
 
+input {
+  font-size: inherit;
+  font-family: inherit;
+  margin: -5px -3px;
+}
+
 #graph-name { width: 80%; }
 
 #graph-name {

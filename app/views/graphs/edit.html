@@ -50,12 +50,11 @@
       <path class="click-path"   ng-repeat="r in graph.relationships" ng-attr-d="{{r.svgPath()}}" ng-click="handleRelationshipClick(r)" catch-input></path>
     </svg>
 
-    <div class="endpoint" ng-class="endpoint.side.name" ng-repeat="endpoint in graph.endpoints" select-with="dblclick as lbl in #canvas"
+    <div class="endpoint" ng-class="endpoint.side.name" ng-repeat="endpoint in graph.endpoints" select-with="dblclick as endpoint in #canvas"
          ng-click="handleLabelClick(label.id,$event)" catch-input ng-style="{ left: endpoint.x, top: endpoint.y }">
-      <div class="arrowhead-box"></div>
       <div class="label">
-        <span ng-show="!lbl.selected" catch-input>{{endpoint.label}}</span>
-        <input ng-model="endpoint.label" ng-show="lbl.selected" ng-click="handleLabelClick(label.id,$event)">
+        <span ng-show="!endpoint.selected" catch-input>{{endpoint.label}}</span>
+        <input ng-model="endpoint.label" ng-show="endpoint.selected" ng-click="handleLabelClick(label.id,$event)">
       </div>
     </div>
 

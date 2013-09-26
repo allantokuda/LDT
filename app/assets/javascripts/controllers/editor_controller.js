@@ -138,7 +138,8 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
         arrow.switchType(ev.shiftKey);
         break;
       case 'label_pick':
-        setMode('label_enter');
+        arrow.endpoint.selected = true;
+        setMode('select');
         break;
     }
   }
@@ -195,7 +196,6 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
       new_relationship_end: 'click to end relationship',
       delete: 'click to delete',
       label_pick: '',
-      label_enter: ''
     }
 
     $scope.editor.entityOverlayMessage = modeMessages[mode];
