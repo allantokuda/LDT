@@ -134,6 +134,12 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     }
 
     $scope.graph.deleteEntity = function(entity_to_delete) {
+      // Delete all connected arrowheads on both sides of all relationships
+      $scope.graph.arrowheads = _.reject($scope.graph.arrowheads, function(arrowhead) {
+        return arrowhead.endpoint.entity      == entity_to_delete ||
+               arrowhead.endpoint.otherEntity == entity_to_delete
+      });
+
       // Remove all connected relationships
       $scope.graph.relationships = _.reject($scope.graph.relationships, function(r) {
         return r.entities[0] == entity_to_delete || r.entities[1] == entity_to_delete;
@@ -141,7 +147,8 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
 
       // Remove all connected endpoints
       $scope.graph.endpoints = _.reject($scope.graph.endpoints, function(endpoint) {
-        return endpoint.entity == entity_to_delete;
+        return endpoint.entity      == entity_to_delete ||
+               endpoint.otherEntity == entity_to_delete;
       });
 
       // Remove entity
