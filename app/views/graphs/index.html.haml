@@ -1,15 +1,17 @@
-.header_bar
-  = button_to 'New Graph', new_graph_path, :method => :get
+#index
+  %h1
+    LDS Drawing Tool
 
-%table.graph_index
-
-  - @graphs.each do |graph|
+  %table.graph_index
     %tr
-      %td
-        .graph_title= link_to graph.name, edit_graph_path(graph)
-        .graph_date= graph.updated_at.strftime('Modified %Y-%m-%d')
-        = graph.description
-      %td= button_to 'Delete', graph, method: :delete, data: { confirm: 'Are you sure?' }
+      %td{colspan:3}
+        = button_to 'New Graph', new_graph_path, :method => :get, :class => 'new-button'
 
-%br
+    - @graphs.each do |graph|
+      %tr
+        %td.graph_title= link_to graph.name, edit_graph_path(graph)
+        %td.graph_date= graph.updated_at.strftime('%Y-%m-%d')
+        %td= button_to 'Delete', graph, method: :delete, data: { confirm: 'Are you sure?' }
+
+  %br
 

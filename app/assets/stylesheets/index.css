@@ -1,0 +1,13 @@
+#index {
+  padding: 1em;
+  font-size: 16pt;
+}
+
+#index h1 {
+  font-size: 20pt;
+}
+
+#index table.graph_index td, #index .new-button {
+  padding-bottom: 1em;
+  padding-right: 1em;
+}
