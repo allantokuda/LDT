@@ -6,3 +6,6 @@ angular.module('myApp.controllers').controller('EntityCtrl', function($scope) {
     $scope.$watch('entity.' + attribute, trigger);
   });
 });
+
+// For minification
+EntityCtrl.$inject = ['$scope'];

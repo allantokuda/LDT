@@ -181,3 +181,6 @@ angular.module('myApp.controllers').controller('GraphCtrl', function($scope) {
     }
   });
 
+
+// For minification
+GraphCtrl.$inject = ['$scope'];

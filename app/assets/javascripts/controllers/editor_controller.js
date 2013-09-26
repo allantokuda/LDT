@@ -211,3 +211,6 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
 
   setMode('select');
 })
+
+// For minification
+EditorCtrl.$inject = ['$scope'];
