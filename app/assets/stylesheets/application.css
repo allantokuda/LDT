@@ -11,9 +11,7 @@
  *= require_self
  *= require jquery-ui
  *= require lds
- *= require graphs
  *= require entities
  *= require endpoints
- *= require scaffolds
  *= require editor
  */

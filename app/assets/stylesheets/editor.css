@@ -1,5 +1,7 @@
 body {
   margin: 0px;
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 13px;
 }
 
 #graph-name { width: 80%; }
