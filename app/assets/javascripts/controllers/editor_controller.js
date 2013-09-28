@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
+function EditorCtrl($scope) {
 
   $scope.editor = new Object;
   $scope.graph = new Object;
@@ -219,7 +219,9 @@ angular.module('myApp.controllers').controller('EditorCtrl', function($scope) {
 
 
   setMode('select');
-})
+}
+
+angular.module('myApp.controllers').controller('EditorCtrl', EditorCtrl);
 
 // For minification
 EditorCtrl.$inject = ['$scope'];

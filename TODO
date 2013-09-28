@@ -3,13 +3,13 @@ MUST HAVE FOR FIRST DEMO
 
   Persona
   Create random string identifier for graph and make this the path
-  Score the endpoints based on the severity of their angles instead of pure offset.  (The closer of 2 entities loses the negotiation sooner than it should.)
   Password protection for access
   Password protection for edit
 
 BUGS
-  Firefox: whole site not working (not loading directives?)
+  Firefox: SVG paths are invisible
   Relationships vanish below a certain y-coordinate.
+  Delete a relationship, then recreate it -> endpoints were never deleted off the entity, so we get a zigzag.
   Multiple relationships between 2 entities always cross each other
 
 

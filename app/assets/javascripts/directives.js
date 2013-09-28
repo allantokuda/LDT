@@ -29,7 +29,7 @@ app.directive('catchInput',function() {
 app.directive('autoFocus',function() {
   return {
     link: function(scope, element, iAttrs, ctrl) {
-      var regex = /([.#-\w\d]+) on ([\w]+)/
+      var regex = /([-.#\w\d]+) on ([\w]+)/
       var matches = regex.exec(iAttrs.autoFocus);
       var params = _.object(['targetSelector', 'eventName'], matches.slice(1,3));
 
@@ -100,7 +100,7 @@ app.directive('resizeWith',function() {
 app.directive('selectWith',function() {
   return {
     link: function (scope, element, iAttrs, ctrl) {
-      var regex = /([\w\d]+) as ([\w\d]+)(?: in ([.#-\w\d]+))?/
+      var regex = /([\w\d]+) as ([\w\d]+)(?: in ([-.#\w\d]+))?/
       var matches = regex.exec(iAttrs.selectWith);
       var params = _.object(['eventName', 'varName', 'parentID'], matches.slice(1,4));
 
@@ -141,7 +141,7 @@ app.directive('action',function() {
   return {
     link: function(scope, element, iAttrs, ctrl) {
       element.click(function(e) {
-        var actionName = element[0].innerText.replace(' ', '').replace(/^(.)/, function(c) { return c.toLowerCase() });
+        var actionName = element[0].textContent.replace(' ', '').replace(/^(.)/, function(c) { return c.toLowerCase() });
         scope[actionName + 'Command']();
       })
     }
