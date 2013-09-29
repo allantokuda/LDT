@@ -43,20 +43,20 @@ span.toolbar-separator {
   background: #ccc;
 }
 
-#editor.select     .select-shield,
-#editor.new_entity .select-shield   { display: none; }
+#editor            .select-shield,
+#editor            .select-shield   { display: none; }
 
-#editor.delete .select-shield       { background: rgba(255,230,230,0.75); }
+#editor.delete .select-shield       { background: rgba(255,230,230,0.75); display: block; }
 #editor.delete .select-shield:hover { background: rgba(255,170,170,0.75); }
 #editor.delete .select-shield:hover { background: rgba(255,170,170,0.75); }
 
 #editor.new_relationship_start .select-shield,
 #editor.new_relationship_end   .select-shield
-                                    { background: rgba(230,255,230,0.75); }
+                                    { background: rgba(230,255,230,0.75); display: block; }
 
 #editor.new_relationship_start .select-shield:hover,
 #editor.new_relationship_end   .select-shield:hover
-                                    { background: rgba(170,255,170,0.75); }
+                                    { background: rgba(170,255,170,0.75); display: block; }
 
 /* Mode and sub-mode indication in toolbar */
 #editor.select #select-button,
@@ -65,7 +65,9 @@ span.toolbar-separator {
 #editor.new_relationship_end   #new-relationship-button,
 #editor.delete #delete-button,
 #editor.label_pick #label-button,
-#editor.label_enter #label-button
+#editor.label_enter #label-button,
+#editor.chickenfoot #chickenfoot-button,
+#editor.identifier_bar #identifier-bar-button
  { background-color: #bbb; }
 
 path.relationship, path.arrowhead {
@@ -86,13 +88,25 @@ path.click-path { fill: none; stroke: none; }
   stroke: rgba(255,170,170,0.75);
 }
 
-#editor.label_pick path.click-area {
-  fill: rgba(255,255,0,0.30);
+
+#editor.label_pick     path.click-area,
+#editor.chickenfoot    path.click-area,
+#editor.identifier_bar path.click-area {
+  fill: rgba(0,255,0,0.15);
   stroke: none;
 }
 
-#editor.label_pick path.click-area:hover {
-  fill: rgba(255,230,0,0.70);
+#editor.label_pick     path.click-area:hover,
+#editor.chickenfoot    path.click-area:hover,
+#editor.identifier_bar path.click-area:hover {
+  fill: rgba(0,255,0,0.35);
+}
+
+#editor.identifier_bar div.attribute {
+  background: rgba(0,255,0,0.15);
+}
+#editor.identifier_bar div.attribute:hover {
+  background: rgba(0,255,0,0.35);
 }
 
 path.click-area {

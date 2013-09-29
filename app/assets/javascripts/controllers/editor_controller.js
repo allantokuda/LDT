@@ -120,16 +120,20 @@ function EditorCtrl($scope) {
   }
 
   $scope.handleAttributeClick = function(entityID, attributeIndex, ev) {
-    if ($scope.editor.mode == 'select' && ev.shiftKey) {
+    if ($scope.editor.mode == 'identifier_bar') {
       $scope.graph.toggleAttributeIdentifier(entityID, attributeIndex);
     }
   }
 
   $scope.handleArrowClick = function(arrow, ev) {
     switch($scope.editor.mode) {
-      case 'select':
+      case 'chickenfoot':
         // Use shift key to toggler identifier
-        arrow.switchType(ev.shiftKey);
+        arrow.switchType(false);
+        break;
+      case 'identifier_bar':
+        // Use shift key to toggler identifier
+        arrow.switchType(true);
         break;
       case 'label_pick':
         arrow.endpoint.selected = true;
@@ -197,6 +201,8 @@ function EditorCtrl($scope) {
   $scope.newRelationshipCommand = function() { $scope.$apply(setMode('new_relationship_start')); }
   $scope.deleteCommand          = function() { $scope.$apply(setMode('delete')); }
   $scope.labelCommand           = function() { $scope.$apply(setMode('label_pick')); }
+  $scope.chickenFootCommand     = function() { $scope.$apply(setMode('chickenfoot')); }
+  $scope.identifierBarCommand   = function() { $scope.$apply(setMode('identifier_bar')); }
 
   function setMode(mode) {
     $scope.editor.mode = mode;

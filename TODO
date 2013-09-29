@@ -1,32 +1,31 @@
+BUG fix: Relationships vanish below a certain y-coordinate.
+BUG fix: Firefox SVG paths are invisible
+Ability to snapshot a graph. Snapshot has a unique URL that does NOT include the source (editable) graph.
+Persona authentication
+Remove index view
+Multiple relationships between 2 entities always cross each other
+Pan: click and drag the canvas in select mode
+New loads an editor WITHOUT a Graph ID; URL is updated when graph is first saved. (Reduce the number of blank graphs).
+Rename begins immediately on entity creation
+Enter finishes renaming entity
+draw new entity "ghost" connected to mouse
+Arrowheads should "squish" together when there's not enough space
+Tab to finish rename and move to edit attributes
+Print layout shouldn't show toolbar
+Reflexive relationships should float around the entity away from other relationships
+Identifier squiggle, toggled by Command-Shift-Click
+ctrl-S hotkey for save graph
+zoom: turn the mouse wheel (direction configurable?)
+add entity and relationship at same time, with preset symbols, based on keystrokes. 'm' adds a has-many relationship from the selected entity. Also '1', and just 'h' (has) which puts down '?' symbols.
+place entity by its center instead of corner
+new relationship "ghost" connected to mouse
+make entity not resizable below minimum sizing
 
-MUST HAVE FOR FIRST DEMO
 
-  BUG fix: Relationships vanish below a certain y-coordinate.
-  BUG fix: Firefox SVG paths are invisible
-  Ability to snapshot a graph. Snapshot has a unique URL that does NOT include the source (editable) graph.
-  Persona authentication
-  Password protection for access
-  Password protection for edit
+RE-ENGINEERING, MORE
 
-BUGS
-  Multiple relationships between 2 entities always cross each other
-
-BACKLOG
-	draw new entity "ghost" connected to mouse
-  Arrowheads should "squish" together when there's not enough space
-	Pan: click and drag the canvas in select mode
-  Enter finishes renaming entity
-  Rename begins immediately on entity creation
-  Tab to finish rename and move to edit attributes
-  print layout shouldn't show toolbar
-  reflexive relationships should float around the entity away from other relationships
-  identifier squiggle, toggled by Command-Shift-Click
-  ctrl-S hotkey for save graph
-	zoom: turn the mouse wheel (direction configurable?)
-	add entity and relationship at same time, with preset symbols, based on keystrokes. 'm' adds a has-many relationship from the selected entity. Also '1', and just 'h' (has) which puts down '?' symbols.
-  place entity by its center instead of corner
-	new relationship "ghost" connected to mouse
-  make entity not resizable below minimum sizing
+  Controllers should talk to each other with $emit and $broadcast
+  Entity, side, endpoint, relationship: make all the dependencies go one-way between them, by adding additional classes responsible for connecting them together.
 
 INDICATE SYNTAX ERRORS
   only one end can have an identifier
