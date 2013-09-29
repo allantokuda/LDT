@@ -164,14 +164,24 @@ function GraphCtrl($scope) {
   }
 
   $scope.graph.deleteRelationship = function(relationship_to_delete) {
-    // Remove all connected arrowheads
-    $scope.graph.arrowheads = _.reject($scope.graph.arrowheads, function(arrowhead) {
-      return arrowhead.endpoint.relationship == relationship_to_delete
-    });
+    var endpoints = relationship_to_delete.endpoints;
 
-    // Remove all connected endpoints
-    $scope.graph.endpoints = _.reject($scope.graph.endpoints, function(endpoint) {
-      return endpoint.relationship == relationship_to_delete
+    _.each(endpoints, function(endpoint_to_delete) {
+
+      // Remove all connected arrowheads
+      $scope.graph.arrowheads = _.reject($scope.graph.arrowheads, function(arrowhead) {
+        return arrowhead.endpoint == endpoint_to_delete
+      });
+
+      // Remove connected endpoints from entities
+      _.each($scope.graph.entities, function(entity) {
+        entity.removeEndpoint(endpoint_to_delete);
+      });
+
+      // Remove all connected endpoints from graph
+      $scope.graph.endpoints = _.reject($scope.graph.endpoints, function(endpoint) {
+        return endpoint == endpoint_to_delete
+      });
     });
 
     // Remove relationship

@@ -44,9 +44,19 @@ window.Entity = function(entity) {
     );
   }
 
-  this.attachEndpoint = function(endpoint) {
-    this.endpoints.push(endpoint);
+  this.attachEndpoint = function(newEndpoint) {
+    this.endpoints.push(newEndpoint);
   }
+
+  this.removeEndpoint = function(endpoint_to_delete) {
+    this.endpoints = _.reject(this.endpoints, function(endpoint) {
+      return endpoint == endpoint_to_delete
+    });
+
+    _.each(this.sides, function(side) {
+      side.removeEndpoint(endpoint_to_delete);
+    });
+  };
 
   this.assignEndpointsToSides = function() {
     _.each(this.endpoints, function(endpoint) { endpoint.relocate(); });
