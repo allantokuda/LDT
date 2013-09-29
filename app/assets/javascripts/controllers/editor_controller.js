@@ -12,14 +12,12 @@ function EditorCtrl($scope) {
     graphID = matches[1]
 
   if (graphID)
-    console.log('looking up ' + graphID)
     $.ajax({ url:"/graphs/"+graphID, type:"GET", dataType:"json",
       error: function(jqXHR, textStatus, errorThrown) {
         console.log("AJAX Error: ");
         console.log(textStatus);
       },
       success: function(data, textStatus, jqXHR) {
-        console.log(data)
         $scope.$apply(function() {
           $scope.graph.id = graphID;
           $scope.graph.name = data.name;

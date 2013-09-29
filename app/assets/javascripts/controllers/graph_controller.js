@@ -31,6 +31,12 @@ function GraphCtrl($scope) {
 
     $scope.graph.next_entity_id       = nextID($scope.graph.entities);
     $scope.graph.next_relationship_id = nextID($scope.graph.relationships);
+
+
+    $scope.$watch('graph.name', function(newValue, oldValue) {
+      $scope.$emit('titlechange', newValue);
+    });
+
   }
 
   function nextID(set) {

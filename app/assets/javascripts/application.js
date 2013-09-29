@@ -23,6 +23,7 @@
 //= require models/side
 //= require models/endpoint
 //= require models/arrowhead
+//= require controllers/page_controller
 //= require controllers/editor_controller
 //= require controllers/graph_controller
 //= require controllers/entity_controller
