@@ -63,5 +63,7 @@ module LDS
     # Because of meaningless error I was getting after the first load, seemingly related to rails caching
     config.cache_classes = false
     config.reload_classes_only_on_change = false
+
+    #config.force_ssl = true
   end
 end

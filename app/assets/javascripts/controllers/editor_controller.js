@@ -6,18 +6,20 @@ function EditorCtrl($scope) {
   $scope.graph = new Object;
 
   var graphID;
-  var path_regex = /graphs\/(\d+)\/edit/
+  var path_regex = /graphs\/([^\/]+)\/edit/
   var matches = path_regex.exec(window.location.pathname)
   if (matches != null)
     graphID = matches[1]
 
   if (graphID)
+    console.log('looking up ' + graphID)
     $.ajax({ url:"/graphs/"+graphID, type:"GET", dataType:"json",
       error: function(jqXHR, textStatus, errorThrown) {
         console.log("AJAX Error: ");
         console.log(textStatus);
       },
       success: function(data, textStatus, jqXHR) {
+        console.log(data)
         $scope.$apply(function() {
           $scope.graph.id = graphID;
           $scope.graph.name = data.name;
@@ -159,9 +161,13 @@ function EditorCtrl($scope) {
 
     $scope.notifySaving();
 
-    var graphData = { id: $scope.graph.id, name: $scope.graph.name }
+    var graphData = {
+      id        : $scope.graph.id,
+      name      : $scope.graph.name
+    }
     graphData.entities      = _.map($scope.graph.entities,      function(e) { return e.saveObject(); });
     graphData.relationships = _.map($scope.graph.relationships, function(r) { return r.saveObject(); });
+    console.log(graphData)
 
     var encodeData = "graph=" + JSON.stringify(graphData);
 
@@ -208,15 +214,6 @@ function EditorCtrl($scope) {
 
     $scope.editor.entityOverlayMessage = modeMessages[mode];
   }
-
-  $('#signin' ).click(function() { navigator.id.request(); });
-  $('#signout').click(function() { navigator.id.request(); });
-
-  var signoutLink = document.getElementById('signout');
-  if (signoutLink) {
-    signoutLink.onclick = function() { navigator.id.logout(); };
-  }
-
 
   setMode('select');
 }

@@ -4,6 +4,7 @@
   <title>LDS</title>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <%= stylesheet_link_tag    "application", :media => "all" %>
+  <script src="https://login.persona.org/include.js"></script>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
@@ -11,6 +12,5 @@
 
 <%= yield %>
 
-<script src="https://login.persona.org/include.js"></script>
 </body>
 </html>

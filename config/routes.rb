@@ -5,6 +5,9 @@ LDS::Application.routes.draw do
   resources :graphs
   resources :entities
 
+  post '/auth/login' => "sessions#create"
+  post '/auth/logout' => "sessions#destroy"
+
   #match '/example' => "lds#example"
 
   # The priority is based upon order of creation:
