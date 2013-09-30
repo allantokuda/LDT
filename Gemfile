@@ -26,7 +26,14 @@ gem 'libv8', '~> 3.11.8'
 gem 'pg'
 gem "haml", "~> 3.1.7"
 gem "haml-rails"
-gem 'pry'
+
+group :development, :test do
+  gem 'pry'
+  gem 'zeus'
+  gem 'guard'
+  gem 'guard-rspec'
+  gem 'guard-zeus'
+end
 
 group :development do
   # Needed to expose generators and rake tasks
