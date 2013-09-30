@@ -143,12 +143,21 @@ function GraphCtrl($scope) {
     // Delete all connected arrowheads on both sides of all relationships
     $scope.graph.arrowheads = _.reject($scope.graph.arrowheads, function(arrowhead) {
       return arrowhead.endpoint.entity      == entity_to_delete ||
-             arrowhead.endpoint.otherEntity == entity_to_delete
+             arrowhead.endpoint.otherEntity == entity_to_delete;
+    });
+
+    // Delete endpoints from associated entities and their sides
+    _.each($scope.graph.entities, function(entity) {
+      _.each(entity.endpoints, function(endpoint) {
+        if (endpoint.entity      == entity_to_delete ||
+            endpoint.otherEntity == entity_to_delete)
+          entity.removeEndpoint(endpoint);
+      });
     });
 
     // Remove all connected relationships
     $scope.graph.relationships = _.reject($scope.graph.relationships, function(r) {
-      return r.entities[0] == entity_to_delete || r.entities[1] == entity_to_delete;
+      return r.endpoints[0].entity == entity_to_delete || r.endpoints[1].entity == entity_to_delete;
     });
 
     // Remove all connected endpoints

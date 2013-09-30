@@ -1,3 +1,4 @@
+BUG: resize corner graphic
 BUG fix: Relationships vanish below a certain y-coordinate.
 BUG fix: Firefox SVG paths are invisible
 Ability to snapshot a graph. Snapshot has a unique URL that does NOT include the source (editable) graph.
@@ -24,7 +25,12 @@ make entity not resizable below minimum sizing
 
 RE-ENGINEERING, MORE
 
-  Controllers should talk to each other with $emit and $broadcast
+  Arrowhead functionality should be part of the endpoint. Remove graph controller's list of arrowheads.
+  Relationship should construct endpoints. Endpoint should not need to know about its relationship.
+  Controllers should talk to each other with $emit and $broadcast.
+    Entity deletion: graph broadcasts an entityDelete message, and then deletes the entity from its list
+      Endpoints referencing the entity receive the entityDelete and emit an endpointDelete message.
+        Graph receives endpointDelete message and deletes any associated relationship.
   Entity, side, endpoint, relationship: make all the dependencies go one-way between them, by adding additional classes responsible for connecting them together.
 
 INDICATE SYNTAX ERRORS

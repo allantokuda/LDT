@@ -3,12 +3,10 @@ window.Relationship = function(id) {
   this.id = id;
   this.numEndpoints = 0;
   this.endpoints = [];
-  this.entities = [];
 
   // Allow the context (graph) to supply two endpoints
   this.setEndpoint = function(endpoint) {
     this.endpoints[this.numEndpoints] = endpoint;
-    this.entities[this.numEndpoints] = endpoint.entity;
     this.numEndpoints++;
   }
 
@@ -43,8 +41,8 @@ window.Relationship = function(id) {
   this.saveObject = function() {
     return {
       id         : this.id,
-      entity1_id : this.entities[0].id,
-      entity2_id : this.entities[1].id,
+      entity1_id : this.endpoints[0].entity.id,
+      entity2_id : this.endpoints[1].entity.id,
       symbol1    : this.endpoints[0].symbol,
       symbol2    : this.endpoints[1].symbol,
       label1     : this.endpoints[0].label,

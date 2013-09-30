@@ -70,6 +70,24 @@ describe('GraphCtrl', function(){
     });
   });
 
+  describe('deletion of entity', function() {
+    beforeEach(inject(function() {
+      scope.graph.deleteEntity(e2);
+    }));
+
+    it('should delete the entity from the graph', function() {
+      expect(scope.graph.entities.length).toBe(2);
+    });
+
+    it('should delete all connected relationships', function() {
+      expect(scope.graph.relationships.length).toBe(0);
+    });
+
+    it('should delete endpoint from the partner entity', function() {
+      expect(e1.endpoints.length).toBe(0);
+    });
+  });
+
   describe('deletion of relationship', function() {
     beforeEach(inject(function() {
       scope.graph.deleteRelationship(r);
