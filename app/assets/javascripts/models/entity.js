@@ -29,8 +29,8 @@ window.Entity = function(entity) {
 
   this.coordinates = function(xloc,yloc) {
     return {
-      x: Math.round(this.x + this.width  * xloc),
-      y: Math.round(this.y + this.height * yloc)
+      x: this.x + this.width  * xloc,
+      y: this.y + this.height * yloc
     }
   }
   this.center = function() {

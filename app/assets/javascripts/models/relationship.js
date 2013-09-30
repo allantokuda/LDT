@@ -31,7 +31,7 @@ window.Relationship = function(id) {
     function svgPolyline(points) {
       if (points.length >= 2)
         return "M" + _.map(points, function(point) {
-          return point.x + ',' + point.y
+          return Math.round(point.x) + ',' + Math.round(point.y)
         }).join(' L');
     }
 
