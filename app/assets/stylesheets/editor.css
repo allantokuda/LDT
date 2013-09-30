@@ -61,7 +61,7 @@ span.toolbar-separator {
 
 #editor.new_entity .ghost-entity {
   display: block;
-  position: absolute;
+  position: fixed;
   width: 100px;
   height: 130px;
   background: rgba(170,255,170,0.75);

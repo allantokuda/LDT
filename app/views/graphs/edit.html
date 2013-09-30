@@ -28,7 +28,7 @@
     <button action hotkey="c-n" id="new-button">New</button>
   </div>
 
-  <div canvas id="canvas" ng-controller="GraphCtrl" ng-click="handleCanvasClick($event)">
+  <div canvas id="canvas" ng-controller="GraphCtrl" relative-click="handleCanvasClick">
     <div class="ghost-entity" stick-to-mouse>Click to place new entity</div>
     <div class="entity-border" ng-repeat="entity in graph.entities"
        move-with="entity" resize-with="entity"

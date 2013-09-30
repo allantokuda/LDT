@@ -20,7 +20,7 @@ describe('EditorCtrl', function(){
       // Stub the method since it is not defined in this scope
       scope.graph.createEntity = function() { return null }
       spyOn(scope.graph, 'createEntity')
-      scope.handleCanvasClick({offsetX: 0, offsetY: 0});
+      scope.handleCanvasClick({pageX: 0, pageY: 0});
       expect(scope.graph.createEntity).toHaveBeenCalled();
     });
   });

@@ -175,8 +175,8 @@ app.directive('stickToMouse',function() {
   return {
     link: function(scope, element, iAttrs, ctrl) {
       $(window).mousemove(function(e) {
-        element.css('left', e.pageX - $('#canvas')[0].offsetLeft);
-        element.css('top',  e.pageY - $('#canvas')[0].offsetTop);
+        element.css('left', e.pageX);
+        element.css('top',  e.pageY);
       });
     }
   }
@@ -190,6 +190,23 @@ app.directive('textSelectWith',function() {
       scope.$watch(scopeVar, function(selected) {
         if (selected)
           element.select();
+      });
+    }
+  }
+});
+
+//Calls scope with coordinates clicked in the current element,
+//even if a child element with different coordinates caught the event.
+app.directive('relativeClick',function() {
+  return {
+    link: function(scope, element, iAttrs, ctrl) {
+      var scopeFunctionName = iAttrs.relativeClick;
+
+      $(element).click(function(ev) {
+        console.log(ev)
+        var relativeX = ev.pageX - $(element)[0].offsetLeft
+        var relativeY = ev.pageY - $(element)[0].offsetTop
+        scope[scopeFunctionName](relativeX, relativeY)
       });
     }
   }

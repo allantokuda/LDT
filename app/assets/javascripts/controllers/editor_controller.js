@@ -86,10 +86,9 @@ function EditorCtrl($scope) {
 
   // Click event handlers
 
-  $scope.handleCanvasClick = function(ev) {
+  $scope.handleCanvasClick = function(x,y) {
     if ($scope.editor.mode == 'new_entity')
-      $scope.graph.createEntity(ev.pageX - $('#canvas')[0].offsetLeft,
-                                ev.pageY - $('#canvas')[0].offsetTop)
+      $scope.graph.createEntity(x, y);
 
     setMode('select');
   }
