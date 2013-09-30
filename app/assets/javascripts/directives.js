@@ -181,3 +181,16 @@ app.directive('stickToMouse',function() {
     }
   }
 });
+
+app.directive('textSelectWith',function() {
+  return {
+    link: function(scope, element, iAttrs, ctrl) {
+      var scopeVar = iAttrs.textSelectWith + '.selected';
+
+      scope.$watch(scopeVar, function(selected) {
+        if (selected)
+          element.select();
+      });
+    }
+  }
+});

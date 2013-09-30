@@ -57,7 +57,7 @@
          ng-click="handleLabelClick(label.id,$event)" catch-input ng-style="{ left: endpoint.x, top: endpoint.y }">
       <div class="label">
         <span ng-show="!endpoint.selected" catch-input>{{endpoint.label}}</span>
-        <input ng-model="endpoint.label" ng-show="endpoint.selected" ng-click="handleLabelClick(label.id,$event)">
+        <input ng-model="endpoint.label" ng-show="endpoint.selected" ng-click="handleLabelClick(label.id,$event)" text-select-with="endpoint">
       </div>
     </div>
 
