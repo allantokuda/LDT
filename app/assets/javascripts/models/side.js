@@ -72,10 +72,12 @@ window.Side = function(entity, sideName) {
     var lowerBound = -this.maxOffset();
     var upperBound =  this.maxOffset();
 
-    // Sort endpoints by priority
+    // Sort endpoints by priority. When the ideal ANGLE is non-zero, it means a
+    // straight-line relationship is not possible. These cases should overpower
+    // straight-line cases which only have a non-zero ideal OFFSET.
     this.endpoints = _.sortBy(this.endpoints, function(endpoint) {
       endpoint.calculateIdeals();
-      return -Math.abs(100 * endpoint.idealAngle + endpoint.idealOffset);
+      return -Math.abs(10000 * endpoint.idealAngle + endpoint.idealOffset);
     });
 
     // Place each endpoint, in priority order
@@ -95,7 +97,7 @@ window.Side = function(entity, sideName) {
         endpoint.assigned_offset = upperBound
       }
 
-      // Assign global coordinates for use by relationsihp draw
+      // Assign global coordinates for use by relationship draw
       var coordinates = this.centerOffsetCoordinates(endpoint.assigned_offset);
       endpoint.x = coordinates.x
       endpoint.y = coordinates.y
