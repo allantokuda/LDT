@@ -203,10 +203,11 @@ app.directive('relativeClick',function() {
       var scopeFunctionName = iAttrs.relativeClick;
 
       $(element).click(function(ev) {
-        console.log(ev)
         var relativeX = ev.pageX - $(element)[0].offsetLeft
         var relativeY = ev.pageY - $(element)[0].offsetTop
-        scope[scopeFunctionName](relativeX, relativeY)
+        scope.$apply(function() {
+          scope[scopeFunctionName](relativeX, relativeY)
+        });
       });
     }
   }

@@ -88,7 +88,7 @@ function EditorCtrl($scope) {
 
   $scope.handleCanvasClick = function(x,y) {
     if ($scope.editor.mode == 'new_entity')
-      $scope.graph.createEntity(x, y);
+      $scope.graph.createEntity(x,y);
 
     setMode('select');
   }
@@ -167,7 +167,6 @@ function EditorCtrl($scope) {
     }
     graphData.entities      = _.map($scope.graph.entities,      function(e) { return e.saveObject(); });
     graphData.relationships = _.map($scope.graph.relationships, function(r) { return r.saveObject(); });
-    console.log(graphData)
 
     var encodeData = "graph=" + JSON.stringify(graphData);
 
