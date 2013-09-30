@@ -170,3 +170,14 @@ app.directive('hotkey',function() {
     }
   }
 });
+
+app.directive('stickToMouse',function() {
+  return {
+    link: function(scope, element, iAttrs, ctrl) {
+      $(window).mousemove(function(e) {
+        element.css('left', e.pageX - $('#canvas')[0].offsetLeft);
+        element.css('top',  e.pageY - $('#canvas')[0].offsetTop);
+      });
+    }
+  }
+});

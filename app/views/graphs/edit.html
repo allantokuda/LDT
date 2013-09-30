@@ -29,6 +29,7 @@
   </div>
 
   <div canvas id="canvas" ng-controller="GraphCtrl" ng-click="handleCanvasClick($event)">
+    <div class="ghost-entity" stick-to-mouse>Click to place new entity</div>
     <div class="entity-border" ng-repeat="entity in graph.entities"
        move-with="entity" resize-with="entity"
        ng-style="{ left: entity.x, top: entity.y, width: entity.width, height: entity.height }" ng-controller="EntityCtrl">

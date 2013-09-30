@@ -88,9 +88,8 @@ function EditorCtrl($scope) {
 
   $scope.handleCanvasClick = function(ev) {
     if ($scope.editor.mode == 'new_entity')
-      // FIXME: offsetX,offsetY give the wrong result for positioning a new
-      // entity if you click inside an existing entity.
-      $scope.graph.createEntity(ev.offsetX, ev.offsetY)
+      $scope.graph.createEntity(ev.pageX - $('#canvas')[0].offsetLeft,
+                                ev.pageY - $('#canvas')[0].offsetTop)
 
     setMode('select');
   }
