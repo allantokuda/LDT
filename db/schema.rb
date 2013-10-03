@@ -11,19 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130929020847) do
-
-  create_table "entities", :force => true do |t|
-    t.integer  "x"
-    t.integer  "y"
-    t.integer  "width"
-    t.integer  "height"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.string   "name"
-    t.string   "attrib"
-    t.integer  "graph_id"
-  end
+ActiveRecord::Schema.define(:version => 20131003231248) do
 
   create_table "graphs", :force => true do |t|
     t.string   "name"
@@ -37,17 +25,6 @@ ActiveRecord::Schema.define(:version => 20130929020847) do
     t.text     "relationships"
     t.integer  "user_id"
     t.string   "string_id",      :null => false
-  end
-
-  create_table "relationships", :force => true do |t|
-    t.integer "graph_id"
-    t.integer "entity1_id"
-    t.integer "entity2_id"
-    t.string  "label1"
-    t.string  "label2"
-    t.string  "symbol1"
-    t.string  "symbol2"
-    t.boolean "clockwise"
   end
 
 end
