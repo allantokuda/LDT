@@ -1,8 +1,8 @@
 LDS::Application.routes.draw do
 
-  root :to => "graphs#index"
+  root :to => "graphs#new"
 
-  resources :graphs
+  resources :graphs, :except => :index
   resources :entities
 
   post '/auth/login' => "sessions#create"

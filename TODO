@@ -1,6 +1,9 @@
+
+Remove index
+BUG fix: Firefox SVG paths are invisible
+
 BUG: resize corner graphic
 BUG fix: Relationships vanish below a certain y-coordinate.
-BUG fix: Firefox SVG paths are invisible
 Ability to snapshot a graph. Snapshot has a unique URL that does NOT include the source (editable) graph.
 Persona authentication
 Remove index view
