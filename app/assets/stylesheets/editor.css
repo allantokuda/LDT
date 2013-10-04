@@ -4,7 +4,10 @@ body {
   font-size: 13px;
 }
 
-html, body, #editor, #canvas, svg { width: 100%; height: 100%; }
+html { width: 200%; height: 200%; }
+
+body, #editor, #canvas, svg { width: 100%; height: 100%; }
+
 svg {
   border-right:  1px solid #aaa;
   border-bottom: 1px solid #aaa;
@@ -134,9 +137,18 @@ path.click-area {
   stroke: none;
 }
 
+.positioner {
+  position: relative;
+  display: inline-block;
+  width: 0px;
+  margin: 0px;
+  padding: 0px;
+}
+
 #save-message {
-  float: right;
-  padding: 5px;
+  position: absolute;
+  top: -40px;
+  left: 10px;
   color: #888;
 }
 
