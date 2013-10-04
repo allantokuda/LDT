@@ -70,7 +70,7 @@ span.toolbar-separator {
 
 #editor.new_entity .ghost-entity {
   display: block;
-  position: fixed;
+  position: absolute;
   width: 100px;
   height: 130px;
   background: rgba(170,255,170,0.75);
@@ -78,6 +78,7 @@ span.toolbar-separator {
   padding: 10px;
   padding-top: 1em;
   text-align: center;
+  z-index: 5;
 }
 
 /* Mode and sub-mode indication in toolbar */
@@ -159,4 +160,11 @@ path.click-area {
   display: block;
   float: right;
   width: 150px;
+}
+
+.canvas-click-shield {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: none;
 }

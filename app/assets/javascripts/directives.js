@@ -175,8 +175,8 @@ app.directive('stickToMouse',function() {
   return {
     link: function(scope, element, iAttrs, ctrl) {
       $(window).mousemove(function(e) {
-        element.css('left', e.pageX);
-        element.css('top',  e.pageY);
+        element.css('left', e.pageX - element[0].parentElement.offsetLeft);
+        element.css('top',  e.pageY - element[0].parentElement.offsetTop);
       });
     }
   }

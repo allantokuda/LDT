@@ -1,16 +1,15 @@
-BUG: Multiple relationships between 2 entities always cross each other
-BUG: Relationships vanish below a certain y-coordinate.
-BUG: new relationship "ghost" is misplaced when scrolled down
-Pan: click and drag the canvas in select mode
-Restore entity resize corner graphic
+Improve performance on for entity placement and title/attribute edit for large graphs
+Print layout shouldn't show toolbar
 Enter finishes renaming entity
 Tab to finish rename and move to edit attributes
-Print layout shouldn't show toolbar
+
+Multiple relationships between two entities should not cross each other
 Reflexive relationships should float around the entity away from other relationships
 Flat relationships should float away from other endpoints
-Zoom: turn the mouse wheel (direction configurable?)
+
 Add entity and relationship at same time, with preset symbols, based on keystrokes. 'm' adds a has-many relationship from the selected entity. Also '1', and just 'h' (has) which puts down '?' symbols.
 Make entity not resizable below minimum sizing
+Restore entity resize corner graphic
 Resize entity from top or left
 Ability to snapshot a graph. Snapshot has a unique URL that does NOT include the source (editable) graph.
 Persona authentication
