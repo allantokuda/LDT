@@ -10,10 +10,18 @@ div.endpoint div.label {
   width: 1px;
 }
 
-div.endpoint.top    div.label { left:  5px; top: -45px; }
-div.endpoint.bottom div.label { left:  5px; top:  27px; }
-div.endpoint.right  div.label { left: 30px; top: -20px; }
-div.endpoint.left   div.label { left: -32px; top: 5px; }
+div.endpoint.right  div.label { left:  30px; top: -18px; }
+div.endpoint.left   div.label { left: -32px; top:   2px; }
+div.endpoint.top    div.label { left:  29px; top: -18px; }
+div.endpoint.bottom div.label { left: -30px; top:   1px; }
+
+div.endpoint.top, div.endpoint.bottom {
+  -webkit-transform: rotate(-90deg);
+     -moz-transform: rotate(-90deg);
+      -ms-transform: rotate(-90deg);
+       -o-transform: rotate(-90deg);
+          transform: rotate(-90deg);
+}
 
 /* Ensure text is readable when it overlaps a diagonal relationship */
 div.endpoint div.label span,
@@ -23,6 +31,8 @@ div.endpoint div.label input {
 }
 
 /* Just for arrowheads on the left side of an entity, have text flow to the right */
+div.endpoint.bottom div.label span,
+div.endpoint.bottom div.label input,
 div.endpoint.left div.label span,
 div.endpoint.left div.label input {
   float: right;
