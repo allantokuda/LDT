@@ -1,9 +1,6 @@
-
-BUG: Firefox SVG paths are invisible
 BUG: Multiple relationships between 2 entities always cross each other
 BUG: Relationships vanish below a certain y-coordinate.
 BUG: new relationship "ghost" is misplaced when scrolled down
-
 Pan: click and drag the canvas in select mode
 Restore entity resize corner graphic
 Enter finishes renaming entity
