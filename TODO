@@ -1,5 +1,4 @@
 Improve performance on for entity placement and title/attribute edit for large graphs
-Print layout shouldn't show toolbar
 Enter finishes renaming entity
 Tab to finish rename and move to edit attributes
 
