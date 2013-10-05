@@ -57,35 +57,4 @@ window.Entity = function(entity) {
       side.removeEndpoint(endpoint_to_delete);
     });
   };
-
-  this.assignEndpointsToSides = function() {
-    _.each(this.endpoints, function(endpoint) { endpoint.relocate(); });
-  }
-
-  this.negotiateEndpointsOnEachSide = function() {
-    _.each(_.values(this.sides), function(side) {
-      side.negotiateEndpoints();
-    });
-  }
-
-  this.stringGeom = function() {
-    return [this.x, this.y, this.width, this.height].join(',')
-  }
-
-  this.updateAssociations = function() {
-    _.each(this.endpoints, function(endpoint) {
-      endpoint.partner.relocate();
-      endpoint.partner.entity.negotiateEndpointsOnEachSide();
-    });
-  };
-
-  this.triggerUpdate = function() {
-    //rearchitecture: broadcast event here instead of calling endpoint methods directly
-    //both assignEndpointsToSides and updateAssociations will be replaced by this.
-    //endpoints know they need to relocate if EITHER their main or secondary entity has moved.
-    this.assignEndpointsToSides();
-    this.updateAssociations();
-    this.negotiateEndpointsOnEachSide();
-  };
-
 }

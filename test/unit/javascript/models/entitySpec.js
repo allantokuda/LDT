@@ -71,11 +71,7 @@ describe('Entity', function() {
     expect(e.nearestSide(entityOnBottom).name).toBe('bottom')
   });
 
-  it('returns a string representing its geometry', function() {
-    expect(e.stringGeom()).toBe('100,100,120,120');
-  });
-
-  // TODO remove this once message event based triggering is functional
+  // TODO put this in entity controller spec
   it('triggers updates to its endpoints and associated entities\' endpoints', function() {
 
     r.crosslink();

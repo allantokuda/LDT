@@ -1,11 +1,12 @@
 'use strict';
 
 describe('GraphCtrl', function(){
-  var ctrl, scope, paths, r, e1, e2, e3, ep1, ep2;
+  var ctrl, scope, childScope, paths, r, e1, e2, e3, ep1, ep2;
   beforeEach(module('myApp.controllers'));
   beforeEach(inject(function ($rootScope, $controller) {
     scope = $rootScope.$new();
     ctrl = $controller('GraphCtrl', {$scope: scope});
+    childScope = scope.$new();
 
     e1 = new Entity({id: 0, x: 0, y: 0, width: 100, height: 120, name: 'thing',  attributes: 'size\nshape'});
     e2 = new Entity({id: 1, x: 0, y: 0, width: 100, height: 120, name: 'gadget', attributes: 'shape'});
@@ -104,6 +105,14 @@ describe('GraphCtrl', function(){
     it('should delete the endpoints from the entities', function() {
       expect(e1.endpoints.length).toBe(0);
       expect(e2.endpoints.length).toBe(0);
+    });
+  });
+
+  describe('event handling', function() {
+    it('should catch and rebroadcast entityGeometryChange events', function() {
+      spyOn(scope, '$broadcast');
+      childScope.$emit('entityGeometryChange', 42);
+      expect(scope.$broadcast).toHaveBeenCalledWith('entityGeometryChangeBroadcast', 42);
     });
   });
 

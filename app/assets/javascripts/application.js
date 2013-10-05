@@ -27,6 +27,7 @@
 //= require controllers/editor_controller
 //= require controllers/graph_controller
 //= require controllers/entity_controller
+//= require controllers/endpoint_controller
 //= require persona_login
 //= require filters
 //= require directives

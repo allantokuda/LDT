@@ -37,6 +37,7 @@ function GraphCtrl($scope) {
       $scope.$emit('titlechange', newValue);
     });
 
+    $scope.$broadcast('initializeEndpoints');
   }
 
   function nextID(set) {
@@ -132,11 +133,8 @@ function GraphCtrl($scope) {
     $scope.graph.arrowheads.push(arrowhead1);
     $scope.graph.arrowheads.push(arrowhead2);
 
-    entity1.assignEndpointsToSides();
-    entity2.assignEndpointsToSides();
-
-    entity1.negotiateEndpointsOnEachSide();
-    entity2.negotiateEndpointsOnEachSide();
+    $scope.$broadcast('entityGeometryChangeBroadcast', entity1.id);
+    $scope.$broadcast('entityGeometryChangeBroadcast', entity2.id);
   }
 
   $scope.graph.deleteEntity = function(entity_to_delete) {
@@ -204,6 +202,10 @@ function GraphCtrl($scope) {
       entity.selected = false;
     })
   }
+
+  $scope.$on('entityGeometryChange', function(ev, entityID) {
+    $scope.$broadcast('entityGeometryChangeBroadcast', entityID);
+  });
 }
 
 angular.module('myApp.controllers').controller('GraphCtrl', GraphCtrl);

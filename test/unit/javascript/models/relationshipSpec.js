@@ -42,11 +42,9 @@ describe('Relationship', function() {
   });
 
   it('calculates a SVG path string', function() {
-    entity1.assignEndpointsToSides();
-    entity2.assignEndpointsToSides();
     r.crosslink();
-    entity1.negotiateEndpointsOnEachSide();
-    entity2.negotiateEndpointsOnEachSide();
+    endpoint1.relocate();
+    endpoint2.relocate();
     expect(r.svgPath()).toBe('M100,90 L130,90 L170,160 L200,160')
   });
 

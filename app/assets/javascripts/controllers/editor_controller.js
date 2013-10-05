@@ -70,14 +70,6 @@ function EditorCtrl($scope) {
              $scope.graph.arrowheads.push(arrowhead2);
           });
 
-          _.each($scope.graph.entities, function(entity) {
-            entity.assignEndpointsToSides();
-          });
-
-          _.each($scope.graph.entities, function(entity) {
-            entity.negotiateEndpointsOnEachSide();
-          });
-
           $scope.graph.initialize();
         });
       }

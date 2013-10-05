@@ -49,10 +49,6 @@ describe('Side', function() {
       symbol: ''
     });
 
-    parentEntity.assignEndpointsToSides();
-    weakerEntity.assignEndpointsToSides();
-    strongerEntity.assignEndpointsToSides();
-
     r1.crosslink();
     r2.crosslink();
 
