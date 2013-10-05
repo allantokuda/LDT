@@ -8,11 +8,11 @@ window.Relationship = function(id) {
   this.setEndpoint = function(endpoint) {
     this.endpoints[this.numEndpoints] = endpoint;
     this.numEndpoints++;
-  }
 
-  this.crosslink = function() {
-    this.endpoints[0].partner = this.endpoints[1];
-    this.endpoints[1].partner = this.endpoints[0];
+    if (this.numEndpoints == 2) {
+      this.endpoints[0].partner = this.endpoints[1];
+      this.endpoints[1].partner = this.endpoints[0];
+    }
   }
 
   this.svgPath = function() {

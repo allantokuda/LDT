@@ -74,8 +74,6 @@ describe('Entity', function() {
   // TODO put this in entity controller spec
   it('triggers updates to its endpoints and associated entities\' endpoints', function() {
 
-    r.crosslink();
-
     // move endpoints to wrong sides, to represent the state before a movement occurred
     e.sides['top'].addEndpoint(endpoint1);
     entityOnRight.sides['bottom'].addEndpoint(endpoint2);

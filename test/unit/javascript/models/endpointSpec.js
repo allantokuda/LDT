@@ -63,14 +63,12 @@ describe('Endpoint', function() {
   });
 
   it('relocates itself on the most desirable side of its entity', function() {
-    r1.crosslink();
     endpoint1.relocate();
     expect(endpoint1.side.name).toBe('right');
     expect(tree.sides['right'].endpoints[0]).toBe(endpoint1);
   });
 
   it('when a flat relationship line is possible, calculates ideal offset and angle', function() {
-    r1.crosslink();
     endpoint1.relocate();
     partner1.relocate();
     endpoint1.calculateIdeals();
@@ -84,7 +82,6 @@ describe('Endpoint', function() {
   });
 
   it('when a flat relationship line is NOT possible, calculates its ideal offset and angle', function() {
-    r2.crosslink();
     endpoint2.relocate();
     partner2.relocate();
     endpoint2.calculateIdeals();

@@ -36,13 +36,11 @@ describe('Relationship', function() {
   });
 
   it('makes its endpoints aware of each other', function() {
-    r.crosslink();
     expect(endpoint1.partner).toBe(endpoint2);
     expect(endpoint2.partner).toBe(endpoint1);
   });
 
   it('calculates a SVG path string', function() {
-    r.crosslink();
     endpoint1.relocate();
     endpoint2.relocate();
     expect(r.svgPath()).toBe('M100,90 L130,90 L170,160 L200,160')

@@ -56,8 +56,6 @@ function EditorCtrl($scope) {
                symbol: hash.symbol2,
              });
 
-             relationship.crosslink();
-
              var arrowhead1 = new Arrowhead(endpoint1);
              var arrowhead2 = new Arrowhead(endpoint2);
              endpoint1.arrowhead = arrowhead1;

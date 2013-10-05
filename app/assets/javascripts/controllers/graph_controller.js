@@ -122,8 +122,6 @@ function GraphCtrl($scope) {
     var arrowhead1 = new Arrowhead(endpoint1);
     var arrowhead2 = new Arrowhead(endpoint2);
 
-    r.crosslink();
-
     endpoint1.arrowhead = arrowhead1;
     endpoint2.arrowhead = arrowhead2;
 

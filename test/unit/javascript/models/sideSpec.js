@@ -49,9 +49,6 @@ describe('Side', function() {
       symbol: ''
     });
 
-    r1.crosslink();
-    r2.crosslink();
-
     topSide    = parentEntity.sides['top'];
     bottomSide = parentEntity.sides['bottom'];
     leftSide   = parentEntity.sides['left'];
@@ -115,12 +112,10 @@ describe('Side', function() {
     expect(topSide.endpoints.length).toBe(0);
   });
 
-  describe('after crosslink and negotiation', function() {
+  describe('after negotiation', function() {
     beforeEach(function() {
       rightSide.addEndpoint(endpoint1); //add weaker one first
       rightSide.addEndpoint(endpoint2);
-      r1.crosslink();
-      r2.crosslink();
       rightSide.negotiateEndpoints();
     });
 
