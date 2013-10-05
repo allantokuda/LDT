@@ -1,6 +1,9 @@
+Copy and Paste entities
+Add hover text explaining what can be done to the thing being pointed at
 Improve performance on for entity placement and title/attribute edit for large graphs
 Enter finishes renaming entity
 Tab to finish rename and move to edit attributes
+Bind canvas size to its contents
 
 Multiple relationships between two entities should not cross each other
 Reflexive relationships should float around the entity away from other relationships
@@ -18,6 +21,11 @@ Arrowheads should "squish" together when there's not enough space ??
 
 
 RE-ENGINEERING, MORE
+
+  Untangle the dependency spaghetti
+    Entities do not store their endpoints. Instead, they broadcast an event with their entity ID.
+    Endpoints will receive the event, knowing which entity ID(s) they associate with, and update themselves accordingly.
+    Endpoint controller will watch for these events and update the endpoint model.
 
   Arrowhead functionality should be part of the endpoint. Remove graph controller's list of arrowheads.
   Relationship should construct endpoints. Endpoint should not need to know about its relationship.

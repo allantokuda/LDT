@@ -80,6 +80,9 @@ window.Entity = function(entity) {
   };
 
   this.triggerUpdate = function() {
+    //rearchitecture: broadcast event here instead of calling endpoint methods directly
+    //both assignEndpointsToSides and updateAssociations will be replaced by this.
+    //endpoints know they need to relocate if EITHER their main or secondary entity has moved.
     this.assignEndpointsToSides();
     this.updateAssociations();
     this.negotiateEndpointsOnEachSide();
