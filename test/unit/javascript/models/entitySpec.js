@@ -75,6 +75,7 @@ describe('Entity', function() {
     expect(e.stringGeom()).toBe('100,100,120,120');
   });
 
+  // TODO remove this once message event based triggering is functional
   it('triggers updates to its endpoints and associated entities\' endpoints', function() {
 
     r.crosslink();
