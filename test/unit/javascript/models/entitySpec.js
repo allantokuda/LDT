@@ -19,15 +19,11 @@ describe('Entity', function() {
     entity: e,
     otherEntity: entityOnRight,
     relationship: r,
-    label: '',
-    symbol: ''
   });
   var endpoint2 = new window.Endpoint({
     entity: entityOnRight,
     otherEntity: e,
     relationship: r,
-    label: '',
-    symbol: ''
   });
 
   it('has the same attributes as its input hash', function() {

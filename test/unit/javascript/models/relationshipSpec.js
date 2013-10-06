@@ -6,23 +6,19 @@ describe('Relationship', function() {
 
   beforeEach(function() {
     r = new window.Relationship(0);
-    entity1 = new window.Entity({name: 'supplier', x:  0, y:  0, width: 100, height: 100 });
-    entity2 = new window.Entity({name: 'part'    , x:200, y:150, width: 100, height: 100 });
+    entity1 = new window.Entity({ x:  0, y:  0, width: 100, height: 100 });
+    entity2 = new window.Entity({ x:200, y:150, width: 100, height: 100 });
 
     endpoint1 = new window.Endpoint({
       relationship: r,
       entity: entity1,
       otherEntity: entity2,
-      label: 'supplies',
-      symbol: 'none'
     });
 
     endpoint2 = new window.Endpoint({
       relationship: r,
       entity: entity2,
       otherEntity: entity1,
-      label: 'supplied by',
-      symbol: 'chickenfoot'
     });
   });
 

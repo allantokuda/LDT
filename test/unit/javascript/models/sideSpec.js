@@ -21,16 +21,12 @@ describe('Side', function() {
       entity:       parentEntity,
       otherEntity:  weakerEntity,
       relationship: r1,
-      label: '',
-      symbol: ''
     });
 
     endpoint2 = new window.Endpoint({
       entity:       parentEntity,
       otherEntity:  strongerEntity,
       relationship: r2,
-      label: '',
-      symbol: ''
     });
 
     partner1 = new window.Endpoint({
