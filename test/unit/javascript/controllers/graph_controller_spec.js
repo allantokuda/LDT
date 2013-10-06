@@ -112,7 +112,32 @@ describe('GraphCtrl', function(){
     it('should catch and rebroadcast entityGeometryChange events', function() {
       spyOn(scope, '$broadcast');
       childScope.$emit('entityGeometryChange', 42);
-      expect(scope.$broadcast).toHaveBeenCalledWith('entityGeometryChangeBroadcast', 42);
+      expect(scope.$broadcast).toHaveBeenCalledWith('relocateIfAttachedToEntity', 42);
+    });
+  });
+
+  describe('#createRelationship', function() {
+    var r2;
+
+    beforeEach(inject(function() {
+      scope.graph.arrowheads = [];
+      r2 = scope.graph.createRelationship(e1, e2);
+    }));
+
+    it('should create a relationship', function() {
+      expect(r2).toBeDefined();
+    });
+
+    it('should add the relationship to the graph scope', function() {
+      expect(_.last(scope.graph.relationships)).toBe(r2);
+    });
+
+    it('should add the endpoints to the graph scope', function() {
+      expect(_.last(scope.graph.endpoints)).toBe(r2.endpoints[1]);
+    });
+
+    it('should add arrowheads to the graph scope', function() {
+      expect(_.last(scope.graph.arrowheads)).toBe(r2.endpoints[1].arrowhead);
     });
   });
 

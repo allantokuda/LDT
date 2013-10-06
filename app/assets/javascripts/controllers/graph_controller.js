@@ -131,8 +131,12 @@ function GraphCtrl($scope) {
     $scope.graph.arrowheads.push(arrowhead1);
     $scope.graph.arrowheads.push(arrowhead2);
 
-    $scope.$broadcast('entityGeometryChangeBroadcast', entity1.id);
-    $scope.$broadcast('entityGeometryChangeBroadcast', entity2.id);
+    endpoint1.relocate();
+    endpoint2.relocate();
+    endpoint1.side.negotiateEndpoints();
+    endpoint2.side.negotiateEndpoints();
+
+    return r;
   }
 
   $scope.graph.deleteEntity = function(entity_to_delete) {
@@ -202,7 +206,7 @@ function GraphCtrl($scope) {
   }
 
   $scope.$on('entityGeometryChange', function(ev, entityID) {
-    $scope.$broadcast('entityGeometryChangeBroadcast', entityID);
+    $scope.$broadcast('relocateIfAttachedToEntity', entityID);
   });
 }
 
