@@ -76,13 +76,6 @@ describe('Side', function() {
     expect( rightSide.parallelCoordinate({ x:10, y:50 })).toBe(50);
   });
 
-  it('chooses the perpendicular component of a given coordinate pair', function() {
-    expect(   topSide.perpendicularCoordinate({ x:10, y:50 })).toBe(50);
-    expect(bottomSide.perpendicularCoordinate({ x:10, y:50 })).toBe(50);
-    expect(  leftSide.perpendicularCoordinate({ x:10, y:50 })).toBe(10);
-    expect( rightSide.perpendicularCoordinate({ x:10, y:50 })).toBe(10);
-  });
-
   it('calculates coordinates of a point along it, offset from its center', function() {
     expect(   topSide.centerOffsetCoordinates(7)).toEqual({ x:  57, y:  0 });
     expect(bottomSide.centerOffsetCoordinates(7)).toEqual({ x:  57, y: 80 });

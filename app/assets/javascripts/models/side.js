@@ -57,15 +57,9 @@ window.Side = function(entity, sideName) {
     vertical:   function(point) { return point.y; },
   })[this.orientation];
 
-  this.perpendicularCoordinate = ({
-    horizontal: function(point) { return point.y; },
-    vertical:   function(point) { return point.x; },
-  })[this.orientation];
-
   this.maxOffset = function() {
     return Math.round((this.span() - window.ARROWHEAD_WIDTH) / 2);
   }
-
 
   this.negotiateEndpoints = function() {
     // Reset bounds
