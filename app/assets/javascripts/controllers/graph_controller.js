@@ -146,7 +146,7 @@ function GraphCtrl($scope) {
              arrowhead.endpoint.otherEntity == entity_to_delete;
     });
 
-    // Delete endpoints from associated entities and their sides
+    // Delete endpoints from associated entities' sides
     _.each($scope.graph.entities, function(entity) {
       _.each(entity.endpoints, function(endpoint) {
         if (endpoint.entity      == entity_to_delete ||

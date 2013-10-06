@@ -9,7 +9,6 @@ window.Endpoint = function(endpoint) {
   // Two-way attach to one entity and one relationship, "permanently"
   // (i.e. until deleted by user command).
   this.relationship.setEndpoint(this);
-  this.entity.attachEndpoint(this);
 
   this.calculateIdeals = function() {
 

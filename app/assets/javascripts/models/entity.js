@@ -8,7 +8,6 @@ window.Entity = function(entity) {
   this.name       = entity.name
   this.attributes = entity.attributes
 
-  this.endpoints = [];
   this.sides = {};
 
   this.saveObject = function() {
@@ -44,15 +43,7 @@ window.Entity = function(entity) {
     );
   }
 
-  this.attachEndpoint = function(newEndpoint) {
-    this.endpoints.push(newEndpoint);
-  }
-
   this.removeEndpoint = function(endpoint_to_delete) {
-    this.endpoints = _.reject(this.endpoints, function(endpoint) {
-      return endpoint == endpoint_to_delete
-    });
-
     _.each(this.sides, function(side) {
       side.removeEndpoint(endpoint_to_delete);
     });

@@ -83,10 +83,6 @@ describe('GraphCtrl', function(){
     it('should delete all connected relationships', function() {
       expect(scope.graph.relationships.length).toBe(0);
     });
-
-    it('should delete endpoint from the partner entity', function() {
-      expect(e1.endpoints.length).toBe(0);
-    });
   });
 
   describe('deletion of relationship', function() {
@@ -100,11 +96,6 @@ describe('GraphCtrl', function(){
 
     it('should delete the associated endpoints from the graph', function() {
       expect(scope.graph.endpoints.length).toBe(0);
-    });
-
-    it('should delete the endpoints from the entities', function() {
-      expect(e1.endpoints.length).toBe(0);
-      expect(e2.endpoints.length).toBe(0);
     });
   });
 
