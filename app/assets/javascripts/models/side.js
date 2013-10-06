@@ -31,13 +31,6 @@ window.Side = function(entity, sideName) {
     right:  {x: 1, y: 0}
   })[sideName];
 
-  this.outwardDistance = ({
-    left:   function(other) { return this.entity.x - other.x - other.width  },
-    top:    function(other) { return this.entity.y - other.y - other.height },
-    right:  function(other) { return other.x - this.entity.x - this.entity.width  },
-    bottom: function(other) { return other.y - this.entity.y - this.entity.height }
-  })[sideName];
-
   this.centerOffsetCoordinates = ({
     top:     function(offset) { return { x: this.entity.x + this.entity.width  / 2 + offset, y: this.entity.y                      }; },
     bottom:  function(offset) { return { x: this.entity.x + this.entity.width  / 2 + offset, y: this.entity.y + this.entity.height }; },

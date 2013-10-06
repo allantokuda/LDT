@@ -36,7 +36,7 @@ window.Endpoint = function(endpoint) {
     } else {
       this.idealOffset = sign(flatLineOffset) * maxOffset;
       var stretch = Math.abs(this.idealOffset - flatLineOffset);
-      var distance = this.side.outwardDistance(this.otherEntity);
+      var distance = this.entity.outwardDistance(this.side.name, this.otherEntity);
       this.idealAngle = Math.atan2(stretch, distance - window.ARROWHEAD_LENGTH * 2) * 180 / 3.1416
     }
   };

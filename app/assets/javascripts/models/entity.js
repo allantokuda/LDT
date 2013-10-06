@@ -37,9 +37,18 @@ window.Entity = function(entity) {
   }
 
   this.nearestSide = function(other) {
-    return _.max(
-      _.values(this.sides),
-      function(side) { return side.outwardDistance(other) }
-    );
+    return _.max(this.sides, function(side) {
+      return this.outwardDistance(side.name, other);
+    }, this);
   }
+
+  this.outwardDistance = function(sideName, other) {
+    return ({
+      left:   this.x - other.x - other.width,
+      top:    this.y - other.y - other.height,
+      right:  other.x - this.x - this.width,
+      bottom: other.y - this.y - this.height
+    })[sideName];
+  }
+
 }
