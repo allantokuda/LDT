@@ -69,13 +69,6 @@ describe('Side', function() {
     expect( rightSide.span()).toBe(80);
   });
 
-  it('chooses the parallel component of a given coordinate pair', function() {
-    expect(   topSide.parallelCoordinate({ x:10, y:50 })).toBe(10);
-    expect(bottomSide.parallelCoordinate({ x:10, y:50 })).toBe(10);
-    expect(  leftSide.parallelCoordinate({ x:10, y:50 })).toBe(50);
-    expect( rightSide.parallelCoordinate({ x:10, y:50 })).toBe(50);
-  });
-
   it('calculates maximum offset allowed by an endpoint', function() {
     expect(   topSide.maxOffset()).toBe(40);
     expect(bottomSide.maxOffset()).toBe(40);

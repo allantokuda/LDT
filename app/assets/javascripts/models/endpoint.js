@@ -10,13 +10,23 @@ window.Endpoint = function(endpoint) {
   // (i.e. until deleted by user command).
   this.relationship.setEndpoint(this);
 
+
+  this.parallelCoordinate = function(point) {
+    return ({
+      top:    point.x,
+      bottom: point.x,
+      left:   point.y,
+      right:  point.y,
+    })[this.sideName];
+  };
+
   this.calculateIdeals = function() {
 
     var maxOffset  = this.side.maxOffset();
     var thisSpan   = this.side.span();
     var thatSpan   = this.partner.side.span();
-    var thisCenter = this.side.parallelCoordinate(this.entity.center());
-    var thatCenter = this.side.parallelCoordinate(this.otherEntity.center());
+    var thisCenter = this.parallelCoordinate(this.entity.center());
+    var thatCenter = this.parallelCoordinate(this.otherEntity.center());
 
     var center_to_center = thatCenter - thisCenter;
     var max_center_to_center = (thisSpan + thatSpan) / 2 - window.ARROWHEAD_WIDTH

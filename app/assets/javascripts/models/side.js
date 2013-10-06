@@ -36,11 +36,6 @@ window.Side = function(entity, sideName) {
     vertical:   function() { return this.entity.height; },
   })[this.orientation];
 
-  this.parallelCoordinate = ({
-    horizontal: function(point) { return point.x; },
-    vertical:   function(point) { return point.y; },
-  })[this.orientation];
-
   this.maxOffset = function() {
     return Math.round((this.span() - window.ARROWHEAD_WIDTH) / 2);
   }
