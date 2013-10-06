@@ -10,13 +10,11 @@ window.Side = function(entity, sideName) {
 
   this.removeEndpoint = function(endpointToDelete) {
     this.endpoints = _.reject(this.endpoints, function(endpoint) { return endpoint == endpointToDelete });
-    endpointToDelete.side = undefined;
   }
 
   this.addEndpoint = function(endpointToAdd) {
     this.removeEndpoint(endpointToAdd);
     this.endpoints.push(endpointToAdd);
-    endpointToAdd.side = this;
   }
 
   this.orientation = ({
