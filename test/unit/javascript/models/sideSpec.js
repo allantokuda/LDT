@@ -76,13 +76,6 @@ describe('Side', function() {
     expect( rightSide.parallelCoordinate({ x:10, y:50 })).toBe(50);
   });
 
-  it('calculates coordinates of a point along it, offset from its center', function() {
-    expect(   topSide.centerOffsetCoordinates(7)).toEqual({ x:  57, y:  0 });
-    expect(bottomSide.centerOffsetCoordinates(7)).toEqual({ x:  57, y: 80 });
-    expect(  leftSide.centerOffsetCoordinates(7)).toEqual({ x:   0, y: 47 });
-    expect( rightSide.centerOffsetCoordinates(7)).toEqual({ x: 100, y: 47 });
-  });
-
   it('calculates maximum offset allowed by an endpoint', function() {
     expect(   topSide.maxOffset()).toBe(40);
     expect(bottomSide.maxOffset()).toBe(40);

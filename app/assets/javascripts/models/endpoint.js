@@ -49,5 +49,7 @@ window.Endpoint = function(endpoint) {
 
     this.side = this.entity.nearestSide(this.otherEntity);
     this.side.addEndpoint(this);
+
+    this.sideName    = this.side.name
   };
 }

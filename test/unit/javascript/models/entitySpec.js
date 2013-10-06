@@ -67,6 +67,14 @@ describe('Entity', function() {
     expect(e.nearestSide(entityOnBottom).name).toBe('bottom')
   });
 
+  it('calculates coordinates of a point along one of its sides, offset from the side\'s center', function() {
+    expect(e.sideCenterOffsetCoordinates('top',    7)).toEqual({ x: 167, y: 100 });
+    expect(e.sideCenterOffsetCoordinates('bottom', 7)).toEqual({ x: 167, y: 220 });
+    expect(e.sideCenterOffsetCoordinates('left',   7)).toEqual({ x: 100, y: 167 });
+    expect(e.sideCenterOffsetCoordinates('right',  7)).toEqual({ x: 220, y: 167 });
+  });
+
+
   /* TODO move to an e2e test
   it('triggers updates to its endpoints and associated entities\' endpoints', function() {
 

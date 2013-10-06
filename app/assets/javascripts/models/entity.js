@@ -51,4 +51,13 @@ window.Entity = function(entity) {
     })[sideName];
   }
 
+  this.sideCenterOffsetCoordinates = function(sideName, offset) {
+    return ({
+      top:     { x: this.x + this.width  / 2 + offset, y: this.y               },
+      bottom:  { x: this.x + this.width  / 2 + offset, y: this.y + this.height },
+      left:    { y: this.y + this.height / 2 + offset, x: this.x               },
+      right:   { y: this.y + this.height / 2 + offset, x: this.x + this.width  }
+    })[sideName];
+  };
+
 }

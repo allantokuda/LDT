@@ -31,13 +31,6 @@ window.Side = function(entity, sideName) {
     right:  {x: 1, y: 0}
   })[sideName];
 
-  this.centerOffsetCoordinates = ({
-    top:     function(offset) { return { x: this.entity.x + this.entity.width  / 2 + offset, y: this.entity.y                      }; },
-    bottom:  function(offset) { return { x: this.entity.x + this.entity.width  / 2 + offset, y: this.entity.y + this.entity.height }; },
-    left:    function(offset) { return { y: this.entity.y + this.entity.height / 2 + offset, x: this.entity.x                      }; },
-    right:   function(offset) { return { y: this.entity.y + this.entity.height / 2 + offset, x: this.entity.x + this.entity.width  }; }
-  })[sideName];
-
   this.span = ({
     horizontal: function() { return this.entity.width;  },
     vertical:   function() { return this.entity.height; },
@@ -83,7 +76,7 @@ window.Side = function(entity, sideName) {
       }
 
       // Assign global coordinates for use by relationship draw
-      var coordinates = this.centerOffsetCoordinates(endpoint.assigned_offset);
+      var coordinates = this.entity.sideCenterOffsetCoordinates(this.name, endpoint.assigned_offset);
       endpoint.x = coordinates.x
       endpoint.y = coordinates.y
 
