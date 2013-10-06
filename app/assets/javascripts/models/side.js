@@ -17,17 +17,12 @@ window.Side = function(entity, sideName) {
     this.endpoints.push(endpointToAdd);
   }
 
-  this.orientation = ({
-    top:    'horizontal',
-    bottom: 'horizontal',
-    left:   'vertical',
-    right:  'vertical'
-  })[sideName];
-
   this.span = ({
-    horizontal: function() { return this.entity.width;  },
-    vertical:   function() { return this.entity.height; },
-  })[this.orientation];
+    top:    function() { return this.entity.width;  },
+    bottom: function() { return this.entity.width;  },
+    left:   function() { return this.entity.height; },
+    right:  function() { return this.entity.height; },
+  })[this.name];
 
   this.maxOffset = function() {
     return Math.round((this.span() - window.ARROWHEAD_WIDTH) / 2);

@@ -51,12 +51,6 @@ describe('Side', function() {
     rightSide  = parentEntity.sides['right'];
   });
 
-
-  it('knows its orientation', function() {
-    expect(  topSide.orientation).toBe('horizontal');
-    expect(rightSide.orientation).toBe('vertical');
-  });
-
   it('determines its span (length)', function() {
     expect(   topSide.span()).toBe(100);
     expect(bottomSide.span()).toBe(100);
