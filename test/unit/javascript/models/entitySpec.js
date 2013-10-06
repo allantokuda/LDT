@@ -71,7 +71,7 @@ describe('Entity', function() {
     expect(e.nearestSide(entityOnBottom).name).toBe('bottom')
   });
 
-  // TODO put this in entity controller spec
+  /* TODO move to an e2e test
   it('triggers updates to its endpoints and associated entities\' endpoints', function() {
 
     // move endpoints to wrong sides, to represent the state before a movement occurred
@@ -84,5 +84,5 @@ describe('Entity', function() {
     expect(endpoint2.side.name).toBe('left');
 
   });
-
+  */
 });

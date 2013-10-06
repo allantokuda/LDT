@@ -5,17 +5,17 @@ describe('Side', function() {
   endpoint1, endpoint2, parentEntity, weakerEntity, strongerEntity;
 
   beforeEach(function() {
-    parentEntity = new window.Entity({id: 0, name: 'subject' , x:  0, y:  0, width: 100, height: 80}),
+    parentEntity = new window.Entity({id: 0, name: 'subject' , x:  0, y:  0, width: 100, height: 80});
 
     // These entities are labeled 'weaker' and 'stronger' in the sense of how
     // hard they pull toward the bottom right edge of the parent entity based
     // on their current coordinates. The strong one's endpoint should get
     // preference.
-    weakerEntity   = new window.Entity({id: 1, name: 'weaker'  , x:400, y:100, width: 100, height: 80}),
-    strongerEntity = new window.Entity({id: 2, name: 'stronger', x:400, y:300, width: 100, height: 80}),
+    weakerEntity   = new window.Entity({id: 1, name: 'weaker'  , x:400, y:100, width: 100, height: 80});
+    strongerEntity = new window.Entity({id: 2, name: 'stronger', x:400, y:300, width: 100, height: 80});
 
-    r1 = new window.Relationship(0),
-    r2 = new window.Relationship(1),
+    r1 = new window.Relationship(0);
+    r2 = new window.Relationship(1);
 
     endpoint1 = new window.Endpoint({
       entity:       parentEntity,
@@ -112,6 +112,7 @@ describe('Side', function() {
     expect(topSide.endpoints.length).toBe(0);
   });
 
+  /* TODO add to an e2e test
   describe('after negotiation', function() {
     beforeEach(function() {
       rightSide.addEndpoint(endpoint1); //add weaker one first
@@ -129,4 +130,5 @@ describe('Side', function() {
       expect(endpoint2.x - endpoint1.x).toBe(0);
     });
   });
+  */
 });
