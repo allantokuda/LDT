@@ -23,8 +23,8 @@ window.Relationship = function(id) {
 
     var arrowBase = _.map(arrowTip, function(tip) {
       return {
-        x: (tip.x + tip.side.outwardVector.x * ARROWHEAD_LENGTH),
-        y: (tip.y + tip.side.outwardVector.y * ARROWHEAD_LENGTH)
+        x: (tip.x + tip.outwardVector.x * ARROWHEAD_LENGTH),
+        y: (tip.y + tip.outwardVector.y * ARROWHEAD_LENGTH)
       }
     });
 

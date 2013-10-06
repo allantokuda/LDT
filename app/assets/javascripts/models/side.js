@@ -24,13 +24,6 @@ window.Side = function(entity, sideName) {
     right:  'vertical'
   })[sideName];
 
-  this.outwardVector = ({
-    top:    {x: 0, y:-1},
-    bottom: {x: 0, y: 1},
-    left:   {x:-1, y: 0},
-    right:  {x: 1, y: 0}
-  })[sideName];
-
   this.span = ({
     horizontal: function() { return this.entity.width;  },
     vertical:   function() { return this.entity.height; },

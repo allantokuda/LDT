@@ -10,7 +10,6 @@ window.Endpoint = function(endpoint) {
   // (i.e. until deleted by user command).
   this.relationship.setEndpoint(this);
 
-
   this.parallelCoordinate = function(point) {
     return ({
       top:    point.x,
@@ -60,6 +59,13 @@ window.Endpoint = function(endpoint) {
     this.side = this.entity.nearestSide(this.otherEntity);
     this.side.addEndpoint(this);
 
-    this.sideName    = this.side.name
+    this.sideName = this.side.name
+
+    this.outwardVector = ({
+      top:    {x: 0, y:-1},
+      bottom: {x: 0, y: 1},
+      left:   {x:-1, y: 0},
+      right:  {x: 1, y: 0}
+    })[this.sideName];
   };
 }

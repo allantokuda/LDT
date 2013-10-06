@@ -52,11 +52,6 @@ describe('Side', function() {
   });
 
 
-  it('knows its outward vector', function() {
-    expect(  topSide.outwardVector).toEqual({x:0, y:-1});
-    expect(rightSide.outwardVector).toEqual({x:1, y: 0});
-  });
-
   it('knows its orientation', function() {
     expect(  topSide.orientation).toBe('horizontal');
     expect(rightSide.orientation).toBe('vertical');

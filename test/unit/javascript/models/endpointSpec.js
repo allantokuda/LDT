@@ -65,6 +65,14 @@ describe('Endpoint', function() {
     expect(tree.sides['right'].endpoints[0]).toBe(endpoint1);
   });
 
+  it('knows its outward vector', function() {
+    endpoint1.relocate();
+    partner1.relocate();
+    expect(endpoint1.outwardVector).toEqual({x:1, y: 0});
+    expect(partner1.outwardVector).toEqual({x:-1, y: 0});
+  });
+
+
   it('when a flat relationship line is possible, calculates ideal offset and angle', function() {
     endpoint1.relocate();
     partner1.relocate();
