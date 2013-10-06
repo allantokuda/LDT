@@ -148,10 +148,12 @@ function GraphCtrl($scope) {
 
     // Delete endpoints from associated entities' sides
     _.each($scope.graph.entities, function(entity) {
-      _.each(entity.endpoints, function(endpoint) {
-        if (endpoint.entity      == entity_to_delete ||
-            endpoint.otherEntity == entity_to_delete)
-          entity.removeEndpoint(endpoint);
+      _.each(entity.sides, function(side) {
+        _.each(side.endpoints, function(endpoint) {
+          if (endpoint.entity      == entity_to_delete ||
+              endpoint.otherEntity == entity_to_delete)
+            side.removeEndpoint(endpoint);
+        });
       });
     });
 
@@ -182,9 +184,11 @@ function GraphCtrl($scope) {
         return arrowhead.endpoint == endpoint_to_delete
       });
 
-      // Remove connected endpoints from entities
+      // Remove connected endpoints from sides
       _.each($scope.graph.entities, function(entity) {
-        entity.removeEndpoint(endpoint_to_delete);
+        _.each(entity.sides, function(side) {
+          side.removeEndpoint(endpoint_to_delete);
+        });
       });
 
       // Remove all connected endpoints from graph

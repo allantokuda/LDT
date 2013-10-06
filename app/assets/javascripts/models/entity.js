@@ -42,10 +42,4 @@ window.Entity = function(entity) {
       function(side) { return side.outwardDistance(other) }
     );
   }
-
-  this.removeEndpoint = function(endpoint_to_delete) {
-    _.each(this.sides, function(side) {
-      side.removeEndpoint(endpoint_to_delete);
-    });
-  };
 }
