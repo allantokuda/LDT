@@ -17,7 +17,7 @@ describe('Endpoint', function() {
       entity: tree,
       otherEntity: apple,
       label: 'grows on',
-      symbol: 'none'
+      symbol: 'chickenfoot'
     });
 
     endpoint2 = new window.Endpoint({
@@ -51,7 +51,7 @@ describe('Endpoint', function() {
   });
 
   it('stores a symbol', function() {
-    expect(endpoint1.symbol).toBe('none');
+    expect(endpoint1.symbol).toBe('chickenfoot');
   });
 
   it('reports to a relationship', function() {
@@ -101,5 +101,12 @@ describe('Endpoint', function() {
     expect(Math.round(endpoint2.idealAngle)).toBe(35);
   });
 
+  it('provides an arrowhead SVG path', function() {
+    endpoint1.relocate();
+    partner1.relocate();
+    endpoint1.calculateIdeals();
+    endpoint1.side.negotiateEndpoints();
+    expect(endpoint1.arrowheadPath()).toEqual('M100,93m0,-10 l20,10 l-20,10');
+  });
 
 });

@@ -25,7 +25,6 @@ function EditorCtrl($scope) {
           $scope.graph.entities = [];
           $scope.graph.relationships = [];
           $scope.graph.endpoints = [];
-          $scope.graph.arrowheads = [];
 
           _.each(data.entities, function(hash) {
             $scope.graph.entities.push(new window.Entity(hash));
@@ -56,16 +55,9 @@ function EditorCtrl($scope) {
                symbol: hash.symbol2,
              });
 
-             var arrowhead1 = new Arrowhead(endpoint1);
-             var arrowhead2 = new Arrowhead(endpoint2);
-             endpoint1.arrowhead = arrowhead1;
-             endpoint2.arrowhead = arrowhead2;
-
              $scope.graph.relationships.push(relationship);
              $scope.graph.endpoints.push(endpoint1);
              $scope.graph.endpoints.push(endpoint2);
-             $scope.graph.arrowheads.push(arrowhead1);
-             $scope.graph.arrowheads.push(arrowhead2);
           });
 
           $scope.graph.initialize();
@@ -117,11 +109,11 @@ function EditorCtrl($scope) {
     switch($scope.editor.mode) {
       case 'chickenfoot':
         // Use shift key to toggler identifier
-        arrow.switchType(false);
+        arrow.toggleArrowhead(false);
         break;
       case 'identifier_bar':
         // Use shift key to toggler identifier
-        arrow.switchType(true);
+        arrow.toggleArrowhead(true);
         break;
       case 'label_pick':
         arrow.endpoint.selected = true;

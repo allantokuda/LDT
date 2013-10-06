@@ -1,5 +1,12 @@
 window.Endpoint = function(endpoint) {
 
+  this.OUTWARD_VECTOR_MAP = {
+    top:    {x: 0, y:-1},
+    bottom: {x: 0, y: 1},
+    left:   {x:-1, y: 0},
+    right:  {x: 1, y: 0}
+  }
+
   this.entity       = endpoint.entity;
   this.otherEntity  = endpoint.otherEntity;
   this.relationship = endpoint.relationship;
@@ -61,11 +68,34 @@ window.Endpoint = function(endpoint) {
 
     this.sideName = this.side.name
 
-    this.outwardVector = ({
-      top:    {x: 0, y:-1},
-      bottom: {x: 0, y: 1},
-      left:   {x:-1, y: 0},
-      right:  {x: 1, y: 0}
-    })[this.sideName];
+    this.outwardVector = this.OUTWARD_VECTOR_MAP[this.sideName];
   };
+
+  this.arrowheadPath = function() {
+    return "M" + this.x + ',' + this.y + window.arrowheadSVG[this.symbol][this.sideName];
+  }
+
+  this.boxPath = function() {
+    return "M" + this.x + ',' + this.y + window.arrowheadSVG['box'][this.sideName];
+  }
+
+  this.toggleArrowhead = function(toggleIdentifier) {
+    if (toggleIdentifier) {
+      switch(this.symbol) {
+        case 'none':                   this.symbol = 'identifier'; break;
+        case 'identifier':             this.symbol = 'none'; break;
+        case 'chickenfoot':            this.symbol = 'chickenfoot_identifier'; break;
+        case 'chickenfoot_identifier': this.symbol = 'chickenfoot'; break;
+        case '?':                      this.symbol = 'identifier'; break;
+      }
+    } else {
+      switch(this.symbol) {
+        case 'none':                   this.symbol = 'chickenfoot'; break;
+        case 'chickenfoot':            this.symbol = 'none'; break;
+        case 'identifier':             this.symbol = 'chickenfoot_identifier'; break;
+        case 'chickenfoot_identifier': this.symbol = 'identifier'; break;
+        case '?':                      this.symbol = 'none'; break;
+      }
+    }
+  }
 }

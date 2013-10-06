@@ -23,9 +23,6 @@ function GraphCtrl($scope) {
     if (typeof($scope.graph.endpoints) == 'undefined')
       $scope.graph.endpoints = []
 
-    if (typeof($scope.graph.arrowheads) == 'undefined')
-      $scope.graph.arrowheads = []
-
     if (typeof($scope.graph) == 'undefined')
       $scope.graph.changeToggler = false
 
@@ -119,17 +116,9 @@ function GraphCtrl($scope) {
       symbol: '?'
     });
 
-    var arrowhead1 = new Arrowhead(endpoint1);
-    var arrowhead2 = new Arrowhead(endpoint2);
-
-    endpoint1.arrowhead = arrowhead1;
-    endpoint2.arrowhead = arrowhead2;
-
     $scope.graph.relationships.push(r);
     $scope.graph.endpoints.push(endpoint1);
     $scope.graph.endpoints.push(endpoint2);
-    $scope.graph.arrowheads.push(arrowhead1);
-    $scope.graph.arrowheads.push(arrowhead2);
 
     endpoint1.relocate();
     endpoint2.relocate();
@@ -140,12 +129,6 @@ function GraphCtrl($scope) {
   }
 
   $scope.graph.deleteEntity = function(entity_to_delete) {
-    // Delete all connected arrowheads on both sides of all relationships
-    $scope.graph.arrowheads = _.reject($scope.graph.arrowheads, function(arrowhead) {
-      return arrowhead.endpoint.entity      == entity_to_delete ||
-             arrowhead.endpoint.otherEntity == entity_to_delete;
-    });
-
     // Delete endpoints from associated entities' sides
     _.each($scope.graph.entities, function(entity) {
       _.each(entity.sides, function(side) {
@@ -178,11 +161,6 @@ function GraphCtrl($scope) {
     var endpoints = relationship_to_delete.endpoints;
 
     _.each(endpoints, function(endpoint_to_delete) {
-
-      // Remove all connected arrowheads
-      $scope.graph.arrowheads = _.reject($scope.graph.arrowheads, function(arrowhead) {
-        return arrowhead.endpoint == endpoint_to_delete
-      });
 
       // Remove connected endpoints from sides
       _.each($scope.graph.entities, function(entity) {

@@ -57,8 +57,8 @@
 
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
       <path class="relationship" ng-repeat="r in graph.relationships" ng-attr-d="{{r.svgPath()}}"></path>
-      <path class="arrowhead"    ng-repeat="a in graph.arrowheads" ng-attr-d="{{a.svgPath()}}"></path>
-      <path class="click-area"   ng-repeat="a in graph.arrowheads" ng-attr-d="{{a.boxPath()}}" ng-click="handleArrowClick(a,$event)" catch-input></path>
+      <path class="arrowhead"    ng-repeat="e in graph.endpoints" ng-attr-d="{{e.arrowheadPath()}}"></path>
+      <path class="click-area"   ng-repeat="e in graph.endpoints" ng-attr-d="{{e.boxPath()}}" ng-click="handleArrowClick(e,$event)" catch-input></path>
       <path class="click-path"   ng-repeat="r in graph.relationships" ng-attr-d="{{r.svgPath()}}" ng-click="handleRelationshipClick(r)" catch-input></path>
     </svg>
 
