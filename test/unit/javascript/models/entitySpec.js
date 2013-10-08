@@ -39,32 +39,20 @@ describe('Entity', function() {
     expect(e.center()).toEqual({x: 160, y: 170});
   });
 
-  it('has four side objects', function() {
-    expect(e.sides['top'].name).toBe('top')
-    expect(e.sides['left'].name).toBe('left')
-    expect(e.sides['right'].name).toBe('right')
-    expect(e.sides['bottom'].name).toBe('bottom')
-
-    expect(e.sides['top'].endpoints).toEqual([])
-    expect(e.sides['left'].endpoints).toEqual([])
-    expect(e.sides['right'].endpoints).toEqual([])
-    expect(e.sides['bottom'].endpoints).toEqual([])
-  });
-
   it('knows when another entity is on its right', function() {
-    expect(e.nearestSide(entityOnRight).name).toBe('right')
+    expect(e.nearestSide(entityOnRight)).toBe('right')
   });
 
   it('knows when another entity is on its left', function() {
-    expect(e.nearestSide(entityOnLeft).name).toBe('left')
+    expect(e.nearestSide(entityOnLeft)).toBe('left')
   });
 
   it('knows when another entity is above it', function() {
-    expect(e.nearestSide(entityOnTop).name).toBe('top')
+    expect(e.nearestSide(entityOnTop)).toBe('top')
   });
 
   it('knows when another entity is below it', function() {
-    expect(e.nearestSide(entityOnBottom).name).toBe('bottom')
+    expect(e.nearestSide(entityOnBottom)).toBe('bottom')
   });
 
   it('calculates coordinates of a point along one of its sides, offset from the side\'s center', function() {
@@ -80,20 +68,4 @@ describe('Entity', function() {
     expect(e.span('left'  )).toBe(140);
     expect(e.span('right' )).toBe(140);
   });
-
-
-  /* TODO move to an e2e test
-  it('triggers updates to its endpoints and associated entities\' endpoints', function() {
-
-    // move endpoints to wrong sides, to represent the state before a movement occurred
-    e.sides['top'].addEndpoint(endpoint1);
-    entityOnRight.sides['bottom'].addEndpoint(endpoint2);
-
-    e.triggerUpdate();
-
-    expect(endpoint1.side.name).toBe('right');
-    expect(endpoint2.side.name).toBe('left');
-
-  });
-  */
 });

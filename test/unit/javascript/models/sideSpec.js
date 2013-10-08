@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Side', function() {
-  var topSide, bottomSide, leftSide, rightSide, r1, r2, partner1, partner2,
+  var endpointsTop, endpointsRight, r1, r2, partner1, partner2,
   endpoint1, endpoint2, parentEntity, weakerEntity, strongerEntity;
 
   beforeEach(function() {
@@ -45,34 +45,21 @@ describe('Side', function() {
       symbol: ''
     });
 
-    topSide    = parentEntity.sides['top'];
-    bottomSide = parentEntity.sides['bottom'];
-    leftSide   = parentEntity.sides['left'];
-    rightSide  = parentEntity.sides['right'];
-  });
-
-  it('accepts endpoints', function() {
-    topSide.addEndpoint(endpoint1);
-    expect(topSide.endpoints[0]).toBe(endpoint1);
-  });
-
-  it('removes endpoints', function() {
-    topSide.addEndpoint(endpoint1);
-    topSide.removeEndpoint(endpoint1);
-    expect(topSide.endpoints.length).toBe(0);
+    endpointsTop    = parentEntity.endpoints['top'];
+    endpointsRight  = parentEntity.endpoints['right'];
   });
 
   /* TODO add to an e2e test
   describe('after negotiation', function() {
     beforeEach(function() {
-      rightSide.addEndpoint(endpoint1); //add weaker one first
-      rightSide.addEndpoint(endpoint2);
+      endpointsRight.addEndpoint(endpoint1); //add weaker one first
+      endpointsRight.addEndpoint(endpoint2);
       endpoint2.negotiateCoordinates();
     });
 
     it('has prioritized its endpoints based on the amount the related entities are offset from center', function() {
-      expect(rightSide.endpoints[0].otherEntity.name).toBe(strongerEntity.name);
-      expect(rightSide.endpoints[1].otherEntity.name).toBe(weakerEntity.name);
+      expect(endpointsRight.endpoints[0].otherEntity.name).toBe(strongerEntity.name);
+      expect(endpointsRight.endpoints[1].otherEntity.name).toBe(weakerEntity.name);
     });
 
     it('has negotiated the best positions for its endpoints', function() {

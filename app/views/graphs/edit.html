@@ -46,7 +46,7 @@
       </div>
     </div>
 
-    <div class="endpoint" ng-class="endpoint.side.name" ng-repeat="endpoint in graph.endpoints"
+    <div class="endpoint" ng-class="endpoint.sideName" ng-repeat="endpoint in graph.endpoints"
          select-with="dblclick as endpoint in #canvas" ng-controller="EndpointCtrl"
          ng-click="handleLabelClick(label.id,$event)" catch-input ng-style="{ left: endpoint.x, top: endpoint.y }">
       <div class="label">

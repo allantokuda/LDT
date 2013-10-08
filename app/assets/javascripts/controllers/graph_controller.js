@@ -2,8 +2,6 @@
 
 function GraphCtrl($scope) {
 
-  var SIDES = ['top', 'bottom', 'left', 'right'];
-
   // Allow tests to pass on this scope alone, though this scope will actually
   // inherit the definition so that the parent scope can use it.
   if (typeof($scope.graph) == 'undefined')

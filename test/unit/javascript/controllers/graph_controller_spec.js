@@ -17,9 +17,6 @@ describe('GraphCtrl', function(){
     ep1 = new Endpoint({ entity: e1, otherEntity: e2, relationship: r });
     ep2 = new Endpoint({ entity: e2, otherEntity: e1, relationship: r });
 
-    e1.endpoints = [ep1];
-    e2.endpoints = [ep2];
-
     scope.graph.relationships = [r];
     scope.graph.entities = [e1, e2, e3];
     scope.graph.endpoints = [ep1, ep2];

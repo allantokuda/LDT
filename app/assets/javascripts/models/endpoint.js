@@ -66,15 +66,20 @@ window.Endpoint = function(endpoint) {
 
   // Determine which side of the attached entity is best, and assign self there
   this.relocate = function() {
-    if (this.side)
-      this.side.removeEndpoint(this);
+    var targetSideName;
 
-    this.side = this.entity.nearestSide(this.otherEntity);
-    this.side.addEndpoint(this);
+    targetSideName = this.entity.nearestSide(this.otherEntity);
 
-    this.sideName = this.side.name
+    if (targetSideName != this.sideName) {
+      if (this.sideName)
+        this.entity.endpoints[this.sideName] = _.without(this.entity.endpoints[this.sideName], this)
 
-    this.outwardVector = this.OUTWARD_VECTOR_MAP[this.sideName];
+      this.sideName = targetSideName;
+      side = this.entity.endpoints[this.sideName];
+      side.push(this);
+
+      this.outwardVector = this.OUTWARD_VECTOR_MAP[this.sideName];
+    }
   };
 
   this.negotiateCoordinates = function() {
@@ -83,7 +88,7 @@ window.Endpoint = function(endpoint) {
     var lowerBound = -maxOffset;
     var upperBound =  maxOffset;
 
-    var siblings = this.side.endpoints;
+    var siblings = this.entity.endpoints[this.sideName];
 
     // Sort endpoints by priority. When the ideal ANGLE is non-zero, it means a
     // straight-line relationship is not possible. These cases should overpower
@@ -111,7 +116,7 @@ window.Endpoint = function(endpoint) {
       }
 
       // Assign global coordinates for use by relationship draw
-      var coordinates = this.entity.sideCenterOffsetCoordinates(this.side.name, endpoint.assigned_offset);
+      var coordinates = this.entity.sideCenterOffsetCoordinates(this.sideName, endpoint.assigned_offset);
       endpoint.x = coordinates.x
       endpoint.y = coordinates.y
 

@@ -8,7 +8,8 @@ window.Entity = function(entity) {
   this.name       = entity.name
   this.attributes = entity.attributes
 
-  this.sides = {};
+  var SIDES = ['top', 'bottom', 'left', 'right'];
+  this.endpoints = { top: [], left: [], right: [], bottom: [] };
 
   this.saveObject = function() {
     return {
@@ -22,10 +23,6 @@ window.Entity = function(entity) {
     };
   };
 
-  _.each(window.SIDENAMES, _.bind(function(sideName) {
-    this.sides[sideName] = new window.Side(this, sideName);
-  },this));
-
   this.coordinates = function(xloc,yloc) {
     return {
       x: this.x + this.width  * xloc,
@@ -37,8 +34,8 @@ window.Entity = function(entity) {
   }
 
   this.nearestSide = function(other) {
-    return _.max(this.sides, function(side) {
-      return this.outwardDistance(side.name, other);
+    return _.max(SIDES, function(side) {
+      return this.outwardDistance(side, other);
     }, this);
   }
 
