@@ -61,7 +61,6 @@ describe('Endpoint', function() {
   it('relocates itself on the most desirable side of its entity', function() {
     endpoint1.relocate();
     expect(endpoint1.sideName).toBe('right');
-    //expect(endpoint1.sideName).toBe('right');
     expect(tree.endpoints['right'][0]).toBe(endpoint1);
   });
 

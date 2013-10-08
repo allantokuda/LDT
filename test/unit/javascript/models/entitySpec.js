@@ -14,18 +14,6 @@ describe('Entity', function() {
   var entityOnTop    = new window.Entity({ x:  100, y: -300, width: 100, height: 100 });
   var entityOnBottom = new window.Entity({ x:  100, y:  300, width: 100, height: 100 });
 
-  var r = new window.Relationship(0)
-  var endpoint1 = new window.Endpoint({
-    entity: e,
-    otherEntity: entityOnRight,
-    relationship: r,
-  });
-  var endpoint2 = new window.Endpoint({
-    entity: entityOnRight,
-    otherEntity: e,
-    relationship: r,
-  });
-
   it('has the same attributes as its input hash', function() {
     expect(e.name).toBe('Test')
     expect(e.x).toBe(100)
