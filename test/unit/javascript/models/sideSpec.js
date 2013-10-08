@@ -51,20 +51,6 @@ describe('Side', function() {
     rightSide  = parentEntity.sides['right'];
   });
 
-  it('determines its span (length)', function() {
-    expect(   topSide.span()).toBe(100);
-    expect(bottomSide.span()).toBe(100);
-    expect(  leftSide.span()).toBe(80);
-    expect( rightSide.span()).toBe(80);
-  });
-
-  it('calculates maximum offset allowed by an endpoint', function() {
-    expect(   topSide.maxOffset()).toBe(40);
-    expect(bottomSide.maxOffset()).toBe(40);
-    expect(  leftSide.maxOffset()).toBe(30);
-    expect( rightSide.maxOffset()).toBe(30);
-  });
-
   it('accepts endpoints', function() {
     topSide.addEndpoint(endpoint1);
     expect(topSide.endpoints[0]).toBe(endpoint1);
@@ -81,7 +67,7 @@ describe('Side', function() {
     beforeEach(function() {
       rightSide.addEndpoint(endpoint1); //add weaker one first
       rightSide.addEndpoint(endpoint2);
-      rightSide.negotiateEndpoints();
+      endpoint2.negotiateCoordinates();
     });
 
     it('has prioritized its endpoints based on the amount the related entities are offset from center', function() {

@@ -60,4 +60,12 @@ window.Entity = function(entity) {
     })[sideName];
   };
 
+  this.span = function(sideName) {
+    return ({
+      top:    this.width,
+      bottom: this.width,
+      left:   this.height,
+      right:  this.height,
+    })[sideName];
+  }
 }

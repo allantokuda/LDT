@@ -116,7 +116,7 @@ function EditorCtrl($scope) {
         arrow.toggleArrowhead(true);
         break;
       case 'label_pick':
-        arrow.endpoint.selected = true;
+        arrow.selected = true;
         setMode('select');
         break;
     }

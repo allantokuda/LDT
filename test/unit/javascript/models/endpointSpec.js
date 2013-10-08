@@ -105,7 +105,7 @@ describe('Endpoint', function() {
     endpoint1.relocate();
     partner1.relocate();
     endpoint1.calculateIdeals();
-    endpoint1.side.negotiateEndpoints();
+    endpoint1.negotiateCoordinates();
     expect(endpoint1.arrowheadPath()).toEqual('M100,93m0,-10 l20,10 l-20,10');
   });
 

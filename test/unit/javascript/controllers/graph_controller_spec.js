@@ -120,15 +120,11 @@ describe('GraphCtrl', function(){
     });
 
     it('should add the relationship to the graph scope', function() {
-      expect(_.last(scope.graph.relationships)).toBe(r2);
+      expect(_.last(scope.graph.relationships.$id)).toBe(r2.$id);
     });
 
     it('should add the endpoints to the graph scope', function() {
-      expect(_.last(scope.graph.endpoints)).toBe(r2.endpoints[1]);
-    });
-
-    it('should add arrowheads to the graph scope', function() {
-      expect(_.last(scope.graph.arrowheads)).toBe(r2.endpoints[1].arrowhead);
+      expect(_.last(scope.graph.endpoints).$id).toBe(r2.endpoints[1].$id);
     });
   });
 

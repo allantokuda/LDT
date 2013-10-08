@@ -6,7 +6,7 @@ function EndpointCtrl($scope) {
   $scope.$on('relocateIfAttachedToEntity', function(ev, entityID) {
     if (p.entity.id == entityID || p.otherEntity.id == entityID) {
       p.relocate();
-      p.side.negotiateEndpoints();
+      p.negotiateCoordinates();
     }
   });
 

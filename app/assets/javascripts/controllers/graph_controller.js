@@ -122,8 +122,8 @@ function GraphCtrl($scope) {
 
     endpoint1.relocate();
     endpoint2.relocate();
-    endpoint1.side.negotiateEndpoints();
-    endpoint2.side.negotiateEndpoints();
+    endpoint1.negotiateCoordinates();
+    endpoint2.negotiateCoordinates();
 
     return r;
   }

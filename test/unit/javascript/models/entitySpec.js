@@ -7,7 +7,7 @@ describe('Entity', function() {
     x: 100,
     y: 100,
     width: 120,
-    height: 120
+    height: 140
   });
   var entityOnRight  = new window.Entity({ x:  300, y:  100, width: 100, height: 100 });
   var entityOnLeft   = new window.Entity({ x: -300, y:  100, width: 100, height: 100 });
@@ -31,12 +31,12 @@ describe('Entity', function() {
     expect(e.x).toBe(100)
     expect(e.y).toBe(100)
     expect(e.width).toBe(120)
-    expect(e.height).toBe(120)
+    expect(e.height).toBe(140)
     expect(e.attributes).toBe('abc\ndef')
   });
 
   it('knows its center point coordinates', function() {
-    expect(e.center()).toEqual({x: 160, y: 160});
+    expect(e.center()).toEqual({x: 160, y: 170});
   });
 
   it('has four side objects', function() {
@@ -69,9 +69,16 @@ describe('Entity', function() {
 
   it('calculates coordinates of a point along one of its sides, offset from the side\'s center', function() {
     expect(e.sideCenterOffsetCoordinates('top',    7)).toEqual({ x: 167, y: 100 });
-    expect(e.sideCenterOffsetCoordinates('bottom', 7)).toEqual({ x: 167, y: 220 });
-    expect(e.sideCenterOffsetCoordinates('left',   7)).toEqual({ x: 100, y: 167 });
-    expect(e.sideCenterOffsetCoordinates('right',  7)).toEqual({ x: 220, y: 167 });
+    expect(e.sideCenterOffsetCoordinates('bottom', 7)).toEqual({ x: 167, y: 240 });
+    expect(e.sideCenterOffsetCoordinates('left',   7)).toEqual({ x: 100, y: 177 });
+    expect(e.sideCenterOffsetCoordinates('right',  7)).toEqual({ x: 220, y: 177 });
+  });
+
+  it('provides the span (length) of its sides', function() {
+    expect(e.span('top'   )).toBe(120);
+    expect(e.span('bottom')).toBe(120);
+    expect(e.span('left'  )).toBe(140);
+    expect(e.span('right' )).toBe(140);
   });
 
 

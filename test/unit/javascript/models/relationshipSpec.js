@@ -39,8 +39,8 @@ describe('Relationship', function() {
   it('calculates a SVG path string', function() {
     endpoint1.relocate();
     endpoint2.relocate();
-    endpoint1.side.negotiateEndpoints();
-    endpoint2.side.negotiateEndpoints();
+    endpoint1.negotiateCoordinates();
+    endpoint2.negotiateCoordinates();
     expect(r.svgPath()).toBe('M100,90 L130,90 L170,160 L200,160')
   });
 

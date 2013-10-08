@@ -24,15 +24,21 @@ window.Endpoint = function(endpoint) {
       left:   point.y,
       right:  point.y,
     })[this.sideName];
-  };
+  }
+
+  this.getMaxOffset = function() {
+    return Math.round(
+      (this.entity.span(this.sideName) - window.ARROWHEAD_WIDTH) / 2
+    );
+  }
 
   this.calculateIdeals = function() {
 
-    var maxOffset  = this.side.maxOffset();
-    var thisSpan   = this.side.span();
-    var thatSpan   = this.partner.side.span();
+    var thisSpan   = this        .entity.span(this.sideName);
+    var thatSpan   = this.partner.entity.span(this.sideName); //assuming rectangular
     var thisCenter = this.parallelCoordinate(this.entity.center());
     var thatCenter = this.parallelCoordinate(this.otherEntity.center());
+    var maxOffset = this.getMaxOffset();
 
     var center_to_center = thatCenter - thisCenter;
     var max_center_to_center = (thisSpan + thatSpan) / 2 - window.ARROWHEAD_WIDTH
@@ -52,7 +58,7 @@ window.Endpoint = function(endpoint) {
     } else {
       this.idealOffset = sign(flatLineOffset) * maxOffset;
       var stretch = Math.abs(this.idealOffset - flatLineOffset);
-      var distance = this.entity.outwardDistance(this.side.name, this.otherEntity);
+      var distance = this.entity.outwardDistance(this.sideName, this.otherEntity);
       this.idealAngle = Math.atan2(stretch, distance - window.ARROWHEAD_LENGTH * 2) * 180 / 3.1416
     }
   };
@@ -69,6 +75,55 @@ window.Endpoint = function(endpoint) {
     this.sideName = this.side.name
 
     this.outwardVector = this.OUTWARD_VECTOR_MAP[this.sideName];
+  };
+
+  this.negotiateCoordinates = function() {
+    // Reset bounds
+    var maxOffset = this.getMaxOffset();
+    var lowerBound = -maxOffset;
+    var upperBound =  maxOffset;
+
+    var siblings = this.side.endpoints;
+
+    // Sort endpoints by priority. When the ideal ANGLE is non-zero, it means a
+    // straight-line relationship is not possible. These cases should overpower
+    // straight-line cases which only have a non-zero ideal OFFSET.
+    siblings = _.sortBy(siblings, function(endpoint) {
+      endpoint.calculateIdeals();
+      return -Math.abs(10000 * endpoint.idealAngle + endpoint.idealOffset);
+    });
+
+    // Place each endpoint, in priority order
+    _.each(siblings, function(endpoint) {
+
+      // Ideal offset falls naturally in the allowed area -> let it be exactly there
+      if(endpoint.idealOffset > lowerBound &&
+         endpoint.idealOffset < upperBound) {
+        endpoint.assigned_offset = endpoint.idealOffset;
+
+      // Ideal offset is below the allowed area
+      } else if (endpoint.idealOffset <= lowerBound) {
+        endpoint.assigned_offset = lowerBound
+
+      // Ideal offset is above the allowed area
+      } else if (endpoint.idealOffset >= upperBound) {
+        endpoint.assigned_offset = upperBound
+      }
+
+      // Assign global coordinates for use by relationship draw
+      var coordinates = this.entity.sideCenterOffsetCoordinates(this.side.name, endpoint.assigned_offset);
+      endpoint.x = coordinates.x
+      endpoint.y = coordinates.y
+
+      // Finally, close up the allowed area for the next endpoint.
+      // Connection point is above center so bring down the upper bound
+      if (endpoint.idealOffset > 0)
+        upperBound = endpoint.assigned_offset - window.ARROWHEAD_WIDTH
+      // Connection point is below center so bring up the lower bound
+      else
+        lowerBound = endpoint.assigned_offset + window.ARROWHEAD_WIDTH
+    },this);
+
   };
 
   this.arrowheadPath = function() {
