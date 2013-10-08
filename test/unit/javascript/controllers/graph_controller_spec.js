@@ -12,10 +12,10 @@ describe('GraphCtrl', function(){
     e2 = new Entity({id: 1, x: 0, y: 0, width: 100, height: 120, name: 'gadget', attributes: 'shape'});
     e3 = new Entity({id: 2, x: 0, y: 0, width: 100, height: 120, name: 'doodad', attributes: ''});
 
-    r = new Relationship(0);
+    r = new Relationship(0,e1,e2);
 
-    ep1 = new Endpoint({ entity: e1, otherEntity: e2, relationship: r });
-    ep2 = new Endpoint({ entity: e2, otherEntity: e1, relationship: r });
+    ep1 = r.endpoints[0];
+    ep2 = r.endpoints[1];
 
     scope.graph.relationships = [r];
     scope.graph.entities = [e1, e2, e3];

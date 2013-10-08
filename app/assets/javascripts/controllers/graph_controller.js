@@ -96,32 +96,16 @@ function GraphCtrl($scope) {
 
   $scope.graph.createRelationship = function(entity1, entity2) {
     var id = $scope.graph.next_relationship_id++;
-    var r = new Relationship(id);
-
-    var endpoint1 = new Endpoint({
-      entity: entity1,
-      otherEntity: entity2,
-      relationship: r,
-      label: '',
-      symbol: '?'
-    });
-
-    var endpoint2 = new Endpoint({
-      entity: entity2,
-      otherEntity: entity1,
-      relationship: r,
-      label: '',
-      symbol: '?'
-    });
+    var r = new Relationship(id, entity1, entity2);
 
     $scope.graph.relationships.push(r);
-    $scope.graph.endpoints.push(endpoint1);
-    $scope.graph.endpoints.push(endpoint2);
+    $scope.graph.endpoints.push(r.endpoints[0]);
+    $scope.graph.endpoints.push(r.endpoints[1]);
 
-    endpoint1.relocate();
-    endpoint2.relocate();
-    endpoint1.negotiateCoordinates();
-    endpoint2.negotiateCoordinates();
+    r.endpoints[0].relocate();
+    r.endpoints[1].relocate();
+    r.endpoints[0].negotiateCoordinates();
+    r.endpoints[1].negotiateCoordinates();
 
     return r;
   }

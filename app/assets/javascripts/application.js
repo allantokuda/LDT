@@ -20,7 +20,6 @@
 //= require services
 //= require models/entity
 //= require models/relationship
-//= require models/side
 //= require models/endpoint
 //= require models/arrowhead
 //= require controllers/page_controller

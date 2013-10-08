@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Entity', function() {
-  var e = new window.Entity({
+  var e = new Entity({
     name: 'Test',
     attributes: 'abc\ndef',
     x: 100,
@@ -9,10 +9,10 @@ describe('Entity', function() {
     width: 120,
     height: 140
   });
-  var entityOnRight  = new window.Entity({ x:  300, y:  100, width: 100, height: 100 });
-  var entityOnLeft   = new window.Entity({ x: -300, y:  100, width: 100, height: 100 });
-  var entityOnTop    = new window.Entity({ x:  100, y: -300, width: 100, height: 100 });
-  var entityOnBottom = new window.Entity({ x:  100, y:  300, width: 100, height: 100 });
+  var entityOnRight  = new Entity({ x:  300, y:  100, width: 100, height: 100 });
+  var entityOnLeft   = new Entity({ x: -300, y:  100, width: 100, height: 100 });
+  var entityOnTop    = new Entity({ x:  100, y: -300, width: 100, height: 100 });
+  var entityOnBottom = new Entity({ x:  100, y:  300, width: 100, height: 100 });
 
   it('has the same attributes as its input hash', function() {
     expect(e.name).toBe('Test')

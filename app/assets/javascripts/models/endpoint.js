@@ -1,5 +1,6 @@
 window.Endpoint = function(endpoint) {
 
+  this.class='Endpoint'
   this.OUTWARD_VECTOR_MAP = {
     top:    {x: 0, y:-1},
     bottom: {x: 0, y: 1},
@@ -9,13 +10,8 @@ window.Endpoint = function(endpoint) {
 
   this.entity       = endpoint.entity;
   this.otherEntity  = endpoint.otherEntity;
-  this.relationship = endpoint.relationship;
-  this.label        = endpoint.label;
-  this.symbol       = endpoint.symbol;
-
-  // Two-way attach to one entity and one relationship, "permanently"
-  // (i.e. until deleted by user command).
-  this.relationship.setEndpoint(this);
+  this.label        = endpoint.label  || '';
+  this.symbol       = endpoint.symbol || '?';
 
   this.parallelCoordinate = function(point) {
     return ({

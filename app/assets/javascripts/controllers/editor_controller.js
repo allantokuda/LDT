@@ -27,37 +27,27 @@ function EditorCtrl($scope) {
           $scope.graph.endpoints = [];
 
           _.each(data.entities, function(hash) {
-            $scope.graph.entities.push(new window.Entity(hash));
+            $scope.graph.entities.push(new Entity(hash));
           });
 
           _.each(data.relationships, function(hash) {
-             var relationship = new window.Relationship(hash.id);
-             var entity1 = _.find($scope.graph.entities, function(e){
+             var e1 = _.find($scope.graph.entities, function(e){
                return e.id == hash.entity1_id;
              });
-             var entity2 = _.find($scope.graph.entities, function(e){
+             var e2 = _.find($scope.graph.entities, function(e){
                return e.id == hash.entity2_id;
              });
 
-             var endpoint1 = new window.Endpoint({
-               entity: entity1,
-               otherEntity: entity2,
-               relationship: relationship,
-               label: hash.label1,
-               symbol: hash.symbol1,
-             });
+             var r = new Relationship(hash.id, e1, e2);
 
-             var endpoint2 = new window.Endpoint({
-               entity: entity2,
-               otherEntity: entity1,
-               relationship: relationship,
-               label: hash.label2,
-               symbol: hash.symbol2,
-             });
+             r.endpoints[0].label  = hash.label1;
+             r.endpoints[0].symbol = hash.symbol1;
+             r.endpoints[1].label  = hash.label2;
+             r.endpoints[1].symbol = hash.symbol2;
 
-             $scope.graph.relationships.push(relationship);
-             $scope.graph.endpoints.push(endpoint1);
-             $scope.graph.endpoints.push(endpoint2);
+             $scope.graph.relationships.push(r);
+             $scope.graph.endpoints.push(r.endpoints[0]);
+             $scope.graph.endpoints.push(r.endpoints[1]);
           });
 
           $scope.graph.initialize();

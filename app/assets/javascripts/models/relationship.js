@@ -1,19 +1,13 @@
-window.Relationship = function(id) {
+window.Relationship = function(id, entity1, entity2) {
 
+  this.class = 'Relationship'
   this.id = id;
-  this.numEndpoints = 0;
-  this.endpoints = [];
-
-  // Allow the context (graph) to supply two endpoints
-  this.setEndpoint = function(endpoint) {
-    this.endpoints[this.numEndpoints] = endpoint;
-    this.numEndpoints++;
-
-    if (this.numEndpoints == 2) {
-      this.endpoints[0].partner = this.endpoints[1];
-      this.endpoints[1].partner = this.endpoints[0];
-    }
-  }
+  this.endpoints = [
+    new window.Endpoint({ entity: entity1, otherEntity: entity2 }),
+    new window.Endpoint({ entity: entity2, otherEntity: entity1 })
+  ];
+  this.endpoints[0].partner = this.endpoints[1];
+  this.endpoints[1].partner = this.endpoints[0];
 
   this.svgPath = function() {
 
