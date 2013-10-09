@@ -45,9 +45,7 @@ function EditorCtrl($scope) {
              r.endpoints[1].label  = hash.label2;
              r.endpoints[1].symbol = hash.symbol2;
 
-             $scope.graph.relationships.push(r);
-             $scope.graph.endpoints.push(r.endpoints[0]);
-             $scope.graph.endpoints.push(r.endpoints[1]);
+             $scope.graph.addRelationship(r)
           });
 
           $scope.graph.initialize();

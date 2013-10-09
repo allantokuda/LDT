@@ -56,4 +56,38 @@ describe('Entity', function() {
     expect(e.span('left'  )).toBe(140);
     expect(e.span('right' )).toBe(140);
   });
+
+  it('finds an endpoint object attached on any of its sides, and removes it', function() {
+    var endpoint = { };
+    e.endpoints['left'].push(endpoint);
+    e.removeEndpoint(endpoint);
+    expect(e.endpoints['left']).toEqual([]);
+  });
+
+  it('adds an endpoint object to its sides, removing it from others at the same time', function() {
+    var endpoint = { };
+    e.addEndpoint(endpoint, 'bottom');
+    e.addEndpoint(endpoint, 'left');
+    expect(e.endpoints['left']).toEqual([endpoint]);
+    expect(e.endpoints['bottom']).toEqual([]);
+  });
+
+  it('removes all endpoints from all sides', function() {
+    var ep1 = { };
+    var ep2 = { };
+    e.endpoints['left'].push(ep1);
+    e.endpoints['bottom'].push(ep2);
+    e.clearAllEndpoints();
+    expect(e.endpoints['left']).toEqual([]);
+    expect(e.endpoints['bottom']).toEqual([]);
+  });
+
+  it('provides a flat array of all of its endpoints', function() {
+    var ep1 = { };
+    var ep2 = { };
+    e.endpoints['left'].push(ep1);
+    e.endpoints['bottom'].push(ep2);
+    var result = e.clearAllEndpoints();
+    expect(result.length).toBe(2);
+  });
 });

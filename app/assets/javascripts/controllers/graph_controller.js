@@ -97,7 +97,11 @@ function GraphCtrl($scope) {
   $scope.graph.createRelationship = function(entity1, entity2) {
     var id = $scope.graph.next_relationship_id++;
     var r = new Relationship(id, entity1, entity2);
+    $scope.graph.addRelationship(r);
+    return r;
+  }
 
+  $scope.graph.addRelationship = function(r) {
     $scope.graph.relationships.push(r);
     $scope.graph.endpoints.push(r.endpoints[0]);
     $scope.graph.endpoints.push(r.endpoints[1]);
@@ -106,19 +110,16 @@ function GraphCtrl($scope) {
     r.endpoints[1].relocate();
     r.endpoints[0].negotiateCoordinates();
     r.endpoints[1].negotiateCoordinates();
-
-    return r;
   }
 
   $scope.graph.deleteEntity = function(entity_to_delete) {
+
+    var endpoints_to_delete = entity_to_delete.clearAllEndpoints();
+
     // Delete endpoints from associated entities' sides
     _.each($scope.graph.entities, function(entity) {
-      _.each(entity.sides, function(side) {
-        _.each(side.endpoints, function(endpoint) {
-          if (endpoint.entity      == entity_to_delete ||
-              endpoint.otherEntity == entity_to_delete)
-            side.removeEndpoint(endpoint);
-        });
+      _.each(endpoints_to_delete, function(endpoint) {
+        entity.removeEndpoint(endpoint.partner);
       });
     });
 
@@ -146,21 +147,14 @@ function GraphCtrl($scope) {
 
       // Remove connected endpoints from sides
       _.each($scope.graph.entities, function(entity) {
-        _.each(entity.sides, function(side) {
-          side.removeEndpoint(endpoint_to_delete);
-        });
       });
 
       // Remove all connected endpoints from graph
-      $scope.graph.endpoints = _.reject($scope.graph.endpoints, function(endpoint) {
-        return endpoint == endpoint_to_delete
-      });
+      $scope.graph.endpoints = _.without($scope.graph.endpoints, endpoint_to_delete);
     });
 
     // Remove relationship
-    $scope.graph.relationships = _.reject($scope.graph.relationships, function(r) {
-      return r == relationship_to_delete
-    });
+    $scope.graph.relationships = _.without($scope.graph.relationships, relationship_to_delete);
   }
 
   $scope.deselectAll = function() {

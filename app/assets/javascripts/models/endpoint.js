@@ -67,13 +67,8 @@ window.Endpoint = function(endpoint) {
     targetSideName = this.entity.nearestSide(this.otherEntity);
 
     if (targetSideName != this.sideName) {
-      if (this.sideName)
-        this.entity.endpoints[this.sideName] = _.without(this.entity.endpoints[this.sideName], this)
-
       this.sideName = targetSideName;
-      side = this.entity.endpoints[this.sideName];
-      side.push(this);
-
+      this.entity.addEndpoint(this, this.sideName);
       this.outwardVector = this.OUTWARD_VECTOR_MAP[this.sideName];
     }
   };

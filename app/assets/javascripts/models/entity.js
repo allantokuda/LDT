@@ -8,7 +8,7 @@ window.Entity = function(entity) {
   this.name       = entity.name
   this.attributes = entity.attributes
 
-  var SIDES = ['top', 'bottom', 'left', 'right'];
+  this.SIDES = ['top', 'bottom', 'left', 'right'];
   this.endpoints = { top: [], left: [], right: [], bottom: [] };
 
   this.saveObject = function() {
@@ -34,7 +34,7 @@ window.Entity = function(entity) {
   }
 
   this.nearestSide = function(other) {
-    return _.max(SIDES, function(side) {
+    return _.max(this.SIDES, function(side) {
       return this.outwardDistance(side, other);
     }, this);
   }
@@ -65,4 +65,28 @@ window.Entity = function(entity) {
       right:  this.height,
     })[sideName];
   }
+
+  this.removeEndpoint = function(endpoint_to_remove) {
+    _.each(this.SIDES, function(sideName) {
+      this.endpoints[sideName] = _.without(this.endpoints[sideName], endpoint_to_remove);
+    }, this);
+  }
+
+  this.addEndpoint = function(endpoint_to_add, sideName) {
+    _.each(this.SIDES, function(sideName) {
+      this.removeEndpoint(endpoint_to_add);
+    }, this);
+
+    this.endpoints[sideName].push(endpoint_to_add);
+  }
+
+  this.clearAllEndpoints = function() {
+    var all = _.flatten(_.values(this.endpoints));
+
+    _.each(this.SIDES, function(sideName) {
+      this.endpoints[sideName] = []
+    }, this);
+
+    return all;
+  };
 }
