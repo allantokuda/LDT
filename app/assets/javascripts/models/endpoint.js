@@ -73,13 +73,17 @@ window.Endpoint = function(endpoint) {
     }
   };
 
+  this.siblings = function() {
+    return this.entity.endpoints[this.sideName];
+  }
+
   this.negotiateCoordinates = function() {
     // Reset bounds
     var maxOffset = this.getMaxOffset();
     var lowerBound = -maxOffset;
     var upperBound =  maxOffset;
 
-    var siblings = this.entity.endpoints[this.sideName];
+    var siblings = this.siblings();
 
     // Sort endpoints by priority. When the ideal ANGLE is non-zero, it means a
     // straight-line relationship is not possible. These cases should overpower

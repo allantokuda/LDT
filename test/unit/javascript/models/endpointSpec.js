@@ -71,4 +71,16 @@ describe('Endpoint', function() {
     expect(r1.endpoints[1].arrowheadPath()).toEqual('M220,93m0,10 l-20,-10 l20,-10');
   });
 
+  it('determines its siblings from its parent entity', function() {
+    r1.endpoints[0].relocate();
+    r1.endpoints[1].relocate();
+    r2.endpoints[0].relocate();
+    r2.endpoints[1].relocate();
+    expect(r1.endpoints[0].siblings().length).toBe(2);
+    expect(r2.endpoints[0].siblings().length).toBe(2);
+  })
+
+  it('knows how many of its siblings (endpoints sharing an entity side) are FULL siblings (endpoints also sharing an "otherEntity" side)', function() {
+  });
+
 });
