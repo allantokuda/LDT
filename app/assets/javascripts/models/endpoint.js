@@ -77,6 +77,12 @@ window.Endpoint = function(endpoint) {
     return this.entity.endpoints[this.sideName];
   }
 
+  this.fullSiblings = function() {
+    return _.filter(this.siblings(), function(endpoint) {
+      return endpoint.otherEntity == this.otherEntity;
+    }, this);
+  }
+
   this.negotiateCoordinates = function() {
     // Reset bounds
     var maxOffset = this.getMaxOffset();

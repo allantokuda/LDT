@@ -1,15 +1,16 @@
 'use strict';
 
 describe('Endpoint', function() {
-  var r1, r2, apple, pear, tree;
+  var r1, r2, r3, tree, apple, pear;
 
   beforeEach(function() {
-    tree  = new Entity({ name: 'tree' , x:   0, y:   0, width: 100, height: 200 }); // center at y=100
-    apple = new Entity({ name: 'apple', x: 220, y:  40, width: 100, height: 100 }); // center at y=( 40+100/2)=90
-    pear  = new Entity({ name: 'pear' , x: 220, y: 240, width: 100, height: 100 }); // center at y=(240+100/2)=290
+    tree   = new Entity({ id: 0, name: 'tree'   , x:   0, y:   0, width: 100, height: 200 }); // center at y=100
+    apple  = new Entity({ id: 1, name: 'apple'  , x: 220, y:  40, width: 100, height: 100 }); // center at y=( 40+100/2)=90
+    pear   = new Entity({ id: 2, name: 'pear'   , x: 220, y: 240, width: 100, height: 100 }); // center at y=(240+100/2)=290
 
     r1 = new Relationship(0, tree, apple);
-    r2 = new Relationship(0, tree, pear);
+    r2 = new Relationship(1, tree, pear);
+    r3 = new Relationship(2, tree, pear);
 
     r1.endpoints[0].label = 'grows on'
     r2.endpoints[0].label = 'grows on'
@@ -71,16 +72,25 @@ describe('Endpoint', function() {
     expect(r1.endpoints[1].arrowheadPath()).toEqual('M220,93m0,10 l-20,-10 l20,-10');
   });
 
-  it('determines its siblings from its parent entity', function() {
-    r1.endpoints[0].relocate();
-    r1.endpoints[1].relocate();
-    r2.endpoints[0].relocate();
-    r2.endpoints[1].relocate();
-    expect(r1.endpoints[0].siblings().length).toBe(2);
-    expect(r2.endpoints[0].siblings().length).toBe(2);
-  })
+  describe('when there are 3 total siblings, 2 to the same entity', function() {
+    beforeEach(inject(function() {
+      r1.endpoints[0].relocate();
+      r1.endpoints[1].relocate();
+      r2.endpoints[0].relocate();
+      r2.endpoints[1].relocate();
+      r3.endpoints[0].relocate();
+      r3.endpoints[1].relocate();
+    }));
 
-  it('knows how many of its siblings (endpoints sharing an entity side) are FULL siblings (endpoints also sharing an "otherEntity" side)', function() {
+    it('determines its siblings from its parent entity', function() {
+      expect(r1.endpoints[0].siblings().length).toBe(3);
+      expect(r2.endpoints[0].siblings().length).toBe(3);
+    })
+
+    it('knows how many of its siblings (endpoints sharing an entity side) are FULL siblings (endpoints also sharing an "otherEntity" side)', function() {
+      expect(r1.endpoints[0].fullSiblings().length).toBe(1);
+      expect(r2.endpoints[0].fullSiblings().length).toBe(2);
+      expect(r3.endpoints[0].fullSiblings().length).toBe(2);
+    });
   });
-
 });
