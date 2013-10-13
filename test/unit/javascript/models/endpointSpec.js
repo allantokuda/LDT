@@ -92,5 +92,10 @@ describe('Endpoint', function() {
       expect(r2.endpoints[0].fullSiblings().length).toBe(2);
       expect(r3.endpoints[0].fullSiblings().length).toBe(2);
     });
+
+    it('knows how many of its full siblings have seniority over it (how many were added to the side earlier)', function() {
+      expect(r2.endpoints[0].seniority()).toBe(1);
+      expect(r3.endpoints[0].seniority()).toBe(2);
+    });
   });
 });

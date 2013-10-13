@@ -83,6 +83,20 @@ window.Endpoint = function(endpoint) {
     }, this);
   }
 
+  this.seniority = function() {
+    var found = false;
+    var count = 0;
+    _.each(this.fullSiblings(), function(endpoint) {
+      if (!found) {
+        count++;
+        if (endpoint == this) {
+          found = true;
+        }
+      }
+    },this);
+    return count;
+  }
+
   this.negotiateCoordinates = function() {
     // Reset bounds
     var maxOffset = this.getMaxOffset();
