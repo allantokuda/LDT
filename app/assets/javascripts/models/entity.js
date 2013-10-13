@@ -57,6 +57,16 @@ window.Entity = function(entity) {
     })[sideName];
   };
 
+  this.coordinateRange = function(sideName) {
+    return ({
+      top:    { min: this.x, max: this.x + this.width },
+      bottom: { min: this.x, max: this.x + this.width },
+      left:   { min: this.y, max: this.y + this.height },
+      right:  { min: this.y, max: this.y + this.height },
+    })[sideName];
+  }
+
+  //TODO REMOVE
   this.span = function(sideName) {
     return ({
       top:    this.width,

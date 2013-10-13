@@ -21,10 +21,14 @@ ENTITY DRAG: SEQUENCE OF EVENTS
   "other" entity, and tells the entity to "addEndpoint"
 
 - To negotiate coordinates, each endpoint asks its entity what other endpoints
-  are its siblings. It asks each sibling to calculate its ideal position. It sorts the
+  are its siblings. It asks each sibling to calculate its ideals. It sorts the
   list of siblings is by amount of offset/angle. It assigns its siblings the
   nearest coordinates within remaining allowed bounds to their ideals, in
   priority order.
+
+- To calculate ideals, the endpoint asks its entity (and its "other" entity)
+  for various information including center coordinates, width/height, outward
+  distance, etc.
 
 
 

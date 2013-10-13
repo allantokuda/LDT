@@ -50,11 +50,11 @@ describe('Entity', function() {
     expect(e.sideCenterOffsetCoordinates('right',  7)).toEqual({ x: 220, y: 177 });
   });
 
-  it('provides the span (length) of its sides', function() {
-    expect(e.span('top'   )).toBe(120);
-    expect(e.span('bottom')).toBe(120);
-    expect(e.span('left'  )).toBe(140);
-    expect(e.span('right' )).toBe(140);
+  it('provides the coordinate range (x or y) along a side (top/bottom/left/right)', function() {
+    expect(e.coordinateRange('top'   )).toEqual({ min: 100, max: 220 });
+    expect(e.coordinateRange('bottom')).toEqual({ min: 100, max: 220 });
+    expect(e.coordinateRange('left'  )).toEqual({ min: 100, max: 240 });
+    expect(e.coordinateRange('right' )).toEqual({ min: 100, max: 240 });
   });
 
   it('finds an endpoint object attached on any of its sides, and removes it', function() {
