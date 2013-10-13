@@ -1,5 +1,5 @@
+Consider doing negotiation side at a time, with highest priority given to sides with the most endpoints
 Editor -- not testing creation of graph. Should be in Graph method
-
 Copy and Paste entities
 Add hover text explaining what can be done to the thing being pointed at
 Improve performance on for entity placement and title/attribute edit for large graphs
