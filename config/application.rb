@@ -65,5 +65,7 @@ module LDS
     config.reload_classes_only_on_change = false
 
     #config.force_ssl = true
+
+    config.assets.precompile += %w( print.css )
   end
 end
