@@ -15,12 +15,12 @@ describe('Entity', function() {
   var entityOnBottom = new Entity({ x:  100, y:  300, width: 100, height: 100 });
 
   it('has the same attributes as its input hash', function() {
-    expect(e.name).toBe('Test')
-    expect(e.x).toBe(100)
-    expect(e.y).toBe(100)
-    expect(e.width).toBe(120)
-    expect(e.height).toBe(140)
-    expect(e.attributes).toBe('abc\ndef')
+    expect(e.name).toBe('Test');
+    expect(e.x).toBe(100);
+    expect(e.y).toBe(100);
+    expect(e.width).toBe(120);
+    expect(e.height).toBe(140);
+    expect(e.attributes).toBe('abc\ndef');
   });
 
   it('knows its center point coordinates', function() {
@@ -28,19 +28,19 @@ describe('Entity', function() {
   });
 
   it('knows when another entity is on its right', function() {
-    expect(e.nearestSide(entityOnRight)).toBe('right')
+    expect(e.nearestSide(entityOnRight)).toBe('right');
   });
 
   it('knows when another entity is on its left', function() {
-    expect(e.nearestSide(entityOnLeft)).toBe('left')
+    expect(e.nearestSide(entityOnLeft)).toBe('left');
   });
 
   it('knows when another entity is above it', function() {
-    expect(e.nearestSide(entityOnTop)).toBe('top')
+    expect(e.nearestSide(entityOnTop)).toBe('top');
   });
 
   it('knows when another entity is below it', function() {
-    expect(e.nearestSide(entityOnBottom)).toBe('bottom')
+    expect(e.nearestSide(entityOnBottom)).toBe('bottom');
   });
 
   it('calculates coordinates of a point along one of its sides, offset from the side\'s center', function() {

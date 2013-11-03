@@ -1,7 +1,7 @@
 'use strict';
 
 function EndpointCtrl($scope) {
-  var p = $scope.endpoint
+  var p = $scope.endpoint;
 
   $scope.$on('relocateIfAttachedToEntity', function(ev, entityID) {
     if (p.entity.id == entityID || p.otherEntity.id == entityID) {

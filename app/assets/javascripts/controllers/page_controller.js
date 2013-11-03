@@ -1,7 +1,7 @@
 'use strict';
 
 function PageCtrl($scope) {
-  $scope.title = ''
+  $scope.title = '';
   $scope.$on('titlechange', function(scope, newTitle) {
     $scope.title = newTitle;
   });

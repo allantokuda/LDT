@@ -1,7 +1,5 @@
 'use strict';
 
-/* jasmine specs for directives go here */
-
 describe('directives', function() {
   describe('selectWith', function() {
     var element;
@@ -21,7 +19,7 @@ describe('directives', function() {
     }));
 
     it('triggers on arbitrary javascript events', function() {
-      element = $compile('<div select-with="dblclick"></div>')($rootScope);
+      element = $compile('<div select-with="dblclick as doubleClicker"></div>')($rootScope);
       element.trigger('dblclick');
       expect(element).toHaveClass('selected');
     });

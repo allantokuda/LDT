@@ -10,19 +10,19 @@ function GraphCtrl($scope) {
   $scope.graph.initialize = function() {
 
     if (typeof($scope.graph.name) == 'undefined')
-      $scope.graph.name = "Untitled graph"
+      $scope.graph.name = "Untitled graph";
 
     if (typeof($scope.graph.entities) == 'undefined')
-      $scope.graph.entities = []
+      $scope.graph.entities = [];
 
     if (typeof($scope.graph.relationships) == 'undefined')
-      $scope.graph.relationships = []
+      $scope.graph.relationships = [];
 
     if (typeof($scope.graph.endpoints) == 'undefined')
-      $scope.graph.endpoints = []
+      $scope.graph.endpoints = [];
 
     if (typeof($scope.graph) == 'undefined')
-      $scope.graph.changeToggler = false
+      $scope.graph.changeToggler = false;
 
     $scope.graph.next_entity_id       = nextID($scope.graph.entities);
     $scope.graph.next_relationship_id = nextID($scope.graph.relationships);
@@ -33,11 +33,11 @@ function GraphCtrl($scope) {
     });
 
     $scope.$broadcast('initializeEndpoints');
-  }
+  };
 
   function nextID(set) {
     if (set.length > 0)
-      return _.max(set, function(item) { return item.id }).id + 1;
+      return _.max(set, function(item) { return item.id; }).id + 1;
     else
       return 0;
   }
@@ -60,13 +60,13 @@ function GraphCtrl($scope) {
   // somehow solved the problem.
   $scope.removeIdentifierIfPresent = function(attributeName) {
     return isIdentifier(attributeName) ? removeIdentifier(attributeName) : attributeName;
-  }
+  };
   $scope.cssClass = function(attributeName) {
     return isIdentifier(attributeName) ? 'identifier' : '';
-  }
+  };
 
   $scope.graph.toggleAttributeIdentifier = function(entityID, attributeIndex) {
-    var entity = _.find($scope.graph.entities, function(e) { return e.id == entityID });
+    var entity = _.find($scope.graph.entities, function(e) { return e.id == entityID; });
     var splitAttributes = entity.attributes.split("\n");
 
     if (attributeIndex < splitAttributes.length) {
@@ -84,22 +84,23 @@ function GraphCtrl($scope) {
 
   $scope.graph.createEntity = function(locX,locY) {
     $scope.graph.entities.push(new Entity({
-      id: $scope.graph.next_entity_id++,
+      id: $scope.graph.next_entity_id,
       x: locX,
       y: locY,
       width: 120,
       height: 150,
       name: "New Entity",
       attributes: ""
-    }))
-  }
+    }));
+    $scope.graph.next_entity_id++;
+  };
 
   $scope.graph.createRelationship = function(entity1, entity2) {
     var id = $scope.graph.next_relationship_id++;
     var r = new Relationship(id, entity1, entity2);
     $scope.graph.addRelationship(r);
     return r;
-  }
+  };
 
   $scope.graph.addRelationship = function(r) {
     $scope.graph.relationships.push(r);
@@ -110,7 +111,7 @@ function GraphCtrl($scope) {
     r.endpoints[1].relocate();
     r.endpoints[0].negotiateCoordinates();
     r.endpoints[1].negotiateCoordinates();
-  }
+  };
 
   $scope.graph.deleteEntity = function(entity_to_delete) {
 
@@ -138,7 +139,7 @@ function GraphCtrl($scope) {
     $scope.graph.entities = _.reject($scope.graph.entities, function(e) {
       return e == entity_to_delete;
     });
-  }
+  };
 
   $scope.graph.deleteRelationship = function(relationship_to_delete) {
     var endpoints = relationship_to_delete.endpoints;
@@ -155,13 +156,13 @@ function GraphCtrl($scope) {
 
     // Remove relationship
     $scope.graph.relationships = _.without($scope.graph.relationships, relationship_to_delete);
-  }
+  };
 
   $scope.deselectAll = function() {
     _.each($scope.graph.entities, function(entity) {
       entity.selected = false;
-    })
-  }
+    });
+  };
 
   $scope.$on('entityGeometryChange', function(ev, entityID) {
     $scope.$broadcast('relocateIfAttachedToEntity', entityID);

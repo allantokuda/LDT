@@ -3,7 +3,7 @@
 function EntityCtrl($scope) {
   var changeEvent = function() {
     $scope.$emit('entityGeometryChange', $scope.entity.id);
-  }
+  };
 
   _.each(['x', 'y', 'width', 'height'], function(attribute) {
     $scope.$watch('entity.' + attribute, changeEvent);

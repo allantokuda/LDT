@@ -30,7 +30,7 @@ describe('Relationship', function() {
     r.endpoints[1].relocate();
     r.endpoints[0].negotiateCoordinates();
     r.endpoints[1].negotiateCoordinates();
-    expect(r.svgPath()).toBe('M100,90 L130,90 L170,160 L200,160')
+    expect(r.svgPath()).toBe('M100,90 L130,90 L170,160 L200,160');
   });
 
 });

@@ -6,10 +6,10 @@ function EditorCtrl($scope) {
   $scope.graph = new Object;
 
   var graphID;
-  var path_regex = /graphs\/([^\/]+)\/edit/
-  var matches = path_regex.exec(window.location.pathname)
-  if (matches != null)
-    graphID = matches[1]
+  var path_regex = /graphs\/([^\/]+)\/edit/;
+  var matches = path_regex.exec(window.location.pathname);
+  if (matches !== null)
+    graphID = matches[1];
 
   if (graphID)
     $.ajax({ url:"/graphs/"+graphID, type:"GET", dataType:"json",
@@ -45,13 +45,13 @@ function EditorCtrl($scope) {
              r.endpoints[1].label  = hash.label2;
              r.endpoints[1].symbol = hash.symbol2;
 
-             $scope.graph.addRelationship(r)
+             $scope.graph.addRelationship(r);
           });
 
           $scope.graph.initialize();
         });
       }
-    })
+    });
 
 
   // Click event handlers
@@ -61,37 +61,39 @@ function EditorCtrl($scope) {
       $scope.graph.createEntity(x,y);
 
     setMode('select');
-  }
+  };
 
   $scope.handleEntityClick = function(entity) {
     switch($scope.editor.mode) {
       case 'new_relationship_start':
-        $scope.editor.newRelationshipStart = entity
+        $scope.editor.newRelationshipStart = entity;
         setMode('new_relationship_end');
         break;
       case 'new_relationship_end':
-        $scope.graph.createRelationship($scope.editor.newRelationshipStart, entity)
+        $scope.graph.createRelationship($scope.editor.newRelationshipStart, entity);
         setMode('select');
         break;
-      case 'delete':
+      case 'delete_item':
         $scope.graph.deleteEntity(entity);
         setMode('select');
         break;
+      default:
+        break;
     }
-  }
+  };
 
   $scope.handleRelationshipClick = function(relationship) {
-    if ($scope.editor.mode == 'delete') {
+    if ($scope.editor.mode == 'delete_item') {
       $scope.graph.deleteRelationship(relationship);
       setMode('select');
     }
-  }
+  };
 
   $scope.handleAttributeClick = function(entityID, attributeIndex, ev) {
     if ($scope.editor.mode == 'identifier_bar') {
       $scope.graph.toggleAttributeIdentifier(entityID, attributeIndex);
     }
-  }
+  };
 
   $scope.handleArrowClick = function(arrow, ev) {
     switch($scope.editor.mode) {
@@ -108,25 +110,27 @@ function EditorCtrl($scope) {
         arrow.selected = true;
         setMode('select');
         break;
+      default:
+        break;
     }
-  }
+  };
 
   $scope.notifySaving = function() {
     $('#save-message').show();
     $scope.$apply(function() {
-      $scope.editor.saveMessage = 'Saving...'
+      $scope.editor.saveMessage = 'Saving...';
     });
-  }
+  };
 
   $scope.notifySaved = function() {
     $scope.$apply(function() {
-      $scope.editor.saveMessage = 'Saved'
+      $scope.editor.saveMessage = 'Saved';
     });
 
     setTimeout(function() {
       $('#save-message').fadeOut();
     }, 3000);
-  }
+  };
 
   $scope.saveCommand = function() {
 
@@ -135,7 +139,7 @@ function EditorCtrl($scope) {
     var graphData = {
       id        : $scope.graph.id,
       name      : $scope.graph.name
-    }
+    };
     graphData.entities      = _.map($scope.graph.entities,      function(e) { return e.saveObject(); });
     graphData.relationships = _.map($scope.graph.relationships, function(r) { return r.saveObject(); });
 
@@ -144,7 +148,7 @@ function EditorCtrl($scope) {
     if (graphData.id)
       $.ajax({ url:"/graphs/"+graphData.id, type:"PUT", dataType:"json", data:encodeData,
         complete: function() { $scope.notifySaved(); }
-      })
+      });
     else
       $.ajax({
         url:"/graphs", type:"POST", dataType:"json", data:encodeData,
@@ -154,23 +158,23 @@ function EditorCtrl($scope) {
         },
         success: function(data, textStatus, jqXHR) {
           $scope.notifySaved();
-          $scope.graph.id = data.id
+          $scope.graph.id = data.id;
         }
       });
-  }
+  };
 
 
   // Action buttons / hotkeys
 
-  $scope.newCommand             = function() { window.location = '/graphs/new' }
-  $scope.openCommand            = function() { window.location = '/graphs/' }
-  $scope.selectCommand          = function() { $scope.$apply(setMode('select')) }
-  $scope.newEntityCommand       = function() { $scope.$apply(setMode('new_entity')); }
-  $scope.newRelationshipCommand = function() { $scope.$apply(setMode('new_relationship_start')); }
-  $scope.deleteCommand          = function() { $scope.$apply(setMode('delete')); }
-  $scope.labelCommand           = function() { $scope.$apply(setMode('label_pick')); }
-  $scope.chickenFootCommand     = function() { $scope.$apply(setMode('chickenfoot')); }
-  $scope.identifierBarCommand   = function() { $scope.$apply(setMode('identifier_bar')); }
+  $scope.newCommand             = function() { window.location = '/graphs/new'; };
+  $scope.openCommand            = function() { window.location = '/graphs/'; };
+  $scope.selectCommand          = function() { $scope.$apply(setMode('select')); };
+  $scope.newEntityCommand       = function() { $scope.$apply(setMode('new_entity')); };
+  $scope.newRelationshipCommand = function() { $scope.$apply(setMode('new_relationship_start')); };
+  $scope.deleteItemCommand      = function() { $scope.$apply(setMode('delete_item')); };
+  $scope.labelCommand           = function() { $scope.$apply(setMode('label_pick')); };
+  $scope.chickenFootCommand     = function() { $scope.$apply(setMode('chickenfoot')); };
+  $scope.identifierBarCommand   = function() { $scope.$apply(setMode('identifier_bar')); };
 
   function setMode(mode) {
     $scope.editor.mode = mode;
@@ -180,9 +184,9 @@ function EditorCtrl($scope) {
       new_entity: '',
       new_relationship_start: 'click to start relationship',
       new_relationship_end: 'click to end relationship',
-      delete: 'click to delete',
-      label_pick: '',
-    }
+      delete_item: 'click to delete',
+      label_pick: ''
+    };
 
     $scope.editor.entityOverlayMessage = modeMessages[mode];
   }

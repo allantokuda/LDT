@@ -122,12 +122,14 @@ app.directive('selectWith',function() {
           element.removeClass('selected');
       });
 
+      //Set true when activated by specified event (and start listening for 'deselectAll');
+      //set false when 'deselectAll' is broadcast (and stop listening for 'deselectAll').
       element.bind(params.eventName, function(e) {
-        scope.$apply( function() { scopeVar.selected = true });
+        scope.$apply( function() { scopeVar.selected = true; });
 
-        var unsubscribe = scope.$on('deselectAll', function() {
-          scope.$apply( function() { scopeVar.selected = false });
-          unsubscribe();
+        var stopListening = scope.$on('deselectAll', function() {
+          scope.$apply( function() { scopeVar.selected = false; });
+          stopListening();
         });
 
         e.stopPropagation();

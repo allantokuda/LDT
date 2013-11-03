@@ -12,14 +12,14 @@ describe('Endpoint', function() {
     r2 = new Relationship(1, tree, pear);
     r3 = new Relationship(2, tree, pear);
 
-    r1.endpoints[0].label = 'grows on'
-    r2.endpoints[0].label = 'grows on'
-    r1.endpoints[1].label = 'fruit of'
-    r2.endpoints[1].label = 'fruit of'
-    r1.endpoints[0].symbol = 'none'
-    r2.endpoints[0].symbol = 'none'
-    r1.endpoints[1].symbol = 'chickenfoot'
-    r2.endpoints[1].symbol = 'chickenfoot'
+    r1.endpoints[0].label = 'grows on';
+    r2.endpoints[0].label = 'grows on';
+    r1.endpoints[1].label = 'fruit of';
+    r2.endpoints[1].label = 'fruit of';
+    r1.endpoints[0].symbol = 'none';
+    r2.endpoints[0].symbol = 'none';
+    r1.endpoints[1].symbol = 'chickenfoot';
+    r2.endpoints[1].symbol = 'chickenfoot';
   });
 
   it('relocates itself on the most desirable side of its entity', function() {
@@ -85,7 +85,7 @@ describe('Endpoint', function() {
     it('determines its siblings from its parent entity', function() {
       expect(r1.endpoints[0].siblings().length).toBe(3);
       expect(r2.endpoints[0].siblings().length).toBe(3);
-    })
+    });
 
     it('knows how many of its siblings (endpoints sharing an entity side) are FULL siblings (endpoints also sharing an "otherEntity" side)', function() {
       expect(r1.endpoints[0].fullSiblings().length).toBe(1);
