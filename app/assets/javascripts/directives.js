@@ -198,20 +198,6 @@ app.directive('stickToMouse',function() {
   };
 });
 
-// Cause the
-app.directive('focusOnSelect',function() {
-  return {
-    link: function(scope, element, iAttrs, ctrl) {
-      var scopeVar = iAttrs.textSelectWith + '.selected';
-
-      scope.$watch(scopeVar, function(selected) {
-        if (selected)
-          element.select();
-      });
-    }
-  };
-});
-
 //Calls scope with coordinates clicked in the current element,
 //even if a child element with different coordinates caught the event.
 app.directive('relativeClick',function() {

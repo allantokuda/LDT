@@ -82,7 +82,8 @@
              ng-click="handleLabelClick(label.id,$event)"
              ng-style="{ left: endpoint.x, top: endpoint.y }"
              select-with="dblclick as endpoint"
-             catch-input>
+             catch-input
+             auto-focus="input on dblclick">
 
             <div class="label"
                  ng-class="{selected: endpoint.selected===true}">
@@ -90,8 +91,7 @@
                 <span catch-input>{{endpoint.label}}</span>
 
                 <input ng-model="endpoint.label"
-                       ng-click="handleLabelClick(label.id,$event)"
-                       focus-on-select="endpoint">
+                       ng-click="handleLabelClick(label.id,$event)">
 
             </div>
         </div>
