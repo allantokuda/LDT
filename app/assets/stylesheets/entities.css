@@ -27,6 +27,11 @@
 }
 
 .entity-body textarea {
+  display: none;
+}
+
+.entity-body.selected textarea {
+  display: block;
   width: 100%;
   height: 100%;
   resize: none;
@@ -46,6 +51,10 @@
 
 .entity-body .attribute.identifier span {
   border-bottom: 1px solid black;
+}
+
+.entity-body.selected .attribute span {
+  display: none;
 }
 
 .attribute-input  {
