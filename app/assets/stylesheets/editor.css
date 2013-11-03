@@ -56,9 +56,9 @@ span.toolbar-separator {
 #editor .select-shield,
 #editor .select-shield   { display: none; }
 
-#editor.delete .select-shield       { background: rgba(255,230,230,0.75); display: block; }
-#editor.delete .select-shield:hover { background: rgba(255,170,170,0.75); }
-#editor.delete .select-shield:hover { background: rgba(255,170,170,0.75); }
+#editor.delete_item .select-shield       { background: rgba(255,230,230,0.75); display: block; }
+#editor.delete_item .select-shield:hover { background: rgba(255,170,170,0.75); }
+#editor.delete_item .select-shield:hover { background: rgba(255,170,170,0.75); }
 
 #editor.new_relationship_start .select-shield,
 #editor.new_relationship_end   .select-shield
@@ -86,7 +86,7 @@ span.toolbar-separator {
 #editor.new_entity #new-entity-button,
 #editor.new_relationship_start #new-relationship-button,
 #editor.new_relationship_end   #new-relationship-button,
-#editor.delete #delete-button,
+#editor.delete_item #delete-item-button,
 #editor.label_pick #label-button,
 #editor.label_enter #label-button,
 #editor.chickenfoot #chickenfoot-button,
@@ -101,13 +101,13 @@ path.relationship, path.arrowhead {
 
 path.click-path { fill: none; stroke: none; }
 
-#editor.delete path.click-path {
+#editor.delete_item path.click-path {
   fill: none;
   stroke: rgba(255,230,230,0.75);
   stroke-width: 20px;
 }
 
-#editor.delete path.click-path:hover {
+#editor.delete_item path.click-path:hover {
   stroke: rgba(255,170,170,0.75);
 }
 

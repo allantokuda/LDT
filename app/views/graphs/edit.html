@@ -1,66 +1,108 @@
 <div id="editor" ng-controller="EditorCtrl" ng-class="editor.mode">
 
-  <!-- DEBUG -->
-  <!--
-  <div ng-repeat="entity in graph.entities">
-  Entity {{$index}}
-  <input type="text" style="width:  40px" ng-model="entity.id"></input>
-  <input type="text" style="width: 140px" ng-model="entity.name"></input>
-  <input type="text" style="width:  40px" ng-model="entity.x"></input>
-  <input type="text" style="width:  40px" ng-model="entity.y"></input>
-  <input type="text" style="width:  40px" ng-model="entity.width"></input>
-  <input type="text" style="width:  40px" ng-model="entity.height"></input>
-  <input type="text" style="width: 140px" ng-model="entity.attributes"></input>
-  </div>
-  -->
-  <input id="graph-name" ng-model="graph.name" catch-input>
-  <div id="toolbar">
-    <button action hotkey="s" id="select-button"><u>S</u>elect</button>
-    <button action hotkey="e" id="new-entity-button">New <u>E</u>ntity</button>
-    <button action hotkey="r" id="new-relationship-button">New <u>R</u>elationship</button>
-    <button action hotkey="d" id="delete-button"><u>D</u>elete</button>
-    <button action hotkey="l" id="label-button"><u>L</u>abel</button>
-    <button action hotkey="c" id="chickenfoot-button"><u>C</u>hicken Foot</button>
-    <button action hotkey="b" id="identifier-bar-button">Identifier <u>B</u>ar</button>
-    <span class="toolbar-separator">&nbsp;</span>
-    <div class="positioner"><div id="save-message">{{ editor.saveMessage }}</div></div>
-    <button action hotkey="c-s" id="save-button">Save</button>
-    <button action hotkey="c-n" id="new-button">New</button>
-  </div>
-
-  <div canvas id="canvas" ng-controller="GraphCtrl" relative-click="handleCanvasClick">
-    <div class="ghost-entity" stick-to-mouse>Click to place new entity</div>
-    <div class="entity-border" ng-repeat="entity in graph.entities"
-       move-with="entity" resize-with="entity"
-       ng-style="{ left: entity.x, top: entity.y, width: entity.width, height: entity.height }" ng-controller="EntityCtrl">
-      <div class="select-shield" catch-input ng-click="handleEntityClick(entity)">
-        <br><br>{{editor.entityOverlayMessage}}
-      </div>
-      <div class="entity-heading" select-with="dblclick as heading in #canvas" auto-focus="input on dblclick">
-        <span class="entity-name" ng-show="!heading.selected">{{entity.name}}</span>
-        <input catch-input class="entity-name-input" ng-show="heading.selected" ng-model="entity.name">
-      </div>
-      <div class="entity-body" select-with="dblclick as body in #canvas" ng-style="{ height: (entity.height - 70) + 'px' }" forward-event="dblclick to textarea">
-        <textarea catch-input class="attribute-input" ng-show="body.selected" ng-model="entity.attributes" ng-style="{ height: (entity.height - 70) + 'px' }"></textarea>
-        <div class="attribute" ng-show="!body.selected" ng-repeat="attribute in entity.attributes.split('\n')" ng-class="cssClass(attribute)" ng-click="handleAttributeClick(entity.id,$index,$event)" catch-input><span>{{removeIdentifierIfPresent(attribute)}}</span></div>
-      </div>
+    <!-- DEBUG -->
+    <!--
+    <div ng-repeat="entity in graph.entities">
+    Entity {{$index}}
+    <input type="text" style="width:    40px" ng-model="entity.id"></input>
+    <input type="text" style="width: 140px" ng-model="entity.name"></input>
+    <input type="text" style="width:    40px" ng-model="entity.x"></input>
+    <input type="text" style="width:    40px" ng-model="entity.y"></input>
+    <input type="text" style="width:    40px" ng-model="entity.width"></input>
+    <input type="text" style="width:    40px" ng-model="entity.height"></input>
+    <input type="text" style="width: 140px" ng-model="entity.attributes"></input>
+    </div>
+    -->
+    <input id="graph-name" ng-model="graph.name" catch-input>
+    <div id="toolbar">
+        <button action hotkey="s" id="select-button"><u>S</u>elect</button>
+        <button action hotkey="e" id="new-entity-button">New <u>E</u>ntity</button>
+        <button action hotkey="r" id="new-relationship-button">New <u>R</u>elationship</button>
+        <button action hotkey="d" id="delete-item-button"><u>D</u>elete Item</button>
+        <button action hotkey="l" id="label-button"><u>L</u>abel</button>
+        <button action hotkey="c" id="chickenfoot-button"><u>C</u>hicken Foot</button>
+        <button action hotkey="b" id="identifier-bar-button">Identifier <u>B</u>ar</button>
+        <span class="toolbar-separator">&nbsp;</span>
+        <div class="positioner"><div id="save-message">{{ editor.saveMessage }}</div></div>
+        <button action hotkey="c-s" id="save-button">Save</button>
+        <button action hotkey="c-n" id="new-button">New</button>
     </div>
 
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
-      <path class="relationship" ng-repeat="r in graph.relationships" ng-attr-d="{{r.svgPath()}}"></path>
-      <path class="arrowhead"    ng-repeat="a in graph.arrowheads" ng-attr-d="{{a.svgPath()}}"></path>
-      <path class="click-area"   ng-repeat="a in graph.arrowheads" ng-attr-d="{{a.boxPath()}}" ng-click="handleArrowClick(a,$event)" catch-input></path>
-      <path class="click-path"   ng-repeat="r in graph.relationships" ng-attr-d="{{r.svgPath()}}" ng-click="handleRelationshipClick(r)" catch-input></path>
-    </svg>
+    <div id="canvas" ng-controller="GraphCtrl" relative-click="handleCanvasClick" deselector>
 
-    <div class="endpoint" ng-class="endpoint.side.name" ng-repeat="endpoint in graph.endpoints" select-with="dblclick as endpoint in #canvas"
-         ng-click="handleLabelClick(label.id,$event)" catch-input ng-style="{ left: endpoint.x, top: endpoint.y }">
-      <div class="label">
-        <span ng-show="!endpoint.selected" catch-input>{{endpoint.label}}</span>
-        <input ng-model="endpoint.label" ng-show="endpoint.selected" ng-click="handleLabelClick(label.id,$event)" text-select-with="endpoint">
-      </div>
+        <div class="ghost-entity" stick-to-mouse>Click to place new entity</div>
+
+        <div class="entity-border"
+             ng-repeat="entity in graph.entities"
+             move-with="entity"
+             resize-with="entity"
+             ng-style="{ left: entity.x, top: entity.y, width: entity.width, height: entity.height }"
+             ng-controller="EntityCtrl">
+
+            <div class="select-shield" catch-input ng-click="handleEntityClick(entity)">
+                <br><br>{{editor.entityOverlayMessage}}
+            </div>
+
+            <div class="entity-heading"
+                 select-with="dblclick as heading"
+                 auto-focus="input on dblclick">
+
+                <span class="entity-name">{{entity.name}}</span>
+                <input class="entity-name-input"
+                       ng-model="entity.name"
+                       catch-input>
+            </div>
+
+            <div class="entity-body"
+                 select-with="dblclick as body"
+                 ng-style="{ height: (entity.height - 70) + 'px' }"
+                 forward-event="dblclick to textarea">
+
+                <textarea class="attribute-input"
+                          ng-model="entity.attributes"
+                          ng-style="{ height: (entity.height - 70) + 'px' }"
+                          catch-input></textarea>
+
+                <div class="attribute"
+                     ng-repeat="attribute in entity.attributes.split('\n')"
+                     ng-class="cssClass(attribute)"
+                     ng-click="handleAttributeClick(entity.id,$index,$event)"
+                     catch-input>
+
+                     <span>{{removeIdentifierIfPresent(attribute)}}</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="endpoint"
+             ng-class="endpoint.sideName"
+             ng-repeat="endpoint in graph.endpoints"
+             ng-controller="EndpointCtrl"
+             ng-click="handleLabelClick(label.id,$event)"
+             ng-style="{ left: endpoint.x, top: endpoint.y }"
+             select-with="dblclick as endpoint"
+             catch-input
+             auto-focus="input on dblclick">
+
+            <div class="label"
+                 ng-class="{selected: endpoint.selected===true}">
+
+                <span catch-input>{{endpoint.label}}</span>
+
+                <input ng-model="endpoint.label"
+                       ng-click="handleLabelClick(label.id,$event)">
+
+            </div>
+        </div>
+
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <path class="relationship" ng-repeat="r in graph.relationships" ng-attr-d="{{r.svgPath()}}"></path>
+            <path class="arrowhead"    ng-repeat="e in graph.endpoints"     ng-attr-d="{{e.arrowheadPath()}}"></path>
+            <path class="click-area"   ng-repeat="e in graph.endpoints"     ng-attr-d="{{e.boxPath()}}" ng-click="handleArrowClick(e,$event)" catch-input></path>
+            <path class="click-path"   ng-repeat="r in graph.relationships" ng-attr-d="{{r.svgPath()}}" ng-click="handleRelationshipClick(r)" catch-input></path>
+        </svg>
+
     </div>
-
-  </div>
 
 </div>

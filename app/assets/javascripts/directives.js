@@ -2,7 +2,7 @@
 
 /* Directives */
 
-var app = angular.module('myApp.directives', [])
+var app = angular.module('myApp.directives', []);
 
 app.directive('appVersion', ['version', function(version) {
     return function(scope, elm, attrs) {
@@ -22,23 +22,23 @@ app.directive('catchInput',function() {
         e.stopPropagation();
       });
     }
-  }
+  };
 });
 
 
 app.directive('autoFocus',function() {
   return {
     link: function(scope, element, iAttrs, ctrl) {
-      var regex = /([-.#\w\d]+) on ([\w]+)/
+      var regex = /([-.#\w\d]+) on ([\w]+)/;
       var matches = regex.exec(iAttrs.autoFocus);
       var params = _.object(['targetSelector', 'eventName'], matches.slice(1,3));
 
       element.bind(params.eventName, function(e) {
         // Select the whole entity title for fast rename
         $(element.find(params.targetSelector)[0]).select();
-      })
+      });
     }
-  }
+  };
 });
 
 
@@ -70,13 +70,13 @@ app.directive('moveWith',function() {
       element.draggable({
         drag: function() {
           scope.$apply(function read() {
-            scope[iAttrs.moveWith].x = parseInt(element.css('left'));
-            scope[iAttrs.moveWith].y = parseInt(element.css('top'));
+            scope[iAttrs.moveWith].x = parseInt(element.css('left'),10);
+            scope[iAttrs.moveWith].y = parseInt(element.css('top'),10);
           });
-        },
+        }
       });
     }
-  }
+  };
 });
 
 // Setup entities to be draggable and bind their position to the scope
@@ -86,13 +86,13 @@ app.directive('resizeWith',function() {
       element.resizable({
         resize: function() {
           scope.$apply(function read() {
-            scope[iAttrs.moveWith].width = parseInt(element.css('width'));
-            scope[iAttrs.moveWith].height = parseInt(element.css('height'));
+            scope[iAttrs.moveWith].width = parseInt(element.css('width'),10);
+            scope[iAttrs.moveWith].height = parseInt(element.css('height'),10);
           });
-        },
+        }
       });
     }
-  }
+  };
 });
 
 
@@ -100,9 +100,12 @@ app.directive('resizeWith',function() {
 app.directive('selectWith',function() {
   return {
     link: function (scope, element, iAttrs, ctrl) {
-      var regex = /([\w\d]+) as ([\w\d]+)(?: in ([-.#\w\d]+))?/
+      var regex = /([\w\d]+) as ([\w\d]+)/;
       var matches = regex.exec(iAttrs.selectWith);
-      var params = _.object(['eventName', 'varName', 'parentID'], matches.slice(1,4));
+      var params = _.object(['eventName', 'varName'], matches.slice(1,3));
+
+      // Don't allow parent to get the click again
+      element.click(function(e) { e.stopPropagation(); });
 
       //Define variable if not externally defined
       if (typeof(scope[params.varName]) == 'undefined')
@@ -113,27 +116,40 @@ app.directive('selectWith',function() {
 
       //Setup class to watch the scope
       scope.$watch(params.varName + '.selected', function(selected) {
-        if (scopeVar.selected)
+        var stopListening;
+
+        if (scopeVar.selected) {
           element.addClass('selected');
-        else
+
+          stopListening = scope.$on('deselectAll', function() {
+            scope.$apply( function() { scopeVar.selected = false; });
+          });
+
+        } else {
           element.removeClass('selected');
+          if (stopListening !== undefined) stopListening();
+        }
       });
 
+      //Set true when activated by specified event (and start listening for 'deselectAll');
+      //set false when 'deselectAll' is broadcast (and stop listening for 'deselectAll').
       element.bind(params.eventName, function(e) {
-        // Deselect all other selectables first
-        element.parents(params.parentID).trigger('click');
+        scope.$apply( function() { scopeVar.selected = true; });
 
-        scope.$apply( function() { scopeVar.selected = true });
-
-        // Don't allow parent to get the click again
         e.stopPropagation();
       });
+    }
+  };
+});
 
-      element.parents(params.parentID).click(function(e) {
-        scope.$apply( function() { scopeVar.selected = false });
+app.directive('deselector',function() {
+  return {
+    link: function(scope, element, iAttrs, ctrl) {
+      element.click(function(e) {
+        scope.$broadcast('deselectAll');
       });
     }
-  }
+  };
 });
 
 
@@ -141,17 +157,17 @@ app.directive('action',function() {
   return {
     link: function(scope, element, iAttrs, ctrl) {
       element.click(function(e) {
-        var actionName = element[0].textContent.replace(' ', '').replace(/^(.)/, function(c) { return c.toLowerCase() });
+        var actionName = element[0].textContent.replace(' ', '').replace(/^(.)/, function(c) { return c.toLowerCase(); });
         scope[actionName + 'Command']();
-      })
+      });
     }
-  }
+  };
 });
 
 app.directive('hotkey',function() {
   return {
     link: function(scope, element, iAttrs, ctrl) {
-      var pattern = /(?:(.)-)?(.)/
+      var pattern = /(?:(.)-)?(.)/;
       var matches = pattern.exec(iAttrs.hotkey);
       var hotkey = _.object(['chord', 'letter'], matches.slice(1,3));
 
@@ -162,13 +178,13 @@ app.directive('hotkey',function() {
           (e.altKey   ? 'a' : '') +
           (e.metaKey  ? 'm' : '');
 
-        if ((pressedChord == ''  && hotkey.chord == undefined && e.charCode == hotkey.letter.charCodeAt(0)     ) ||
-            (pressedChord == 'c' && hotkey.chord == 'c'       && e.charCode == hotkey.letter.charCodeAt(0) - 96) )
-           element.trigger('click')
+        if ((pressedChord === ''  && hotkey.chord == undefined && e.charCode == hotkey.letter.charCodeAt(0)     ) ||
+            (pressedChord == 'c'  && hotkey.chord == 'c'       && e.charCode == hotkey.letter.charCodeAt(0) - 96) )
+           element.trigger('click');
         });
-      element.attr('title', 'hotkey: ' + iAttrs.hotkey)
+      element.attr('title', 'hotkey: ' + iAttrs.hotkey);
     }
-  }
+  };
 });
 
 app.directive('stickToMouse',function() {
@@ -179,20 +195,7 @@ app.directive('stickToMouse',function() {
         element.css('top',  e.pageY - element[0].parentElement.offsetTop);
       });
     }
-  }
-});
-
-app.directive('textSelectWith',function() {
-  return {
-    link: function(scope, element, iAttrs, ctrl) {
-      var scopeVar = iAttrs.textSelectWith + '.selected';
-
-      scope.$watch(scopeVar, function(selected) {
-        if (selected)
-          element.select();
-      });
-    }
-  }
+  };
 });
 
 //Calls scope with coordinates clicked in the current element,
@@ -203,12 +206,12 @@ app.directive('relativeClick',function() {
       var scopeFunctionName = iAttrs.relativeClick;
 
       $(element).click(function(ev) {
-        var relativeX = ev.pageX - $(element)[0].offsetLeft
-        var relativeY = ev.pageY - $(element)[0].offsetTop
+        var relativeX = ev.pageX - $(element)[0].offsetLeft;
+        var relativeY = ev.pageY - $(element)[0].offsetTop;
         scope.$apply(function() {
-          scope[scopeFunctionName](relativeX, relativeY)
+          scope[scopeFunctionName](relativeX, relativeY);
         });
       });
     }
-  }
+  };
 });

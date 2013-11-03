@@ -20,13 +20,13 @@
 //= require services
 //= require models/entity
 //= require models/relationship
-//= require models/side
 //= require models/endpoint
 //= require models/arrowhead
 //= require controllers/page_controller
 //= require controllers/editor_controller
 //= require controllers/graph_controller
 //= require controllers/entity_controller
+//= require controllers/endpoint_controller
 //= require persona_login
 //= require filters
 //= require directives

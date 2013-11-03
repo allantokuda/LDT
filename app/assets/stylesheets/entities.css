@@ -13,12 +13,25 @@
   background: #cdf;
 }
 
+.entity-heading span {
+  display: inline;
+}
+
 .entity-heading input {
+  display: none;
+}
+
+.entity-heading.selected input {
+  display: inline;
   width: 100%;
   font-size: inherit;
   font-family: inherit;
   margin: -2px;
   padding: 0;
+}
+
+.entity-heading.selected span {
+  display: none;
 }
 
 .entity-body {
@@ -27,6 +40,11 @@
 }
 
 .entity-body textarea {
+  display: none;
+}
+
+.entity-body.selected textarea {
+  display: block;
   width: 100%;
   height: 100%;
   resize: none;
@@ -46,6 +64,10 @@
 
 .entity-body .attribute.identifier span {
   border-bottom: 1px solid black;
+}
+
+.entity-body.selected .attribute span {
+  display: none;
 }
 
 .attribute-input  {

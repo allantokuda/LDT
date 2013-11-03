@@ -1,93 +1,93 @@
 'use strict';
 
 describe('Entity', function() {
-  var e = new window.Entity({
+  var e = new Entity({
     name: 'Test',
     attributes: 'abc\ndef',
     x: 100,
     y: 100,
     width: 120,
-    height: 120
+    height: 140
   });
-  var entityOnRight  = new window.Entity({ x:  300, y:  100, width: 100, height: 100 });
-  var entityOnLeft   = new window.Entity({ x: -300, y:  100, width: 100, height: 100 });
-  var entityOnTop    = new window.Entity({ x:  100, y: -300, width: 100, height: 100 });
-  var entityOnBottom = new window.Entity({ x:  100, y:  300, width: 100, height: 100 });
-
-  var r = new window.Relationship(0)
-  var endpoint1 = new window.Endpoint({
-    entity: e,
-    otherEntity: entityOnRight,
-    relationship: r,
-    label: '',
-    symbol: ''
-  });
-  var endpoint2 = new window.Endpoint({
-    entity: entityOnRight,
-    otherEntity: e,
-    relationship: r,
-    label: '',
-    symbol: ''
-  });
+  var entityOnRight  = new Entity({ x:  300, y:  100, width: 100, height: 100 });
+  var entityOnLeft   = new Entity({ x: -300, y:  100, width: 100, height: 100 });
+  var entityOnTop    = new Entity({ x:  100, y: -300, width: 100, height: 100 });
+  var entityOnBottom = new Entity({ x:  100, y:  300, width: 100, height: 100 });
 
   it('has the same attributes as its input hash', function() {
-    expect(e.name).toBe('Test')
-    expect(e.x).toBe(100)
-    expect(e.y).toBe(100)
-    expect(e.width).toBe(120)
-    expect(e.height).toBe(120)
-    expect(e.attributes).toBe('abc\ndef')
+    expect(e.name).toBe('Test');
+    expect(e.x).toBe(100);
+    expect(e.y).toBe(100);
+    expect(e.width).toBe(120);
+    expect(e.height).toBe(140);
+    expect(e.attributes).toBe('abc\ndef');
   });
 
   it('knows its center point coordinates', function() {
-    expect(e.center()).toEqual({x: 160, y: 160});
-  });
-
-  it('has four side objects', function() {
-    expect(e.sides['top'].name).toBe('top')
-    expect(e.sides['left'].name).toBe('left')
-    expect(e.sides['right'].name).toBe('right')
-    expect(e.sides['bottom'].name).toBe('bottom')
-
-    expect(e.sides['top'].endpoints).toEqual([])
-    expect(e.sides['left'].endpoints).toEqual([])
-    expect(e.sides['right'].endpoints).toEqual([])
-    expect(e.sides['bottom'].endpoints).toEqual([])
+    expect(e.center()).toEqual({x: 160, y: 170});
   });
 
   it('knows when another entity is on its right', function() {
-    expect(e.nearestSide(entityOnRight).name).toBe('right')
+    expect(e.nearestSide(entityOnRight)).toBe('right');
   });
 
   it('knows when another entity is on its left', function() {
-    expect(e.nearestSide(entityOnLeft).name).toBe('left')
+    expect(e.nearestSide(entityOnLeft)).toBe('left');
   });
 
   it('knows when another entity is above it', function() {
-    expect(e.nearestSide(entityOnTop).name).toBe('top')
+    expect(e.nearestSide(entityOnTop)).toBe('top');
   });
 
   it('knows when another entity is below it', function() {
-    expect(e.nearestSide(entityOnBottom).name).toBe('bottom')
+    expect(e.nearestSide(entityOnBottom)).toBe('bottom');
   });
 
-  it('returns a string representing its geometry', function() {
-    expect(e.stringGeom()).toBe('100,100,120,120');
+  it('calculates coordinates of a point along one of its sides, offset from the side\'s center', function() {
+    expect(e.sideCenterOffsetCoordinates('top',    7)).toEqual({ x: 167, y: 100 });
+    expect(e.sideCenterOffsetCoordinates('bottom', 7)).toEqual({ x: 167, y: 240 });
+    expect(e.sideCenterOffsetCoordinates('left',   7)).toEqual({ x: 100, y: 177 });
+    expect(e.sideCenterOffsetCoordinates('right',  7)).toEqual({ x: 220, y: 177 });
   });
 
-  it('triggers updates to its endpoints and associated entities\' endpoints', function() {
-
-    r.crosslink();
-
-    // move endpoints to wrong sides, to represent the state before a movement occurred
-    e.sides['top'].addEndpoint(endpoint1);
-    entityOnRight.sides['bottom'].addEndpoint(endpoint2);
-
-    e.triggerUpdate();
-
-    expect(endpoint1.side.name).toBe('right');
-    expect(endpoint2.side.name).toBe('left');
-
+  it('provides the coordinate range (x or y) along a side (top/bottom/left/right)', function() {
+    expect(e.coordinateRange('top'   )).toEqual({ min: 100, max: 220 });
+    expect(e.coordinateRange('bottom')).toEqual({ min: 100, max: 220 });
+    expect(e.coordinateRange('left'  )).toEqual({ min: 100, max: 240 });
+    expect(e.coordinateRange('right' )).toEqual({ min: 100, max: 240 });
   });
 
+  it('finds an endpoint object attached on any of its sides, and removes it', function() {
+    var endpoint = { };
+    e.endpoints['left'].push(endpoint);
+    e.removeEndpoint(endpoint);
+    expect(e.endpoints['left']).toEqual([]);
+  });
+
+  it('adds an endpoint object to its sides, removing it from others at the same time', function() {
+    var endpoint = { };
+    e.addEndpoint(endpoint, 'bottom');
+    e.addEndpoint(endpoint, 'left');
+    expect(e.endpoints['left']).toEqual([endpoint]);
+    expect(e.endpoints['bottom']).toEqual([]);
+  });
+
+  it('removes all endpoints from all sides', function() {
+    var ep1 = { };
+    var ep2 = { };
+    e.endpoints['left'].push(ep1);
+    e.endpoints['bottom'].push(ep2);
+    e.clearAllEndpoints();
+    expect(e.endpoints['left']).toEqual([]);
+    expect(e.endpoints['bottom']).toEqual([]);
+  });
+
+  it('provides a flat array of all of its endpoints', function() {
+    var ep1 = { };
+    var ep2 = { };
+    e.endpoints['left'].push(ep1);
+    e.endpoints['bottom'].push(ep2);
+    var result = e.clearAllEndpoints();
+    expect(result.length).toBe(2);
+  });
 });

@@ -1,23 +1,26 @@
 'use strict';
 
 describe('GraphCtrl', function(){
-  var ctrl, scope, paths, r, e1, e2, e3, ep1, ep2;
+  var ctrl, scope, childScope, paths, r, e1, e2, e3, ep1, ep2;
   beforeEach(module('myApp.controllers'));
   beforeEach(inject(function ($rootScope, $controller) {
     scope = $rootScope.$new();
     ctrl = $controller('GraphCtrl', {$scope: scope});
+    childScope = scope.$new();
 
-    e1 = new Entity({id: 0, x: 0, y: 0, width: 100, height: 120, name: 'thing',  attributes: 'size\nshape'});
-    e2 = new Entity({id: 1, x: 0, y: 0, width: 100, height: 120, name: 'gadget', attributes: 'shape'});
-    e3 = new Entity({id: 2, x: 0, y: 0, width: 100, height: 120, name: 'doodad', attributes: ''});
+    e1 = new Entity({id: 0, x:   0, y:   0, width: 100, height: 120, name: 'thing',  attributes: 'size\nshape'});
+    e2 = new Entity({id: 1, x: 200, y:   0, width: 100, height: 120, name: 'gadget', attributes: 'shape'});
+    e3 = new Entity({id: 2, x:   0, y: 200, width: 100, height: 120, name: 'doodad', attributes: ''});
 
-    r = new Relationship(0);
+    r = new Relationship(0,e1,e2);
 
-    ep1 = new Endpoint({ entity: e1, otherEntity: e2, relationship: r });
-    ep2 = new Endpoint({ entity: e2, otherEntity: e1, relationship: r });
+    ep1 = r.endpoints[0];
+    ep2 = r.endpoints[1];
 
-    e1.endpoints = [ep1];
-    e2.endpoints = [ep2];
+    ep1.relocate();
+    ep2.relocate();
+    ep1.negotiateCoordinates();
+    ep2.negotiateCoordinates();
 
     scope.graph.relationships = [r];
     scope.graph.entities = [e1, e2, e3];
@@ -83,8 +86,8 @@ describe('GraphCtrl', function(){
       expect(scope.graph.relationships.length).toBe(0);
     });
 
-    it('should delete endpoint from the partner entity', function() {
-      expect(e1.endpoints.length).toBe(0);
+    it('should delete endpoints from associated entities', function() {
+      expect(e1.endpoints['right'].length).toBe(0);
     });
   });
 
@@ -100,10 +103,33 @@ describe('GraphCtrl', function(){
     it('should delete the associated endpoints from the graph', function() {
       expect(scope.graph.endpoints.length).toBe(0);
     });
+  });
 
-    it('should delete the endpoints from the entities', function() {
-      expect(e1.endpoints.length).toBe(0);
-      expect(e2.endpoints.length).toBe(0);
+  describe('event handling', function() {
+    it('should catch and rebroadcast entityGeometryChange events', function() {
+      spyOn(scope, '$broadcast');
+      childScope.$emit('entityGeometryChange', 42);
+      expect(scope.$broadcast).toHaveBeenCalledWith('relocateIfAttachedToEntity', 42);
+    });
+  });
+
+  describe('#createRelationship', function() {
+    var r2;
+
+    beforeEach(inject(function() {
+      r2 = scope.graph.createRelationship(e1, e2);
+    }));
+
+    it('should create a relationship', function() {
+      expect(r2).toBeDefined();
+    });
+
+    it('should add the relationship to the graph scope', function() {
+      expect(_.last(scope.graph.relationships.$id)).toBe(r2.$id);
+    });
+
+    it('should add the endpoints to the graph scope', function() {
+      expect(_.last(scope.graph.endpoints).$id).toBe(r2.endpoints[1].$id);
     });
   });
 
