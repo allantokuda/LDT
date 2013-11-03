@@ -3,12 +3,12 @@ module.exports = function(config){
     basePath : '../',
 
     files : [
-      'app/assets/javascripts/jquery-1.9.1.js',
-      'app/assets/javascripts/jquery-ui-1.10.3.js',
-      'app/assets/javascripts/angular/angular.js',
-      'app/assets/javascripts/angular/angular-*.js',
-      'app/assets/javascripts/underscore.js',
-      'app/assets/javascripts/d3.v3.js',
+      'vendor/assets/javascripts/jquery-1.9.1.js',
+      'vendor/assets/javascripts/jquery-ui-1.10.3.js',
+      'vendor/assets/javascripts/angular/angular.js',
+      'vendor/assets/javascripts/angular/angular-*.js',
+      'vendor/assets/javascripts/underscore.js',
+      'vendor/assets/javascripts/d3.v3.js',
       'test/lib/angular/angular-mocks.js',
       'app/assets/javascripts/app.js',
       'app/assets/javascripts/services.js',
@@ -38,4 +38,5 @@ module.exports = function(config){
       suite: 'unit'
     }
 
-})}
+    });
+};

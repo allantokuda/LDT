@@ -1,4 +1,3 @@
-Move code to vendor directory
 Add integration tests
 Increase canvas area more
 On relocate, set a coordinates negotiated flag to false; on negotiate, only proceed if flag is still false, and set the flag to true so negotiation doesn't repeat
