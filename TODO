@@ -1,3 +1,5 @@
+Move code to vendor directory
+Add integration tests
 Increase canvas area more
 On relocate, set a coordinates negotiated flag to false; on negotiate, only proceed if flag is still false, and set the flag to true so negotiation doesn't repeat
 Consider doing negotiation side at a time, with highest priority given to sides with the most endpoints
