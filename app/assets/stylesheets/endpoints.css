@@ -23,6 +23,11 @@ div.endpoint.top, div.endpoint.bottom {
           transform: rotate(-90deg);
 }
 
+div.endpoint div.label          span  { display: block; }
+div.endpoint div.label.selected span  { display: none; }
+div.endpoint div.label          input { display: none; }
+div.endpoint div.label.selected input { display: block; }
+
 /* Ensure text is readable when it overlaps a diagonal relationship */
 div.endpoint div.label span,
 div.endpoint div.label input {

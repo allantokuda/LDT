@@ -116,21 +116,25 @@ app.directive('selectWith',function() {
 
       //Setup class to watch the scope
       scope.$watch(params.varName + '.selected', function(selected) {
-        if (scopeVar.selected)
+        var stopListening;
+
+        if (scopeVar.selected) {
           element.addClass('selected');
-        else
+
+          stopListening = scope.$on('deselectAll', function() {
+            scope.$apply( function() { scopeVar.selected = false; });
+          });
+
+        } else {
           element.removeClass('selected');
+          if (stopListening !== undefined) stopListening();
+        }
       });
 
       //Set true when activated by specified event (and start listening for 'deselectAll');
       //set false when 'deselectAll' is broadcast (and stop listening for 'deselectAll').
       element.bind(params.eventName, function(e) {
         scope.$apply( function() { scopeVar.selected = true; });
-
-        var stopListening = scope.$on('deselectAll', function() {
-          scope.$apply( function() { scopeVar.selected = false; });
-          stopListening();
-        });
 
         e.stopPropagation();
       });
@@ -194,7 +198,8 @@ app.directive('stickToMouse',function() {
   };
 });
 
-app.directive('textSelectWith',function() {
+// Cause the
+app.directive('focusOnSelect',function() {
   return {
     link: function(scope, element, iAttrs, ctrl) {
       var scopeVar = iAttrs.textSelectWith + '.selected';

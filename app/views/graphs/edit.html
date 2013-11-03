@@ -81,17 +81,17 @@
              ng-controller="EndpointCtrl"
              ng-click="handleLabelClick(label.id,$event)"
              ng-style="{ left: endpoint.x, top: endpoint.y }"
-             select-with="dblclick as endpoint in #canvas"
+             select-with="dblclick as endpoint"
              catch-input>
 
             <div class="label"
-                 ng-class="{selected: heading.selected===true}">
+                 ng-class="{selected: endpoint.selected===true}">
 
                 <span catch-input>{{endpoint.label}}</span>
 
                 <input ng-model="endpoint.label"
                        ng-click="handleLabelClick(label.id,$event)"
-                       text-select-with="endpoint">
+                       focus-on-select="endpoint">
 
             </div>
         </div>
