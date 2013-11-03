@@ -100,18 +100,33 @@ app.directive('resizeWith',function() {
 app.directive('selectWith',function() {
   return {
     link: function (scope, element, iAttrs, ctrl) {
-      var regex = /([\w\d]+)/;
+      var regex = /([\w\d]+) as ([\w\d]+)/;
       var matches = regex.exec(iAttrs.selectWith);
-      var params = _.object(['eventName'], matches.slice(1,2));
+      var params = _.object(['eventName', 'varName'], matches.slice(1,3));
 
       // Don't allow parent to get the click again
       element.click(function(e) { e.stopPropagation(); });
 
+      //Define variable if not externally defined
+      if (typeof(scope[params.varName]) == 'undefined')
+        scope[params.varName] = {};
+
+      var scopeVar = scope[params.varName];
+      scopeVar.selected = false;
+
+      //Setup class to watch the scope
+      scope.$watch(params.varName + '.selected', function(selected) {
+        if (scopeVar.selected)
+          element.addClass('selected');
+        else
+          element.removeClass('selected');
+      });
+
       element.bind(params.eventName, function(e) {
-        element.addClass('selected');
+        scope.$apply( function() { scopeVar.selected = true });
 
         var unsubscribe = scope.$on('deselectAll', function() {
-          element.removeClass('selected');
+          scope.$apply( function() { scopeVar.selected = false });
           unsubscribe();
         });
 

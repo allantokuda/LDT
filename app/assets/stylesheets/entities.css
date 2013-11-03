@@ -13,12 +13,25 @@
   background: #cdf;
 }
 
+.entity-heading span {
+  display: inline;
+}
+
 .entity-heading input {
+  display: none;
+}
+
+.entity-heading.selected input {
+  display: inline;
   width: 100%;
   font-size: inherit;
   font-family: inherit;
   margin: -2px;
   padding: 0;
+}
+
+.entity-heading.selected span {
+  display: none;
 }
 
 .entity-body {

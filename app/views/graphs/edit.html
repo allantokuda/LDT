@@ -37,8 +37,8 @@
         <br><br>{{editor.entityOverlayMessage}}
       </div>
       <div class="entity-heading" select-with="dblclick as heading" auto-focus="input on dblclick">
-        <span class="entity-name" ng-show="!heading.selected">{{entity.name}}</span>
-        <input catch-input class="entity-name-input" ng-show="heading.selected" ng-model="entity.name">
+        <span class="entity-name">{{entity.name}}</span>
+        <input catch-input class="entity-name-input" ng-model="entity.name">
       </div>
       <div class="entity-body" select-with="dblclick as body" ng-style="{ height: (entity.height - 70) + 'px' }" forward-event="dblclick to textarea">
         <textarea catch-input class="attribute-input" ng-model="entity.attributes" ng-style="{ height: (entity.height - 70) + 'px' }"></textarea>
@@ -49,9 +49,9 @@
     <div class="endpoint" ng-class="endpoint.sideName" ng-repeat="endpoint in graph.endpoints"
          select-with="dblclick as endpoint in #canvas" ng-controller="EndpointCtrl"
          ng-click="handleLabelClick(label.id,$event)" catch-input ng-style="{ left: endpoint.x, top: endpoint.y }">
-      <div class="label">
-        <span ng-show="!endpoint.selected" catch-input>{{endpoint.label}}</span>
-        <input ng-model="endpoint.label" ng-show="endpoint.selected" ng-click="handleLabelClick(label.id,$event)" text-select-with="endpoint">
+      <div class="label" ng-class="{selected: heading.selected===true}">
+        <span catch-input>{{endpoint.label}}</span>
+        <input ng-model="endpoint.label"  ng-click="handleLabelClick(label.id,$event)" text-select-with="endpoint">
       </div>
     </div>
 
