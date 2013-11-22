@@ -17,7 +17,6 @@
 //= require angular/angular
 //= require underscore
 //= require app
-//= require services
 //= require models/entity
 //= require models/relationship
 //= require models/endpoint
@@ -28,5 +27,4 @@
 //= require controllers/entity_controller
 //= require controllers/endpoint_controller
 //= require persona_login
-//= require filters
 //= require directives
