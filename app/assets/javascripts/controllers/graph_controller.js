@@ -1,6 +1,8 @@
 'use strict';
 
-function GraphCtrl($scope) {
+var app = angular.module('myApp.controllers');
+
+app.controller('GraphCtrl', ['$scope', function($scope) {
 
   // Allow tests to pass on this scope alone, though this scope will actually
   // inherit the definition so that the parent scope can use it.
@@ -167,9 +169,4 @@ function GraphCtrl($scope) {
   $scope.$on('entityGeometryChange', function(ev, entityID) {
     $scope.$broadcast('relocateIfAttachedToEntity', entityID);
   });
-}
-
-angular.module('myApp.controllers').controller('GraphCtrl', GraphCtrl);
-
-// For minification
-GraphCtrl.$inject = ['$scope'];
+}]);
