@@ -1,6 +1,9 @@
 'use strict';
 
-function EntityCtrl($scope) {
+var app = angular.module('myApp.controllers');
+
+app.controller('EntityCtrl', ['$scope', function($scope) {
+
   var changeEvent = function() {
     $scope.$emit('entityGeometryChange', $scope.entity.id);
   };
@@ -8,9 +11,5 @@ function EntityCtrl($scope) {
   _.each(['x', 'y', 'width', 'height'], function(attribute) {
     $scope.$watch('entity.' + attribute, changeEvent);
   });
-}
 
-angular.module('myApp.controllers').controller('EntityCtrl', EntityCtrl);
-
-// For minification
-EntityCtrl.$inject = ['$scope'];
+}]);

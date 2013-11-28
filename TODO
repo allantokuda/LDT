@@ -1,20 +1,16 @@
-Move code to vendor directory
 Add integration tests
 Increase canvas area more
+Bind canvas size to its contents
 On relocate, set a coordinates negotiated flag to false; on negotiate, only proceed if flag is still false, and set the flag to true so negotiation doesn't repeat
 Consider doing negotiation side at a time, with highest priority given to sides with the most endpoints
 Editor -- not testing creation of graph. Should be in Graph method
 Copy and Paste entities
 Add hover text explaining what can be done to the thing being pointed at
-Improve performance on for entity placement and title/attribute edit for large graphs
 Enter finishes renaming entity
 Tab to finish rename and move to edit attributes
-Bind canvas size to its contents
-
 Multiple relationships between two entities should not cross each other
 Reflexive relationships should float around the entity away from other relationships
 Flat relationships should float away from other endpoints
-
 Add entity and relationship at same time, with preset symbols, based on keystrokes. 'm' adds a has-many relationship from the selected entity. Also '1', and just 'h' (has) which puts down '?' symbols.
 Make entity not resizable below minimum sizing
 Restore entity resize corner graphic
@@ -33,8 +29,6 @@ RE-ENGINEERING, MORE
     Endpoints will receive the event, knowing which entity ID(s) they associate with, and update themselves accordingly.
     Endpoint controller will watch for these events and update the endpoint model.
 
-  Arrowhead functionality should be part of the endpoint. Remove graph controller's list of arrowheads.
-  Relationship should construct endpoints. Endpoint should not need to know about its relationship.
   Controllers should talk to each other with $emit and $broadcast.
     Entity deletion: graph broadcasts an entityDelete message, and then deletes the entity from its list
       Endpoints referencing the entity receive the entityDelete and emit an endpointDelete message.
