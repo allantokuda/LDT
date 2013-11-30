@@ -84,11 +84,6 @@ GEM
       railties (~> 4.0.0)
     hike (1.2.3)
     i18n (0.6.5)
-    jquery-rails (3.0.4)
-      railties (>= 3.0, < 5.0)
-      thor (>= 0.14, < 2.0)
-    jquery-ui-rails (4.1.0)
-      railties (>= 3.1.0)
     json (1.8.1)
     launchy (2.4.2)
       addressable (~> 2.3)
@@ -200,8 +195,6 @@ DEPENDENCIES
   guard-zeus
   haml (~> 3.1.7)
   haml-rails
-  jquery-rails
-  jquery-ui-rails
   launchy
   libv8 (~> 3.11.8)
   pg
