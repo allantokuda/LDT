@@ -36,7 +36,6 @@ end
 group :development do
   # Needed to expose generators and rake tasks
   gem 'rspec-rails', '~> 2.0'
-  gem 'debugger', '~> 1.3.3'
 end
 
 group :test do
