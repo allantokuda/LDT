@@ -13,3 +13,17 @@ A *Logical Data Structure* is a way of graphically representing data.  The notat
 * allow LDS to be edited collaboratively over the internet by many editors
 * assist in teaching LDS notation to software engineering students using computer graphics
 
+## Installation
+* install rvm 1.19 or later, node.js, and PostgreSQL
+
+```
+rvm install `cat .ruby-version`
+gem install bundler
+bundle install
+npm install karma
+createdb lds_dev
+createuser -DPRS lds  #password in config/database.yml
+rake db:migrate
+rails server
+```
+

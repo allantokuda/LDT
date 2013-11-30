@@ -1,11 +1,6 @@
 class Graph < ActiveRecord::Base
-  ATTRIBUTES = [:name, :short_name, :description, :read_password, :write_password, :entities, :relationships, :user_id]
-
-  attr_accessible :created_at, *ATTRIBUTES
-
   before_create :init
 
-  # Use the string ID as the primary key for routes, etc.
   def to_param
     string_id
   end
@@ -43,7 +38,7 @@ class Graph < ActiveRecord::Base
 
   # Leave the entities and relationships unparsed for storage in JSON
   def self.parse_base_parameters(graph_json)
-    hash = JSON.parse(graph_json, :symbolize_names => true)
+    hash = JSON.parse(graph_json, :symbolize_names => true).reject{ |k| k==:id }
     hash[:entities]      = JSON.unparse hash[:entities]
     hash[:relationships] = JSON.unparse hash[:relationships]
     hash
