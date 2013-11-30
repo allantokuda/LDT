@@ -11,9 +11,7 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
-//= require jquery_ujs
-//= require jquery.ui.dialog
-//= require d3.v3
+//= require jquery-ui-1.9.2.custom
 //= require angular/angular
 //= require underscore
 //= require app
