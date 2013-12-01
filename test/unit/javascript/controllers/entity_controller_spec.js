@@ -2,7 +2,7 @@
 
 describe('EntityCtrl', function(){
   var ctrl, scope;
-  beforeEach(module('myApp.controllers'));
+  beforeEach(module('LDT.controllers'));
   beforeEach(inject(function ($rootScope, $controller) {
     scope = $rootScope.$new();
     scope.entity = { id: 123, x: 100 }

@@ -4,7 +4,7 @@ describe('directives', function() {
   describe('deselector', function() {
     var element, $compile, $rootScope, scope;
 
-    beforeEach(module('myApp.directives'));
+    beforeEach(module('LDT.directives'));
     beforeEach(inject(function(_$compile_, _$rootScope_){
       $compile = _$compile_;
       $rootScope = _$rootScope_;

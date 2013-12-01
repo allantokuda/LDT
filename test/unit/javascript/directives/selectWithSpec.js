@@ -6,7 +6,7 @@ describe('directives', function() {
     var $compile, $rootScope;
     var scope, parent_element, sibling;
 
-    beforeEach(module('myApp.directives'));
+    beforeEach(module('LDT.directives'));
     beforeEach(inject(function(_$compile_, _$rootScope_){
       $compile = _$compile_;
       $rootScope = _$rootScope_;

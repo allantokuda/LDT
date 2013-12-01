@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.directives', []);
-angular.module('myApp.controllers', []);
+angular.module('LDT.directives', []);
+angular.module('LDT.controllers', []);
 
-angular.module('myApp', ['myApp.directives', 'myApp.controllers']);
+angular.module('LDT', ['LDT.directives', 'LDT.controllers']);
