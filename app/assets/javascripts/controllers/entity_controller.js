@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('myApp.controllers');
+var app = angular.module('LDT.controllers');
 
 app.controller('EntityCtrl', ['$scope', function($scope) {
 

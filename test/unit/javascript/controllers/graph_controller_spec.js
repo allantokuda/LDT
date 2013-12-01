@@ -2,7 +2,7 @@
 
 describe('GraphCtrl', function(){
   var ctrl, scope, childScope, paths, r, e1, e2, e3, ep1, ep2;
-  beforeEach(module('myApp.controllers'));
+  beforeEach(module('LDT.controllers'));
   beforeEach(inject(function ($rootScope, $controller) {
     scope = $rootScope.$new();
     ctrl = $controller('GraphCtrl', {$scope: scope});

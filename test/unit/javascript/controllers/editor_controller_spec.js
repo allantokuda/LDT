@@ -2,7 +2,7 @@
 
 describe('EditorCtrl', function(){
   var ctrl, scope;
-  beforeEach(module('myApp.controllers'));
+  beforeEach(module('LDT.controllers'));
   beforeEach(inject(function ($rootScope, $controller) {
     scope = $rootScope.$new();
     ctrl = $controller('EditorCtrl', {$scope: scope});
