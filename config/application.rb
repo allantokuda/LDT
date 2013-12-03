@@ -60,6 +60,8 @@ module LDS
 
     #config.force_ssl = true
 
+    config.middleware.use Rack::Deflater
+
     config.assets.precompile += %w( print.css )
   end
 end
