@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="LDT" ng-controller="PageCtrl">
 <head>
-  <title>{{title}}</title>
+  <title ng-bind-template="LDT: {{title}}">LDT</title>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= stylesheet_link_tag    "print",       :media => "print" %>
