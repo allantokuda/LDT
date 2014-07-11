@@ -27,16 +27,15 @@ group :development, :test do
   gem 'guard'
   gem 'guard-rspec'
   gem 'guard-zeus'
+  # Needed to expose generators and rake tasks
+  gem 'rspec-rails', '~> 2.0'
 end
 
 group :development do
-  # Needed to expose generators and rake tasks
-  gem 'rspec-rails', '~> 2.0'
   gem 'puma'
 end
 
 group :test do
-  gem 'rspec-rails', '~> 2.0'
   gem 'cucumber-rails', :require => false
   gem 'database_cleaner'
   gem 'launchy'
