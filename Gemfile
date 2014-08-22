@@ -40,3 +40,15 @@ group :test do
   gem 'database_cleaner'
   gem 'launchy'
 end
+
+gem 'unicorn-rails'
+
+gem 'capistrano'
+gem 'capistrano-rvm',      require: false;
+gem 'capistrano-rails',    require: false;
+gem 'capistrano-bundler',  require: false;
+gem 'capistrano3-unicorn', require: false;
+
+
+
+
