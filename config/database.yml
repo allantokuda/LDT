@@ -11,9 +11,5 @@ test: &test
   <<: *common
   database: lds_test
 
-production:
-  <<: *common
-  database: production
-
 cucumber:
   <<: *test

@@ -18,9 +18,14 @@
 
 server '162.243.239.213', user: 'ruby', roles: %w{web app}, my_property: :my_value
 
-set(:rails_env, 'production')
-set(:unicorn_config_path, 'config/unicorn/production.rb')
-set(:branch, 'digitalocean')
+set :rails_env, 'production'
+set :unicorn_config_path, 'config/unicorn/production.rb'
+set :branch, 'digitalocean'
+
+set :rake, "rake"
+set :migrate_env, ""
+set :migrate_target, :latest
+
 
 # Custom SSH Options
 # ==================
