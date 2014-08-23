@@ -1,0 +1,12 @@
+# Test against multiple versions of Node.js
+# http://docs.travis-ci.com/user/languages/javascript-with-nodejs/
+language: node_js
+node_js:
+  - "0.11"
+  - "0.10"
+  - "0.8"
+  - "0.6"
+
+# Configure postgres user
+before_script:
+  - psql -c "CREATE USER lds WITH PASSWORD 'chickenfoot';" -U postgres
