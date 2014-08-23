@@ -10,3 +10,8 @@ node_js:
 # Configure postgres user
 before_script:
   - psql -c "CREATE USER lds WITH PASSWORD 'chickenfoot';" -U postgres
+
+# Allow Firefox to operate in framebuffer
+before_install:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
