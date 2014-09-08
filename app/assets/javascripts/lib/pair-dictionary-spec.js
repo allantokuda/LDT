@@ -44,5 +44,11 @@ describe('PairDictionary', function() {
     expect(p.count()).toEqual(1);
   });
 
+  it('returns its values as an array', function() {
+    p.set(1,1,3);
+    p.set(1,2,4);
+    expect(p.values()).toEqual([3,4]);
+  });
+
 
 });

@@ -13,6 +13,8 @@ module.exports = function(config){
       'app/assets/javascripts/directives.js',
       'app/assets/javascripts/controllers/*.js',
       'app/assets/javascripts/models/*.js',
+      'app/assets/javascripts/entity/*.js',
+      'app/assets/javascripts/entity/*-spec.js',
       'app/assets/javascripts/lib/*.js',
       'app/assets/javascripts/lib/*-spec.js',
       'test/unit/**/*.js',
