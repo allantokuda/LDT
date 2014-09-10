@@ -25,6 +25,7 @@ describe('Entity pair service', function() {
     expect(service.pairs.length).toBe(1);
     expect(service.pairs[0].entity1.id).toBe(1);
     expect(service.pairs[0].entity2.id).toBe(2);
+    expect(service.pairs[0].relationships.length).toBe(1);
   });
 
   it('accepts two relationships, and has two pairs', function() {
@@ -33,8 +34,10 @@ describe('Entity pair service', function() {
     expect(service.pairs.length).toBe(2);
     expect(service.pairs[0].entity1.id).toBe(1);
     expect(service.pairs[0].entity2.id).toBe(2);
+    expect(service.pairs[0].relationships.length).toBe(1);
     expect(service.pairs[1].entity1.id).toBe(1);
     expect(service.pairs[1].entity2.id).toBe(3);
+    expect(service.pairs[1].relationships.length).toBe(1);
   });
 
   it('accepts two sibling relationships, and has only one pair', function() {
@@ -43,6 +46,7 @@ describe('Entity pair service', function() {
     expect(service.pairs.length).toBe(1);
     expect(service.pairs[0].entity1.id).toBe(1);
     expect(service.pairs[0].entity2.id).toBe(2);
+    expect(service.pairs[0].relationships.length).toBe(2);
   });
 
   it('accepts two sibling relationships and a half-sibling, and has two pairs', function() {
@@ -52,7 +56,9 @@ describe('Entity pair service', function() {
     expect(service.pairs.length).toBe(2);
     expect(service.pairs[0].entity1.id).toBe(1);
     expect(service.pairs[0].entity2.id).toBe(2);
+    expect(service.pairs[0].relationships.length).toBe(2);
     expect(service.pairs[1].entity1.id).toBe(1);
     expect(service.pairs[1].entity2.id).toBe(3);
+    expect(service.pairs[1].relationships.length).toBe(1);
   });
 });
