@@ -8,9 +8,9 @@ describe('Entity pair service', function() {
     var e1 = { id: 1, x: 50, y: 70, width: 100, height: 130 }
     var e2 = { id: 2, x: 250, y: 120, width: 100, height: 150 }
     var e3 = { id: 3, x: 250, y: 420, width: 100, height: 150 }
-    sibling1    = { entity1: e1, entity2: e2 }
-    sibling2    = { entity1: e1, entity2: e2 }
-    halfSibling = { entity1: e1, entity2: e3 }
+    sibling1    = { id: 1, entity1: e1, entity2: e2 }
+    sibling2    = { id: 2, entity1: e1, entity2: e2 }
+    halfSibling = { id: 3, entity1: e1, entity2: e3 }
 
     service = EntityPairService;
   }));
@@ -74,5 +74,15 @@ describe('Entity pair service', function() {
     }
 
     expect(service.pairs.length).toBe(2);
+  });
+
+  it('allows relationships to be removed', function() {
+    service.addRelationship(sibling1);
+    service.addRelationship(sibling2);
+    expect(service.pairs.length).toBe(1);
+    service.removeRelationship(sibling1);
+    expect(service.pairs.length).toBe(1);
+    service.removeRelationship(sibling2);
+    expect(service.pairs.length).toBe(0);
   });
 });
