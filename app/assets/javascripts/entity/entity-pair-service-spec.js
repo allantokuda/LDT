@@ -61,4 +61,18 @@ describe('Entity pair service', function() {
     expect(service.pairs[1].entity2.id).toBe(3);
     expect(service.pairs[1].relationships.length).toBe(1);
   });
+
+  it('happily accepts a large number of relationships', function() {
+    var e1 = { id: 1 };
+    var e2 = { id: 2 };
+    var e3 = { id: 3 };
+
+    // Lots of siblings and half-siblings
+    for (var i=0; i<10000; i++) {
+      service.addRelationship({entity1_id: 1, entity2_id: 2, entity1: e1, entity2: e2 });
+      service.addRelationship({entity1_id: 1, entity2_id: 3, entity1: e1, entity2: e3 });
+    }
+
+    expect(service.pairs.length).toBe(2);
+  });
 });
