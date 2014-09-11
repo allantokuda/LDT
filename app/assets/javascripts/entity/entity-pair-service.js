@@ -1,12 +1,5 @@
 (function() {
-  angular.module('LDT.entity').factory('EntityPairService', function(PairDictionary) {
-
-    function EntityPair(entity1, entity2) {
-      this.entity1 = entity1;
-      this.entity2 = entity2;
-      this.relationships = [];
-      this.pairs = [];
-    }
+  angular.module('LDT.entity').factory('EntityPairService', function(PairDictionary, EntityPair) {
 
     function EntityPairService() {
       var dict = new PairDictionary();

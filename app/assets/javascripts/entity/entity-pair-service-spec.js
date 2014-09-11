@@ -5,7 +5,7 @@ describe('Entity pair service', function() {
 
   beforeEach(module('LDT.entity'));
   beforeEach(inject(function(EntityPairService) {
-    var e1 = { id: 1, x: 50, y: 70, width: 100, height: 130 }
+    var e1 = { id: 1, x:   0, y:   0, width: 100, height: 130 }
     var e2 = { id: 2, x: 250, y: 120, width: 100, height: 150 }
     var e3 = { id: 3, x: 250, y: 420, width: 100, height: 150 }
     sibling1    = { id: 1, entity1: e1, entity2: e2 }
