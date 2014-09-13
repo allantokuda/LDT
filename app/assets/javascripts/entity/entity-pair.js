@@ -63,9 +63,9 @@
       end1   = entity1[start] + entity1[length];
       end2   = entity2[start] + entity2[length];
 
-      if (start1 > start2 && start1 < end2) {
+      if (start1 >= start2 && start1 < end2) {
         this.overlapRange = (end1 < end2) ? [start1, end1] : [start1, end2];
-      } else if (start2 > start1 && start2 < end1) {
+      } else if (start2 >= start1 && start2 < end1) {
         this.overlapRange = (end1 < end2) ? [start2, end1] : [start2, end2];
       } else {
         this.overlapRange = null;

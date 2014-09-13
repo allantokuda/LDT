@@ -50,4 +50,34 @@ describe('Entity Pair', function() {
     expect(pair.overlapRange).toBe(null);
     expect(pair.overlapMidpoint).toBe(null);
   });
+
+  it('can be refreshed after entity move', function() {
+    // also testing handling of entities that are exactly the
+    // same size AND centered on each other
+    var e1 = { id: 1, x:   0, y:   0, width: 100, height: 100 };
+    var e2 = { id: 2, x: 200, y:   0, width: 100, height: 100 };
+    var pair = new EntityPair(e1, e2);
+    expect(pair.orientation).toBe(0);
+    expect(pair.overlapRange).toEqual([0, 100]);
+    expect(pair.overlapMidpoint).toBe(50);
+
+    //Move entity 2 from the right side to the bottom
+    e2.x = 0;
+    e2.y = 200;
+    // before refreshing, nothing has changed (for performance)
+    expect(pair.orientation).toBe(0);
+    pair.refresh();
+    // after refresh, things have updated
+    expect(pair.orientation).toBe(1);
+    expect(pair.overlapRange).toEqual([0, 100]);
+    expect(pair.overlapMidpoint).toBe(50);
+
+    // Nudge 2 pixels farther to the left
+    e2.x = -2;
+    e2.y = 200;
+    pair.refresh();
+    expect(pair.orientation).toBe(1);
+    expect(pair.overlapRange).toEqual([0, 98]);
+    expect(pair.overlapMidpoint).toBe(49);
+  });
 });
