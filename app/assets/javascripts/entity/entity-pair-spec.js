@@ -80,4 +80,30 @@ describe('Entity Pair', function() {
     expect(pair.overlapRange).toEqual([0, 98]);
     expect(pair.overlapMidpoint).toBe(49);
   });
+
+  // this is used to determine which relationship sets are
+  // most offset from being directly horizontal/vertical
+  // (most diagonal) and thus need to be connected nearest to
+  // the corners of entities.
+  it('calculates a placement priority for itself', function() {
+    var eRef = { x:   0, y:    0, width: 100, height: 100 };
+    var e0   = { x: 200, y: -110, width: 100, height: 100 }; //right side, skewed up heavily
+    var e1   = { x: 200, y:  -10, width: 100, height: 100 }; //right side, offset up slightly
+    var e2   = { x: 200, y:    0, width: 100, height: 100 }; //right side, centered
+    var e3   = { x: 200, y:  150, width: 100, height: 100 }; //right side, skewed down heavily
+    var e4   = { x: -60, y:  200, width: 100, height: 100 }; //bottom, offset left significantly
+    var e5   = { x: 120, y:  200, width: 100, height: 100 }; //bottom, skewed right heavily
+    var pair0 = new EntityPair(eRef, e0);
+    var pair1 = new EntityPair(eRef, e1);
+    var pair2 = new EntityPair(eRef, e2);
+    var pair3 = new EntityPair(eRef, e3);
+    var pair4 = new EntityPair(eRef, e4);
+    var pair5 = new EntityPair(eRef, e5);
+    expect(pair0.placementPriority).toBeCloseTo(159343.59);
+    expect(pair1.placementPriority).toEqual(10);
+    expect(pair2.placementPriority).toEqual(0);
+    expect(pair3.placementPriority).toBeCloseTo(406162.00); // large because diagonal
+    expect(pair4.placementPriority).toEqual(60);
+    expect(pair5.placementPriority).toBeCloseTo(232105.36);
+  });
 });

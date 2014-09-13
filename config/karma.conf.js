@@ -15,6 +15,8 @@ module.exports = function(config){
       'app/assets/javascripts/models/*.js',
       'app/assets/javascripts/entity/*.js',
       'app/assets/javascripts/entity/*-spec.js',
+      'app/assets/javascripts/relationship/*.js',
+      'app/assets/javascripts/relationship/*-spec.js',
       'app/assets/javascripts/lib/*.js',
       'app/assets/javascripts/lib/*-spec.js',
       'test/unit/**/*.js',
