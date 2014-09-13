@@ -1,0 +1,49 @@
+graph controller
+  on load, call reaction manager on full set of entities
+  when set of entities is moved, call reaction manager on that set
+
+reaction manager (depends on entity pair service)
+  determine entity pairs that need a redraw (includes half-siblings of the relationships on the entities that moved)
+  call redraw manager on entity pair set
+
+redraw manager (depends on entity pair service)
+  call reset() on all entity pairs
+  develop an interaction hash: [key = entity+side; value = array of entity pairs on that side]
+  convert interaction hash to array of arrays ([side][pairNum])
+  for each side:
+    if count > 1:
+      sort its entity pair list by placement priority
+      loop from 1 to N-1:
+        call pushUp()
+      loop from 2 to N:
+        call pushDn()
+
+  for each side (again):
+    for each pair:
+      get vacancy range
+      call placeEndpoints(vacancy min, vacancy max)
+      update vacancy range
+
+side
+  instantiated with entity
+  clear()
+  occupy(start, end) -- accept a coordinate range to be occupied (recalculate vacancy)
+  vacancy -- the remaining space
+
+entity pair service:
+  pairsOnEntity(entity) -- maintain via a hash on add/remove to return this information quickly
+
+entity pair
+  overlapCoordinates() -- returns overlap space between two entities
+  reset() -- forget about any interactions that cause the pair's relationships to need to be drawn in compact fashion. Call calculatePlacementPriority()
+  calculatePlacementPriority() -- calculate and set placement score (lwo when aligned; higher when more offset; highest when diagonal. 270-reflexives get highest priority of all. 180 reflexives lowest.)
+  pushDown() -- let the pair know there's someone above it (along the active coordinate) so the set should be drawn compactly in that direction if possible
+  pushUp() -- let the pair know there's someone below it (along the active coordinate) so the set should be drawn compactly in that direction if possible
+  placeWide() -- used if neither pushed up nor down
+  placeCompact(direction: [-1 or 1]) -- used if pushed up or down
+  placeCentered() -- used if pushed both up and down. Uses weighted midpoint.
+  weightedMidpoint()
+
+  placeEndpoints(min, max) -- given known "push" directions, entity overlap range, and provided (min, max) coordinates to fit within: make the final endpoint placement, and return it
+
+
