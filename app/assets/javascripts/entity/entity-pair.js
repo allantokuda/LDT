@@ -15,7 +15,12 @@
       this.entity1 = swap;
     }
 
-    this.orientation = function() {
+    this.refresh = function() {
+      this.calculateOrientation();
+      this.calculateOverlapRange();
+    }
+
+    this.calculateOrientation = function() {
       var directionFromFirstToSecond = _.max(DIRECTIONS, function(direction) {
         return this.outwardDistance(direction);
       }, this);
@@ -24,13 +29,14 @@
         case 'up':
           this.swapEntities();
         case 'down':
-          return 1;
+          this.orientation = 1;
+          break;
         case 'left':
           this.swapEntities();
         case 'right':
-          return 0;
+          this.orientation = 0;
       }
-    }
+    };
 
     this.outwardDistance = function(direction) {
       return ({
@@ -41,6 +47,38 @@
       })[direction];
     };
 
+    this.calculateOverlapRange = function() {
+
+      // 0 == horizontal, 1 == vertical
+      if (this.orientation == 1) {
+        start = 'x';
+        length = 'width';
+      } else {
+        start = 'y';
+        length = 'height';
+      }
+
+      start1 = entity1[start];
+      start2 = entity2[start];
+      end1   = entity1[start] + entity1[length];
+      end2   = entity2[start] + entity2[length];
+
+      if (start1 > start2 && start1 < end2) {
+        this.overlapRange = (end1 < end2) ? [start1, end1] : [start1, end2];
+      } else if (start2 > start1 && start2 < end1) {
+        this.overlapRange = (end1 < end2) ? [start2, end1] : [start2, end2];
+      } else {
+        this.overlapRange = null;
+      }
+
+      if (this.overlapRange !== null) {
+        this.overlapMidpoint = (this.overlapRange[0] + this.overlapRange[1])/2;
+      } else {
+        this.overlapMidpoint = null;
+      }
+    }
+
+    this.refresh();
   }
 
   angular.module('LDT.entity').value('EntityPair', EntityPair);
