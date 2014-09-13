@@ -11,13 +11,14 @@
       this.relationships = [];
       this.pairs = [];
 
-      var start1, start2, end1, end2;
+      var x, y, width, height, center1, center2,
+          separation, offset,
+          start1, start2, end1, end2;
 
       this.swapEntities = function() {
         var swap = this.entity2;
         this.entity2 = entity1;
         this.entity1 = swap;
-
       }
 
       this.refresh = function() {
@@ -25,6 +26,7 @@
         this.calculateRelevantCoordinates();
         this.calculateOverlapRange();
         this.calculatePriority();
+        this.calculateAllConnectionPoints();
       }
 
       this.calculateOrientation = function() {
@@ -35,11 +37,13 @@
         switch(directionFromFirstToSecond) {
           case 'up':
             this.swapEntities();
+            // fall through
           case 'down':
             this.orientation = 1;
             break;
           case 'left':
             this.swapEntities();
+            // fall through
           case 'right':
             this.orientation = 0;
         }
@@ -55,8 +59,6 @@
       };
 
       this.calculateRelevantCoordinates = function() {
-        var x, y, width, height;
-
         // Map vertical case onto "horizontal" algorithm
         if (this.orientation == 0) {
           x = 'x'
@@ -70,25 +72,20 @@
           height = 'width'
         }
 
-        this.separation = entity2[x] - entity1[x] - entity1[width];
+        separation = entity2[x] - entity1[x] - entity1[width];
+        innerLeft  = entity1[x] + entity1[width];
+        innerRight = entity2[x];
 
-        this.start1  = entity1[y];
-        this.start2  = entity2[y];
-        this.end1    = entity1[y] + entity1[height];
-        this.end2    = entity2[y] + entity2[height];
-        this.center1 = entity1[y] + entity1[height] / 2;
-        this.center2 = entity2[y] + entity2[height] / 2;
-        //this.span1   = entity2[height];
-        //this.span2   = entity2[height];
-        this.offset     = this.center2 - this.center1;
+        start1  = entity1[y];
+        start2  = entity2[y];
+        end1    = entity1[y] + entity1[height];
+        end2    = entity2[y] + entity2[height];
+        center1 = entity1[y] + entity1[height] / 2;
+        center2 = entity2[y] + entity2[height] / 2;
+        offset = center2 - center1;
       }
 
       this.calculateOverlapRange = function() {
-        var start1 = this.start1;
-        var start2 = this.start2;
-        var end1   = this.end1;
-        var end2   = this.end2;
-
         if (start1 >= start2 && start1 < end2) {
           this.overlapRange = (end1 < end2) ? [start1, end1] : [start1, end2];
         } else if (start2 >= start1 && start2 < end1) {
@@ -115,12 +112,12 @@
          *  []--      <-- "upper" entity (skewed up)
          *      --[]  <-- "lower" entity (skewed down)
          */
-        if (this.center1 > this.center2) {
-          lower = { start: this.start1, end: this.end1 }
-          upper = { start: this.start2, end: this.end2 }
+        if (center1 > center2) {
+          lower = { start: start1, end: end1 }
+          upper = { start: start2, end: end2 }
         } else {
-          lower = { start: this.start2, end: this.end2 }
-          upper = { start: this.start1, end: this.end1 }
+          lower = { start: start2, end: end2 }
+          upper = { start: start1, end: end1 }
         }
 
         // Calculate how much a single relationship connecting these pairs
@@ -131,9 +128,43 @@
           skew = lower.start - upper.end + pad
         }
 
-        this.connectorAngle = Math.atan2(skew, this.separation - arrowHeadSize.length * 2) * 180 / 3.1416;
+        connectorAngle = Math.atan2(skew, separation - arrowHeadSize.length * 2) * 180 / 3.1416;
 
-        this.placementPriority = Math.abs(10000 * this.connectorAngle + this.offset);
+        this.placementPriority = Math.abs(10000 * connectorAngle + offset);
+      };
+
+      // Make use of the virtual "inner left/right" coordinates
+      // which automatically change meaning depending on orientation
+      // to actually mean innerTop and innerBottom.
+      this.connectionPointPair = function(pos1, pos2) {
+        if (this.orientation == 0) {
+          return [ { x: innerLeft,  y: pos1 },
+                   { x: innerRight, y: pos2 } ];
+        } else {
+          return [ { x: pos1, y: innerLeft  },
+                   { x: pos2, y: innerRight } ];
+        }
+      }
+
+      this.calculateAllConnectionPoints = function() {
+        var count = this.relationships.length;
+
+        this.connectionPoints = [];
+        // Single relationship gets centered on the space
+        if (count == 1) {
+          this.connectionPoints.push(this.connectionPointPair(
+            this.overlapMidpoint, this.overlapMidpoint
+          ));
+
+        // Multiple relationships are spread evenly across the space
+        } else if (count > 1) {
+          for (var i=0; i<count; i++) {
+            this.connectionPoints.push(this.connectionPointPair(
+              // TODO fill-in real positions
+              this.overlapMidpoint, this.overlapMidpoint
+            ));
+          }
+        }
       };
 
       this.refresh();

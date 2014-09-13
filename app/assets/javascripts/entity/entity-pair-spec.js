@@ -106,4 +106,20 @@ describe('Entity Pair', function() {
     expect(pair4.placementPriority).toEqual(60);
     expect(pair5.placementPriority).toBeCloseTo(232105.36);
   });
+
+  it('stores a set of relationships', function() {
+    var pair = new EntityPair({}, {});
+    pair.relationships.push({});
+    expect(pair.relationships.length).toEqual(1);
+  });
+
+  it('centers a single relationship on the available space', function() {
+    var e1 = { id: 1, x:   0, y:    0, width: 100, height: 100 };
+    var e2 = { id: 2, x: 200, y:   20, width: 100, height:  60 };
+    var r  = { entity1_id: 1, entity2_id: 2 }
+    var pair = new EntityPair(e1, e2);
+    pair.relationships.push({})
+    pair.refresh();
+    expect(pair.connectionPoints).toEqual([[{ x: 100, y: 50 }, { x: 200, y: 50 }]]);
+  });
 });
