@@ -15,6 +15,18 @@ describe('Entity pair service', function() {
     service = EntityPairService;
   }));
 
+  //extract just the entity IDs for simplified testing
+  function summarize(pairs) {
+    var result = [];
+    for (var i in pairs) {
+      result.push([
+        pairs[i].entity1.id,
+        pairs[i].entity2.id
+      ]);
+    }
+    return result;
+  }
+
   it('initially has 0 pairs', function() {
     expect(service.count()).toEqual(0);
   });
@@ -94,35 +106,40 @@ describe('Entity pair service', function() {
     var r2 = { id: 2, entity1: e1, entity2: e3 }
     var r3 = { id: 3, entity1: e2, entity2: e3 }
 
-    function summaryOfPairsOnEntity(entity) {
-      var pairs = service.pairsOnEntity(entity);
-      var result = [];
-      for (var i in pairs) {
-        result.push([
-          pairs[i].entity1.id,
-          pairs[i].entity2.id
-        ]);
-      }
-      return result;
-    }
-
-    expect(summaryOfPairsOnEntity(e1)).toEqual([]);
-    expect(summaryOfPairsOnEntity(e2)).toEqual([]);
-    expect(summaryOfPairsOnEntity(e3)).toEqual([]);
+    expect(summarize(service.pairsOnEntity(e1))).toEqual([]);
+    expect(summarize(service.pairsOnEntity(e1))).toEqual([]);
+    expect(summarize(service.pairsOnEntity(e1))).toEqual([]);
 
     service.addRelationship(r1);
     service.addRelationship(r2);
     service.addRelationship(r3);
 
-    expect(summaryOfPairsOnEntity(e1)).toEqual([[1,2],[1,3]]);
-    expect(summaryOfPairsOnEntity(e2)).toEqual([[1,2],[2,3]]);
-    expect(summaryOfPairsOnEntity(e3)).toEqual([[1,3],[2,3]]);
+    expect(summarize(service.pairsOnEntity(e1))).toEqual([[1,2],[1,3]]);
+    expect(summarize(service.pairsOnEntity(e2))).toEqual([[1,2],[2,3]]);
+    expect(summarize(service.pairsOnEntity(e3))).toEqual([[1,3],[2,3]]);
 
     service.removeRelationship(r3);
 
-    expect(summaryOfPairsOnEntity(e1)).toEqual([[1,2],[1,3]]);
-    expect(summaryOfPairsOnEntity(e2)).toEqual([[1,2]]);
-    expect(summaryOfPairsOnEntity(e3)).toEqual([[1,3]]);
+    expect(summarize(service.pairsOnEntity(e1))).toEqual([[1,2],[1,3]]);
+    expect(summarize(service.pairsOnEntity(e2))).toEqual([[1,2]]);
+    expect(summarize(service.pairsOnEntity(e3))).toEqual([[1,3]]);
+  });
 
+  it('reports the pairs that would be affected by the movement of a set of entities', function() {
+    // Create chain of entities. When e0 is moved, relationships touching e1 should be affected
+    var e0 = { id: 0 };
+    var e1 = { id: 1 }; var r1 = { id: 1, entity1: e0, entity2: e1 };
+    var e2 = { id: 2 }; var r2 = { id: 2, entity1: e1, entity2: e2 };
+    var e3 = { id: 3 }; var r3 = { id: 3, entity1: e2, entity2: e3 };
+
+    service.addRelationship(r1);
+    service.addRelationship(r2);
+    service.addRelationship(r3);
+
+    var affected0 = service.pairsAffectedByMove([e0]);
+    var affected1 = service.pairsAffectedByMove([e1]);
+
+    expect(summarize(affected0)).toEqual([[1, 2], [0, 1]]);
+    expect(summarize(affected1)).toEqual([[2, 3], [1, 2], [0, 1]]);
   });
 });

@@ -57,5 +57,23 @@
     this.pairsOnEntity = function(entity) {
       return dict.match(entity.id);
     };
+
+    // allow multiple entities to be moved at once in the future
+    this.pairsAffectedByMove = function(entities) {
+      var result = [];
+      var pair, entity;
+
+      for (var i in entities) {
+        entity = entities[i];
+        firstLevelPairs = this.pairsOnEntity(entity);
+
+        for (var j in firstLevelPairs) {
+          pair = firstLevelPairs[j];
+          otherEntity = (pair.entity1 == entity) ? pair.entity2 : pair.entity1;
+          result = result.concat(this.pairsOnEntity(otherEntity));
+        }
+      }
+      return $.unique(result);
+    };
   });
 })();

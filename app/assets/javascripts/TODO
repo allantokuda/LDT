@@ -2,7 +2,7 @@ graph controller
   on load, call redraw manager on full set of entities
   when set of entities is moved, call redraw manager on that set
 
-redraw manager (depends on entity pair service)
+redraw manager (depends on entity pair service and attachment service)
   call entitiesAffectedByMove to get the entities of interest
   call pairsAffectedByMove to get the entity pairs of interest
   call clear() on the affected entities
@@ -13,6 +13,7 @@ redraw manager (depends on entity pair service)
 
 attachment service:
   has a method that takes an entity pair as an argument, and attaches all the relationships in the pair as a group.
+    EXCEPTION: reflexive relationships are drawn INDIVIDUALLY based on their control point (180, 270).
   these must be attached in a group to prevent the "crossover" bug in the previous implementation.
   this service does not care about attachment priority -- this is the responsibility of the redraw manager.
     look up each side, get vacancy ranges
@@ -30,6 +31,4 @@ side
   vacancy -- the remaining space
 
 entity pair service:
-  pairsOnEntity(entity) -- maintain via a hash on add/remove to return this information quickly
-  pairsAffectedByMove(entities) -- determine entity pairs that need a redraw due to a set of entities moving. Includes half-siblings of the relationships on the entities that moved.
   entitiesAffectedByMove(entities) -- determine entities that may experience endpoint movement around their perimeter
