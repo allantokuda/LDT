@@ -85,4 +85,44 @@ describe('Entity pair service', function() {
     service.removeRelationship(sibling2);
     expect(service.pairs.length).toBe(0);
   });
+
+  it('keeps track of the pairs each entity belongs to', function() {
+    var e1 = { id: 1 }
+    var e2 = { id: 2 }
+    var e3 = { id: 3 }
+    var r1 = { id: 1, entity1: e1, entity2: e2 }
+    var r2 = { id: 2, entity1: e1, entity2: e3 }
+    var r3 = { id: 3, entity1: e2, entity2: e3 }
+
+    function summaryOfPairsOnEntity(entity) {
+      var pairs = service.pairsOnEntity(entity);
+      var result = [];
+      for (var i in pairs) {
+        result.push([
+          pairs[i].entity1.id,
+          pairs[i].entity2.id
+        ]);
+      }
+      return result;
+    }
+
+    expect(summaryOfPairsOnEntity(e1)).toEqual([]);
+    expect(summaryOfPairsOnEntity(e2)).toEqual([]);
+    expect(summaryOfPairsOnEntity(e3)).toEqual([]);
+
+    service.addRelationship(r1);
+    service.addRelationship(r2);
+    service.addRelationship(r3);
+
+    expect(summaryOfPairsOnEntity(e1)).toEqual([[1,2],[1,3]]);
+    expect(summaryOfPairsOnEntity(e2)).toEqual([[1,2],[2,3]]);
+    expect(summaryOfPairsOnEntity(e3)).toEqual([[1,3],[2,3]]);
+
+    service.removeRelationship(r3);
+
+    expect(summaryOfPairsOnEntity(e1)).toEqual([[1,2],[1,3]]);
+    expect(summaryOfPairsOnEntity(e2)).toEqual([[1,2]]);
+    expect(summaryOfPairsOnEntity(e3)).toEqual([[1,3]]);
+
+  });
 });

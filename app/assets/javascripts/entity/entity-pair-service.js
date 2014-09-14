@@ -53,5 +53,9 @@
         this.updateList();
       }
     };
+
+    this.pairsOnEntity = function(entity) {
+      return dict.match(entity.id);
+    };
   });
 })();
