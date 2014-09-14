@@ -7,7 +7,7 @@ reaction manager (depends on entity pair service)
   call redraw manager on entity pair set
 
 redraw manager (depends on entity pair service)
-  call reset() on all entity pairs
+  call refresh() on all entity pairs
   develop an interaction hash: [key = entity+side; value = array of entity pairs on that side]
   convert interaction hash to array of arrays ([side][pairNum])
   for each side:
@@ -20,7 +20,7 @@ redraw manager (depends on entity pair service)
 
   for each side (again):
     for each pair:
-      get vacancy range
+      get side's current vacancy range
       call placeEndpoints(vacancy min, vacancy max)
       update vacancy range
 
@@ -34,12 +34,10 @@ entity pair service:
   pairsOnEntity(entity) -- maintain via a hash on add/remove to return this information quickly
 
 entity pair
-  pushDown() -- let the pair know there's someone above it (along the active coordinate) so the set should be drawn compactly in that direction if possible
-  pushUp() -- let the pair know there's someone below it (along the active coordinate) so the set should be drawn compactly in that direction if possible
+  constrainAbove(pos) -- let the pair know there's someone above it (along the active coordinate) so the set should be drawn compactly in that direction if possible
+  constrainBelow(pos) -- let the pair know there's someone below it (along the active coordinate) so the set should be drawn compactly in that direction if possible
   placeWide() -- used if neither pushed up nor down
   placeCompact(direction: [-1 or 1]) -- used if pushed up or down
   placeCentered() -- used if pushed both up and down. Uses weighted midpoint.
-
-  placeEndpoints(min, max) -- given known "push" directions, entity overlap range, and provided (min, max) coordinates to fit within: make the final endpoint placement, and return it
 
 

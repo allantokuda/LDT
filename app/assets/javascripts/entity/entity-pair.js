@@ -26,7 +26,6 @@
         this.calculateRelevantCoordinates();
         this.calculateOverlapRange();
         this.calculatePriority();
-        this.calculateAllConnectionPoints();
       }
 
       this.calculateOrientation = function() {
@@ -136,35 +135,38 @@
       // Make use of the virtual "inner left/right" coordinates
       // which automatically change meaning depending on orientation
       // to actually mean innerTop and innerBottom.
-      this.connectionPointPair = function(pos1, pos2) {
+      this.straightConnectionPointPair = function(pos) {
         if (this.orientation == 0) {
-          return [ { x: innerLeft,  y: pos1 },
-                   { x: innerRight, y: pos2 } ];
+          return [ { x: innerLeft,  y: pos },
+                   { x: innerRight, y: pos } ];
         } else {
-          return [ { x: pos1, y: innerLeft  },
-                   { x: pos2, y: innerRight } ];
+          return [ { x: pos, y: innerLeft  },
+                   { x: pos, y: innerRight } ];
         }
       }
 
-      this.calculateAllConnectionPoints = function() {
+      this.connectionPoints = function(min, max) {
         var count = this.relationships.length;
+        var result = [];
 
-        this.connectionPoints = [];
         // Single relationship gets centered on the space
         if (count == 1) {
-          this.connectionPoints.push(this.connectionPointPair(
-            this.overlapMidpoint, this.overlapMidpoint
-          ));
+          result.push(this.straightConnectionPointPair(this.overlapMidpoint));
 
         // Multiple relationships are spread evenly across the space
         } else if (count > 1) {
+          var x1 = this.overlapRange[0] + arrowHeadSize.width / 2;
+          var xn = this.overlapRange[1] - arrowHeadSize.width / 2;
+          var connectionRange = xn - x1;
+          var pos;
+
           for (var i=0; i<count; i++) {
-            this.connectionPoints.push(this.connectionPointPair(
-              // TODO fill-in real positions
-              this.overlapMidpoint, this.overlapMidpoint
-            ));
+            pos = x1 + connectionRange * i / (count - 1);
+            result.push(this.straightConnectionPointPair(pos));
           }
         }
+
+        return result;
       };
 
       this.refresh();

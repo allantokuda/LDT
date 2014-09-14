@@ -115,11 +115,25 @@ describe('Entity Pair', function() {
 
   it('centers a single relationship on the available space', function() {
     var e1 = { id: 1, x:   0, y:    0, width: 100, height: 100 };
-    var e2 = { id: 2, x: 200, y:   20, width: 100, height:  60 };
-    var r  = { entity1_id: 1, entity2_id: 2 }
+    var e2 = { id: 2, x: 200, y:   30, width: 100, height:  60 }; // overlap from y = 30 to 90
     var pair = new EntityPair(e1, e2);
     pair.relationships.push({})
     pair.refresh();
-    expect(pair.connectionPoints).toEqual([[{ x: 100, y: 50 }, { x: 200, y: 50 }]]);
+    expect(pair.connectionPoints()).toEqual([[{ x: 100, y: 60 }, { x: 200, y: 60 }]]);
+  });
+
+  it('distributes multiple relationships evenly across the available space', function() {
+    var e1 = { id: 1, x:   0, y:    0, width: 100, height: 100 };
+    var e2 = { id: 2, x: 200, y:   30, width: 100, height:  60 };
+    var pair = new EntityPair(e1, e2);
+    pair.relationships.push({})
+    pair.relationships.push({})
+    pair.relationships.push({})
+    pair.refresh();
+    expect(pair.connectionPoints()).toEqual([
+      [{ x: 100, y: 35 }, { x: 200, y: 35 }],
+      [{ x: 100, y: 60 }, { x: 200, y: 60 }],
+      [{ x: 100, y: 85 }, { x: 200, y: 85 }]
+    ]);
   });
 });
