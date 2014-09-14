@@ -50,5 +50,15 @@ describe('PairDictionary', function() {
     expect(p.values()).toEqual([3,4]);
   });
 
+  it('returns a list of items having at least one key that matches a given value (like an undirected graph)', function() {
+    p.set(1,1,3);
+    p.set(1,2,4);
+    expect(p.match(1)).toEqual([3,4]);
+    expect(p.match(2)).toEqual([4]);
+    expect(p.match(3)).toEqual([]);
 
+    p.delete(1,1);
+    expect(p.match(1)).toEqual([4]);
+    expect(p.match(2)).toEqual([4]);
+  });
 });
