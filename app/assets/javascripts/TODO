@@ -1,43 +1,35 @@
 graph controller
-  on load, call reaction manager on full set of entities
-  when set of entities is moved, call reaction manager on that set
-
-reaction manager (depends on entity pair service)
-  determine entity pairs that need a redraw (includes half-siblings of the relationships on the entities that moved)
-  call redraw manager on entity pair set
+  on load, call redraw manager on full set of entities
+  when set of entities is moved, call redraw manager on that set
 
 redraw manager (depends on entity pair service)
-  call refresh() on all entity pairs
-  develop an interaction hash: [key = entity+side; value = array of entity pairs on that side]
-  convert interaction hash to array of arrays ([side][pairNum])
-  for each side:
-    if count > 1:
-      sort its entity pair list by placement priority
-      loop from 1 to N-1:
-        call pushUp()
-      loop from 2 to N:
-        call pushDn()
+  call entitiesAffectedByMove to get the entities of interest
+  call pairsAffectedByMove to get the entity pairs of interest
+  call clear() on the affected entities
+  call refresh() on the affected entity pairs
+  sort entity pairs by attachment priority (globally in the set)
+  loop through entity pairs:
+    call attachment service for each
 
-  for each side (again):
-    for each pair:
-      get side's current vacancy range
-      call placeEndpoints(vacancy min, vacancy max)
-      update vacancy range
+attachment service:
+  has a method that takes an entity pair as an argument, and attaches all the relationships in the pair as a group.
+  these must be attached in a group to prevent the "crossover" bug in the previous implementation.
+  this service does not care about attachment priority -- this is the responsibility of the redraw manager.
+    look up each side, get vacancy ranges
+    place (mutate) each relationship's actual endpoints
+      if there is overlap that is big enough to fit all the relationships with straight lines, place them evenly spaced
+      else place them at the ends closest to each other to minimize skew
+    update each side's vacancy range based on the space occupied
 
 side
-  instantiated with entity
-  clear()
-  occupy(start, end) -- accept a coordinate range to be occupied (recalculate vacancy)
+  A simple space manager. Assumes space will be occupied from the ends (top and bottom) first.
+  Instantiated with entity.
+  clear() -- resets to blank state for fresh placement
+  occupyBottom(upToPosition) -- accept a chunk of space at the bottom to be occupied (and recalculate vacancy)
+  occupyTop(upToPosition)    -- accept a chunk of space at the top    to be occupied (and recalculate vacancy)
   vacancy -- the remaining space
 
 entity pair service:
   pairsOnEntity(entity) -- maintain via a hash on add/remove to return this information quickly
-
-entity pair
-  constrainAbove(pos) -- let the pair know there's someone above it (along the active coordinate) so the set should be drawn compactly in that direction if possible
-  constrainBelow(pos) -- let the pair know there's someone below it (along the active coordinate) so the set should be drawn compactly in that direction if possible
-  placeWide() -- used if neither pushed up nor down
-  placeCompact(direction: [-1 or 1]) -- used if pushed up or down
-  placeCentered() -- used if pushed both up and down. Uses weighted midpoint.
-
-
+  pairsAffectedByMove(entities) -- determine entity pairs that need a redraw due to a set of entities moving. Includes half-siblings of the relationships on the entities that moved.
+  entitiesAffectedByMove(entities) -- determine entities that may experience endpoint movement around their perimeter
