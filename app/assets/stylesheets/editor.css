@@ -93,8 +93,11 @@ span.toolbar-separator {
 #editor.identifier_bar #identifier-bar-button
  { background-color: #bbb; }
 
-path.relationship, path.arrowhead {
+path {
   fill: none;
+}
+
+path.relationship, path.arrowhead {
   stroke: black;
   stroke-width: 1px
 }
