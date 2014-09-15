@@ -6,6 +6,8 @@ app.controller('EditorCtrl', ['$scope', function($scope) {
 
   $scope.editor = new Object;
   $scope.graph = new Object;
+  $scope.graph.panX = 0;
+  $scope.graph.panY = 0;
 
   var graphID;
   var path_regex = /graphs\/([^\/]+)\/edit/;
@@ -63,6 +65,11 @@ app.controller('EditorCtrl', ['$scope', function($scope) {
       $scope.graph.createEntity(x,y);
 
     setMode('select');
+  };
+
+  $scope.handleCanvasDrag = function(ev) {
+    $scope.graph.panX += ev.originalEvent.movementX;
+    $scope.graph.panY += ev.originalEvent.movementY;
   };
 
   $scope.handleEntityClick = function(entity) {

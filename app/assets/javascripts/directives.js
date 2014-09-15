@@ -66,10 +66,10 @@ app.directive('moveWith',function() {
   return {
     link: function (scope, element, iAttrs, ctrl) {
       element.draggable({
-        drag: function() {
+        drag: function(e) {
           scope.$apply(function read() {
-            scope[iAttrs.moveWith].x = parseInt(element.css('left'),10);
-            scope[iAttrs.moveWith].y = parseInt(element.css('top'),10);
+            scope[iAttrs.moveWith].x = parseInt(element.css('left'),10) - scope.graph.panX; //hack
+            scope[iAttrs.moveWith].y = parseInt(element.css('top' ),10) - scope.graph.panY; //hack
           });
         }
       });
@@ -209,6 +209,26 @@ app.directive('relativeClick',function() {
         scope.$apply(function() {
           scope[scopeFunctionName](relativeX, relativeY);
         });
+      });
+    }
+  };
+});
+
+
+app.directive('drag',function() {
+  return {
+    link: function(scope, element, iAttrs, ctrl) {
+      var scopeFunctionName = iAttrs.drag;
+
+      $(element).mousedown(function(ev) { scope.dragging = true;  });
+      $(element).mouseup  (function(ev) { scope.dragging = false; });
+
+      $(element).mousemove(function(ev) {
+        if (scope.dragging) {
+          scope.$apply(function() {
+            scope[scopeFunctionName](ev);
+          });
+        }
       });
     }
   };
