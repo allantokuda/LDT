@@ -62,19 +62,65 @@ app.directive('forwardEvent',function() {
 */
 
 // Setup entities to be draggable and bind their position to the scope
-app.directive('moveWith',function() {
+app.directive('moveAndResize',function() {
   return {
     link: function (scope, element, iAttrs, ctrl) {
-      var subject = scope[iAttrs.moveWith];
+      var subject = scope[iAttrs.moveAndResize];
       var dragging = false;
-      var dragStartX, dragStartY, dragStartMouseX, dragStartMouseY;
+      var dragType,
+          dragStartX, dragStartY,
+          dragStartMouseX, dragStartMouseY,
+          dragStartWidth, dragStartHeight;
+
+      var TOLERANCE = 10;
+
+      // 0: move, 1: resize-left, 2: resize-right, 3: resize-top: 4: resize-bottom
+      function setDragType(ev) {
+               if (dragStartMouseX < parseInt(element.offset().left) + TOLERANCE) {
+          dragType = 1;
+        } else if (dragStartMouseX > parseInt(element.offset().left) + parseInt(element.width()) - TOLERANCE) {
+          dragType = 2;
+        } else if (dragStartMouseY < parseInt(element.offset().top) + TOLERANCE) {
+          dragType = 3;
+        } else if (dragStartMouseY > parseInt(element.offset().top) + parseInt(element.height()) - TOLERANCE) {
+          dragType = 4;
+        } else {
+          dragType = 0;
+        }
+      }
+
+      function actionByDragType(ev) {
+        switch(dragType) {
+          case 0:
+            subject.x = dragStartX + ev.pageX - dragStartMouseX;
+            subject.y = dragStartY + ev.pageY - dragStartMouseY;
+            break;
+          case 1:
+            subject.x      = dragStartX      + ev.pageX - dragStartMouseX;
+            subject.width  = dragStartWidth  - ev.pageX + dragStartMouseX;
+            break;
+          case 2:
+            subject.width  = dragStartWidth  + ev.pageX - dragStartMouseX;
+            break;
+          case 3:
+            subject.y      = dragStartY      + ev.pageY - dragStartMouseY;
+            subject.height = dragStartHeight - ev.pageY + dragStartMouseY;
+            break;
+          case 4:
+            subject.height = dragStartHeight + ev.pageY - dragStartMouseY;
+            break;
+        }
+      }
 
       function startDrag(ev) {
         dragging = true;
         dragStartX = subject.x;
         dragStartY = subject.y;
+        dragStartWidth = subject.width;
+        dragStartHeight = subject.height;
         dragStartMouseX = ev.pageX;
         dragStartMouseY = ev.pageY;
+        setDragType();
         ev.stopPropagation();
       };
 
@@ -84,10 +130,7 @@ app.directive('moveWith',function() {
 
       function moveDrag(ev) {
         if (dragging) {
-          scope.$apply(function() {
-            subject.x = dragStartX + ev.pageX - dragStartMouseX;
-            subject.y = dragStartY + ev.pageY - dragStartMouseY;
-          });
+          scope.$apply(actionByDragType(ev));
         }
         // prevent highlighting action (annoying)
         ev.preventDefault();

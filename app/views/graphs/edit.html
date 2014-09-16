@@ -28,14 +28,13 @@
         <button action hotkey="c-n" id="new-button">New</button>
     </div>
 
-    <div id="canvas" ng-controller="GraphCtrl" move-with="pan" relative-click="handleCanvasClick" deselector>
+    <div id="canvas" ng-controller="GraphCtrl" move-and-resize="pan" relative-click="handleCanvasClick" deselector>
 
         <div class="ghost-entity" stick-to-mouse>Click to place new entity</div>
 
         <div class="entity-border"
              ng-repeat="entity in graph.entities"
-             move-with="entity"
-             resize-with="entity"
+             move-and-resize="entity"
              ng-style="{ left: pan.x + entity.x, top: pan.y + entity.y, width: entity.width, height: entity.height }"
              ng-controller="EntityCtrl">
 
