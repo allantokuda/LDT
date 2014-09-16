@@ -28,7 +28,7 @@
         <button action hotkey="c-n" id="new-button">New</button>
     </div>
 
-    <div id="canvas" ng-controller="GraphCtrl" relative-click="handleCanvasClick" deselector>
+    <div id="canvas" ng-controller="GraphCtrl" move-with="pan" relative-click="handleCanvasClick" deselector>
 
         <div class="ghost-entity" stick-to-mouse>Click to place new entity</div>
 
@@ -36,7 +36,7 @@
              ng-repeat="entity in graph.entities"
              move-with="entity"
              resize-with="entity"
-             ng-style="{ left: graph.panX + entity.x, top: graph.panY + entity.y, width: entity.width, height: entity.height }"
+             ng-style="{ left: pan.x + entity.x, top: pan.y + entity.y, width: entity.width, height: entity.height }"
              ng-controller="EntityCtrl">
 
             <div class="select-shield" catch-input ng-click="handleEntityClick(entity)">
@@ -80,7 +80,7 @@
              ng-repeat="endpoint in graph.endpoints"
              ng-controller="EndpointCtrl"
              ng-click="handleLabelClick(label.id,$event)"
-             ng-style="{ left: graph.panX + endpoint.x, top: graph.panY + endpoint.y }"
+             ng-style="{ left: pan.x + endpoint.x, top: pan.y + endpoint.y }"
              select-with="dblclick as endpoint"
              catch-input
              auto-focus="input on dblclick">
@@ -96,8 +96,8 @@
             </div>
         </div>
 
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" drag="handleCanvasDrag">
-          <g transform="translate({{graph.panX}},{{graph.panY}})">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+          <g transform="translate({{pan.x}},{{pan.y}})">
             <!-- embedded "stroke: black" style here for Safari which won't recognize styles applied to <path> elements by CSS class -->
             <path class="relationship" ng-repeat="r in graph.relationships" ng-attr-d="{{r.svgPath()}}"       style="stroke: black"></path>
             <path class="arrowhead"    ng-repeat="e in graph.endpoints"     ng-attr-d="{{e.arrowheadPath()}}" style="stroke: black"></path>

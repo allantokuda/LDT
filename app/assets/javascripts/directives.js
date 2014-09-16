@@ -65,13 +65,36 @@ app.directive('forwardEvent',function() {
 app.directive('moveWith',function() {
   return {
     link: function (scope, element, iAttrs, ctrl) {
-      element.draggable({
-        drag: function(e) {
-          scope.$apply(function read() {
-            scope[iAttrs.moveWith].x = parseInt(element.css('left'),10) - scope.graph.panX; //hack
-            scope[iAttrs.moveWith].y = parseInt(element.css('top' ),10) - scope.graph.panY; //hack
+      var subject = scope[iAttrs.moveWith];
+      var dragging = false;
+      var dragStartX, dragStartY, dragStartMouseX, dragStartMouseY;
+
+      $(element).mousedown(function(ev) {
+        dragging = true;
+        dragStartX = subject.x;
+        dragStartY = subject.y;
+        dragStartMouseX = ev.pageX;
+        dragStartMouseY = ev.pageY;
+        ev.stopPropagation();
+      });
+
+      $('body').mouseup(function(ev) {
+        dragging = false;
+      });
+
+      $('body').mouseleave(function(ev) {
+        dragging = false;
+      });
+
+      $('body').mousemove(function(ev) {
+        if (dragging) {
+          scope.$apply(function() {
+            subject.x = dragStartX + ev.pageX - dragStartMouseX;
+            subject.y = dragStartY + ev.pageY - dragStartMouseY;
           });
         }
+        // prevent highlighting action (annoying)
+        ev.preventDefault();
       });
     }
   };

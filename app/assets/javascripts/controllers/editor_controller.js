@@ -6,8 +6,7 @@ app.controller('EditorCtrl', ['$scope', function($scope) {
 
   $scope.editor = new Object;
   $scope.graph = new Object;
-  $scope.graph.panX = 0;
-  $scope.graph.panY = 0;
+  $scope.pan = { x: 0, y: 0 }
 
   var graphID;
   var path_regex = /graphs\/([^\/]+)\/edit/;
