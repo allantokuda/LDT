@@ -16,11 +16,7 @@ describe('directives', function() {
       })
     );
 
-    it('should make the element draggable', function() {
-      expect(element).toHaveClass('ui-draggable');
-    });
-
-    it('should bind a scope variable to the element size', function() {
+    it('should bind a scope variable to the element position', function() {
       element.scope().entity = {};
       element.scope().entity.x = 150;
       element.scope().entity.y = 200;

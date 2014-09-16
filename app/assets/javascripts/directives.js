@@ -69,24 +69,20 @@ app.directive('moveWith',function() {
       var dragging = false;
       var dragStartX, dragStartY, dragStartMouseX, dragStartMouseY;
 
-      $(element).mousedown(function(ev) {
+      function startDrag(ev) {
         dragging = true;
         dragStartX = subject.x;
         dragStartY = subject.y;
         dragStartMouseX = ev.pageX;
         dragStartMouseY = ev.pageY;
         ev.stopPropagation();
-      });
+      };
 
-      $('body').mouseup(function(ev) {
+      function stopDrag(ev) {
         dragging = false;
-      });
+      };
 
-      $('body').mouseleave(function(ev) {
-        dragging = false;
-      });
-
-      $('body').mousemove(function(ev) {
+      function moveDrag(ev) {
         if (dragging) {
           scope.$apply(function() {
             subject.x = dragStartX + ev.pageX - dragStartMouseX;
@@ -95,7 +91,12 @@ app.directive('moveWith',function() {
         }
         // prevent highlighting action (annoying)
         ev.preventDefault();
-      });
+      };
+
+      $(element).mousedown(startDrag);
+      $(document).mouseup(stopDrag);
+      $(document).mouseleave(stopDrag);
+      $(document).mousemove(moveDrag);
     }
   };
 });
