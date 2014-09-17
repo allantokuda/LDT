@@ -116,6 +116,12 @@ path.relationship, path.arrowhead {
 
 path.click-path { fill: none; stroke: none; }
 
+#editor path.syntaxError {
+  fill: none;
+  stroke: rgba(255,0,0,0.25);
+  stroke-width: 30px;
+}
+
 #editor.delete_item path.click-path {
   fill: none;
   stroke: rgba(255,230,230,0.75);

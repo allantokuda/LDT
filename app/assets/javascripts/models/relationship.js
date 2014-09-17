@@ -7,6 +7,7 @@ window.Relationship = function(id, entity1, entity2) {
   ];
   this.endpoints[0].partner = this.endpoints[1];
   this.endpoints[1].partner = this.endpoints[0];
+  this.syntaxErrors = "";
 
   this.svgPath = function() {
 
@@ -42,4 +43,30 @@ window.Relationship = function(id, entity1, entity2) {
       label2     : this.endpoints[1].label
     };
   };
+
+  this.syntaxError = function() {
+    result = false;
+    this.syntaxErrors = "";
+    if (this.twoBarSyntaxError()) {
+      this.syntaxErrors += "ERROR: Both links of a relationship cannot contribute to identifiers.\n";
+      result = true;
+    }
+    if (this.oneBeSyntaxError()) {
+      this.syntaxErrors += "ERROR: If one side of a relationship is 'be' then the other side also must be.\n";
+      result = true;
+    }
+    this.syntaxErrors = this.syntaxErrors.trimRight();
+    return result;
+  }
+
+  this.twoBarSyntaxError = function() {
+    return this.endpoints[0].symbol.match('identifier') &&
+           this.endpoints[1].symbol.match('identifier');
+  }
+
+  this.oneBeSyntaxError = function() {
+    var be1 = (this.endpoints[0].label.toLowerCase() == 'be');
+    var be2 = (this.endpoints[1].label.toLowerCase() == 'be');
+    return (!be1 != !be2) // XOR
+  }
 };
