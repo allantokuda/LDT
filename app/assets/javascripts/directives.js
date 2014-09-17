@@ -88,17 +88,22 @@ app.directive('moveAndResize',function() {
           dragStartMouseX, dragStartMouseY,
           dragStartWidth, dragStartHeight;
 
-      var TOLERANCE = 10;
+      var GRIDSIZE  = 10;
+      var BORDER_HANDLE_SIZE = 10;
+
+      function grid(n) {
+        return Math.floor((n + GRIDSIZE/2.0)/GRIDSIZE)*GRIDSIZE
+      }
 
       // 0: move, 1: resize-left, 2: resize-right, 3: resize-top: 4: resize-bottom
       function boxBorderArea(x,y) {
-               if (x < parseInt(element.offset().left) + TOLERANCE) {
+               if (x < parseInt(element.offset().left) + BORDER_HANDLE_SIZE) {
           return 1;
-        } else if (x > parseInt(element.offset().left) + parseInt(element.width()) - TOLERANCE) {
+        } else if (x > parseInt(element.offset().left) + parseInt(element.width()) - BORDER_HANDLE_SIZE) {
           return 2;
-        } else if (y < parseInt(element.offset().top) + TOLERANCE) {
+        } else if (y < parseInt(element.offset().top) + BORDER_HANDLE_SIZE) {
           return 3;
-        } else if (y > parseInt(element.offset().top) + parseInt(element.height()) - TOLERANCE) {
+        } else if (y > parseInt(element.offset().top) + parseInt(element.height()) - BORDER_HANDLE_SIZE) {
           return 4;
         } else {
           return 0;
@@ -108,22 +113,22 @@ app.directive('moveAndResize',function() {
       function actionByDragType(ev) {
         switch(dragType) {
           case 0:
-            subject.x = dragStartX + ev.pageX - dragStartMouseX;
-            subject.y = dragStartY + ev.pageY - dragStartMouseY;
+            subject.x      = grid(dragStartX      + ev.pageX - dragStartMouseX);
+            subject.y      = grid(dragStartY      + ev.pageY - dragStartMouseY);
             break;
           case 1:
-            subject.x      = dragStartX      + ev.pageX - dragStartMouseX;
-            subject.width  = dragStartWidth  - ev.pageX + dragStartMouseX;
+            subject.x      = grid(dragStartX      + ev.pageX - dragStartMouseX);
+            subject.width  = grid(dragStartWidth  - ev.pageX + dragStartMouseX);
             break;
           case 2:
-            subject.width  = dragStartWidth  + ev.pageX - dragStartMouseX;
+            subject.width  = grid(dragStartWidth  + ev.pageX - dragStartMouseX);
             break;
           case 3:
-            subject.y      = dragStartY      + ev.pageY - dragStartMouseY;
-            subject.height = dragStartHeight - ev.pageY + dragStartMouseY;
+            subject.y      = grid(dragStartY      + ev.pageY - dragStartMouseY);
+            subject.height = grid(dragStartHeight - ev.pageY + dragStartMouseY);
             break;
           case 4:
-            subject.height = dragStartHeight + ev.pageY - dragStartMouseY;
+            subject.height = grid(dragStartHeight + ev.pageY - dragStartMouseY);
             break;
         }
       }
