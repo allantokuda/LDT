@@ -63,7 +63,7 @@ app.controller('EditorCtrl', ['$scope', function($scope) {
 
   $scope.handleCanvasClick = function(x,y) {
     if ($scope.editor.mode == 'new_entity')
-      $scope.graph.createEntity(x,y);
+      $scope.graph.createEntity(x - $scope.pan.x, y - $scope.pan.y);
 
     setMode('select');
   };
