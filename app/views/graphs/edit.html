@@ -49,7 +49,7 @@
                 <span class="entity-name">{{entity.name}}</span>
                 <input class="entity-name-input"
                        ng-model="entity.name"
-                       catch-input>
+                       catch-input no-drag>
             </div>
 
             <div class="entity-body"
@@ -60,7 +60,7 @@
                 <textarea class="attribute-input"
                           ng-model="entity.attributes"
                           ng-style="{ height: (entity.height - 70) + 'px' }"
-                          catch-input></textarea>
+                          catch-input no-drag></textarea>
 
                 <div class="attribute"
                      ng-repeat="attribute in entity.attributes.split('\n')"
@@ -89,7 +89,7 @@
 
                 <span catch-input>{{endpoint.label}}</span>
 
-                <input ng-model="endpoint.label"
+                <input ng-model="endpoint.label" no-drag
                        ng-click="handleLabelClick(label.id,$event)">
 
             </div>

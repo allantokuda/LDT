@@ -11,14 +11,30 @@ app.directive('appVersion', ['version', function(version) {
 app.directive('catchInput',function() {
   return {
     link: function(scope, element, iAttrs, ctrl) {
+      function stopit(e) {
+        e.stopPropagation();
+      };
+
       //Don't allow clicks to change mode
-      element.click(function(e) {
-        e.stopPropagation();
-      });
+      element.click(stopit);
+
       //Don't allow renaming keypresses to change mode
-      element.keypress(function(e) {
+      element.keypress(stopit);
+    }
+  };
+});
+
+
+//Don't allow dragging that begins on this element to cause anything else to move
+app.directive('noDrag',function() {
+  return {
+    link: function(scope, element, iAttrs, ctrl) {
+      function stopit(e) {
         e.stopPropagation();
-      });
+      };
+      element.mousemove(stopit);
+
+      element.mousedown(stopit);
     }
   };
 });
