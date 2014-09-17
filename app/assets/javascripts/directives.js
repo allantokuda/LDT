@@ -267,10 +267,11 @@ app.directive('hotkey',function() {
 app.directive('stickToMouse',function() {
   return {
     link: function(scope, element, iAttrs, ctrl) {
-      $(window).mousemove(function(e) {
+      function follow(e) {
         element.css('left', e.pageX - element[0].parentElement.offsetLeft);
         element.css('top',  e.pageY - element[0].parentElement.offsetTop);
-      });
+      };
+      $(document).mousemove(follow);
     }
   };
 });
