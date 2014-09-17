@@ -24,6 +24,8 @@ app.controller('EditorCtrl', ['$scope', function($scope) {
         $scope.$apply(function() {
           $scope.graph.id = graphID;
           $scope.graph.name = data.name;
+          $scope.pan.x = data.pan_x || 0;
+          $scope.pan.y = data.pan_y || 0;
 
           $scope.graph.entities = [];
           $scope.graph.relationships = [];
@@ -145,7 +147,9 @@ app.controller('EditorCtrl', ['$scope', function($scope) {
 
     var graphData = {
       id        : $scope.graph.id,
-      name      : $scope.graph.name
+      name      : $scope.graph.name,
+      pan_x     : $scope.pan.x,
+      pan_y     : $scope.pan.y
     };
     graphData.entities      = _.map($scope.graph.entities,      function(e) { return e.saveObject(); });
     graphData.relationships = _.map($scope.graph.relationships, function(r) { return r.saveObject(); });
