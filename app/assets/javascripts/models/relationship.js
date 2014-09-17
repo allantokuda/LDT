@@ -55,7 +55,9 @@ window.Relationship = function(id, entity1, entity2) {
       this.oneOneUnlabeledSyntaxError(d) +
       this.multiIdOnOneOneLinkSyntaxError(d) +
       this.singleIdOnDegreeOneLinkOfOneManyRelationshipSyntaxError(d) +
-      this.multiIdOnDegreeManyLinkOfOneManyRelationshipSyntaxError(d)
+      this.multiIdOnDegreeManyLinkOfOneManyRelationshipSyntaxError(d) +
+      this.unlabledReflexiveSyntaxError(d) +
+      this.reflexiveInIdentifierSyntaxError(d)
 
 
     this.syntaxErrors = this.syntaxErrors.trimRight();
@@ -77,6 +79,7 @@ window.Relationship = function(id, entity1, entity2) {
       be2:      this.endpoints[1].label.toLowerCase() == 'be',
       atid1:  !!this.endpoints[0].entity.attributes.match("\\*$\|\\*\n"),
       atid2:  !!this.endpoints[1].entity.attributes.match("\\*$\|\\*\n"),
+      reflex:   this.endpoints[0].entity.id == this.endpoints[1].entity.id,
     }
     data.be = data.be1 || data.be2;
     data.labeled = data.label1 || data.label2;
@@ -114,5 +117,13 @@ window.Relationship = function(id, entity1, entity2) {
   this.multiIdOnDegreeManyLinkOfOneManyRelationshipSyntaxError = function(d) {
     return ((d.id1 && d.atid1 && d.one1 && d.many2) ||
             (d.id2 && d.atid2 && d.one2 && d.many1)) ? "ERROR: A multiple-descriptor identifier cannot include the degree-many link of a one-many relationship\n" : ""
+  }
+
+  this.unlabledReflexiveSyntaxError = function(d) {
+    return (!d.labeled && d.reflex) ? "ERROR: All reflexive relationships must have labels" : ""
+  }
+
+  this.reflexiveInIdentifierSyntaxError = function(d) {
+    return (d.reflex && (d.id1 || d.id2)) ? "ERROR: No link of a reflexive relationship can contribute to an identifier" : ""
   }
 };
