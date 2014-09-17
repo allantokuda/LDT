@@ -46,45 +46,51 @@ window.Relationship = function(id, entity1, entity2) {
 
   this.syntaxError = function() {
     result = false;
+    d = this.endpointSyntaxData();
+
     this.syntaxErrors =
-      this.twoBarSyntaxError() +
-      this.oneBeSyntaxError() +
-      this.oneLabelSyntaxError() +
-      this.oneOneUnlabeledSyntaxError()
+      this.twoBarSyntaxError(d) +
+      this.oneBeSyntaxError(d) +
+      this.oneLabelSyntaxError(d) +
+      this.oneOneUnlabeledSyntaxError(d)
 
     this.syntaxErrors = this.syntaxErrors.trimRight();
 
     return this.syntaxErrors.length > 0;
   }
 
-  this.twoBarSyntaxError = function() {
-    var id1 = this.endpoints[0].symbol.match('identifier');
-    var id2 = this.endpoints[1].symbol.match('identifier');
-    return (id1 && id2) ? "ERROR: Both links of a relationship cannot contribute to identifiers.\n" : ""
+  this.endpointSyntaxData = function() {
+    var data = {
+      id1:    this.endpoints[0].symbol.match('identifier'),
+      id2:    this.endpoints[1].symbol.match('identifier'),
+      one1:   this.endpoints[0].symbol == 'none',
+      one2:   this.endpoints[1].symbol == 'none',
+      many1:  this.endpoints[0].symbol.match('chickenfoot'),
+      many2:  this.endpoints[1].symbol.match('chickenfoot'),
+      label1: this.endpoints[0].label.trim().length > 0,
+      label2: this.endpoints[1].label.trim().length > 0,
+      be1:    this.endpoints[0].label.toLowerCase() == 'be',
+      be2:    this.endpoints[1].label.toLowerCase() == 'be',
+    }
+    data.be = data.be1 || data.be2;
+    data.labeled = data.label1 || data.label2;
+
+    return data;
   }
 
-  this.oneBeSyntaxError = function() {
-    var be1 = (this.endpoints[0].label.toLowerCase() == 'be');
-    var be2 = (this.endpoints[1].label.toLowerCase() == 'be');
-    return (!be1 != !be2) ? "ERROR: If one side of a relationship is 'be' then the other side also must be.\n" : ""
+  this.twoBarSyntaxError = function(d) {
+    return (d.id1 && d.id2) ? "ERROR: Both links of a relationship cannot contribute to identifiers.\n" : ""
   }
 
-  this.oneLabelSyntaxError = function() {
-    var label1 = (this.endpoints[0].label.trim().length > 0);
-    var label2 = (this.endpoints[1].label.trim().length > 0);
-    return (!label1 != !label2) ? "ERROR: A relationship must have either two labels or zero labels\n" : ""
-      // XOR
+  this.oneBeSyntaxError = function(d) {
+    return (!d.be1 != !d.be2) ? "ERROR: If one side of a relationship is 'be' then the other side also must be.\n" : ""
   }
 
-  this.oneOneUnlabeledSyntaxError = function() {
-    var label1 = (this.endpoints[0].label.trim().length > 0);
-    var label2 = (this.endpoints[1].label.trim().length > 0);
-    var one1   = (this.endpoints[0].symbol == 'none');
-    var one2   = (this.endpoints[1].symbol == 'none');
-    /*
-    var many1  = (this.endpoints[0].symbol.match('chickenfoot'));
-    var many2  = (this.endpoints[1].symbol.match('chickenfoot'));
-    */
-    return (!label1 && !label2 && one1 && one2) ? "ERROR: A one-one relationship must have labels\n" : ""
+  this.oneLabelSyntaxError = function(d) {
+    return (!d.label1 != !d.label2) ? "ERROR: A relationship must have either two labels or zero labels\n" : ""
+  }
+
+  this.oneOneUnlabeledSyntaxError = function(d) {
+    return (!d.label1 && !d.label2 && d.one1 && d.one2) ? "ERROR: A one-one relationship must have labels\n" : ""
   }
 };
