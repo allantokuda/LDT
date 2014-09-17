@@ -46,27 +46,45 @@ window.Relationship = function(id, entity1, entity2) {
 
   this.syntaxError = function() {
     result = false;
-    this.syntaxErrors = "";
-    if (this.twoBarSyntaxError()) {
-      this.syntaxErrors += "ERROR: Both links of a relationship cannot contribute to identifiers.\n";
-      result = true;
-    }
-    if (this.oneBeSyntaxError()) {
-      this.syntaxErrors += "ERROR: If one side of a relationship is 'be' then the other side also must be.\n";
-      result = true;
-    }
+    this.syntaxErrors =
+      this.twoBarSyntaxError() +
+      this.oneBeSyntaxError() +
+      this.oneLabelSyntaxError() +
+      this.oneOneUnlabeledSyntaxError()
+
     this.syntaxErrors = this.syntaxErrors.trimRight();
-    return result;
+
+    return this.syntaxErrors.length > 0;
   }
 
   this.twoBarSyntaxError = function() {
-    return this.endpoints[0].symbol.match('identifier') &&
-           this.endpoints[1].symbol.match('identifier');
+    var id1 = this.endpoints[0].symbol.match('identifier');
+    var id2 = this.endpoints[1].symbol.match('identifier');
+    return (id1 && id2) ? "ERROR: Both links of a relationship cannot contribute to identifiers.\n" : ""
   }
 
   this.oneBeSyntaxError = function() {
     var be1 = (this.endpoints[0].label.toLowerCase() == 'be');
     var be2 = (this.endpoints[1].label.toLowerCase() == 'be');
-    return (!be1 != !be2) // XOR
+    return (!be1 != !be2) ? "ERROR: If one side of a relationship is 'be' then the other side also must be.\n" : ""
+  }
+
+  this.oneLabelSyntaxError = function() {
+    var label1 = (this.endpoints[0].label.trim().length > 0);
+    var label2 = (this.endpoints[1].label.trim().length > 0);
+    return (!label1 != !label2) ? "ERROR: A relationship must have either two labels or zero labels\n" : ""
+      // XOR
+  }
+
+  this.oneOneUnlabeledSyntaxError = function() {
+    var label1 = (this.endpoints[0].label.trim().length > 0);
+    var label2 = (this.endpoints[1].label.trim().length > 0);
+    var one1   = (this.endpoints[0].symbol == 'none');
+    var one2   = (this.endpoints[1].symbol == 'none');
+    /*
+    var many1  = (this.endpoints[0].symbol.match('chickenfoot'));
+    var many2  = (this.endpoints[1].symbol.match('chickenfoot'));
+    */
+    return (!label1 && !label2 && one1 && one2) ? "ERROR: A one-one relationship must have labels\n" : ""
   }
 };
