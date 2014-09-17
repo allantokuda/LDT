@@ -61,7 +61,7 @@ app.directive('forwardEvent',function() {
 });
 */
 
-// Setup entities to be draggable and bind their position to the scope
+// Setup a rectangular element to be movable and resizable, and bind its position to the scope
 app.directive('moveAndResize',function() {
   return {
     link: function (scope, element, iAttrs, ctrl) {
@@ -75,17 +75,17 @@ app.directive('moveAndResize',function() {
       var TOLERANCE = 10;
 
       // 0: move, 1: resize-left, 2: resize-right, 3: resize-top: 4: resize-bottom
-      function setDragType(ev) {
-               if (dragStartMouseX < parseInt(element.offset().left) + TOLERANCE) {
-          dragType = 1;
-        } else if (dragStartMouseX > parseInt(element.offset().left) + parseInt(element.width()) - TOLERANCE) {
-          dragType = 2;
-        } else if (dragStartMouseY < parseInt(element.offset().top) + TOLERANCE) {
-          dragType = 3;
-        } else if (dragStartMouseY > parseInt(element.offset().top) + parseInt(element.height()) - TOLERANCE) {
-          dragType = 4;
+      function boxBorderArea(x,y) {
+               if (x < parseInt(element.offset().left) + TOLERANCE) {
+          return 1;
+        } else if (x > parseInt(element.offset().left) + parseInt(element.width()) - TOLERANCE) {
+          return 2;
+        } else if (y < parseInt(element.offset().top) + TOLERANCE) {
+          return 3;
+        } else if (y > parseInt(element.offset().top) + parseInt(element.height()) - TOLERANCE) {
+          return 4;
         } else {
-          dragType = 0;
+          return 0;
         }
       }
 
@@ -112,6 +112,16 @@ app.directive('moveAndResize',function() {
         }
       }
 
+      function setCursor(ev) {
+        switch(boxBorderArea(ev.pageX, ev.pageY)) {
+          case 0: element.css('cursor', 'default' ); break;
+          case 1: element.css('cursor', 'w-resize'); break;
+          case 2: element.css('cursor', 'e-resize'); break;
+          case 3: element.css('cursor', 'n-resize'); break;
+          case 4: element.css('cursor', 's-resize'); break;
+        }
+      }
+
       function startDrag(ev) {
         dragging = true;
         dragStartX = subject.x;
@@ -120,7 +130,7 @@ app.directive('moveAndResize',function() {
         dragStartHeight = subject.height;
         dragStartMouseX = ev.pageX;
         dragStartMouseY = ev.pageY;
-        setDragType();
+        dragType = boxBorderArea(ev.pageX, ev.pageY);
         ev.stopPropagation();
       };
 
@@ -134,12 +144,14 @@ app.directive('moveAndResize',function() {
         }
         // prevent highlighting action (annoying)
         ev.preventDefault();
+        ev.stopPropagation();
       };
 
       $(element).mousedown(startDrag);
       $(document).mouseup(stopDrag);
       $(document).mouseleave(stopDrag);
       $(document).mousemove(moveDrag);
+      $(element).mousemove(setCursor);
     }
   };
 });
