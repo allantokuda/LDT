@@ -177,23 +177,6 @@ app.directive('moveAndResize',function() {
   };
 });
 
-// Setup entities to be draggable and bind their position to the scope
-app.directive('resizeWith',function() {
-  return {
-    link: function (scope, element, iAttrs, ctrl) {
-      element.resizable({
-        resize: function() {
-          scope.$apply(function read() {
-            scope[iAttrs.moveWith].width = parseInt(element.css('width'),10);
-            scope[iAttrs.moveWith].height = parseInt(element.css('height'),10);
-          });
-        }
-      });
-    }
-  };
-});
-
-
 // Setup entities to be draggable and resizable, and bind to the scope
 app.directive('selectWith',function() {
   return {
