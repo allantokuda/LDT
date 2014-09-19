@@ -44,7 +44,7 @@ class GraphsController < ApplicationController
   # POST /graphs.json
   def create
     if current_user_id
-      user_params = params[:graph].merge({ :user_id => current_user_id })
+      user_params = graph_params[:graph].merge({ :user_id => current_user_id })
       @graph = Graph.create_from_request user_params
 
       respond_to do |format|
@@ -64,7 +64,7 @@ class GraphsController < ApplicationController
   # PUT /graphs/1
   # PUT /graphs/1.json
   def update
-    @graph.update_attributes_from_request(params[:graph])
+    @graph.update_attributes_from_request(graph_params[:graph])
     render :json => "OK", :status => :ok
   end
 
@@ -92,12 +92,18 @@ class GraphsController < ApplicationController
   end
 
   def load_and_authorize_graph
-    if @graph = Graph.find_and_parse(params[:id])
+    if @graph = Graph.find_and_parse(graph_params[:id])
       if @graph.user_id && @graph.user_id != current_user_id
         render :json => [], :status => :unauthorized
       end
     else
       render :json => [], :status => :not_found
     end
+  end
+
+  private
+
+  def graph_params
+    params.permit(:id, :graph)
   end
 end
