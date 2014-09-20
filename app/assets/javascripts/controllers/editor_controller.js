@@ -174,7 +174,6 @@ app.controller('EditorCtrl', ['$scope', function($scope) {
       });
   };
 
-
   // Action buttons / hotkeys
 
   $scope.newCommand             = function() { window.location = '/graphs/new'; };
