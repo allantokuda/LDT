@@ -33,6 +33,8 @@ class Graph < ActiveRecord::Base
   end
 
   def update_attributes_from_request(params_graph_json)
+    params_graph_json["entities"]      ||= []
+    params_graph_json["relationships"] ||= []
     update_attributes(self.class.parse_base_parameters(params_graph_json))
   end
 
