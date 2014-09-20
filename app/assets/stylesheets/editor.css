@@ -51,10 +51,16 @@ input {
   left: 0px;
 }
 
-#toolbar button {
+#toolbar button, #toolbar label {
   background: inherit;
+	font-size: inherit;
   border: none;
   padding: 0.5em 1em;
+}
+
+/* Syntax error checkbox */
+#toolbar label input {
+	margin-right: 0.5em;
 }
 
 span.toolbar-separator {
@@ -102,7 +108,8 @@ span.toolbar-separator {
 #editor.label_pick #label-button,
 #editor.label_enter #label-button,
 #editor.chickenfoot #chickenfoot-button,
-#editor.identifier_bar #identifier-bar-button
+#editor.identifier_bar #identifier-bar-button,
+#editor.showSyntaxErrors #syntax-errors-button
  { background-color: #bbb; }
 
 path {
@@ -116,7 +123,7 @@ path.relationship, path.arrowhead {
 
 path.click-path { fill: none; stroke: none; }
 
-#editor path.syntaxError {
+#editor.showSyntaxErrors path.syntaxError {
   fill: none;
   stroke: rgba(255,0,0,0.25);
   stroke-width: 30px;

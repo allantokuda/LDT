@@ -1,4 +1,4 @@
-<div id="editor" ng-controller="EditorCtrl" ng-class="editor.mode">
+<div id="editor" ng-controller="EditorCtrl" ng-class="editor.mode + ' ' + (showSyntaxErrors ? 'showSyntaxErrors' : '')">
 
     <!-- DEBUG -->
     <!--
@@ -27,6 +27,9 @@
           <div class="positioner"><div id="save-message">{{ editor.saveMessage }}</div></div>
           <button action hotkey="c-s" id="save-button">Save</button>
           <button action hotkey="c-n" id="new-button">New</button>
+          <span class="toolbar-separator">&nbsp;</span>
+					<button action hotkey="x" id="syntax-errors-button">Synta<u>x</u> Errors</button>
+					<!--<label><input type="checkbox" name="showSyntaxErrors" action></input>Syntax Errors</label>-->
       </div>
     </div>
 

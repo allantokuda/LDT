@@ -7,6 +7,7 @@ app.controller('EditorCtrl', ['$scope', function($scope) {
   $scope.editor = new Object;
   $scope.graph = new Object;
   $scope.pan = { x: 0, y: 0 }
+	$scope.showSyntaxErrors = false;
 
   var graphID;
   var path_regex = /graphs\/([^\/]+)\/edit/;
@@ -186,6 +187,7 @@ app.controller('EditorCtrl', ['$scope', function($scope) {
   $scope.labelCommand           = function() { $scope.$apply(setMode('label_pick')); };
   $scope.chickenFootCommand     = function() { $scope.$apply(setMode('chickenfoot')); };
   $scope.identifierBarCommand   = function() { $scope.$apply(setMode('identifier_bar')); };
+  $scope.syntaxErrorsCommand    = function() { $scope.$apply(toggleSyntaxErrors()); };
 
   function setMode(mode) {
     $scope.editor.mode = mode;
@@ -203,5 +205,9 @@ app.controller('EditorCtrl', ['$scope', function($scope) {
   }
 
   setMode('select');
+
+	function toggleSyntaxErrors() {
+		$scope.showSyntaxErrors = !$scope.showSyntaxErrors;
+	}
 
 }]);
