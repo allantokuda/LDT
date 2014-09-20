@@ -144,15 +144,18 @@ app.directive('moveAndResize',function() {
       }
 
       function startDrag(ev) {
-        dragging = true;
-        dragStartX = subject.x;
-        dragStartY = subject.y;
-        dragStartWidth = subject.width;
-        dragStartHeight = subject.height;
-        dragStartMouseX = ev.pageX;
-        dragStartMouseY = ev.pageY;
-        dragType = boxBorderArea(ev.pageX, ev.pageY);
-        ev.stopPropagation();
+				// left click only (otherwise right click has issues)
+				if (ev.button == 0) {
+					dragging = true;
+					dragStartX = subject.x;
+					dragStartY = subject.y;
+					dragStartWidth = subject.width;
+					dragStartHeight = subject.height;
+					dragStartMouseX = ev.pageX;
+					dragStartMouseY = ev.pageY;
+					dragType = boxBorderArea(ev.pageX, ev.pageY);
+					ev.stopPropagation();
+				}
       };
 
       function stopDrag(ev) {
