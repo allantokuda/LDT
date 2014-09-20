@@ -151,9 +151,9 @@ app.controller('EditorCtrl', ['$scope', function($scope) {
     graphData.entities      = _.map($scope.graph.entities,      function(e) { return e.saveObject(); });
     graphData.relationships = _.map($scope.graph.relationships, function(r) { return r.saveObject(); });
 
-    var encodeData = "graph=" + JSON.stringify(graphData);
+    var encodeData = JSON.stringify(graphData);
 
-    $.ajax({ url:"/graphs/"+graphData.id, type:"PUT", dataType:"json", data:encodeData,
+    $.ajax({ url:"/graphs/"+graphData.id, type:"PUT", dataType:"json", data:encodeData, contentType:'application/json',
       success: function() {
         setSaveMessage('success', 'Saved'); fadeSaveMessage();
       },

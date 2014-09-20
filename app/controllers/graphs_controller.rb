@@ -22,7 +22,7 @@ class GraphsController < ApplicationController
   # GET /graphs/1
   # GET /graphs/1.json
   def show
-    render json: @graph
+    render json: @graph.representation
   end
 
   # GET /graphs/new
@@ -64,7 +64,7 @@ class GraphsController < ApplicationController
   # PUT /graphs/1
   # PUT /graphs/1.json
   def update
-    @graph.update_attributes_from_request(graph_params[:graph])
+    @graph.update_attributes_from_request(params)
     head :no_content
   end
 
@@ -92,7 +92,7 @@ class GraphsController < ApplicationController
   end
 
   def load_and_authorize_graph
-    if @graph = Graph.find_and_parse(graph_params[:id])
+    if @graph = Graph.find_and_parse(params[:id])
       if @graph.user_id && @graph.user_id != current_user_id
         render :json => [], :status => :unauthorized
       end
@@ -104,6 +104,6 @@ class GraphsController < ApplicationController
   private
 
   def graph_params
-    params.permit(:id, :graph)
+    params.permit(:id, :name, :entities, :relationships, :pan_x, :pan_y)
   end
 end

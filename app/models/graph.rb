@@ -27,8 +27,8 @@ class Graph < ActiveRecord::Base
 
   def self.find_and_parse(string_id)
     graph = self.find_by_string_id(string_id)
-    graph.entities      = JSON.parse graph.entities
-    graph.relationships = JSON.parse graph.relationships
+    graph.entities      = graph.entities
+    graph.relationships = graph.relationships
     graph
   end
 
@@ -37,10 +37,27 @@ class Graph < ActiveRecord::Base
   end
 
   # Leave the entities and relationships unparsed for storage in JSON
-  def self.parse_base_parameters(graph_json)
-    hash = JSON.parse(graph_json, :symbolize_names => true).reject{ |k| k==:id }
-    hash[:entities]      = JSON.unparse hash[:entities]
-    hash[:relationships] = JSON.unparse hash[:relationships]
-    hash
+  def self.parse_base_parameters(graph)
+    graph = graph.symbolize_keys.select{ |k| editable_attributes.include? k }
+    graph[:entities]      = JSON.unparse graph[:entities]
+    graph[:relationships] = JSON.unparse graph[:relationships]
+    graph
+  end
+
+  def self.editable_attributes
+    [ :name, :pan_x, :pan_y, :entities, :relationships ]
+  end
+
+  def representation
+    {
+      id: string_id,
+      name: name,
+      pan_x: pan_x,
+      pan_y: pan_y,
+      created_at: created_at,
+      updated_at: updated_at,
+      entities: JSON.parse(entities),
+      relationships: JSON.parse(relationships),
+    }
   end
 end
