@@ -65,7 +65,7 @@ class GraphsController < ApplicationController
   # PUT /graphs/1.json
   def update
     @graph.update_attributes_from_request(graph_params[:graph])
-    render :json => "OK", :status => :ok
+    head :no_content
   end
 
   # DELETE /graphs/1

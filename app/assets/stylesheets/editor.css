@@ -163,10 +163,15 @@ path.click-area {
 
 #save-message {
   position: absolute;
-  top: -40px;
+  width: 12em;
+  top: -3em;
   left: 10px;
-  color: #888;
+  padding: 0px;
 }
+
+#save-message.pending { color: #888; }
+#save-message.success { color: #080; }
+#save-message.error   { color: #f00; }
 
 .canvas-click-shield {
   position: absolute;

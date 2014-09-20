@@ -124,26 +124,23 @@ app.controller('EditorCtrl', ['$scope', function($scope) {
     }
   };
 
-  $scope.notifySaving = function() {
+  function setSaveMessage(status, message) {
     $('#save-message').show();
     $scope.$apply(function() {
-      $scope.editor.saveMessage = 'Saving...';
+      $scope.editor.saveStatus = status;
+      $scope.editor.saveMessage = message;
     });
   };
 
-  $scope.notifySaved = function() {
-    $scope.$apply(function() {
-      $scope.editor.saveMessage = 'Saved';
-    });
-
+  function fadeSaveMessage() {
     setTimeout(function() {
       $('#save-message').fadeOut();
-    }, 3000);
+    }, 3000); // after 3 seconds
   };
 
   $scope.saveCommand = function() {
 
-    $scope.notifySaving();
+    setSaveMessage('pending', 'Saving...');
 
     var graphData = {
       id        : $scope.graph.id,
@@ -156,22 +153,14 @@ app.controller('EditorCtrl', ['$scope', function($scope) {
 
     var encodeData = "graph=" + JSON.stringify(graphData);
 
-    if (graphData.id)
-      $.ajax({ url:"/graphs/"+graphData.id, type:"PUT", dataType:"json", data:encodeData,
-        complete: function() { $scope.notifySaved(); }
-      });
-    else
-      $.ajax({
-        url:"/graphs", type:"POST", dataType:"json", data:encodeData,
-        error: function(jqXHR, textStatus, errorThrown) {
-          console.log("AJAX Error: ");
-          console.log(textStatus);
-        },
-        success: function(data, textStatus, jqXHR) {
-          $scope.notifySaved();
-          $scope.graph.id = data.id;
-        }
-      });
+    $.ajax({ url:"/graphs/"+graphData.id, type:"PUT", dataType:"json", data:encodeData,
+      success: function() {
+        setSaveMessage('success', 'Saved'); fadeSaveMessage();
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        setSaveMessage('error', 'Save Failed!');
+      }
+    });
   };
 
   // Action buttons / hotkeys

@@ -24,7 +24,7 @@
           <button action hotkey="c" id="chickenfoot-button"><u>C</u>hicken Foot</button>
           <button action hotkey="b" id="identifier-bar-button">Identifier <u>B</u>ar</button>
           <span class="toolbar-separator">&nbsp;</span>
-          <div class="positioner"><div id="save-message">{{ editor.saveMessage }}</div></div>
+          <div class="positioner"><div id="save-message" ng-class="editor.saveStatus">{{ editor.saveMessage }}</div></div>
           <button action hotkey="c-s" id="save-button">Save</button>
           <button action hotkey="c-n" id="new-button">New</button>
       </div>
