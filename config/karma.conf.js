@@ -4,9 +4,7 @@ module.exports = function(config){
 
     files : [
       'vendor/assets/javascripts/jquery-1.9.1.js',
-      'vendor/assets/javascripts/jquery-ui-1.9.2.custom.js',
-      'vendor/assets/javascripts/angular/angular.js',
-      'vendor/assets/javascripts/angular/angular-*.js',
+      'vendor/assets/javascripts/angular.js',
       'vendor/assets/javascripts/underscore.js',
       'test/lib/angular/angular-mocks.js',
       'app/assets/javascripts/app.js',

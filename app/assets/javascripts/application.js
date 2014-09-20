@@ -11,7 +11,7 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
-//= require angular/angular
+//= require angular
 //= require underscore
 //= require app
 //= require models/entity
