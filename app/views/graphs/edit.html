@@ -90,9 +90,10 @@
             <div class="label"
                  ng-class="{selected: endpoint.selected===true}">
 
-                <span catch-input>{{endpoint.label}}</span>
+                <span catch-input id="label-{{$index}}">{{endpoint.label}}</span>
 
                 <input ng-model="endpoint.label" no-drag
+                       id="label-input-{{$index}}"
                        ng-click="handleLabelClick(label.id,$event)">
 
             </div>
