@@ -29,6 +29,8 @@ group :development, :test do
   gem 'guard-zeus'
   # Needed to expose generators and rake tasks
   gem 'rspec-rails', '~> 2.0'
+  gem 'capybara'
+  gem 'selenium-webdriver'
 end
 
 group :development do
