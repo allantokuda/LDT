@@ -76,5 +76,13 @@ describe 'Editor', js: true do
 
     find('#entity-0 .entity-heading .entity-name').should have_content 'Car'
     find('#entity-1 .entity-heading .entity-name').should have_content 'Wheel'
+
+    loc0 = find('#click-area-0').native.location
+    loc1 = find('#click-area-1').native.location
+
+    # Default entity is 100x120 and we placed these at y=200.
+    # Relationship y equals entity's (y + height/2) = (200 + 120/2) = 260
+    loc0.y.should == 260
+    loc1.y.should == 260
   end
 end
