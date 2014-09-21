@@ -2,26 +2,39 @@ require 'spec_helper'
 
 # Following example: https://www.youtube.com/watch?v=np7bOY_CGy4
 describe 'Editor', js: true do
+  def refresh
+    # edit to a special value and then don't save it, to give Capybara something to wait for
+    # to know when the page has reloaded
+    find('#graph-name').set '(reloading)'
+    visit current_path
+    find('#graph-name').should { |element| element.value != '(reloading)' }
+  end
+
+  def save
+    find('#save-button').click
+    find('#save-message').should have_content 'Saved'
+  end
+
+  def expect_graph_name(expected_name)
+    find('#graph-name').should { |element| element.value == expected_name }
+    page.should { |page| page.title == expected_name }
+  end
+
   it 'Has a default graph name which can be changed, saved, and retrieved' do
     visit '/'
-    find('#graph-name').should { |element| element.value == 'Untitled Graph' }
-    page.title.should eq 'Untitled Graph'
+    expect_graph_name 'Untitled Graph'
 
+    # Can be changed to an arbitrary name
     find('#graph-name').set 'Banana'
-    find('#save-button').click
-    find('#save-message').should have_content 'Saved'
-    find('#graph-name').set '-' # edit not to be saved, that lets Capybara see the page has reloaded
-    visit current_path
-    find('#graph-name').should { |element| element.value == 'Banana' }
-    page.should { |page| page.title == 'Banana' }
+    save
+    refresh
+    expect_graph_name 'Banana'
 
+    # Blank name is also allowed
     find('#graph-name').set ''
-    find('#save-button').click
-    find('#save-message').should have_content 'Saved'
-    find('#graph-name').set '-' # edit not to be saved, that lets Capybara see the page has reloaded
-    visit current_path
-    find('#graph-name').should { |element| element.value == '' }
-    page.should { |page| page.title == '' }
+    save
+    refresh
+    expect_graph_name ''
   end
 
   it 'Allows entities to be drawn' do
@@ -37,8 +50,8 @@ describe 'Editor', js: true do
     find('#entity-1 .entity-heading .entity-name-input').set 'Entity B'
 
     find('#new-relationship-button').click
-    find('#entity-0').click
-    find('#entity-1').click
+    find('#entity-0 .select-shield').click
+    find('#entity-1 .select-shield').click
 
     find('#save-button').click
     find('#save-message').should have_content 'Saved'
@@ -51,6 +64,5 @@ describe 'Editor', js: true do
 
     find('#entity-0 .entity-heading .entity-name').should have_content 'Entity A'
     find('#entity-1 .entity-heading .entity-name').should have_content 'Entity B'
-
   end
 end
