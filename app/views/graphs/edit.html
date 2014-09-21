@@ -35,6 +35,7 @@
         <div class="ghost-entity" stick-to-mouse>Click to place new entity</div>
 
         <div class="entity-border"
+             id="entity-{{entity.id}}"
              ng-repeat="entity in graph.entities"
              move-and-resize="entity"
              ng-style="{ left: pan.x + entity.x, top: pan.y + entity.y, width: entity.width, height: entity.height }"
@@ -100,10 +101,10 @@
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
           <g transform="translate({{pan.x}},{{pan.y}})">
             <!-- embedded "stroke: black" style here for Safari which won't recognize styles applied to <path> elements by CSS class -->
-            <path class="relationship" ng-repeat="r in graph.relationships" ng-attr-d="{{r.svgPath()}}"       style="stroke: black"></path>
-            <path class="arrowhead"    ng-repeat="e in graph.endpoints"     ng-attr-d="{{e.arrowheadPath()}}" style="stroke: black"></path>
-            <path class="click-area"   ng-repeat="e in graph.endpoints"     ng-attr-d="{{e.boxPath()}}" ng-click="handleArrowClick(e,$event)" catch-input></path>
-            <path class="click-path"   ng-repeat="r in graph.relationships" ng-attr-d="{{r.svgPath()}}" ng-click="handleRelationshipClick(r)" catch-input></path>
+            <path id="relationship-{{r.id}}" class="relationship" ng-repeat="r in graph.relationships" ng-attr-d="{{r.svgPath()}}"       style="stroke: black"></path>
+            <path id="endpoint-{{$index}}"   class="arrowhead"    ng-repeat="e in graph.endpoints"     ng-attr-d="{{e.arrowheadPath()}}" style="stroke: black"></path>
+            <path id="click-area-{{$index}}" class="click-area"   ng-repeat="e in graph.endpoints"     ng-attr-d="{{e.boxPath()}}" ng-click="handleArrowClick(e,$event)" catch-input></path>
+            <path id="click-path-{{r.id}}"   class="click-path"   ng-repeat="r in graph.relationships" ng-attr-d="{{r.svgPath()}}" ng-click="handleRelationshipClick(r)" catch-input></path>
           </g>
         </svg>
 
