@@ -53,13 +53,24 @@ describe 'Editor', js: true do
     find('#entity-0 .select-shield').click
     find('#entity-1 .select-shield').click
 
+    # Question marks on both sides
+    find('#endpoint-0').should { |path| path[:d] == "M220,275m7,-3 l0,-4 l4,0 l0,2 l2,0 m2,0 l2,0" }
+    find('#endpoint-1').should { |path| path[:d] == "M600,275m-7,3 l0,4 l-4,0 l0,-2 l-2,0 m-2,0 l-2,0" }
+
     find('#chickenfoot-button').click
     find('#click-area-0').click # click once to have a degree-one link
     find('#click-area-1').click # click once, then
     find('#click-area-1').click # click a second time to create a degree-many link
 
+    # One on left, many on right
+    find('#endpoint-0').should { |path| path[:d] == "M220,275m0,0" }
+    find('#endpoint-1').should { |path| path[:d] == "M600,275m0,10 l-20,-10 l20,-10" }
+
     find('#identifier-bar-button').click
     find('#click-area-1').click
+
+    # One on left, and Many plus Bar on right
+    find('#endpoint-1').should { |path| path[:d] == "M600,275m0,10 l-20,-10 l20,-10 m-25,20 l0,-20" }
 
     find('#label-button').click
     find('#click-area-0').click
@@ -77,12 +88,16 @@ describe 'Editor', js: true do
     find('#entity-0 .entity-heading .entity-name').should have_content 'Car'
     find('#entity-1 .entity-heading .entity-name').should have_content 'Wheel'
 
-    loc0 = find('#click-area-0').native.location
-    loc1 = find('#click-area-1').native.location
-
     # Default entity is 100x120 and we placed these at y=200.
     # Relationship y equals entity's (y + height/2) = (200 + 120/2) = 260
-    loc0.y.should == 260
-    loc1.y.should == 260
+    find('#click-area-0').should { |element| element.native.location.y == 260 }
+    find('#click-area-1').should { |element| element.native.location.y == 260 }
+
+    # One on left, and Many plus Bar on right
+    find('#endpoint-0').should { |path| path[:d] == "M220,275m0,0" }
+    find('#endpoint-1').should { |path| path[:d] == "M600,275m0,10 l-20,-10 l20,-10 m-25,20 l0,-20" }
+
+    find('#label-0').should { |label| label.value == 'be supported by' }
+    find('#label-1').should { |label| label.value == 'support' }
   end
 end
