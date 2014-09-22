@@ -25,6 +25,11 @@ describe 'Editor', js: true do
     find('#canvas').click_at(x,y)
   end
 
+  def delete_entity(entity_id)
+    find('#delete-item-button').click
+    find("#entity-#{entity_id} .select-shield").click
+  end
+
   def rename_entity(entity_id, name)
     # 'click_at' and 'double_click' are defined in spec_helper.rb
     find("#entity-#{entity_id} .entity-heading .entity-name").double_click
@@ -60,6 +65,11 @@ describe 'Editor', js: true do
 
   def expect_entity_name(entity_id, entity_name)
     expect(find("#entity-#{entity_id} .entity-heading .entity-name")).to respond(to: [:text], with: entity_name)
+  end
+
+  def wiggle_entity(entity_id)
+    find("#entity-#{entity_id}").drag( 10, 10)
+    find("#entity-#{entity_id}").drag(-10,-10)
   end
 
   it 'Has a default graph name which can be changed, saved, and retrieved' do
@@ -151,8 +161,19 @@ describe 'Editor', js: true do
     create_relationship 0, 1
     create_relationship 0, 2
 
-    expect_arrowhead 0, "M220,320m7,-3 l0,-4 l4,0 l0,2 l2,0 m2,0 l2,0"
-    expect_arrowhead 2, "M220,340m7,-3 l0,-4 l4,0 l0,2 l2,0 m2,0 l2,0"
+    # SVG paths for connectors at competing locations
+    # (both want to be at the bottom)
+    second_to_bottom = "M220,320m7,-3 l0,-4 l4,0 l0,2 l2,0 m2,0 l2,0"
+    bottom           = "M220,340m7,-3 l0,-4 l4,0 l0,2 l2,0 m2,0 l2,0"
+
+    expect_arrowhead 0, second_to_bottom
+    expect_arrowhead 2, bottom
+
+    delete_entity 2
+    wiggle_entity 1
+
+    # arrowhead 2 should be gone, so arrowhead 0 should now be at the bottom
+    expect_arrowhead 0, bottom
   end
 
   xit 'allows entities to be deleted, and simultaneously deletes all connected relationships' do
