@@ -48,6 +48,11 @@ describe 'Editor', js: true do
     find("#entity-#{entity_id2} .select-shield").click
   end
 
+  def delete_relationship(relationship_id)
+    find('#delete-item-button').click
+    find("#click-path-#{relationship_id}").click
+  end
+
   def expect_arrowhead(endpoint_id, path_data)
     expect(find("#endpoint-#{endpoint_id}")).to have_svg_path_data path_data
   end
@@ -174,6 +179,27 @@ describe 'Editor', js: true do
 
     # arrowhead 2 should be gone, so arrowhead 0 should now be at the bottom
     expect_arrowhead 0, bottom
+  end
+
+  # Regression test for bug where ghost relationships remained after being deleted
+  it 'draws replacement relationships the same as previous relationships' do
+    visit '/'
+
+    left  = "M220,280m7,-3 l0,-4 l4,0 l0,2 l2,0 m2,0 l2,0"
+    right = "M400,280m-7,3 l0,4 l-4,0 l0,-2 l-2,0 m-2,0 l-2,0"
+
+    create_entity 100, 200
+    create_entity 400, 210
+    create_relationship 0, 1
+
+    expect_arrowhead 0, left
+    expect_arrowhead 1, right
+
+    delete_relationship 0
+    create_relationship 0, 1
+
+    expect_arrowhead 0, left
+    expect_arrowhead 1, right
   end
 
   xit 'allows entities to be deleted, and simultaneously deletes all connected relationships' do

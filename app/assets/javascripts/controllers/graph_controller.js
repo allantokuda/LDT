@@ -149,8 +149,7 @@ app.controller('GraphCtrl', ['$scope', function($scope) {
     _.each(endpoints, function(endpoint_to_delete) {
 
       // Remove connected endpoints from sides
-      _.each($scope.graph.entities, function(entity) {
-      });
+      endpoint_to_delete.entity.removeEndpoint(endpoint_to_delete)
 
       // Remove all connected endpoints from graph
       $scope.graph.endpoints = _.without($scope.graph.endpoints, endpoint_to_delete);
