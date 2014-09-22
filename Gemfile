@@ -23,12 +23,12 @@ gem "haml-rails"
 
 group :development, :test do
   gem 'pry'
-  gem 'zeus'
-  gem 'guard'
-  gem 'guard-rspec'
-  gem 'guard-zeus'
+	gem 'rspec', '~> 3.1' # need 3.1 for :have_attributes matcher
+  # gem 'zeus'
+  # gem 'guard'
+  # gem 'guard-rspec'
+  # gem 'guard-zeus'
   # Needed to expose generators and rake tasks
-  gem 'rspec-rails', '~> 2.0'
   gem 'capybara'
   gem 'selenium-webdriver'
 end
