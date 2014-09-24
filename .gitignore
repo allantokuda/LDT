@@ -21,3 +21,6 @@
 tags
 
 node_modules
+
+# Rubymine cfg (IDE from jetbrains)
+.idea
