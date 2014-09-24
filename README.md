@@ -26,18 +26,18 @@ Start by installing the following:
 
 --*The following assumes you are on a Linux distribution with `aptitude` installed*--
 
-**rvm**
+
+**ruby**
+
+Install RVM
 
 ```
 curl -sSL https://get.rvm.io | bash
 ```
 
-
-**ruby (v2.1.2)**
-
+Install ruby
 ```
-sudo rvm install 2.1.2
-
+rvm install `cat .ruby-version`
 ```
 
 **node.js**
@@ -52,7 +52,6 @@ sudo apt-get install nodejs
 sudo apt-get install postgresql
 ```
 
-
 **node package manger (npm)**
 
 ```
@@ -62,7 +61,7 @@ sudo apt-get install npm
 **bundler**
 
 ```
-sudo gem install bundler
+gem install bundler
 ```
 
 **karma**
