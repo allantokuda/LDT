@@ -77,6 +77,11 @@ describe 'Editor', js: true do
     find("#entity-#{entity_id}").drag(-10,-10)
   end
 
+  def change_degree(endpoint_id)
+    find('#chickenfoot-button').click
+    find("#click-area-#{endpoint_id}").click
+  end
+
   it 'Has a default graph name which can be changed, saved, and retrieved' do
     visit '/'
 
@@ -202,7 +207,26 @@ describe 'Editor', js: true do
     expect_arrowhead 1, right
   end
 
-  xit 'allows entities to be deleted, and simultaneously deletes all connected relationships' do
+  it 'allows entities to be deleted, and simultaneously deletes all connected relationships' do
+    visit '/'
+
+    create_entity 100, 200
+    create_entity 300, 200
+    create_entity 200, 400
+
+    create_relationship 0, 1
+    create_relationship 1, 2
+    create_relationship 2, 0
+
+    delete_entity 2
+
+    change_degree 0
+    change_degree 1
+
+    expect_arrowhead 0, 'M220,275m0,0'
+    expect_arrowhead 1, 'M300,275m0,0'
+
+    expect(all('.click-area')).to respond(to: [:count], with: 2)
   end
 
   xit 'allows the graph view to be infinitely panned by dragging' do
