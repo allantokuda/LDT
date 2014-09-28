@@ -81,3 +81,8 @@
     find('#chickenfoot-button').click
     find("#click-area-#{endpoint_id}").click
   end
+
+  def check_location(element_selector, expected_x, expected_y)
+    expect(find(element_selector)).to respond(to: [:native, :location, :x], with: expected_x)
+    expect(find(element_selector)).to respond(to: [:native, :location, :y], with: expected_y)
+  end
