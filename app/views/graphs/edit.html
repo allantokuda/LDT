@@ -66,6 +66,7 @@
                           catch-input no-drag></textarea>
 
                 <div class="attribute"
+                     id="entity-{{entity.id}}-attribute-{{$index}}"
                      ng-repeat="attribute in entity.attributes.split('\n')"
                      ng-class="cssClass(attribute)"
                      ng-click="handleAttributeClick(entity.id,$index,$event)"

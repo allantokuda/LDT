@@ -94,3 +94,25 @@
   def window_size(width, height)
     page.driver.browser.manage.window.resize_to(width, height)
   end
+
+  def set_attributes(entity_id, attributes_text)
+    find("#entity-#{entity_id} .entity-body").double_click
+    find("#entity-#{entity_id} .entity-body .attribute-input").set attributes_text
+    finish_editing
+  end
+
+  def expect_attribute(entity_id, attribute_num, attribute_text, is_identifier=false)
+    expect(find("#entity-#{entity_id}-attribute-#{attribute_num} span")).to have_content attribute_text
+
+    black_underline = {
+      'border-bottom-width' => '1px',
+      'border-bottom-color' => 'rgba(0, 0, 0, 1)',
+      'border-bottom-style' => 'solid'
+    }
+
+    if is_identifier
+      expect(find("#entity-#{entity_id}-attribute-#{attribute_num} span")).to have_styles(black_underline)
+    else
+      expect(find("#entity-#{entity_id}-attribute-#{attribute_num} span")).not_to have_styles(black_underline)
+    end
+  end

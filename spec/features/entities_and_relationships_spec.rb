@@ -10,6 +10,9 @@ describe 'Entities and relationships', js: true do
     rename_entity 0, 'Car'
     rename_entity 1, 'Wheel'
 
+    set_attributes 0, "make*\nmodel*\nyear*\ncolor"
+    set_attributes 1, "wheel_id*\nwidth\nradius\n"
+
     create_relationship 0, 1
 
     # Question marks on both sides
@@ -39,6 +42,14 @@ describe 'Entities and relationships', js: true do
 
     expect_entity_name 0, 'Car'
     expect_entity_name 1, 'Wheel'
+
+    expect_attribute 0, 0, 'make', true
+    expect_attribute 0, 1, 'model', true
+    expect_attribute 0, 2, 'year', true
+    expect_attribute 0, 3, 'color'
+    expect_attribute 1, 0, 'wheel_id', true
+    expect_attribute 1, 1, 'width'
+    expect_attribute 1, 2, 'radius'
 
     # Default entity is 100x120 and we placed these at y=200.
     # Relationship y equals entity's (y + height/2) = (200 + 120/2) = 260
