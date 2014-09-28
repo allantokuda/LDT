@@ -2,12 +2,7 @@ require 'spec_helper'
 
 describe 'Relationship straightness', js: true do
 
-  FIXTURE_FILENAME='spec/fixtures/relationship_straightness.dat'
-
-  def endpoint_location(endpoint_id)
-    path = find("#endpoint-#{endpoint_id}")[:d]
-    /M(\d+,\d+)m/.match(path).captures[0].split ','
-  end
+  fixture_filename='spec/fixtures/relationship_straightness.dat'
 
   def endpoint_locations
     (endpoint_location(0) + endpoint_location(1)).join ','
@@ -23,7 +18,7 @@ describe 'Relationship straightness', js: true do
     visit '/'
 
     # Add :record option to record new
-    @fixture = Fixture.new FIXTURE_FILENAME, self
+    @fixture = Fixture.new fixture_filename, self
 
     page.driver.browser.manage.window.resize_to(900,900)
 

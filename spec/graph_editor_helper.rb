@@ -86,3 +86,8 @@
     expect(find(element_selector)).to respond(to: [:native, :location, :x], with: expected_x)
     expect(find(element_selector)).to respond(to: [:native, :location, :y], with: expected_y)
   end
+
+  def endpoint_location(endpoint_id)
+    path = find("#endpoint-#{endpoint_id}")[:d]
+    /M(\d+,\d+)m/.match(path).captures[0].split ','
+  end
