@@ -88,7 +88,7 @@
 
   def endpoint_location(endpoint_id)
     path = find("#endpoint-#{endpoint_id}")[:d]
-    /M(\d+,\d+)m/.match(path).captures[0].split ','
+    /M(\d+,\d+)m/.match(path).captures[0].split(',').map &:to_i
   end
 
   def window_size(width, height)
