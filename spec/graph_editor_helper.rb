@@ -33,6 +33,10 @@
     finish_editing
   end
 
+  def move_entity(entity_id, dx, dy)
+    find("#entity-#{entity_id} .entity-heading .entity-name").drag(dx, dy)
+  end
+
   def finish_editing
     # finish editing by clicking on an unoccupied location on the canvas
     find('#canvas').click_at(1,1)
