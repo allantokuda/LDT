@@ -20,7 +20,7 @@ describe 'Relationship straightness', js: true do
     # Add :record option to record new
     @fixture = Fixture.new fixture_filename, self
 
-    page.driver.browser.manage.window.resize_to(900,900)
+    window_size 900, 900
 
     create_entity 200, 300
     create_entity   0, 100

@@ -27,7 +27,6 @@
   end
 
   def rename_entity(entity_id, name)
-    # 'click_at' and 'double_click' are defined in spec_helper.rb
     find("#entity-#{entity_id} .entity-heading .entity-name").double_click
     find("#entity-#{entity_id} .entity-heading .entity-name-input").set name
     finish_editing
@@ -90,4 +89,8 @@
   def endpoint_location(endpoint_id)
     path = find("#endpoint-#{endpoint_id}")[:d]
     /M(\d+,\d+)m/.match(path).captures[0].split ','
+  end
+
+  def window_size(width, height)
+    page.driver.browser.manage.window.resize_to(width, height)
   end
