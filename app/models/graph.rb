@@ -25,13 +25,6 @@ class Graph < ActiveRecord::Base
     self.create(self.parse_base_parameters(params_graph_json))
   end
 
-  def self.find_and_parse(string_id)
-    graph = self.find_by_string_id(string_id)
-    graph.entities      = graph.entities
-    graph.relationships = graph.relationships
-    graph
-  end
-
   def update_attributes_from_request(params_graph_json)
     params_graph_json["entities"]      ||= []
     params_graph_json["relationships"] ||= []

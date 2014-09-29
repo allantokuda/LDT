@@ -1,5 +1,8 @@
 <div id="editor" ng-controller="EditorCtrl" ng-class="editor.mode">
 
+  <div id="loading-indicator" ng-hide="graph.id">{{status_message}}</div>
+  <div id="graph" ng-show="graph.id">
+
     <!-- DEBUG -->
     <!--
     <div ng-repeat="entity in graph.entities">
@@ -111,5 +114,7 @@
         </svg>
 
     </div>
+
+  </div>
 
 </div>

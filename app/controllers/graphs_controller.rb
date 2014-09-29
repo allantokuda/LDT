@@ -38,6 +38,11 @@ class GraphsController < ApplicationController
 
   # GET /graphs/1/edit
   def edit
+    if @graph = Graph.find_by_string_id(params[:id])
+      render :edit
+    else
+      head :not_found
+    end
   end
 
   # POST /graphs
@@ -92,7 +97,7 @@ class GraphsController < ApplicationController
   end
 
   def load_and_authorize_graph
-    if @graph = Graph.find_and_parse(params[:id])
+    if @graph = Graph.find_by_string_id(params[:id])
       if @graph.user_id && @graph.user_id != current_user_id
         render :json => [], :status => :unauthorized
       end

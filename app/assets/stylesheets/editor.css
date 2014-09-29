@@ -6,6 +6,8 @@ body {
 
 html { width: 100%; height: 100%; }
 
+#graph { width: inherit; height: inherit; }
+
 body, #editor, #canvas, svg { width: 100%; height: 100%; }
 
 svg {
@@ -178,4 +180,11 @@ path.click-area {
   width: 100%;
   height: 100%;
   background: none;
+}
+
+#loading-indicator {
+  text-align: left;
+  width: 100%;
+  margin-top: 1em;
+  margin-left: 2em;
 }

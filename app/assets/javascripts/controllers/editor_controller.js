@@ -7,6 +7,7 @@ app.controller('EditorCtrl', ['$scope', function($scope) {
   $scope.editor = new Object;
   $scope.graph = new Object;
   $scope.pan = { x: 0, y: 0 }
+  $scope.status_message = 'Loading...'
 
   var graphID;
   var path_regex = /graphs\/([^\/]+)\/edit/;
@@ -17,8 +18,10 @@ app.controller('EditorCtrl', ['$scope', function($scope) {
   if (graphID)
     $.ajax({ url:"/graphs/"+graphID, type:"GET", dataType:"json",
       error: function(jqXHR, textStatus, errorThrown) {
-        console.log("AJAX Error: ");
-        console.log(textStatus);
+        console.error(jqXHR);
+        $scope.$apply(function() {
+          $scope.status_message = jqXHR.status + ' ' + jqXHR.statusText;
+        });
       },
       success: function(data, textStatus, jqXHR) {
         $scope.$apply(function() {
