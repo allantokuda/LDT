@@ -41,7 +41,7 @@ class GraphsController < ApplicationController
     if @graph = Graph.find_by_string_id(params[:id])
       render :edit
     else
-      head :not_found
+      render 'errors/404', :status => :not_found
     end
   end
 
@@ -62,7 +62,7 @@ class GraphsController < ApplicationController
         end
       end
     else
-      render :json => [], :status => :unauthorized
+      head :unauthorized
     end
   end
 
@@ -92,17 +92,17 @@ class GraphsController < ApplicationController
 
   def authorize
     unless current_user_id
-      render :json => [], :status => :unauthorized
+      head :unauthorized
     end
   end
 
   def load_and_authorize_graph
     if @graph = Graph.find_by_string_id(params[:id])
       if @graph.user_id && @graph.user_id != current_user_id
-        render :json => [], :status => :unauthorized
+        head :unauthorized
       end
     else
-      render :json => [], :status => :not_found
+      head :not_found
     end
   end
 
