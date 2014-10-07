@@ -21,9 +21,9 @@ input {
   margin: -5px -3px;
 }
 
-#graph-name { width: 80%; }
-
 #graph-name {
+  position: fixed;
+  width: 80%;
   margin: 0.5em;
   margin-left: 15px;
   padding-left: 15px;
@@ -42,6 +42,7 @@ input {
 }
 
 #toolbar {
+  position: fixed;
   background: #eee;
   border-top:    2px solid white;
   border-bottom: 2px solid white;
