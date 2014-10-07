@@ -103,7 +103,7 @@
             </div>
         </div>
 
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="svg-paths">
           <g transform="translate({{pan.x}},{{pan.y}})">
             <!-- embedded "stroke: black" style here for Safari which won't recognize styles applied to <path> elements by CSS class -->
             <path id="relationship-{{r.id}}" class="relationship" ng-repeat="r in graph.relationships" ng-attr-d="{{r.svgPath()}}"       style="stroke: black"></path>

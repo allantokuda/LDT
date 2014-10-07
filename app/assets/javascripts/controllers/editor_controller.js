@@ -58,6 +58,7 @@ app.controller('EditorCtrl', ['$scope', function($scope) {
 
           $scope.graph.initialize();
         });
+        $scope.updateSvgSize();
       }
     });
 
@@ -69,11 +70,8 @@ app.controller('EditorCtrl', ['$scope', function($scope) {
       $scope.graph.createEntity(x - $scope.pan.x, y - $scope.pan.y);
 
     setMode('select');
-  };
 
-  $scope.handleCanvasDrag = function(ev) {
-    $scope.graph.panX += ev.originalEvent.movementX;
-    $scope.graph.panY += ev.originalEvent.movementY;
+    $scope.updateSvgSize();
   };
 
   $scope.handleEntityClick = function(entity) {
@@ -165,6 +163,20 @@ app.controller('EditorCtrl', ['$scope', function($scope) {
       }
     });
   };
+
+  $scope.updateSvgSize = function() {
+    $('#svg-paths').width (0);
+    $('#svg-paths').height(0);
+    $('#canvas'   ).width (0);
+    $('#canvas'   ).height(0);
+    $('#svg-paths').width ($(document).width ()+10);
+    $('#svg-paths').height($(document).height()+10);
+    $('#canvas'   ).width ($(document).width ());
+    $('#canvas'   ).height($(document).height());
+  }
+
+  // TODO consider moving this to a directive
+  $(document).mouseup($scope.updateSvgSize);
 
   // Action buttons / hotkeys
 
