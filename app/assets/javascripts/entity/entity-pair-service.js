@@ -58,9 +58,23 @@
       return dict.match(entity.id);
     };
 
-    // allow multiple entities to be moved at once in the future
-    this.pairsAffectedByMove = function(movedEntities) {
-      var result = [];
+    // Return which objects (entities and entity pairs) that are affected when
+    // a set of entities moves.
+    //
+    // - List of entities is used to determine which entities need to reset
+    // their Sides (space managers) for endpoint reattachment.
+    //
+    // - List of entity pairs is used to determine which relationships need to
+    // be readrawn (and they must be drawn as groups within the same entity
+    // pair to ensure that "sibling" relationships cooperate and are drawn
+    // parallel to each other).
+    //
+    // Input is a set, to allow multiple entities to be moved at once in the
+    // future, though currently only one can be moved at a time.
+    this.whoCaresAbout = function(movedEntities) {
+      // the moved entities themselves are affected by their own movement
+      var affectedEntities = movedEntities;
+      var affectedPairs = [];
 
       for (var i in movedEntities) {
         var movedEntity = movedEntities[i];
@@ -73,10 +87,14 @@
           } else {
             otherEntity = firstLevelPair.entity1;
           }
-          result = result.concat(this.pairsOnEntity(otherEntity));
+          affectedEntities = affectedEntities.concat(otherEntity);
+          affectedPairs = affectedPairs.concat(this.pairsOnEntity(otherEntity));
         }
       }
-      return $.unique(result);
+      return {
+        entities: $.unique(affectedEntities),
+        pairs:    $.unique(affectedPairs)
+      };
     };
   });
 })();

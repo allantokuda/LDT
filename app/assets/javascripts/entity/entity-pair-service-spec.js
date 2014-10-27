@@ -136,10 +136,13 @@ describe('Entity pair service', function() {
     service.addRelationship(r2);
     service.addRelationship(r3);
 
-    var affected0 = service.pairsAffectedByMove([e0]);
-    var affected1 = service.pairsAffectedByMove([e1]);
+    var affected0 = service.whoCaresAbout([e0]);
+    var affected1 = service.whoCaresAbout([e1]);
 
-    expect(summarize(affected0)).toEqual([[1, 2], [0, 1]]);
-    expect(summarize(affected1)).toEqual([[2, 3], [1, 2], [0, 1]]);
+    expect(summarize(affected0.pairs)).toEqual([[1, 2], [0, 1]]);
+    expect(summarize(affected1.pairs)).toEqual([[2, 3], [1, 2], [0, 1]]);
+
+    expect(affected0.entities).toEqual([e1, e0]);
+    expect(affected1.entities).toEqual([e2, e0, e1]);
   });
 });
