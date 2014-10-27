@@ -1,26 +1,37 @@
 (function() {
   angular.module('LDT.entity').factory('SideSpaceManager', function() {
     return function(entity, rangeFunction) {
-      var range, occupiedTop, occupiedBottom;
+      var range, occupancyOnMinSide, occupancyOnMaxSide;
 
       this.clear = function() {
         range = entity[rangeFunction]();
         totalSpace = range.max - range.min;
-        occupiedTop = 0;
-        occupiedBottom = 0;
+        occupancyOnMinSide = 0;
+        occupancyOnMaxSide = 0;
       };
       this.clear();
 
       this.vacancy = function() {
-        if (occupiedTop + occupiedBottom > range) {
+        if (occupancyOnMinSide + occupancyOnMaxSide >= totalSpace) {
           return null;
         } else {
           return {
-            min: range.min + occupiedBottom,
-            max: range.max - occupiedTop
+            min: range.min + occupancyOnMinSide,
+            max: range.max - occupancyOnMaxSide
           }
         }
-      }
+      };
+
+      // Occupy space on either end of the coordinate range:
+      // minOrMaxSide: -1 for "min" side, 1 for "max" side
+      // amount: amount of space to occupy
+      this.occupy = function(minOrMaxSide, amount) {
+        if (minOrMaxSide == -1) {
+          occupancyOnMinSide += amount;
+        } else {
+          occupancyOnMaxSide += amount;
+        }
+      };
     };
   });
 })();
