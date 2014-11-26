@@ -1,13 +1,3 @@
-RSpec::Matchers.define :have_svg_path_data do |expected_d|
-  match do |element|
-    element[:d] == expected_d
-  end
-	failure_message do |element|
-    %Q(expected: <path d="#{expected_d}">\n) +
-		%Q(actual:   <path d="#{element[:d]}">)
-  end
-end
-
 # Input: hash of styles, e.g. { "color": "red", "width": "100px" }
 RSpec::Matchers.define :have_styles do |styles|
   match do |element|

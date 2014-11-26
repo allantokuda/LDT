@@ -53,7 +53,7 @@
   end
 
   def expect_arrowhead(endpoint_id, path_data)
-    expect(find("#endpoint-#{endpoint_id}")).to have_svg_path_data path_data
+    expect(find("#endpoint-#{endpoint_id}")[:d]).to eq path_data
   end
 
   def set_label(endpoint_id, label_text)
