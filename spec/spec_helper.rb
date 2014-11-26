@@ -5,7 +5,6 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'pry'
 require_relative 'helpers/graph_editor_helper'
 require_relative 'helpers/fixture'
-require_relative 'helpers/custom_matchers'
 require_relative 'helpers/capybara_element_helper'
 
 # Requires supporting ruby files with custom matchers and macros, etc,

@@ -102,17 +102,12 @@
   end
 
   def expect_attribute(entity_id, attribute_num, attribute_text, is_identifier=false)
-    expect(find("#entity-#{entity_id}-attribute-#{attribute_num} span")).to have_content attribute_text
-
-    black_underline = {
-      'border-bottom-width' => '1px',
-      'border-bottom-color' => 'rgba(0, 0, 0, 1)',
-      'border-bottom-style' => 'solid'
-    }
+    attribute_selector = "#entity-#{entity_id}-attribute-#{attribute_num}"
+    expect(find(attribute_selector)).to have_content attribute_text
 
     if is_identifier
-      expect(find("#entity-#{entity_id}-attribute-#{attribute_num} span")).to have_styles(black_underline)
+      expect(find(attribute_selector)[:class].split(' ')).to include "identifier"
     else
-      expect(find("#entity-#{entity_id}-attribute-#{attribute_num} span")).not_to have_styles(black_underline)
+      expect(find(attribute_selector)[:class].split(' ')).to_not include "identifier"
     end
   end
