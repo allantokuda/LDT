@@ -20,6 +20,6 @@ describe 'Entity deletion', js: true do
     expect_arrowhead 0, 'M220,275m0,0 l0,0'
     expect_arrowhead 1, 'M300,275m0,0 l0,0'
 
-    expect(all('.click-area')).to respond(to: [:count], with: 2)
+    expect(all('.click-area').count).to eq 2
   end
 end

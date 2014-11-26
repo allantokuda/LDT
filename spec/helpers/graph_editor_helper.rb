@@ -3,7 +3,7 @@
     # to know when the page has reloaded
     find('#graph-name').set '(reloading)'
     visit current_path
-    expect(find('#graph-name')).not_to respond(to: [:value], with: '(reloading)')
+    expect(find('#graph-name').value).to_not eq '(reloading)'
   end
 
   def save
@@ -12,8 +12,8 @@
   end
 
   def expect_graph_name(expected_name)
-    expect(find('#graph-name')).to respond(to: [:value], with: expected_name)
-    expect(page).to respond(to: [:title], with: expected_name)
+    expect(find('#graph-name').value).to eq expected_name
+    expect(page.title).to eq expected_name
   end
 
   def create_entity(x,y)
@@ -64,11 +64,11 @@
   end
 
   def expect_label(endpoint_id, label_text)
-    expect(find("#label-#{endpoint_id}")).to respond(to: [:text], with: label_text)
+    expect(find("#label-#{endpoint_id}").text).to eq label_text
   end
 
   def expect_entity_name(entity_id, entity_name)
-    expect(find("#entity-#{entity_id} .entity-heading .entity-name")).to respond(to: [:text], with: entity_name)
+    expect(find("#entity-#{entity_id} .entity-heading .entity-name").text).to eq entity_name
   end
 
   def wiggle_entity(entity_id)
@@ -82,8 +82,8 @@
   end
 
   def check_location(element_selector, expected_x, expected_y)
-    expect(find(element_selector)).to respond(to: [:native, :location, :x], with: expected_x)
-    expect(find(element_selector)).to respond(to: [:native, :location, :y], with: expected_y)
+    expect(find(element_selector).native.location.x).to eq expected_x
+    expect(find(element_selector).native.location.y).to eq expected_y
   end
 
   def endpoint_location(endpoint_id)

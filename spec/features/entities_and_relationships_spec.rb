@@ -53,8 +53,8 @@ describe 'Entities and relationships', js: true do
 
     # Default entity is 100x120 and we placed these at y=200.
     # Relationship y equals entity's (y + height/2) = (200 + 120/2) = 260
-    expect(find('#click-area-0')).to respond(to: [:native, :location, :y], with: 260)
-    expect(find('#click-area-1')).to respond(to: [:native, :location, :y], with: 260)
+    expect(find('#click-area-0').native.location.y).to eq 260
+    expect(find('#click-area-1').native.location.y).to eq 260
 
     # One on left, and Many plus Bar on right
     expect_arrowhead 0, "M220,275m0,0 l0,0"
