@@ -25,7 +25,7 @@ describe 'Entities and relationships', js: true do
     find('#click-area-1').click # click a second time to create a degree-many link
 
     # One on left, many on right
-    expect_arrowhead 0, "M220,275m0,0"
+    expect_arrowhead 0, "M220,275m0,0 l0,0"
     expect_arrowhead 1, "M600,275m0,10 l-20,-10 l20,-10"
 
     find('#identifier-bar-button').click
@@ -57,7 +57,7 @@ describe 'Entities and relationships', js: true do
     expect(find('#click-area-1')).to respond(to: [:native, :location, :y], with: 260)
 
     # One on left, and Many plus Bar on right
-    expect_arrowhead 0, "M220,275m0,0"
+    expect_arrowhead 0, "M220,275m0,0 l0,0"
     expect_arrowhead 1, "M600,275m0,10 l-20,-10 l20,-10 m-25,20 l0,-20"
 
     expect_label 0, 'be supported by'
