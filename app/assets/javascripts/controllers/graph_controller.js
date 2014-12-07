@@ -6,29 +6,20 @@ app.controller('GraphCtrl', ['$scope', function($scope) {
 
   // Allow tests to pass on this scope alone, though this scope will actually
   // inherit the definition so that the parent scope can use it.
-  if (typeof($scope.graph) == 'undefined')
-    $scope.graph = new Object;
+  if (typeof($scope.graph) == 'undefined') {
+    $scope.graph = {
+      name: "Untitled graph",
+      entities: [],
+      relationships: [],
+      endpoints: [],
+      changeToggler: false
+    }
+  }
 
   $scope.graph.initialize = function() {
 
-    if (typeof($scope.graph.name) == 'undefined')
-      $scope.graph.name = "Untitled graph";
-
-    if (typeof($scope.graph.entities) == 'undefined')
-      $scope.graph.entities = [];
-
-    if (typeof($scope.graph.relationships) == 'undefined')
-      $scope.graph.relationships = [];
-
-    if (typeof($scope.graph.endpoints) == 'undefined')
-      $scope.graph.endpoints = [];
-
-    if (typeof($scope.graph) == 'undefined')
-      $scope.graph.changeToggler = false;
-
     $scope.graph.next_entity_id       = nextID($scope.graph.entities);
     $scope.graph.next_relationship_id = nextID($scope.graph.relationships);
-
 
     $scope.$watch('graph.name', function(newValue, oldValue) {
       $scope.$emit('titlechange', newValue);
@@ -38,12 +29,11 @@ app.controller('GraphCtrl', ['$scope', function($scope) {
   };
 
   function nextID(set) {
-    if (set.length > 0)
-      return _.max(set, function(item) { return item.id; }).id + 1;
-    else
+    if (typeof(set) == 'undefined' || set.length == 0)
       return 0;
+    else
+      return _.max(set, function(item) { return item.id; }).id + 1;
   }
-
 
   function isIdentifier(attributeName) {
     return attributeName.substr(attributeName.length - 1) == '*';
