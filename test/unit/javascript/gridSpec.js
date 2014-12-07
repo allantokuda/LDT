@@ -3,11 +3,11 @@
 describe('grid', function(){
   var grid;
 
-  beforeEach(module('LDT'));
+  beforeEach(module('LDT.geometry'));
 
   beforeEach(
     function() {
-      angular.module('LDT').value('GRIDSIZE', 4);
+      angular.module('LDT.geometry').value('GRIDSIZE', 4);
     }
   );
 

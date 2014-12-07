@@ -1,4 +1,6 @@
-angular.module('LDT')
+'use strict';
+
+angular.module('LDT.geometry')
 .value('GRIDSIZE', 10)
 .service('grid', ['GRIDSIZE', function(GRIDSIZE) {
   return {
