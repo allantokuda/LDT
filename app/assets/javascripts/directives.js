@@ -78,7 +78,7 @@ app.directive('forwardEvent',function() {
 */
 
 // Setup a rectangular element to be movable and resizable, and bind its position to the scope
-app.directive('moveAndResize',function() {
+app.directive('moveAndResize', ['grid', function(grid) {
   return {
     link: function (scope, element, iAttrs, ctrl) {
       var subject = scope[iAttrs.moveAndResize];
@@ -88,12 +88,7 @@ app.directive('moveAndResize',function() {
           dragStartMouseX, dragStartMouseY,
           dragStartWidth, dragStartHeight;
 
-      var GRIDSIZE  = 10;
       var BORDER_HANDLE_SIZE = 10;
-
-      function grid(n) {
-        return Math.floor((n + GRIDSIZE/2.0)/GRIDSIZE)*GRIDSIZE
-      }
 
       // 0: move, 1: resize-left, 2: resize-right, 3: resize-top: 4: resize-bottom
       function boxBorderArea(x,y) {
@@ -113,22 +108,22 @@ app.directive('moveAndResize',function() {
       function actionByDragType(ev) {
         switch(dragType) {
           case 0:
-            subject.x      = grid(dragStartX      + ev.pageX - dragStartMouseX);
-            subject.y      = grid(dragStartY      + ev.pageY - dragStartMouseY);
+            subject.x      = grid.snap(dragStartX      + ev.pageX - dragStartMouseX);
+            subject.y      = grid.snap(dragStartY      + ev.pageY - dragStartMouseY);
             break;
           case 1:
-            subject.x      = grid(dragStartX      + ev.pageX - dragStartMouseX);
-            subject.width  = grid(dragStartWidth  - ev.pageX + dragStartMouseX);
+            subject.x      = grid.snap(dragStartX      + ev.pageX - dragStartMouseX);
+            subject.width  = grid.snap(dragStartWidth  - ev.pageX + dragStartMouseX);
             break;
           case 2:
-            subject.width  = grid(dragStartWidth  + ev.pageX - dragStartMouseX);
+            subject.width  = grid.snap(dragStartWidth  + ev.pageX - dragStartMouseX);
             break;
           case 3:
-            subject.y      = grid(dragStartY      + ev.pageY - dragStartMouseY);
-            subject.height = grid(dragStartHeight - ev.pageY + dragStartMouseY);
+            subject.y      = grid.snap(dragStartY      + ev.pageY - dragStartMouseY);
+            subject.height = grid.snap(dragStartHeight - ev.pageY + dragStartMouseY);
             break;
           case 4:
-            subject.height = grid(dragStartHeight + ev.pageY - dragStartMouseY);
+            subject.height = grid.snap(dragStartHeight + ev.pageY - dragStartMouseY);
             break;
         }
       }
@@ -178,7 +173,7 @@ app.directive('moveAndResize',function() {
       $(element).mousemove(setCursor);
     }
   };
-});
+}]);
 
 // Setup entities to be draggable and resizable, and bind to the scope
 app.directive('selectWith',function() {

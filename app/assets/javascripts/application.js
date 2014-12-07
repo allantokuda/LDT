@@ -23,4 +23,5 @@
 //= require controllers/graph_controller
 //= require controllers/entity_controller
 //= require controllers/endpoint_controller
+//= require grid
 //= require directives
