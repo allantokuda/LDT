@@ -11,6 +11,7 @@ module.exports = function(config){
       'app/assets/javascripts/directives.js',
       'app/assets/javascripts/controllers/*.js',
       'app/assets/javascripts/models/*.js',
+      'app/assets/javascripts/*.js',
       'test/unit/**/*.js',
       'test/lib/jasmine-jquery.js'
     ],
