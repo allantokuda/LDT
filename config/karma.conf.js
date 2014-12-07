@@ -8,10 +8,7 @@ module.exports = function(config){
       'vendor/assets/javascripts/angular-mocks.js',
       'vendor/assets/javascripts/underscore.js',
       'app/assets/javascripts/app.js',
-      'app/assets/javascripts/directives.js',
-      'app/assets/javascripts/controllers/*.js',
-      'app/assets/javascripts/models/*.js',
-      'app/assets/javascripts/*.js',
+      'app/assets/javascripts/**/*.js',
       'test/unit/**/*.js',
       'test/lib/jasmine-jquery.js'
     ],
