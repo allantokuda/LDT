@@ -122,10 +122,8 @@ app.controller('EditorCtrl', ['$scope', '$http', function($scope, $http) {
 
   function setSaveMessage(status, message) {
     $('#save-message').show();
-    $scope.$apply(function() {
-      $scope.editor.saveStatus = status;
-      $scope.editor.saveMessage = message;
-    });
+    $scope.editor.saveStatus = status;
+    $scope.editor.saveMessage = message;
   };
 
   function fadeSaveMessage() {
@@ -149,13 +147,12 @@ app.controller('EditorCtrl', ['$scope', '$http', function($scope, $http) {
 
     var encodeData = JSON.stringify(graphData);
 
-    $.ajax({ url:"/graphs/"+graphData.id, type:"PUT", dataType:"json", data:encodeData, contentType:'application/json',
-      success: function() {
-        setSaveMessage('success', 'Saved'); fadeSaveMessage();
-      },
-      error: function(xhr, ajaxOptions, thrownError) {
-        setSaveMessage('error', 'Save Failed!');
-      }
+    $http.put("/graphs/"+graphData.id, encodeData)
+    .success(function() {
+      setSaveMessage('success', 'Saved'); fadeSaveMessage();
+    })
+    .error(function(xhr, ajaxOptions, thrownError) {
+      setSaveMessage('error', 'Save Failed!');
     });
   };
 
