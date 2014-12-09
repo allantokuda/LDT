@@ -2,7 +2,7 @@
 
 var app = angular.module('LDT.controllers');
 
-app.controller('EditorCtrl', ['$scope', function($scope) {
+app.controller('EditorCtrl', ['$scope', '$http', function($scope, $http) {
 
   $scope.editor = new Object;
   $scope.graph = new Object;
@@ -16,51 +16,46 @@ app.controller('EditorCtrl', ['$scope', function($scope) {
     graphID = matches[1];
 
   if (graphID)
-    $.ajax({ url:"/graphs/"+graphID, type:"GET", dataType:"json",
-      error: function(jqXHR, textStatus, errorThrown) {
-        console.error(jqXHR);
-        $scope.$apply(function() {
-          $scope.status_message = jqXHR.status + ' ' + jqXHR.statusText;
-        });
-      },
-      success: function(data, textStatus, jqXHR) {
-        $scope.$apply(function() {
-          $scope.graph.id = graphID;
-          $scope.graph.name = data.name;
-          $scope.pan.x = data.pan_x || 0;
-          $scope.pan.y = data.pan_y || 0;
+    $http.get("/graphs/"+graphID)
+    .error(function(jqXHR, textStatus, errorThrown) {
+      console.error(jqXHR);
+      $scope.status_message = jqXHR.status + ' ' + jqXHR.statusText;
+    })
+    .success(function(data, textStatus, jqXHR) {
+      $scope.graph.id = graphID;
+      $scope.graph.name = data.name;
+      $scope.pan.x = data.pan_x || 0;
+      $scope.pan.y = data.pan_y || 0;
 
-          $scope.graph.entities = [];
-          $scope.graph.relationships = [];
-          $scope.graph.endpoints = [];
+      $scope.graph.entities = [];
+      $scope.graph.relationships = [];
+      $scope.graph.endpoints = [];
 
-          _.each(data.entities, function(hash) {
-            $scope.graph.entities.push(new Entity(hash));
-          });
+      _.each(data.entities, function(hash) {
+        $scope.graph.entities.push(new Entity(hash));
+      });
 
-          _.each(data.relationships, function(hash) {
-             var e1 = _.find($scope.graph.entities, function(e){
-               return e.id == hash.entity1_id;
-             });
-             var e2 = _.find($scope.graph.entities, function(e){
-               return e.id == hash.entity2_id;
-             });
+      _.each(data.relationships, function(hash) {
+         var e1 = _.find($scope.graph.entities, function(e){
+           return e.id == hash.entity1_id;
+         });
+         var e2 = _.find($scope.graph.entities, function(e){
+           return e.id == hash.entity2_id;
+         });
 
-             var r = new Relationship(hash.id, e1, e2);
+         var r = new Relationship(hash.id, e1, e2);
 
-             r.endpoints[0].label  = hash.label1;
-             r.endpoints[0].symbol = hash.symbol1;
-             r.endpoints[1].label  = hash.label2;
-             r.endpoints[1].symbol = hash.symbol2;
+         r.endpoints[0].label  = hash.label1;
+         r.endpoints[0].symbol = hash.symbol1;
+         r.endpoints[1].label  = hash.label2;
+         r.endpoints[1].symbol = hash.symbol2;
 
-             $scope.graph.addRelationship(r);
-          });
+         $scope.graph.addRelationship(r);
+      });
 
-          $scope.graph.initialize();
-        });
-        $scope.updateSvgSize();
-      }
-    });
+      $scope.graph.initialize();
+    $scope.updateSvgSize();
+  });
 
 
   // Click event handlers
