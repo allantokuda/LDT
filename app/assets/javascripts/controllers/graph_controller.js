@@ -2,6 +2,8 @@
 
 var app = angular.module('LDT.controllers');
 
+// This controller is nested within EditorController and is responsible for
+// handling state changes to the graph data.
 app.controller('GraphCtrl', ['$scope', function($scope) {
 
   // Allow tests to pass on this scope alone, though this scope will actually
@@ -35,6 +37,12 @@ app.controller('GraphCtrl', ['$scope', function($scope) {
       return _.max(set, function(item) { return item.id; }).id + 1;
   }
 
+  //TODO: move "identifier" methods into a domain specific class.
+  //The logic here is that an attribute is a one-line (delimined by newlines)
+  //substring of the "attributes" text field on an entity, and that an
+  //attribute is an "identiifer" of its entity if it ends with an asterisk. The
+  //UI layer hides the asterisk except in edit mode, replacing it with an
+  //underline. This is all domain-specific logic.
   function isIdentifier(attributeName) {
     return attributeName.substr(attributeName.length - 1) == '*';
   }

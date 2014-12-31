@@ -2,6 +2,12 @@
 
 var app = angular.module('LDT.controllers');
 
+// This controller is at the top of the application and bootstraps it.
+// - Instantiates $scope.editor which contains editor UI state
+// - Instantiates $scope.graph which contains graph data state **
+// - Downloads graph data and constructs $scope.graph from it  **
+// - Defines editor event handlers
+// TODO: extract the ** marked responsibilities into separate services.
 app.controller('EditorCtrl', ['$scope', '$http', function($scope, $http) {
 
   $scope.editor = new Object;
@@ -9,6 +15,7 @@ app.controller('EditorCtrl', ['$scope', '$http', function($scope, $http) {
   $scope.pan = { x: 0, y: 0 }
   $scope.status_message = 'Loading...'
 
+	//TODO: use Angular router to handle this more cleanly
   var graphID;
   var path_regex = /graphs\/([^\/]+)\/edit/;
   var matches = path_regex.exec(window.location.pathname);
