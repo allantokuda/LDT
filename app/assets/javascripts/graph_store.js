@@ -21,8 +21,8 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
     //Return a promise whose value is the constructed graph object.
     var deferred = $q.defer();
     $http.get('/graphs/'+graphID).then(
-      function() {
-        deferred.resolve();
+      function(data) {
+        deferred.resolve(data);
       },
       function() {
         deferred.reject();

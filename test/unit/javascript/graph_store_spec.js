@@ -18,7 +18,7 @@ describe('GraphStore', function() {
             if (path == '/graphs/'+BAD_GRAPH_ID) {
               deferred.reject();
             } else {
-              deferred.resolve();
+              deferred.resolve({});
             }
           });
           return deferred.promise;
@@ -50,14 +50,13 @@ describe('GraphStore', function() {
     });
 
     it('fulfills its returned promise if and when $http.get is fulfilled', function() {
-      var loadPromise, loaded;
+      var loadPromise, loadedData;
 
       loadPromise = GraphStore.load();
-      loaded = false;
 
       // Set success handler (1st argument to then())
-      loadPromise.then(function() {
-        loaded = true;
+      loadPromise.then(function(data) {
+        loadedData = data;
       });
 
       // End the earlier defined $timeout to fulfill the promise
@@ -65,7 +64,7 @@ describe('GraphStore', function() {
       // http://stackoverflow.com/questions/23131838/testing-angularjs-promises-in-jasmine-2-0
       $timeout.flush();
 
-      expect(loaded).toBe(true);
+      expect(loadedData).toBeDefined();
     });
 
     it('rejects its returned promise if and when $http.get is rejected', function() {
