@@ -2,6 +2,17 @@
 
 describe('GraphStore', function() {
   var GraphStore;
+  var spiedHttpGetPath;
+
+  beforeEach(
+    module(function($provide) {
+      $provide.service('$http', function() {
+        this.get = jasmine.createSpy('get').andCallFake(function(path) {
+          spiedHttpGetPath = path;
+        });
+      });
+    })
+  );
 
   beforeEach(module('LDT.controllers'));
   beforeEach(inject(function(_GraphStore_) {
@@ -21,6 +32,12 @@ describe('GraphStore', function() {
     it('returns a promise for a graph object', function() {
       var promise = GraphStore.load();
       expect(typeof(promise.then)).toEqual('function');
+    });
+
+    it('calls $http.get with correct graph data URL', function() {
+      var graphID = 98138523;
+      var promise = GraphStore.load(graphID);
+      expect(spiedHttpGetPath).toBe('/graphs/' + graphID);
     });
   });
 });
