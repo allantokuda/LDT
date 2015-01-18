@@ -6,6 +6,15 @@ describe('GraphStore', function() {
   var spiedHttpGetPath;
   var BAD_GRAPH_ID = 400123097;
 
+  var exampleGraphData = {
+    id: 123,
+    name: 'Test Graph',
+    entities: [{ id: 1, x: 3, y: 4, width: 100, height: 120, name: 'Entity 1', attributes: '' }],
+    relationships: [{ entity1_id: 1, entity2_id: 2, symbol1: '', symbol2: '', label1: '', label2: '' }],
+    pan_x: 0,
+    pan_y: 0
+  }
+
   beforeEach(
     module(function($provide) {
       $provide.service('$http', function($q, $timeout) {
@@ -18,7 +27,7 @@ describe('GraphStore', function() {
             if (path == '/graphs/'+BAD_GRAPH_ID) {
               deferred.reject();
             } else {
-              deferred.resolve({});
+              deferred.resolve(exampleGraphData);
             }
           });
           return deferred.promise;
