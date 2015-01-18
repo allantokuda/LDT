@@ -7,12 +7,11 @@ describe('GraphStore', function() {
   var BAD_GRAPH_ID = 400123097;
 
   var exampleGraphData = {
-    id: 123,
     name: 'Test Graph',
     entities: [{ id: 1, x: 3, y: 4, width: 100, height: 120, name: 'Entity 1', attributes: '' }],
     relationships: [{ entity1_id: 1, entity2_id: 2, symbol1: '', symbol2: '', label1: '', label2: '' }],
-    pan_x: 0,
-    pan_y: 0
+    pan_x: 250,
+    pan_y: 100
   }
 
   beforeEach(
@@ -59,9 +58,10 @@ describe('GraphStore', function() {
     });
 
     it('fulfills its returned promise if and when $http.get is fulfilled', function() {
+      var graphID = 12345678;
       var loadPromise, loadedData;
 
-      loadPromise = GraphStore.load();
+      loadPromise = GraphStore.load(graphID);
 
       // Set success handler (1st argument to then())
       loadPromise.then(function(data) {
@@ -90,6 +90,31 @@ describe('GraphStore', function() {
       $timeout.flush();
 
       expect(errored).toBe(true);
+    });
+
+    it('transforms the data into an in-memory structure', function() {
+      var loadedData;
+      var graphID = 35902341;
+      GraphStore.load(graphID).then(function(data) { loadedData = data; });
+      $timeout.flush();
+
+      expect(loadedData.id).toEqual(graphID);
+      expect(loadedData.pan.x).toEqual(exampleGraphData.pan_x);
+      expect(loadedData.pan.y).toEqual(exampleGraphData.pan_y);
+      expect(loadedData.name).toEqual(exampleGraphData.name);
+      expect(loadedData.entities).toEqual(exampleGraphData.entities);
+      expect(loadedData.relationships).toEqual(exampleGraphData.relationships);
+    });
+
+    it('supplies default pan values of 0,0', function() {
+      var loadedData;
+      exampleGraphData.pan_x = undefined;
+      exampleGraphData.pan_y = undefined;
+      GraphStore.load(128310234).then(function(data) { loadedData = data; });
+      $timeout.flush();
+
+      expect(loadedData.pan.x).toEqual(0);
+      expect(loadedData.pan.y).toEqual(0);
     });
   });
 });

@@ -17,12 +17,24 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
     pan: { x: 0, y: 0 }
   };
 
+  var self = this;
+
   this.load = function(graphID) {
     //Return a promise whose value is the constructed graph object.
     var deferred = $q.defer();
     $http.get('/graphs/'+graphID).then(
       function(data) {
-        deferred.resolve(data);
+        self.graph = {
+          id: graphID,
+          name: data.name,
+          entities: data.entities,
+          relationships: data.relationships,
+          pan: {
+            x: data.pan_x || 0,
+            y: data.pan_y || 0
+          }
+        };
+        deferred.resolve(self.graph);
       },
       function() {
         deferred.reject();
