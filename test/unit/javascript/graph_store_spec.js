@@ -16,4 +16,11 @@ describe('GraphStore', function() {
     expect(GraphStore.graph.relationships).toEqual([]);
     expect(GraphStore.graph.pan).toEqual({x: 0, y: 0});
   });
+
+  describe('load()', function() {
+    it('returns a promise for a graph object', function() {
+      var promise = GraphStore.load();
+      expect(typeof(promise.then)).toEqual('function');
+    });
+  });
 });
