@@ -26,24 +26,20 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
     //Return a promise whose value is the constructed graph object.
     var deferred = $q.defer();
     $http.get('/graphs/'+graphID).then(
-      function(data) {
-        self.graph = {
-          id: graphID,
-          name: data.name,
-          entities: [],
-          relationships: [],
-          endpoints: [],
-          pan: {
-            x: data.pan_x || 0,
-            y: data.pan_y || 0
-          }
-        };
+      function(response) {
+        self.graph.id = graphID;
+        self.graph.name = response.data.name,
+        self.graph.entities = [],
+        self.graph.relationships = [],
+        self.graph.endpoints = [],
+        self.graph.pan.x = response.data.pan_x || 0;
+        self.graph.pan.y = response.data.pan_y || 0;
 
-        _.each(data.entities, function(hash) {
+        _.each(response.data.entities, function(hash) {
           self.graph.entities.push(new Entity(hash));
         });
 
-        _.each(data.relationships, function(hash) {
+        _.each(response.data.relationships, function(hash) {
            var e1 = _.find(self.graph.entities, function(e){
              return e.id == hash.entity1_id;
            });
@@ -176,4 +172,9 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
     self.graph.relationships = _.without(self.graph.relationships, relationship_to_delete);
   };
 
+  this.deselectAll = function() {
+    _.each(self.graph.entities, function(entity) {
+      entity.selected = false;
+    });
+  };
 }]);

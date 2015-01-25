@@ -4,7 +4,7 @@
 angular.module('LDT.ui').directive('moveAndResize', ['grid', function(grid) {
   return {
     link: function (scope, element, iAttrs, ctrl) {
-      var subject = scope[iAttrs.moveAndResize];
+      var subject = eval('scope.' + iAttrs.moveAndResize);
       var dragging = false;
       var dragType,
           dragStartX, dragStartY,

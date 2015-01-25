@@ -32,7 +32,7 @@ describe('GraphStore', function() {
             if (path == '/graphs/'+BAD_GRAPH_ID) {
               deferred.reject();
             } else {
-              deferred.resolve(exampleGraphData);
+              deferred.resolve({ data: exampleGraphData });
             }
           });
           return deferred.promise;
@@ -224,13 +224,21 @@ describe('GraphStore', function() {
       expect(r2).toBeDefined();
     });
 
-    it('should add the relationship to the graph scope', function() {
+    it('should add the relationship to the graph', function() {
       expect(_.last(GraphStore.graph.relationships.$id)).toBe(r2.$id);
     });
 
-    it('should add the endpoints to the graph scope', function() {
+    it('should add the endpoints to the graph', function() {
       expect(_.last(GraphStore.graph.endpoints).$id).toBe(r2.endpoints[1].$id);
     });
   });
 
+  it('should set all entities deselected when deselect() is called', function() {
+    GraphStore.load(27152132); $timeout.flush();
+    GraphStore.graph.entities[0].selected = true;
+    GraphStore.deselectAll();
+    expect(GraphStore.graph.entities[0].selected).toBe(false);
+    expect(GraphStore.graph.entities[1].selected).toBe(false);
+    expect(GraphStore.graph.entities[2].selected).toBe(false);
+  });
 });

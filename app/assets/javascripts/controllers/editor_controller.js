@@ -4,14 +4,11 @@ var app = angular.module('LDT.controllers');
 
 // This controller is at the top of the application and bootstraps it.
 // - Instantiates $scope.editor which contains editor UI state
-// - Instantiates $scope.graph which contains graph data state **
-// - Downloads graph data and constructs $scope.graph from it  **
 // - Defines editor event handlers
-// TODO: extract the ** marked responsibilities into separate services.
-app.controller('EditorCtrl', ['$scope', '$http', function($scope, $http) {
+app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStore) {
 
   $scope.editor = new Object;
-  $scope.graph = new Object;
+  $scope.graph = GraphStore.graph;
   $scope.pan = { x: 0, y: 0 }
   $scope.status_message = 'Loading...'
 
@@ -23,54 +20,25 @@ app.controller('EditorCtrl', ['$scope', '$http', function($scope, $http) {
     graphID = matches[1];
 
   if (graphID) {
-    $http.get("/graphs/"+graphID)
-    .error(function(jqXHR, textStatus, errorThrown) {
-      console.error(jqXHR);
-      $scope.status_message = jqXHR.status + ' ' + jqXHR.statusText;
-    })
-    .success(function(data, textStatus, jqXHR) {
-      $scope.graph.id = graphID;
-      $scope.graph.name = data.name;
-      $scope.pan.x = data.pan_x || 0;
-      $scope.pan.y = data.pan_y || 0;
-
-      $scope.graph.entities = [];
-      $scope.graph.relationships = [];
-      $scope.graph.endpoints = [];
-
-      _.each(data.entities, function(hash) {
-        $scope.graph.entities.push(new Entity(hash));
-      });
-
-      _.each(data.relationships, function(hash) {
-        var e1 = _.find($scope.graph.entities, function(e){
-          return e.id == hash.entity1_id;
+    GraphStore.load(graphID).then(
+      function(graph) {
+        $scope.$watch('graph.name', function(newValue, oldValue) {
+          $scope.$emit('titlechange', newValue);
         });
-        var e2 = _.find($scope.graph.entities, function(e){
-          return e.id == hash.entity2_id;
-        });
-
-        var r = new Relationship(hash.id, e1, e2);
-
-        r.endpoints[0].label  = hash.label1;
-        r.endpoints[0].symbol = hash.symbol1;
-        r.endpoints[1].label  = hash.label2;
-        r.endpoints[1].symbol = hash.symbol2;
-
-        $scope.graph.addRelationship(r);
-      });
-
-      $scope.graph.initialize();
-      $scope.updateSvgSize();
-    });
+        $scope.updateSvgSize();
+      },
+      function() {
+        console.error(jqXHR);
+        $scope.status_message = jqXHR.status + ' ' + jqXHR.statusText;
+      }
+    );
   }
-
 
   // Click event handlers
 
   $scope.handleCanvasClick = function(x,y) {
     if ($scope.editor.mode == 'new_entity')
-      $scope.graph.createEntity(x - $scope.pan.x, y - $scope.pan.y);
+      GraphStore.createEntity(x - $scope.pan.x, y - $scope.pan.y);
 
     setMode('select');
 
@@ -84,11 +52,11 @@ app.controller('EditorCtrl', ['$scope', '$http', function($scope, $http) {
         setMode('new_relationship_end');
         break;
       case 'new_relationship_end':
-        $scope.graph.createRelationship($scope.editor.newRelationshipStart, entity);
+        GraphStore.createRelationship($scope.editor.newRelationshipStart, entity);
         setMode('select');
         break;
       case 'delete_item':
-        $scope.graph.deleteEntity(entity);
+        GraphStore.deleteEntity(entity);
         setMode('select');
         break;
       default:
@@ -98,14 +66,14 @@ app.controller('EditorCtrl', ['$scope', '$http', function($scope, $http) {
 
   $scope.handleRelationshipClick = function(relationship) {
     if ($scope.editor.mode == 'delete_item') {
-      $scope.graph.deleteRelationship(relationship);
+      GraphStore.deleteRelationship(relationship);
       setMode('select');
     }
   };
 
   $scope.handleAttributeClick = function(entityID, attributeIndex, ev) {
     if ($scope.editor.mode == 'identifier_bar') {
-      $scope.graph.toggleAttributeIdentifier(entityID, attributeIndex);
+      $scope.toggleAttributeIdentifier(entityID, attributeIndex);
     }
   };
 
@@ -141,27 +109,11 @@ app.controller('EditorCtrl', ['$scope', '$http', function($scope, $http) {
   };
 
   $scope.saveCommand = function() {
-
     setSaveMessage('pending', 'Saving...');
-
-    var graphData = {
-      id        : $scope.graph.id,
-      name      : $scope.graph.name,
-      pan_x     : $scope.pan.x,
-      pan_y     : $scope.pan.y
-    };
-    graphData.entities      = _.map($scope.graph.entities,      function(e) { return e.saveObject(); });
-    graphData.relationships = _.map($scope.graph.relationships, function(r) { return r.saveObject(); });
-
-    var encodeData = JSON.stringify(graphData);
-
-    $http.put("/graphs/"+graphData.id, encodeData)
-    .success(function() {
-      setSaveMessage('success', 'Saved'); fadeSaveMessage();
-    })
-    .error(function(xhr, ajaxOptions, thrownError) {
-      setSaveMessage('error', 'Save Failed!');
-    });
+    GraphStore.save().then(
+      function() { setSaveMessage('success', 'Saved'); fadeSaveMessage(); },
+      function() { setSaveMessage('error', 'Save Failed!'); }
+    );
   };
 
   $scope.updateSvgSize = function() {
@@ -174,6 +126,55 @@ app.controller('EditorCtrl', ['$scope', '$http', function($scope, $http) {
     $('#canvas'   ).width ($(document).width ());
     $('#canvas'   ).height($(document).height());
   }
+
+  //TODO: move "identifier" methods into a domain specific class.
+  //The logic here is that an attribute is a one-line (delimined by newlines)
+  //substring of the "attributes" text field on an entity, and that an
+  //attribute is an "identiifer" of its entity if it ends with an asterisk. The
+  //UI layer hides the asterisk except in edit mode, replacing it with an
+  //underline. This is all domain-specific logic.
+  function isIdentifier(attributeName) {
+    return attributeName.substr(attributeName.length - 1) == '*';
+  }
+
+  function removeIdentifier(attributeName) {
+    return attributeName.substr(0,attributeName.length - 1);
+  }
+
+  function addIdentifier(attributeName) {
+    return attributeName + '*';
+  }
+
+  // Would love to eliminate these helpers. The attributes stopped responding to a double click event
+  // when I sent an attribute object with this information pre-populated. Calling these helpers instead
+  // somehow solved the problem.
+  $scope.removeIdentifierIfPresent = function(attributeName) {
+    return isIdentifier(attributeName) ? removeIdentifier(attributeName) : attributeName;
+  };
+  $scope.cssClass = function(attributeName) {
+    return isIdentifier(attributeName) ? 'identifier' : '';
+  };
+
+  $scope.toggleAttributeIdentifier = function(entityID, attributeIndex) {
+    var entity = _.find(GraphStore.graph.entities, function(e) { return e.id == entityID; });
+    var splitAttributes = entity.attributes.split("\n");
+
+    if (attributeIndex < splitAttributes.length) {
+      var attributeName = splitAttributes[attributeIndex];
+
+      if (isIdentifier(attributeName))
+        attributeName = removeIdentifier(attributeName);
+      else
+        attributeName = addIdentifier(attributeName);
+
+      splitAttributes[attributeIndex] = attributeName;
+      entity.attributes = splitAttributes.join("\n");
+    }
+  };
+
+  $scope.$on('entityGeometryChange', function(ev, entityID) {
+    $scope.$broadcast('relocateIfAttachedToEntity', entityID);
+  });
 
   // TODO consider moving this to a directive
   $(document).mouseup($scope.updateSvgSize);

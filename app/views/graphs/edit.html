@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <div id="canvas" ng-controller="GraphCtrl" move-and-resize="pan" relative-click="handleCanvasClick" deselector>
+    <div id="canvas" move-and-resize="graph.pan" relative-click="handleCanvasClick" deselector>
 
         <div class="ghost-entity" stick-to-mouse>Click to place new entity</div>
 
@@ -41,7 +41,7 @@
              id="entity-{{entity.id}}"
              ng-repeat="entity in graph.entities"
              move-and-resize="entity"
-             ng-style="{ left: pan.x + entity.x, top: pan.y + entity.y, width: entity.width, height: entity.height }"
+             ng-style="{ left: graph.pan.x + entity.x, top: graph.pan.y + entity.y, width: entity.width, height: entity.height }"
              ng-controller="EntityCtrl">
 
             <div class="select-shield" catch-input ng-click="handleEntityClick(entity)">
@@ -86,7 +86,7 @@
              ng-repeat="endpoint in graph.endpoints"
              ng-controller="EndpointCtrl"
              ng-click="handleLabelClick(label.id,$event)"
-             ng-style="{ left: pan.x + endpoint.x, top: pan.y + endpoint.y }"
+             ng-style="{ left: graph.pan.x + endpoint.x, top: graph.pan.y + endpoint.y }"
              select-with="dblclick as endpoint"
              catch-input
              auto-focus="input on dblclick">
@@ -104,7 +104,7 @@
         </div>
 
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="svg-paths">
-          <g transform="translate({{pan.x}},{{pan.y}})">
+          <g transform="translate({{graph.pan.x}},{{graph.pan.y}})">
             <!-- embedded "stroke: black" style here for Safari which won't recognize styles applied to <path> elements by CSS class -->
             <path id="relationship-{{r.id}}" class="relationship" ng-repeat="r in graph.relationships" ng-attr-d="{{r.svgPath()}}"       style="stroke: black"></path>
             <path id="endpoint-{{$index}}"   class="arrowhead"    ng-repeat="e in graph.endpoints"     ng-attr-d="{{e.arrowheadPath()}}" style="stroke: black"></path>
