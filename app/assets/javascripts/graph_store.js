@@ -19,6 +19,9 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
     pan: { x: 0, y: 0 }
   };
 
+  this.next_entity_id = 0;
+  this.next_relationship_id = 0;
+
   this.load = function(graphID) {
     //Return a promise whose value is the constructed graph object.
     var deferred = $q.defer();
@@ -58,6 +61,9 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
            self.addRelationship(r);
         });
 
+        self.next_entity_id       = self.nextID(self.graph.entities);
+        self.next_relationship_id = self.nextID(self.graph.relationships);
+
         deferred.resolve(self.graph);
       },
       function() {
@@ -65,6 +71,13 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
       }
     );
     return deferred.promise;
+  };
+
+  this.createRelationship = function(entity1, entity2) {
+    var id = self.next_relationship_id++;
+    var r = new Relationship(id, entity1, entity2);
+    self.addRelationship(r);
+    return r;
   };
 
   this.addRelationship = function(r) {
@@ -77,4 +90,68 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
     r.endpoints[0].negotiateCoordinates();
     r.endpoints[1].negotiateCoordinates();
   };
+
+  this.createEntity = function(locX,locY) {
+    self.graph.entities.push(new Entity({
+      id: self.next_entity_id++,
+      x: locX,
+      y: locY,
+      width: 120,
+      height: 150,
+      name: "New Entity",
+      attributes: ""
+    }));
+  };
+
+  this.nextID = function(set) {
+    if (typeof(set) == 'undefined' || set.length == 0)
+      return 0;
+    else
+      return _.max(set, function(item) { return item.id; }).id + 1;
+  };
+
+  this.deleteEntity = function(entity_to_delete) {
+
+    var endpoints_to_delete = entity_to_delete.clearAllEndpoints();
+
+    // Delete endpoints from associated entities' sides
+    _.each(self.graph.entities, function(entity) {
+      _.each(endpoints_to_delete, function(endpoint) {
+        entity.removeEndpoint(endpoint.partner);
+      });
+    });
+
+    // Remove all connected relationships
+    self.graph.relationships = _.reject(self.graph.relationships, function(r) {
+      return r.endpoints[0].entity == entity_to_delete || r.endpoints[1].entity == entity_to_delete;
+    });
+
+    // Remove all connected endpoints
+    self.graph.endpoints = _.reject(self.graph.endpoints, function(endpoint) {
+      return endpoint.entity      == entity_to_delete ||
+             endpoint.otherEntity == entity_to_delete;
+    });
+
+    // Remove entity
+    self.graph.entities = _.reject(self.graph.entities, function(e) {
+      return e == entity_to_delete;
+    });
+  };
+
+  this.deleteRelationship = function(relationship_to_delete) {
+    var endpoints = relationship_to_delete.endpoints;
+
+    _.each(endpoints, function(endpoint_to_delete) {
+
+      // Remove connected endpoints from sides
+      endpoint_to_delete.entity.removeEndpoint(endpoint_to_delete)
+
+      // Remove all connected endpoints from graph
+      self.graph.endpoints = _.without(self.graph.endpoints, endpoint_to_delete);
+    });
+
+    // Remove relationship
+    self.graph.relationships = _.without(self.graph.relationships, relationship_to_delete);
+  };
+
 }]);

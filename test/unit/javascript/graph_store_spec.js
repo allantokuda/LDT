@@ -9,10 +9,11 @@ describe('GraphStore', function() {
   var exampleGraphData = {
     name: 'Test Graph',
     entities: [
-      { id: 1, x:   3, y: 4, width: 100, height: 120, name: 'Entity 1', attributes: '' },
-      { id: 2, x: 200, y: 4, width: 100, height: 120, name: 'Entity 2', attributes: '' }
+      { id: 0, x:   0, y:   0, width: 100, height: 120, name: 'thing',  attributes: 'size\nshape'},
+      { id: 1, x: 200, y:   0, width: 100, height: 120, name: 'gadget', attributes: 'shape'},
+      { id: 2, x:   0, y: 200, width: 100, height: 120, name: 'doodad', attributes: ''}
     ],
-    relationships: [{ entity1_id: 1, entity2_id: 2, symbol1: '', symbol2: '', label1: '', label2: '' }],
+    relationships: [{ id: 7, entity1_id: 0, entity2_id: 1, symbol1: '', symbol2: '', label1: '', label2: '' }],
     pan_x: 250,
     pan_y: 100
   }
@@ -112,8 +113,8 @@ describe('GraphStore', function() {
       expect(loadedData.entities[0].x).toEqual(exampleGraphData.entities[0].x);
       expect(loadedData.relationships[0].endpoints[0].entity.id).toEqual(exampleGraphData.relationships[0].entity1_id);
 
-      expect(loadedData.endpoints[0].x).toEqual(103);
-      expect(loadedData.endpoints[0].y).toEqual(64);
+      expect(loadedData.endpoints[0].x).toEqual(100);
+      expect(loadedData.endpoints[0].y).toEqual(60);
     });
 
     it('supplies default pan values of 0,0', function() {
@@ -127,4 +128,81 @@ describe('GraphStore', function() {
       expect(loadedData.pan.y).toEqual(0);
     });
   });
+
+  describe('next entity ID number', function() {
+    it('should be largest entity ID + 1', function() {
+      GraphStore.load(812311120); $timeout.flush();
+      expect(GraphStore.next_entity_id).toEqual(3);
+    });
+
+    it('should be 0 when there are no entities', function() {
+      GraphStore.graph.entities = [];
+      expect(GraphStore.next_entity_id).toEqual(0);
+    });
+
+    it('should be 0 when the entity set has not been defined', function() {
+      GraphStore.graph.entities = undefined;
+      expect(GraphStore.next_entity_id).toEqual(0);
+    });
+  });
+
+  describe('deletion of entity', function() {
+    var e1;
+    beforeEach(inject(function() {
+      GraphStore.load(71237123); $timeout.flush();
+      e1 = GraphStore.graph.entities[0];
+      GraphStore.deleteEntity(e1);
+    }));
+
+    it('should delete the entity from the graph', function() {
+      expect(GraphStore.graph.entities.length).toBe(2);
+    });
+
+    it('should delete all connected relationships', function() {
+      expect(GraphStore.graph.relationships.length).toBe(0);
+    });
+
+    it('should delete endpoints from associated entities', function() {
+      expect(e1.endpoints['right'].length).toBe(0);
+    });
+  });
+
+  describe('deletion of relationship', function() {
+    beforeEach(inject(function() {
+      GraphStore.load(27152132); $timeout.flush();
+      GraphStore.deleteRelationship(GraphStore.graph.relationships[0]);
+    }));
+
+    it('should delete the relationship from the graph', function() {
+      expect(GraphStore.graph.relationships.length).toBe(0);
+    });
+
+    it('should delete the associated endpoints from the graph', function() {
+      expect(GraphStore.graph.endpoints.length).toBe(0);
+    });
+  });
+
+  describe('#createRelationship', function() {
+    var r2;
+
+    beforeEach(inject(function() {
+      GraphStore.load(27152132); $timeout.flush();
+      var e1 = GraphStore.graph.entities[0];
+      var e2 = GraphStore.graph.entities[1];
+      r2 = GraphStore.createRelationship(e1, e2);
+    }));
+
+    it('should create a relationship', function() {
+      expect(r2).toBeDefined();
+    });
+
+    it('should add the relationship to the graph scope', function() {
+      expect(_.last(GraphStore.graph.relationships.$id)).toBe(r2.$id);
+    });
+
+    it('should add the endpoints to the graph scope', function() {
+      expect(_.last(GraphStore.graph.endpoints).$id).toBe(r2.endpoints[1].$id);
+    });
+  });
+
 });
