@@ -26,8 +26,6 @@ app.controller('GraphCtrl', ['$scope', function($scope) {
     $scope.$watch('graph.name', function(newValue, oldValue) {
       $scope.$emit('titlechange', newValue);
     });
-
-    $scope.$broadcast('initializeEndpoints');
   };
 
   function nextID(set) {
