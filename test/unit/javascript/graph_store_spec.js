@@ -8,7 +8,10 @@ describe('GraphStore', function() {
 
   var exampleGraphData = {
     name: 'Test Graph',
-    entities: [{ id: 1, x: 3, y: 4, width: 100, height: 120, name: 'Entity 1', attributes: '' }],
+    entities: [
+      { id: 1, x:   3, y: 4, width: 100, height: 120, name: 'Entity 1', attributes: '' },
+      { id: 2, x: 200, y: 4, width: 100, height: 120, name: 'Entity 2', attributes: '' }
+    ],
     relationships: [{ entity1_id: 1, entity2_id: 2, symbol1: '', symbol2: '', label1: '', label2: '' }],
     pan_x: 250,
     pan_y: 100
@@ -102,8 +105,15 @@ describe('GraphStore', function() {
       expect(loadedData.pan.x).toEqual(exampleGraphData.pan_x);
       expect(loadedData.pan.y).toEqual(exampleGraphData.pan_y);
       expect(loadedData.name).toEqual(exampleGraphData.name);
-      expect(loadedData.entities).toEqual(exampleGraphData.entities);
-      expect(loadedData.relationships).toEqual(exampleGraphData.relationships);
+
+      // In the future the graph store should not be responsible for graph construction,
+      // and the items below should not need to be tested here.
+
+      expect(loadedData.entities[0].x).toEqual(exampleGraphData.entities[0].x);
+      expect(loadedData.relationships[0].endpoints[0].entity.id).toEqual(exampleGraphData.relationships[0].entity1_id);
+
+      expect(loadedData.endpoints[0].x).toEqual(103);
+      expect(loadedData.endpoints[0].y).toEqual(64);
     });
 
     it('supplies default pan values of 0,0', function() {
