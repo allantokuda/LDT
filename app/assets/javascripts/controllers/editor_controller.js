@@ -22,7 +22,7 @@ app.controller('EditorCtrl', ['$scope', '$http', function($scope, $http) {
   if (matches !== null)
     graphID = matches[1];
 
-  if (graphID)
+  if (graphID) {
     $http.get("/graphs/"+graphID)
     .error(function(jqXHR, textStatus, errorThrown) {
       console.error(jqXHR);
@@ -43,26 +43,27 @@ app.controller('EditorCtrl', ['$scope', '$http', function($scope, $http) {
       });
 
       _.each(data.relationships, function(hash) {
-         var e1 = _.find($scope.graph.entities, function(e){
-           return e.id == hash.entity1_id;
-         });
-         var e2 = _.find($scope.graph.entities, function(e){
-           return e.id == hash.entity2_id;
-         });
+        var e1 = _.find($scope.graph.entities, function(e){
+          return e.id == hash.entity1_id;
+        });
+        var e2 = _.find($scope.graph.entities, function(e){
+          return e.id == hash.entity2_id;
+        });
 
-         var r = new Relationship(hash.id, e1, e2);
+        var r = new Relationship(hash.id, e1, e2);
 
-         r.endpoints[0].label  = hash.label1;
-         r.endpoints[0].symbol = hash.symbol1;
-         r.endpoints[1].label  = hash.label2;
-         r.endpoints[1].symbol = hash.symbol2;
+        r.endpoints[0].label  = hash.label1;
+        r.endpoints[0].symbol = hash.symbol1;
+        r.endpoints[1].label  = hash.label2;
+        r.endpoints[1].symbol = hash.symbol2;
 
-         $scope.graph.addRelationship(r);
+        $scope.graph.addRelationship(r);
       });
 
       $scope.graph.initialize();
-    $scope.updateSvgSize();
-  });
+      $scope.updateSvgSize();
+    });
+  }
 
 
   // Click event handlers
