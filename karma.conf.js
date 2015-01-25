@@ -1,6 +1,6 @@
 module.exports = function(config){
     config.set({
-    basePath : '../',
+    basePath : '.',
 
     files : [
       'vendor/assets/javascripts/jquery-1.9.1.js',

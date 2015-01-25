@@ -5,6 +5,6 @@
     "karma-firefox-launcher": "~0.1"
   },
   "scripts": {
-     "test": "karma start --single-run --browsers Firefox config/karma.conf"
+     "test": "karma start --single-run --browsers Firefox karma.conf"
   }
 }
