@@ -4,6 +4,8 @@ describe('GraphStore', function() {
   var GraphStore;
   var $timeout;
   var spiedHttpGetPath;
+  var spiedHttpPutPath;
+  var spiedHttpPutData;
   var BAD_GRAPH_ID = 400123097;
 
   var exampleGraphData = {
@@ -31,6 +33,22 @@ describe('GraphStore', function() {
               deferred.reject();
             } else {
               deferred.resolve(exampleGraphData);
+            }
+          });
+          return deferred.promise;
+        });
+
+        this.put = jasmine.createSpy('put').andCallFake(function(path, data) {
+          spiedHttpPutPath = path;
+          spiedHttpPutData = JSON.parse(data);
+
+          // Mock $http.put's promise to simulate success/failure in HTTP request
+          var deferred = $q.defer();
+          $timeout(function() {
+            if (path == '/graphs/'+BAD_GRAPH_ID) {
+              deferred.reject();
+            } else {
+              deferred.resolve();
             }
           });
           return deferred.promise;
@@ -126,6 +144,16 @@ describe('GraphStore', function() {
 
       expect(loadedData.pan.x).toEqual(0);
       expect(loadedData.pan.y).toEqual(0);
+    });
+  });
+
+  describe('save()', function() {
+    it('calls $http.put with correct graph data URL', function() {
+      GraphStore.createEntity(7,12);
+      var promise = GraphStore.save();
+      expect(spiedHttpPutPath).toBe('/graphs/' + GraphStore.graph.id);
+      expect(spiedHttpPutData.entities[0].x).toBe(7);
+      expect(spiedHttpPutData.entities[0].y).toBe(12);
     });
   });
 

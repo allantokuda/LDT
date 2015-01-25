@@ -73,6 +73,28 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
     return deferred.promise;
   };
 
+  this.save = function() {
+    var deferred = $q.defer();
+
+    var graphData = {
+      id    : self.graph.id,
+      name  : self.graph.name,
+      pan_x : self.graph.pan.x,
+      pan_y : self.graph.pan.y
+    };
+    graphData.entities      = _.map(self.graph.entities,      function(e) { return e.saveObject(); });
+    graphData.relationships = _.map(self.graph.relationships, function(r) { return r.saveObject(); });
+
+    var encodeData = JSON.stringify(graphData);
+
+    $http.put('/graphs/'+graphData.id, encodeData).then(
+      function() { deferred.resolve(); },
+      function() { deferred.reject(); }
+    );
+
+    return deferred.promise;
+  };
+
   this.createRelationship = function(entity1, entity2) {
     var id = self.next_relationship_id++;
     var r = new Relationship(id, entity1, entity2);
