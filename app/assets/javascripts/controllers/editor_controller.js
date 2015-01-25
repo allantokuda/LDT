@@ -12,7 +12,7 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
   $scope.pan = { x: 0, y: 0 }
   $scope.status_message = 'Loading...'
 
-	//TODO: use Angular router to handle this more cleanly
+  //TODO: use Angular router to handle this more cleanly
   var graphID;
   var path_regex = /graphs\/([^\/]+)\/edit/;
   var matches = path_regex.exec(window.location.pathname);
@@ -25,6 +25,8 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
         $scope.$watch('graph.name', function(newValue, oldValue) {
           $scope.$emit('titlechange', newValue);
         });
+
+        $scope.$apply();
         $scope.updateSvgSize();
       },
       function() {
