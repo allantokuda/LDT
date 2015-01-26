@@ -1,3 +1,5 @@
+![Build status](https://api.travis-ci.org/allantokuda/LDT.svg?branch=master)
+
 # LDT
 
 LDT stands for "LDS Drawing Tool".
