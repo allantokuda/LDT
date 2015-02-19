@@ -11,6 +11,8 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
   $scope.graph = GraphStore.graph;
   $scope.pan = { x: 0, y: 0 }
   $scope.status_message = 'Loading...'
+  $scope.print_scale = 100;
+  $scope.print_view = false;
 
   //TODO: use Angular router to handle this more cleanly
   var graphID;
@@ -192,6 +194,7 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
   $scope.labelCommand           = function() { $scope.$apply(setMode('label_pick')); };
   $scope.chickenFootCommand     = function() { $scope.$apply(setMode('chickenfoot')); };
   $scope.identifierBarCommand   = function() { $scope.$apply(setMode('identifier_bar')); };
+  $scope.printCommand           = function() { $scope.$apply($scope.print_view = !$scope.print_view); };
 
   function setMode(mode) {
     $scope.editor.mode = mode;
@@ -207,6 +210,19 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
 
     $scope.editor.entityOverlayMessage = modeMessages[mode];
   }
+
+  $scope.setScale = function(scale_percent) {
+    // <body> element exists outside of controller, so just manually maintain
+    // its class list instead of doing this the Angular way
+    $('body').removeClass( 'scale' + $scope.print_scale )
+    $('body').addClass( 'scale' + scale_percent )
+
+    // Remember where we are for next time
+    $scope.print_scale = scale_percent;
+  }
+
+  // Set scale AND apply style so that 100% button is highlighted
+  $scope.setScale(100);
 
   setMode('select');
 

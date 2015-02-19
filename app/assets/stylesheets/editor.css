@@ -184,3 +184,37 @@ path.click-area {
   margin-top: 1em;
   margin-left: 2em;
 }
+
+#print-settings {
+  position: fixed;
+  background: #eee;
+  border: 1px solid #888;
+  top: 100px;
+  right: 20px;
+  margin: auto;
+  width: 30em;
+  padding: 0em 2em 2em 2em;
+}
+
+#print-settings input {
+  padding: 0.4em;
+  margin-left: 1em;
+}
+
+#print-settings button {
+  padding: 0.5em;
+  background: #eee;
+}
+
+#print-settings #print-button {
+  padding: 0.5em 2em;
+  background: #bbb;
+}
+
+body.scale100 #print-scale-100 { background: #bbb; }
+body.scale70  #print-scale-70  { background: #bbb; }
+body.scale50  #print-scale-50  { background: #bbb; }
+body.scale40  #print-scale-40  { background: #bbb; }
+body.scale30  #print-scale-30  { background: #bbb; }
+body.scale20  #print-scale-20  { background: #bbb; }
+body.scale10  #print-scale-10  { background: #bbb; }

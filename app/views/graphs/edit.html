@@ -30,6 +30,21 @@
           <div class="positioner"><div id="save-message" ng-class="editor.saveStatus">{{ editor.saveMessage }}</div></div>
           <button action hotkey="c-s" id="save-button">Save</button>
           <button action hotkey="c-n" id="new-button">New</button>
+          <button action hotkey="c-p" id="print-button">Print</button>
+      </div>
+
+      <div id="print-settings" ng-show="print_view">
+        <p>Smaller scale will allow more diagram to fit in the same paper size.</p>
+        <button id="print-scale-100" ng-click="setScale(100);">100%</button>
+        <button id="print-scale-70"  ng-click="setScale(70);">70%</button>
+        <button id="print-scale-50"  ng-click="setScale(50);">50%</button>
+        <button id="print-scale-40"  ng-click="setScale(40);">40%</button>
+        <button id="print-scale-30"  ng-click="setScale(30);">30%</button>
+        <button id="print-scale-20"  ng-click="setScale(20);">20%</button>
+        <button id="print-scale-10"  ng-click="setScale(10);">10%</button>
+        <br><br>
+        <button id="print-button" onclick="javascript:window.print()">Print</button>
+        <button ng-click="print_view = false">Cancel</button>
       </div>
     </div>
 
@@ -116,5 +131,4 @@
     </div>
 
   </div>
-
 </div>
