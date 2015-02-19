@@ -48,7 +48,7 @@
       </div>
     </div>
 
-    <div id="canvas" move-and-resize="graph.pan" relative-click="handleCanvasClick" deselector>
+    <div id="canvas" move-and-resize="graph.pan" relative-click="handleCanvasClick" deselector ng-style="{ transform: 'scale(' + (print_scale*0.01) + ')' }">
 
         <div class="ghost-entity" stick-to-mouse>Click to place new entity</div>
 

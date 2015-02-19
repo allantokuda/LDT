@@ -6,7 +6,7 @@ angular.module('LDT.ui').directive('moveAndResize', ['grid', function(grid) {
     link: function (scope, element, iAttrs, ctrl) {
       var subject = eval('scope.' + iAttrs.moveAndResize);
       var dragging = false;
-      var dragType,
+      var dragType, scale,
           dragStartX, dragStartY,
           dragStartMouseX, dragStartMouseY,
           dragStartWidth, dragStartHeight;
@@ -15,13 +15,15 @@ angular.module('LDT.ui').directive('moveAndResize', ['grid', function(grid) {
 
       // 0: move, 1: resize-left, 2: resize-right, 3: resize-top: 4: resize-bottom
       function boxBorderArea(x,y) {
-               if (x < parseInt(element.offset().left) + BORDER_HANDLE_SIZE) {
+        var rect = element[0].getBoundingClientRect();
+
+               if (x < parseInt(rect.left  ) + BORDER_HANDLE_SIZE) {
           return 1;
-        } else if (x > parseInt(element.offset().left) + parseInt(element.width()) - BORDER_HANDLE_SIZE) {
+        } else if (x > parseInt(rect.right ) - BORDER_HANDLE_SIZE) {
           return 2;
-        } else if (y < parseInt(element.offset().top) + BORDER_HANDLE_SIZE) {
+        } else if (y < parseInt(rect.top   ) + BORDER_HANDLE_SIZE) {
           return 3;
-        } else if (y > parseInt(element.offset().top) + parseInt(element.height()) - BORDER_HANDLE_SIZE) {
+        } else if (y > parseInt(rect.bottom) - BORDER_HANDLE_SIZE) {
           return 4;
         } else {
           return 0;
@@ -31,22 +33,22 @@ angular.module('LDT.ui').directive('moveAndResize', ['grid', function(grid) {
       function actionByDragType(ev) {
         switch(dragType) {
           case 0:
-            subject.x      = grid.snap(dragStartX      + ev.pageX - dragStartMouseX);
-            subject.y      = grid.snap(dragStartY      + ev.pageY - dragStartMouseY);
+            subject.x      = grid.snap(dragStartX      + ev.pageX * scale - dragStartMouseX);
+            subject.y      = grid.snap(dragStartY      + ev.pageY * scale - dragStartMouseY);
             break;
           case 1:
-            subject.x      = grid.snap(dragStartX      + ev.pageX - dragStartMouseX);
-            subject.width  = grid.snap(dragStartWidth  - ev.pageX + dragStartMouseX);
+            subject.x      = grid.snap(dragStartX      + ev.pageX * scale - dragStartMouseX);
+            subject.width  = grid.snap(dragStartWidth  - ev.pageX * scale + dragStartMouseX);
             break;
           case 2:
-            subject.width  = grid.snap(dragStartWidth  + ev.pageX - dragStartMouseX);
+            subject.width  = grid.snap(dragStartWidth  + ev.pageX * scale - dragStartMouseX);
             break;
           case 3:
-            subject.y      = grid.snap(dragStartY      + ev.pageY - dragStartMouseY);
-            subject.height = grid.snap(dragStartHeight - ev.pageY + dragStartMouseY);
+            subject.y      = grid.snap(dragStartY      + ev.pageY * scale - dragStartMouseY);
+            subject.height = grid.snap(dragStartHeight - ev.pageY * scale + dragStartMouseY);
             break;
           case 4:
-            subject.height = grid.snap(dragStartHeight + ev.pageY - dragStartMouseY);
+            subject.height = grid.snap(dragStartHeight + ev.pageY * scale - dragStartMouseY);
             break;
         }
       }
@@ -64,14 +66,18 @@ angular.module('LDT.ui').directive('moveAndResize', ['grid', function(grid) {
       function startDrag(ev) {
 				// left click only (otherwise right click has issues)
 				if (ev.button == 0) {
+          //account for current zoom scale
+          scale = element[0].offsetWidth / element[0].getBoundingClientRect().width;
+
 					dragging = true;
 					dragStartX = subject.x;
 					dragStartY = subject.y;
 					dragStartWidth = subject.width;
 					dragStartHeight = subject.height;
-					dragStartMouseX = ev.pageX;
-					dragStartMouseY = ev.pageY;
+					dragStartMouseX = ev.pageX * scale;
+					dragStartMouseY = ev.pageY * scale;
 					dragType = boxBorderArea(ev.pageX, ev.pageY);
+
 					ev.stopPropagation();
 				}
       };

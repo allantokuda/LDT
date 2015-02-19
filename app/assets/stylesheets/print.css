@@ -3,19 +3,3 @@ svg { border: none; }
 
 /* Landscape by default to be friendly to desktop users */
 @page { size: landscape; }
-
-body { transform-origin: left top; -webkit-transform-origin: left top; -ms-transform-origin: left top; }
-
-body.scale100 { transform: scale(1.00); -webkit-transform: scale(1.00); -ms-transform: scale(1.00); zoom: 50%; }
-body.scale70  { transform: scale(0.70); -webkit-transform: scale(0.70); -ms-transform: scale(0.70); zoom: 50%; }
-body.scale50  { transform: scale(0.50); -webkit-transform: scale(0.50); -ms-transform: scale(0.50); zoom: 50%; }
-body.scale40  { transform: scale(0.40); -webkit-transform: scale(0.40); -ms-transform: scale(0.40); zoom: 50%; }
-body.scale30  { transform: scale(0.30); -webkit-transform: scale(0.30); -ms-transform: scale(0.30); zoom: 50%; }
-body.scale20  { transform: scale(0.20); -webkit-transform: scale(0.20); -ms-transform: scale(0.20); zoom: 50%; }
-body.scale10  { transform: scale(0.10); -webkit-transform: scale(0.10); -ms-transform: scale(0.10); zoom: 50%; }
-
-div.canvas         { page-break-inside: avoid; }
-div.entity-border  { page-break-inside: avoid; }
-div.entity-body    { page-break-before: avoid; }
-div.entity-heading { page-break-before: avoid; }
-

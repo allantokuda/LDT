@@ -27,7 +27,12 @@ input {
   background: white;
 }
 
-#canvas { position: relative; }
+#canvas {
+  position: relative;
+  transform-origin:         left top;
+  -webkit-transform-origin: left top;
+  -ms-transform-origin:     left top;
+}
 
 #window-top {
   width: 100%;
