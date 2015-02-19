@@ -120,6 +120,23 @@ rake db:migrate
 rails server
 ```
 
+### Running unit tests
+
+```
+karma start karma.conf.js
+```
+
+### Running acceptance tests
+
+As of January 2015 an issue exists between Selenium and Firefox 35. Install Firefox 34.
+http://stackoverflow.com/questions/27960085/cucumber-capybara-error-arguments0-is-undefined-seleniumwebdrivererror
+
+Run all tests (launches a Firefox browser):
+
+```
+bundle exec rspec spec
+```
+
 ## Production
 
 Check out the live [site](http://erdraw.com).
