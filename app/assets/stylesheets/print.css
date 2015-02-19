@@ -1,2 +1,5 @@
-#toolbar { display: none; }
+#toolbar, #window-top { display: none; }
 svg { border: none; }
+
+/* Landscape by default to be friendly to desktop users */
+@page { size: landscape; }
