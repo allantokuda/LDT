@@ -125,10 +125,10 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
     $('#svg-paths').height(0);
     $('#canvas'   ).width (0);
     $('#canvas'   ).height(0);
-    $('#svg-paths').width ($(document).width ()+10);
-    $('#svg-paths').height($(document).height()+10);
-    $('#canvas'   ).width ($(document).width ());
-    $('#canvas'   ).height($(document).height());
+    $('#svg-paths').width ($(document).width()  / ($scope.print_scale/100) + 10);
+    $('#svg-paths').height($(document).height() / ($scope.print_scale/100) + 10);
+    $('#canvas'   ).width ($(document).width()  / ($scope.print_scale/100));
+    $('#canvas'   ).height($(document).height() / ($scope.print_scale/100));
   }
 
   //TODO: move "identifier" methods into a domain specific class.
@@ -194,7 +194,8 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
   $scope.labelCommand           = function() { $scope.$apply(setMode('label_pick')); };
   $scope.chickenFootCommand     = function() { $scope.$apply(setMode('chickenfoot')); };
   $scope.identifierBarCommand   = function() { $scope.$apply(setMode('identifier_bar')); };
-  $scope.printCommand           = function() { $scope.$apply($scope.print_view = !$scope.print_view); };
+  $scope.zoomInCommand          = function() { $scope.$apply($scope.print_scale *= 1.5); $scope.updateSvgSize(); };
+  $scope.zoomOutCommand         = function() { $scope.$apply($scope.print_scale /= 1.5); $scope.updateSvgSize(); };
 
   function setMode(mode) {
     $scope.editor.mode = mode;

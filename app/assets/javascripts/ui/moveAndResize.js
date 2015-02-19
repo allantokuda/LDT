@@ -11,7 +11,7 @@ angular.module('LDT.ui').directive('moveAndResize', ['grid', function(grid) {
           dragStartMouseX, dragStartMouseY,
           dragStartWidth, dragStartHeight;
 
-      var BORDER_HANDLE_SIZE = 10;
+      var BORDER_HANDLE_SIZE = 7;
 
       // 0: move, 1: resize-left, 2: resize-right, 3: resize-top: 4: resize-bottom
       function boxBorderArea(x,y) {
