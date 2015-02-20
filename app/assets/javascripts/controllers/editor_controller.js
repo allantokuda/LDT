@@ -9,10 +9,9 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
 
   $scope.editor = new Object;
   $scope.graph = GraphStore.graph;
-  $scope.pan = { x: 0, y: 0 }
+  $scope.graph.pan = { x: 0, y: 0 }
+  $scope.graph.zoom = 1;
   $scope.status_message = 'Loading...'
-  $scope.print_scale = 100;
-  $scope.print_view = false;
 
   //TODO: use Angular router to handle this more cleanly
   var graphID;
@@ -126,10 +125,10 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
     $('#svg-paths').height(0);
     $('#canvas'   ).width (0);
     $('#canvas'   ).height(0);
-    $('#svg-paths').width ($(document).width()  / ($scope.print_scale/100) + 10);
-    $('#svg-paths').height($(document).height() / ($scope.print_scale/100) + 10);
-    $('#canvas'   ).width ($(document).width()  / ($scope.print_scale/100));
-    $('#canvas'   ).height($(document).height() / ($scope.print_scale/100));
+    $('#svg-paths').width ($(document).width()  / ($scope.graph.zoom) + 10);
+    $('#svg-paths').height($(document).height() / ($scope.graph.zoom) + 10);
+    $('#canvas'   ).width ($(document).width()  / ($scope.graph.zoom));
+    $('#canvas'   ).height($(document).height() / ($scope.graph.zoom));
   }
 
   //TODO: move "identifier" methods into a domain specific class.
@@ -195,8 +194,8 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
   $scope.labelCommand           = function() { $scope.$apply(setMode('label_pick')); };
   $scope.chickenFootCommand     = function() { $scope.$apply(setMode('chickenfoot')); };
   $scope.identifierBarCommand   = function() { $scope.$apply(setMode('identifier_bar')); };
-  $scope.zoomInCommand          = function() { $scope.$apply($scope.print_scale *= 1.5); $scope.updateSvgSize(); };
-  $scope.zoomOutCommand         = function() { $scope.$apply($scope.print_scale /= 1.5); $scope.updateSvgSize(); };
+  $scope.zoomInCommand          = function() { $scope.$apply($scope.graph.zoom *= 1.5); $scope.updateSvgSize(); };
+  $scope.zoomOutCommand         = function() { $scope.$apply($scope.graph.zoom /= 1.5); $scope.updateSvgSize(); };
 
   function setMode(mode) {
     $scope.editor.mode = mode;
@@ -212,19 +211,6 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
 
     $scope.editor.entityOverlayMessage = modeMessages[mode];
   }
-
-  $scope.setScale = function(scale_percent) {
-    // <body> element exists outside of controller, so just manually maintain
-    // its class list instead of doing this the Angular way
-    $('body').removeClass( 'scale' + $scope.print_scale )
-    $('body').addClass( 'scale' + scale_percent )
-
-    // Remember where we are for next time
-    $scope.print_scale = scale_percent;
-  }
-
-  // Set scale AND apply style so that 100% button is highlighted
-  $scope.setScale(100);
 
   setMode('select');
 

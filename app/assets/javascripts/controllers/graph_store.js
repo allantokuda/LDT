@@ -16,7 +16,8 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
     entities: [],
     relationships: [],
     endpoints: [],
-    pan: { x: 0, y: 0 }
+    pan: { x: 0, y: 0 },
+    zoom: 1
   };
 
   this.next_entity_id = 0;
@@ -34,6 +35,7 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
         self.graph.endpoints = [],
         self.graph.pan.x = response.data.pan_x || 0;
         self.graph.pan.y = response.data.pan_y || 0;
+        self.graph.zoom = response.data.zoom || 1;
 
         _.each(response.data.entities, function(hash) {
           self.graph.entities.push(new Entity(hash));
@@ -76,7 +78,8 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
       id    : self.graph.id,
       name  : self.graph.name,
       pan_x : self.graph.pan.x,
-      pan_y : self.graph.pan.y
+      pan_y : self.graph.pan.y,
+      zoom  : self.graph.zoom
     };
     graphData.entities      = _.map(self.graph.entities,      function(e) { return e.saveObject(); });
     graphData.relationships = _.map(self.graph.relationships, function(r) { return r.saveObject(); });
