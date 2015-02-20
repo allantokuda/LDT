@@ -41,8 +41,9 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
   // Click event handlers
 
   $scope.handleCanvasClick = function(x,y) {
-    if ($scope.editor.mode == 'new_entity')
-      GraphStore.createEntity(x - $scope.pan.x, y - $scope.pan.y);
+    if ($scope.editor.mode == 'new_entity') {
+      GraphStore.createEntity(x - $scope.graph.pan.x, y - $scope.graph.pan.y);
+    }
 
     setMode('select');
 

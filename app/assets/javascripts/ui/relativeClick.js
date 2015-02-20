@@ -8,8 +8,10 @@ angular.module('LDT.ui').directive('relativeClick',function() {
       var scopeFunctionName = iAttrs.relativeClick;
 
       $(element).click(function(ev) {
-        var relativeX = ev.pageX - $(element)[0].offsetLeft;
-        var relativeY = ev.pageY - $(element)[0].offsetTop;
+        scale = element[0].offsetWidth / element[0].getBoundingClientRect().width;
+
+        var relativeX = ev.pageX * scale - $(element)[0].offsetLeft;
+        var relativeY = ev.pageY * scale - $(element)[0].offsetTop;
         scope.$apply(function() {
           scope[scopeFunctionName](relativeX, relativeY);
         });
