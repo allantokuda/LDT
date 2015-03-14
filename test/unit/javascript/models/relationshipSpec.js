@@ -44,9 +44,11 @@ describe('Relationship', function() {
     expect(r1.endpoints[0].x).toEqual(7);
     expect(r1.endpoints[0].y).toEqual(8);
     expect(r1.endpoints[0].sideName).toEqual('left');
+    expect(r1.endpoints[0].outwardVector).toEqual({ x:-1, y: 0 });
     expect(r1.endpoints[1].x).toEqual(106);
     expect(r1.endpoints[1].y).toEqual(55);
     expect(r1.endpoints[1].sideName).toEqual('right');
+    expect(r1.endpoints[1].outwardVector).toEqual({ x: 1, y: 0 });
   });
 
   it('when placing, obscures that its entities may not be stored in standard order (smaller entity ID first is standard, larger first is reverse)', function() {
@@ -63,23 +65,10 @@ describe('Relationship', function() {
     expect(r1.endpoints[0].x).toEqual(116);
     expect(r1.endpoints[0].y).toEqual(65);
     expect(r1.endpoints[0].sideName).toEqual('bottom');
+    expect(r1.endpoints[0].outwardVector).toEqual({ x: 0, y: 1 });
     expect(r1.endpoints[1].x).toEqual(17);
     expect(r1.endpoints[1].y).toEqual(18);
     expect(r1.endpoints[1].sideName).toEqual('top');
-  });
-
-  it('knows its path key', function() {
-
-    var e1 = new Entity({ id: 1 });
-    var e2 = new Entity({ id: 2 });
-    var e3 = new Entity({ id: 3 });
-
-    var r1 = new Relationship(0, e1, e2);
-    var r2 = new Relationship(0, e3, e2);
-
-    expect(r1.pathKey).toEqual('1-2');
-
-    // in sorted order, not in the order originally specified
-    expect(r2.pathKey).toEqual('2-3');
+    expect(r1.endpoints[1].outwardVector).toEqual({ x: 0, y:-1 });
   });
 });

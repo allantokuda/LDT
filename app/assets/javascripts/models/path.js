@@ -75,7 +75,6 @@ window.Path = function(entity1, entity2) {
     }
 
     if (direction == 'left' || direction == 'right') {
-
       var arrayAxis = 'y';
       var yCenter = 0.5*(entity1.y + 0.5*entity1.height + entity2.y + 0.5*entity2.height) //temporary rough average
 
@@ -86,7 +85,6 @@ window.Path = function(entity1, entity2) {
       });
 
     } else {
-
       var arrayAxis = 'x';
       var xCenter = 0.5*(entity1.x + 0.5*entity1.width + entity2.x + 0.5*entity2.width) //temporary rough average
 
@@ -98,7 +96,7 @@ window.Path = function(entity1, entity2) {
 
     }
 
-  };
+  }.bind(this);
 
   // Entities and their callback functions should always be defined,
   // except in unit tests.

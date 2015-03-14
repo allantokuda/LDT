@@ -243,13 +243,17 @@ describe('GraphStore', function() {
   });
 
   it('groups relationships into paths', function() {
-    var r1 = { id: 0, pathKey: '1-2' };
-    var r2 = { id: 1, pathKey: '1-2' };
-    var r3 = { id: 2, pathKey: '2-3' };
+    var e1 = { id: 1 };
+    var e2 = { id: 2 };
+    var e3 = { id: 3 };
 
-    GraphStore.appendToPath(r1);
-    GraphStore.appendToPath(r2);
-    GraphStore.appendToPath(r3);
+    var r1 = { pathKey: '1-2', place: function() {} };
+    var r2 = { pathKey: '1-2', place: function() {} };
+    var r3 = { pathKey: '2-3', place: function() {} };
+
+    GraphStore.appendToPath(e1, e2, r1);
+    GraphStore.appendToPath(e1, e2, r2);
+    GraphStore.appendToPath(e2, e3, r3);
 
     expect(_.keys(GraphStore.graph.paths)).toEqual(['1-2', '2-3']);
     expect(GraphStore.graph.paths['1-2'].relationships.length).toBe(2);

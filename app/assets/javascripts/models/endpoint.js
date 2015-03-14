@@ -2,13 +2,6 @@
 
 window.Endpoint = function(endpoint) {
 
-  this.OUTWARD_VECTOR_MAP = {
-    top:    {x: 0, y:-1},
-    bottom: {x: 0, y: 1},
-    left:   {x:-1, y: 0},
-    right:  {x: 1, y: 0}
-  };
-
   this.entity       = endpoint.entity;
   this.otherEntity  = endpoint.otherEntity;
   this.label        = endpoint.label  || '';
@@ -60,12 +53,22 @@ window.Endpoint = function(endpoint) {
   this.relocate = function() {
     var targetSideName;
 
+
     targetSideName = this.entity.nearestSide(this.otherEntity);
 
     if (targetSideName != this.sideName) {
       this.sideName = targetSideName;
       this.entity.addEndpoint(this, this.sideName);
-      this.outwardVector = this.OUTWARD_VECTOR_MAP[this.sideName];
+      this.setOutwardVector();
+    }
+  };
+
+  this.setOutwardVector = function() {
+    switch(this.sideName) {
+      case 'top':    this.outwardVector = {x: 0, y:-1}; break;
+      case 'bottom': this.outwardVector = {x: 0, y: 1}; break;
+      case 'left':   this.outwardVector = {x:-1, y: 0}; break;
+      case 'right':  this.outwardVector = {x: 1, y: 0}; break;
     }
   };
 

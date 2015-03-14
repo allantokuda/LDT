@@ -50,8 +50,8 @@ describe('Path Model', function() {
       e2 = new Entity({ x: 200, y:  50, width: 100, height: 100 });
       e3 = new Entity({ x:  50, y: 200, width: 100, height: 100 });
 
-      r1 = { place: function(){} };
-      r2 = { place: function(){} };
+      r1 = { id: 'r1', place: function(){} };
+      r2 = { id: 'r2', place: function(){} };
 
       spyOn(r1, 'place');
       spyOn(r2, 'place');

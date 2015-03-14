@@ -9,9 +9,9 @@ describe('EntityCtrl', function(){
     ctrl = $controller('EntityCtrl', {$scope: scope});
   }));
 
-  it('emits a change event when the entity geometry changes', function() {
-    spyOn(scope, '$emit')
+  it('runs the entity change notifier when it detects an entity change', function() {
+    spyOn(scope.entity, 'notifyChange')
     scope.$apply(function() { scope.entity.x = scope.entity.x + 1; });
-    expect(scope.$emit).toHaveBeenCalledWith('entityGeometryChange', 123);
+    expect(scope.entity.notifyChange).toHaveBeenCalled();
   });
 });

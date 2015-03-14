@@ -58,7 +58,7 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
           r.endpoints[1].label  = hash.label2;
           r.endpoints[1].symbol = hash.symbol2;
 
-          self.appendToPath(r);
+          self.appendToPath(e1, e2, r);
           self.addRelationship(r);
         });
 
@@ -100,6 +100,7 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
   this.createRelationship = function(entity1, entity2) {
     var id = self.next_relationship_id++;
     var r = new window.Relationship(id, entity1, entity2);
+    self.appendToPath(entity1, entity2, r);
     self.addRelationship(r);
     return r;
   };
@@ -108,11 +109,6 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
     self.graph.relationships.push(r);
     self.graph.endpoints.push(r.endpoints[0]);
     self.graph.endpoints.push(r.endpoints[1]);
-
-    r.endpoints[0].relocate();
-    r.endpoints[1].relocate();
-    r.endpoints[0].negotiateCoordinates();
-    r.endpoints[1].negotiateCoordinates();
   };
 
   this.createEntity = function(locX,locY) {
@@ -184,13 +180,21 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
     });
   };
 
-  this.appendToPath = function(r) {
-    var key = r.pathKey;
+  this.appendToPath = function(e1, e2, r) {
+    var key;
+
+    if (e1.id < e2.id) {
+      key = e1.id + '-' + e2.id;
+    } else {
+      key = e2.id + '-' + e1.id;
+    }
 
     if (this.graph.paths[key] === undefined) {
-      this.graph.paths[key] = new window.Path();
+      this.graph.paths[key] = new window.Path(e1, e2);
     }
 
     this.graph.paths[key].addRelationship(r);
+
+    this.graph.paths[key].update();
   };
 }]);

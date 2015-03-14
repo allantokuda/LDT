@@ -5,7 +5,6 @@ var app = angular.module('LDT.controllers');
 app.controller('EntityCtrl', ['$scope', function($scope) {
 
   var changeEvent = function() {
-    $scope.$emit('entityGeometryChange', $scope.entity.id);
     $scope.entity.notifyChange();
   };
 
