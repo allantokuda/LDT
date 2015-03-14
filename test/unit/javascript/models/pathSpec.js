@@ -31,6 +31,17 @@ describe('Path Model', function() {
     });
   });
 
+  describe('response to entity change', function() {
+    it("subscribes to its entities' change events", function() {
+      var callback1, callback2;
+      var e1 = { addChangeCallback: function(fn) { callback1 = fn; } }
+      var e2 = { addChangeCallback: function(fn) { callback2 = fn; } }
+      var p = new window.Path(e1, e2);
+      expect(callback1).toBe(p.update);
+      expect(callback2).toBe(p.update);
+    });
+  });
+
   describe('path calculation', function() {
     var e1, e2, e3, r1, r2, r3;
 

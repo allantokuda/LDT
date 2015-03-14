@@ -90,4 +90,12 @@ describe('Entity', function() {
     var result = e.clearAllEndpoints();
     expect(result.length).toBe(2);
   });
+
+  it('accepts change callback functions', function() {
+    var called = false;
+    var callback = function() { called = true; };
+    e.addChangeCallback(callback);
+    e.notifyChange();
+    expect(called).toBe(true);
+  });
 });

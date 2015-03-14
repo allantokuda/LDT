@@ -5,7 +5,7 @@ describe('EntityCtrl', function(){
   beforeEach(module('LDT.controllers'));
   beforeEach(inject(function ($rootScope, $controller) {
     scope = $rootScope.$new();
-    scope.entity = { id: 123, x: 100 }
+    scope.entity = { id: 123, x: 100, notifyChange: function() {} }
     ctrl = $controller('EntityCtrl', {$scope: scope});
   }));
 

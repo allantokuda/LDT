@@ -6,6 +6,7 @@ app.controller('EntityCtrl', ['$scope', function($scope) {
 
   var changeEvent = function() {
     $scope.$emit('entityGeometryChange', $scope.entity.id);
+    $scope.entity.notifyChange();
   };
 
   _.each(['x', 'y', 'width', 'height'], function(attribute) {

@@ -1,6 +1,7 @@
 'use strict';
 
 window.Entity = function(entity) {
+  self = this;
 
   this.id         = entity.id;
   this.x          = entity.x;
@@ -12,6 +13,8 @@ window.Entity = function(entity) {
 
   this.SIDES = ['top', 'bottom', 'left', 'right'];
   this.endpoints = { top: [], left: [], right: [], bottom: [] };
+
+  this.callbacks = [];
 
   this.saveObject = function() {
     return {
@@ -100,5 +103,15 @@ window.Entity = function(entity) {
     }, this);
 
     return all;
+  };
+
+  this.addChangeCallback = function(callback) {
+    this.callbacks.push(callback);
+  };
+
+  this.notifyChange = function() {
+    _.each(this.callbacks, function(callback) {
+      callback();
+    });
   };
 };

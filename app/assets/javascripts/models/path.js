@@ -100,4 +100,10 @@ window.Path = function(entity1, entity2) {
 
   };
 
+  // Entities and their callback functions should always be defined,
+  // except in unit tests.
+  if (entity1 && entity1.addChangeCallback && entity2 && entity2.addChangeCallback) {
+    entity1.addChangeCallback(this.update);
+    entity2.addChangeCallback(this.update);
+  }
 };
