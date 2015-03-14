@@ -28,37 +28,76 @@ window.Path = function(entity1, entity2) {
     });
   };
 
-  function bestSides() {
+  //callback method
+  this.update = function() {
     var distancePerDirection = {
       left:   entity1.x - entity2.x - entity2.width,
-      up:     entity1.y - entity2.y - entity2.height,
       right:  entity2.x - entity1.x - entity1.width,
+      up:     entity1.y - entity2.y - entity2.height,
       down:   entity2.y - entity1.y - entity1.height
     };
 
-    // find direction in which largest distance between entities is seen
+    // Find the general direction from entity1 to entity2.
+    // This is the direction with the largest distance between entities.
     var direction = _.max(DIRECTIONS, function(direction) {
       return distancePerDirection[direction];
     }, this);
 
-    var sidesPerDirection = {
-      left:  ['left', 'right'],
-      up:    ['top', 'bottom'],
-      right: ['right', 'left'],
-      down:  ['bottom', 'top']
-    };
+    var x1, x2, y1, y2, side1, side2;
+    switch(direction) {
+      case 'right':
+        x1 = entity1.x + entity1.width;
+        x2 = entity2.x;
+        side1 = 'right';
+        side2 = 'left';
+        break;
 
-    return sidesPerDirection[direction];
-  };
+      case 'left':
+        x1 = entity1.x;
+        x2 = entity2.x + entity2.width;
+        side1 = 'left';
+        side2 = 'right';
+        break;
 
-  //callback method
-  this.update = function() {
-    var sides = bestSides();
+      case 'down':
+        y1 = entity1.y + entity1.height;
+        y2 = entity2.y;
+        side1 = 'bottom';
+        side2 = 'top';
+        break;
 
-    _.each(this.relationships, function(r) {
-      r.place({ x: 100, y: 50, side: sides[0] },
-              { x: 200, y: 50, side: sides[1] });
-    });
+      case 'up':
+        y1 = entity1.y + entity1.height;
+        y2 = entity2.y;
+        side1 = 'top';
+        side2 = 'bottom';
+        break;
+    }
+
+    if (direction == 'left' || direction == 'right') {
+
+      var arrayAxis = 'y';
+      var yCenter = 0.5*(entity1.y + 0.5*entity1.height + entity2.y + 0.5*entity2.height) //temporary rough average
+
+      //TODO add array for siblings, and edge overflow prevention
+      _.each(this.relationships, function(r) {
+        r.place({ x: x1, y: yCenter, side: side1 },
+                { x: x2, y: yCenter, side: side2 });
+      });
+
+    } else {
+
+      var arrayAxis = 'x';
+      var xCenter = 0.5*(entity1.x + 0.5*entity1.width + entity2.x + 0.5*entity2.width) //temporary rough average
+
+      //TODO add array for siblings, and edge overflow prevention
+      _.each(this.relationships, function(r) {
+        r.place({ x: xCenter, y: y1, side: side1 },
+                { x: xCenter, y: y2, side: side2 });
+      });
+
+    }
+
   };
 
 };

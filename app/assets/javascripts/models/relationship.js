@@ -45,6 +45,13 @@ window.Relationship = function(id, entity1, entity2) {
     };
   };
 
-  this.place = function() {
+  this.place = function(point1, point2) {
+    this.endpoints[0].x = point1.x;
+    this.endpoints[0].y = point1.y;
+    this.endpoints[0].sideName = point1.side;
+
+    this.endpoints[1].x = point2.x;
+    this.endpoints[1].y = point2.y;
+    this.endpoints[1].sideName = point2.side;
   };
 };

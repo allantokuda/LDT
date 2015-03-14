@@ -33,6 +33,13 @@ describe('Relationship', function() {
     expect(r.svgPath()).toBe('M100,90 L130,90 L170,160 L200,160');
   });
 
-  it('can be placed', function() {
+  it('can be placed (by assigning its endpoint coordinates and orientations)', function() {
+    r.place({ x: 7, y: 8, side: 'left' }, { x: 106, y: 55, side: 'right' });
+    expect(r.endpoints[0].x).toEqual(7);
+    expect(r.endpoints[0].y).toEqual(8);
+    expect(r.endpoints[0].sideName).toEqual('left');
+    expect(r.endpoints[1].x).toEqual(106);
+    expect(r.endpoints[1].y).toEqual(55);
+    expect(r.endpoints[1].sideName).toEqual('right');
   });
 });

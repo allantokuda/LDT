@@ -35,24 +35,26 @@ describe('Path Model', function() {
     var e1, e2, e3, r1, r2, r3;
 
     beforeEach(function() {
-      e1 = new Entity({ x:   0, y:   0, width: 100, height: 200 }); // center at y=100
-      e2 = new Entity({ x: 220, y:  40, width: 100, height: 100 }); // center at y=( 40+100/2)=90
-      e3 = new Entity({ x: 220, y: 240, width: 100, height: 100 }); // center at y=(240+100/2)=290
+      e1 = new Entity({ x:   0, y:   0, width: 100, height: 100 });
+      e2 = new Entity({ x: 200, y:  50, width: 100, height: 100 });
+      e3 = new Entity({ x:  50, y: 200, width: 100, height: 100 });
 
-      r1 = new Relationship(0, e1, e2);
-
-      // two relationships between same two entities
-      r2 = new Relationship(1, e1, e3);
-      r3 = new Relationship(2, e1, e3);
+      r1 = { place: function(){} };
+      r2 = { place: function(){} };
 
       spyOn(r1, 'place');
+      spyOn(r2, 'place');
     });
 
     it('calculates best sides for attachment and applies them to relationships', function() {
-      var p = new window.Path(e1, e2);
-      p.addRelationship(r1);
-      p.update();
-      expect(r1.place).toHaveBeenCalledWith({ x: 100, y: 50, side: 'right'}, { x: 200, y: 50, side: 'left'})
+      var p1 = new window.Path(e1, e2); // roughly horizontal
+      var p2 = new window.Path(e1, e3); // diagoal but slightly more "vertical" than "horizontal"
+      p1.addRelationship(r1);
+      p2.addRelationship(r2);
+      p1.update();
+      p2.update();
+      expect(r1.place).toHaveBeenCalledWith({ x: 100, y:  75, side: 'right' }, { x: 200, y:  75, side: 'left'})
+      expect(r2.place).toHaveBeenCalledWith({ x:  75, y: 100, side: 'bottom'}, { x:  75, y: 200, side: 'top' })
     });
   });
 });
