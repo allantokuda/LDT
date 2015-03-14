@@ -65,7 +65,7 @@ angular.module('LDT.ui').directive('moveAndResize', ['grid', function(grid) {
 
       function startDrag(ev) {
 				// left click only (otherwise right click has issues)
-				if (ev.button == 0) {
+				if (ev.button === 0) {
           //account for current zoom scale
           scale = element[0].offsetWidth / element[0].getBoundingClientRect().width;
 
@@ -80,11 +80,11 @@ angular.module('LDT.ui').directive('moveAndResize', ['grid', function(grid) {
 
 					ev.stopPropagation();
 				}
-      };
+      }
 
       function stopDrag(ev) {
         dragging = false;
-      };
+      }
 
       function moveDrag(ev) {
         if (dragging) {
@@ -93,7 +93,7 @@ angular.module('LDT.ui').directive('moveAndResize', ['grid', function(grid) {
         // prevent highlighting action (annoying)
         ev.preventDefault();
         ev.stopPropagation();
-      };
+      }
 
       $(element).mousedown(startDrag);
       $(document).mouseup(stopDrag);

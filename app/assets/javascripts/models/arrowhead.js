@@ -1,3 +1,5 @@
+'use strict';
+
 window.ARROWHEAD_LENGTH = 30;
 window.ARROWHEAD_WIDTH = 20;
 
@@ -12,10 +14,10 @@ window.ARROWHEAD = {
 
 // Precalculate SVG strings for all arrowheads
 window.arrowheadSVG = {};
-var scale = Math.round(ARROWHEAD_WIDTH / 2);
+var scale = Math.round(window.ARROWHEAD_WIDTH / 2);
 _.each(_.pairs(window.ARROWHEAD), function(pair) {
-  type   = pair[0];
-  points = pair[1];
+  var type   = pair[0];
+  var points = pair[1];
   window.arrowheadSVG[type] = {};
   _.each(['top', 'bottom', 'left', 'right'], function(sideName) {
     window.arrowheadSVG[type][sideName] = _.map(points, function(point) {

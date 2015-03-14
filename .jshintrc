@@ -1,0 +1,12 @@
+{
+    "evil"          : true, // allow eval
+    "globalstrict"  : true,
+    "globals"       : {
+      "angular": true,
+      "document": true,
+      "window": true,
+      "_": true,
+      "$": true,
+      "setTimeout": true
+    }
+}

@@ -5,7 +5,7 @@ angular.module('LDT.ui').directive('catchInput',function() {
     link: function(scope, element, iAttrs, ctrl) {
       function stopit(e) {
         e.stopPropagation();
-      };
+      }
 
       //Don't allow clicks to change mode
       element.click(stopit);

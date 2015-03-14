@@ -1,3 +1,5 @@
+'use strict';
+
 window.Endpoint = function(endpoint) {
 
   this.OUTWARD_VECTOR_MAP = {

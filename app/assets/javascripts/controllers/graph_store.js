@@ -29,16 +29,16 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
     $http.get('/graphs/'+graphID).then(
       function(response) {
         self.graph.id = graphID;
-        self.graph.name = response.data.name,
-        self.graph.entities = [],
-        self.graph.relationships = [],
-        self.graph.endpoints = [],
+        self.graph.name = response.data.name;
+        self.graph.entities = [];
+        self.graph.relationships = [];
+        self.graph.endpoints = [];
         self.graph.pan.x = response.data.pan_x || 0;
         self.graph.pan.y = response.data.pan_y || 0;
         self.graph.zoom = response.data.zoom || 1;
 
         _.each(response.data.entities, function(hash) {
-          self.graph.entities.push(new Entity(hash));
+          self.graph.entities.push(new window.Entity(hash));
         });
 
         _.each(response.data.relationships, function(hash) {
@@ -49,7 +49,7 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
              return e.id == hash.entity2_id;
            });
 
-           var r = new Relationship(hash.id, e1, e2);
+           var r = new window.Relationship(hash.id, e1, e2);
 
            r.endpoints[0].label  = hash.label1;
            r.endpoints[0].symbol = hash.symbol1;
@@ -96,7 +96,7 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
 
   this.createRelationship = function(entity1, entity2) {
     var id = self.next_relationship_id++;
-    var r = new Relationship(id, entity1, entity2);
+    var r = new window.Relationship(id, entity1, entity2);
     self.addRelationship(r);
     return r;
   };
@@ -113,7 +113,7 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
   };
 
   this.createEntity = function(locX,locY) {
-    self.graph.entities.push(new Entity({
+    self.graph.entities.push(new window.Entity({
       id: self.next_entity_id++,
       x: locX,
       y: locY,
@@ -125,7 +125,7 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
   };
 
   this.nextID = function(set) {
-    if (typeof(set) == 'undefined' || set.length == 0)
+    if (typeof(set) == 'undefined' || set.length === 0)
       return 0;
     else
       return _.max(set, function(item) { return item.id; }).id + 1;
@@ -165,7 +165,7 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
     _.each(endpoints, function(endpoint_to_delete) {
 
       // Remove connected endpoints from sides
-      endpoint_to_delete.entity.removeEndpoint(endpoint_to_delete)
+      endpoint_to_delete.entity.removeEndpoint(endpoint_to_delete);
 
       // Remove all connected endpoints from graph
       self.graph.endpoints = _.without(self.graph.endpoints, endpoint_to_delete);

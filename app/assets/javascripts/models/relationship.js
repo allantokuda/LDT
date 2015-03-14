@@ -1,3 +1,5 @@
+'use strict';
+
 window.Relationship = function(id, entity1, entity2) {
 
   this.id = id;

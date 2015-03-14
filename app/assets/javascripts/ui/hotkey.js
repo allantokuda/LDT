@@ -14,8 +14,8 @@ angular.module('LDT.ui').directive('hotkey',function() {
           (e.altKey   ? 'a' : '') +
           (e.metaKey  ? 'm' : '');
 
-        if ((pressedChord === ''  && hotkey.chord == undefined && e.charCode == hotkey.letter.charCodeAt(0)     ) ||
-            (pressedChord == 'c'  && hotkey.chord == 'c'       && e.charCode == hotkey.letter.charCodeAt(0) - 96) )
+        if ((pressedChord === ''  && hotkey.chord === undefined && e.charCode == hotkey.letter.charCodeAt(0)     ) ||
+            (pressedChord == 'c'  && hotkey.chord == 'c'        && e.charCode == hotkey.letter.charCodeAt(0) - 96) )
            element.trigger('click');
         });
       element.attr('title', 'hotkey: ' + iAttrs.hotkey);

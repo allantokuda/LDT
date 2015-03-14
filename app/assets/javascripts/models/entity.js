@@ -1,3 +1,5 @@
+'use strict';
+
 window.Entity = function(entity) {
 
   this.id         = entity.id;

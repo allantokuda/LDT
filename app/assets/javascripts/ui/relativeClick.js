@@ -8,7 +8,7 @@ angular.module('LDT.ui').directive('relativeClick',function() {
       var scopeFunctionName = iAttrs.relativeClick;
 
       $(element).click(function(ev) {
-        scale = element[0].offsetWidth / element[0].getBoundingClientRect().width;
+        var scale = element[0].offsetWidth / element[0].getBoundingClientRect().width;
 
         var relativeX = ev.pageX * scale - $(element)[0].offsetLeft;
         var relativeY = ev.pageY * scale - $(element)[0].offsetTop;

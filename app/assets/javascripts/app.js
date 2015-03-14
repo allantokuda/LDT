@@ -1,5 +1,7 @@
 'use strict';
 
+angular.module('LDT.utils', []);
+
 angular.module('LDT.geometry', []);
 angular.module('LDT.controllers', []);
 angular.module('LDT.ui', ['LDT.geometry']);

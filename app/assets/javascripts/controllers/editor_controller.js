@@ -7,11 +7,11 @@ var app = angular.module('LDT.controllers');
 // - Defines editor event handlers
 app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStore) {
 
-  $scope.editor = new Object;
+  $scope.editor = {};
   $scope.graph = GraphStore.graph;
-  $scope.graph.pan = { x: 0, y: 0 }
+  $scope.graph.pan = { x: 0, y: 0 };
   $scope.graph.zoom = 1;
-  $scope.status_message = 'Loading...'
+  $scope.status_message = 'Loading...';
 
   //TODO: use Angular router to handle this more cleanly
   var graphID;
@@ -29,10 +29,6 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
 
         $scope.$apply();
         $scope.updateSvgSize();
-      },
-      function() {
-        console.error(jqXHR);
-        $scope.status_message = jqXHR.status + ' ' + jqXHR.statusText;
       }
     );
   }
@@ -104,13 +100,13 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
     $('#save-message').show();
     $scope.editor.saveStatus = status;
     $scope.editor.saveMessage = message;
-  };
+  }
 
   function fadeSaveMessage() {
     setTimeout(function() {
       $('#save-message').fadeOut();
     }, 3000); // after 3 seconds
-  };
+  }
 
   $scope.saveCommand = function() {
     setSaveMessage('pending', 'Saving...');
@@ -129,7 +125,7 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
     $('#svg-paths').height($(document).height() / ($scope.graph.zoom) + 10);
     $('#canvas'   ).width ($(document).width()  / ($scope.graph.zoom));
     $('#canvas'   ).height($(document).height() / ($scope.graph.zoom));
-  }
+  };
 
   //TODO: move "identifier" methods into a domain specific class.
   //The logic here is that an attribute is a one-line (delimined by newlines)
