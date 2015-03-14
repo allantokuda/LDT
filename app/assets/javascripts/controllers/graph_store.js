@@ -16,6 +16,7 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
     entities: [],
     relationships: [],
     endpoints: [],
+    paths: {},
     pan: { x: 0, y: 0 },
     zoom: 1
   };
@@ -33,7 +34,7 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
         self.graph.entities = [];
         self.graph.relationships = [];
         self.graph.endpoints = [];
-        self.graph.paths = [];
+        self.graph.paths = {};
         self.graph.pan.x = response.data.pan_x || 0;
         self.graph.pan.y = response.data.pan_y || 0;
         self.graph.zoom = response.data.zoom || 1;
@@ -43,7 +44,6 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
         });
 
         _.each(response.data.relationships, function(hash) {
-          
           var e1 = _.find(self.graph.entities, function(e){
             return e.id == hash.entity1_id;
           });
@@ -58,6 +58,7 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
           r.endpoints[1].label  = hash.label2;
           r.endpoints[1].symbol = hash.symbol2;
 
+          self.appendToPath(r);
           self.addRelationship(r);
         });
 
@@ -181,5 +182,15 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
     _.each(self.graph.entities, function(entity) {
       entity.selected = false;
     });
+  };
+
+  this.appendToPath = function(r) {
+    var key = r.pathKey;
+
+    if (this.graph.paths[key] === undefined) {
+      this.graph.paths[key] = new window.Path();
+    }
+
+    this.graph.paths[key].addRelationship(r);
   };
 }]);

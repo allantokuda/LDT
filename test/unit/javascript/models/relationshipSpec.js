@@ -5,8 +5,8 @@ describe('Relationship', function() {
   var r, entity1, entity2;
 
   beforeEach(function() {
-    entity1 = new Entity({ x:  0, y:  0, width: 100, height: 100 });
-    entity2 = new Entity({ x:200, y:150, width: 100, height: 100 });
+    entity1 = new Entity({ id: 7, x:  0, y:  0, width: 100, height: 100 });
+    entity2 = new Entity({ id: 8, x:200, y:150, width: 100, height: 100 });
 
     r = new Relationship(0, entity1, entity2);
   });
@@ -34,12 +34,52 @@ describe('Relationship', function() {
   });
 
   it('can be placed (by assigning its endpoint coordinates and orientations)', function() {
-    r.place({ x: 7, y: 8, side: 'left' }, { x: 106, y: 55, side: 'right' });
-    expect(r.endpoints[0].x).toEqual(7);
-    expect(r.endpoints[0].y).toEqual(8);
-    expect(r.endpoints[0].sideName).toEqual('left');
-    expect(r.endpoints[1].x).toEqual(106);
-    expect(r.endpoints[1].y).toEqual(55);
-    expect(r.endpoints[1].sideName).toEqual('right');
+
+    var e1 = new Entity({ id: 1 });
+    var e2 = new Entity({ id: 2 });
+
+    var r1 = new Relationship(0, e1, e2);
+
+    r1.place({ x: 7, y: 8, side: 'left' }, { x: 106, y: 55, side: 'right' });
+    expect(r1.endpoints[0].x).toEqual(7);
+    expect(r1.endpoints[0].y).toEqual(8);
+    expect(r1.endpoints[0].sideName).toEqual('left');
+    expect(r1.endpoints[1].x).toEqual(106);
+    expect(r1.endpoints[1].y).toEqual(55);
+    expect(r1.endpoints[1].sideName).toEqual('right');
+  });
+
+  it('when placing, obscures that its entities may not be stored in standard order (smaller entity ID first is standard, larger first is reverse)', function() {
+
+    var e1 = new Entity({ id: 2 });
+    var e2 = new Entity({ id: 1 });
+
+    var r1 = new Relationship(0, e1, e2);
+
+    // place() method takes smaller entity ID first, then larger
+    r1.place({ x: 17, y: 18, side: 'top' }, { x: 116, y: 65, side: 'bottom' });
+
+    // these are placed in opposite order
+    expect(r1.endpoints[0].x).toEqual(116);
+    expect(r1.endpoints[0].y).toEqual(65);
+    expect(r1.endpoints[0].sideName).toEqual('bottom');
+    expect(r1.endpoints[1].x).toEqual(17);
+    expect(r1.endpoints[1].y).toEqual(18);
+    expect(r1.endpoints[1].sideName).toEqual('top');
+  });
+
+  it('knows its path key', function() {
+
+    var e1 = new Entity({ id: 1 });
+    var e2 = new Entity({ id: 2 });
+    var e3 = new Entity({ id: 3 });
+
+    var r1 = new Relationship(0, e1, e2);
+    var r2 = new Relationship(0, e3, e2);
+
+    expect(r1.pathKey).toEqual('1-2');
+
+    // in sorted order, not in the order originally specified
+    expect(r2.pathKey).toEqual('2-3');
   });
 });

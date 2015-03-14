@@ -3,10 +3,22 @@
 window.Relationship = function(id, entity1, entity2) {
 
   this.id = id;
+  this.entity1_id = entity1.id;
+  this.entity2_id = entity2.id;
+
+  this.standardOrientation = entity1.id < entity2.id;
+
+  if (this.standardOrientation) {
+    this.pathKey = this.entity1_id + '-' + this.entity2_id;
+  } else {
+    this.pathKey = this.entity2_id + '-' + this.entity1_id;
+  }
+
   this.endpoints = [
     new window.Endpoint({ entity: entity1, otherEntity: entity2 }),
     new window.Endpoint({ entity: entity2, otherEntity: entity1 })
   ];
+
   this.endpoints[0].partner = this.endpoints[1];
   this.endpoints[1].partner = this.endpoints[0];
 
@@ -46,12 +58,22 @@ window.Relationship = function(id, entity1, entity2) {
   };
 
   this.place = function(point1, point2) {
-    this.endpoints[0].x = point1.x;
-    this.endpoints[0].y = point1.y;
-    this.endpoints[0].sideName = point1.side;
+    var e1, e2;
 
-    this.endpoints[1].x = point2.x;
-    this.endpoints[1].y = point2.y;
-    this.endpoints[1].sideName = point2.side;
+    if (this.standardOrientation) {
+      e1 = this.endpoints[0];
+      e2 = this.endpoints[1];
+    } else {
+      e1 = this.endpoints[1];
+      e2 = this.endpoints[0];
+    }
+
+    e1.x = point1.x;
+    e1.y = point1.y;
+    e1.sideName = point1.side;
+
+    e2.x = point2.x;
+    e2.y = point2.y;
+    e2.sideName = point2.side;
   };
 };

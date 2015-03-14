@@ -24,7 +24,7 @@ describe('Path Model', function() {
 
     it('allows relationships to be deleted', function() {
       var p = new window.Path();
-      var r1 = new window.Relationship({ entity_id1: 1, entity_id2: 2 });
+      var r1 = new window.Relationship(0, { id: 1 }, { id: 2 });
       p.addRelationship(r1);
       p.removeRelationship(r1);
       expect(p.relationships.length).toEqual(0);

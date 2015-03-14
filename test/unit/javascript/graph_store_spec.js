@@ -241,4 +241,18 @@ describe('GraphStore', function() {
     expect(GraphStore.graph.entities[1].selected).toBe(false);
     expect(GraphStore.graph.entities[2].selected).toBe(false);
   });
+
+  it('groups relationships into paths', function() {
+    var r1 = { id: 0, pathKey: '1-2' };
+    var r2 = { id: 1, pathKey: '1-2' };
+    var r3 = { id: 2, pathKey: '2-3' };
+
+    GraphStore.appendToPath(r1);
+    GraphStore.appendToPath(r2);
+    GraphStore.appendToPath(r3);
+
+    expect(_.keys(GraphStore.graph.paths)).toEqual(['1-2', '2-3']);
+    expect(GraphStore.graph.paths['1-2'].relationships.length).toBe(2);
+    expect(GraphStore.graph.paths['2-3'].relationships.length).toBe(1);
+  });
 });
