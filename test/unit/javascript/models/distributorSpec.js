@@ -1,0 +1,34 @@
+'use strict';
+
+describe('Distributor', function() {
+  describe('overlapRange()', function() {
+    it('calculates the overlapping range when the ranges are staggered', function() {
+      var range1 = window.Distributor.overlapRange({ min: 0, max: 100 }, { min:  50, max: 150 });
+      var range2 = window.Distributor.overlapRange({ min: 0, max: 100 }, { min: -50, max:  50 });
+      expect(range1).toEqual({ min: 50, max: 100 });
+      expect(range2).toEqual({ min:  0, max:  50 });
+    });
+
+    it('calculates the overlapping range when the ranges are nested', function() {
+      var range1 = window.Distributor.overlapRange({ min: 0, max: 100 }, { min:  50, max:  90 });
+      var range2 = window.Distributor.overlapRange({ min: 0, max:  30 }, { min: -50, max:  90 });
+      expect(range1).toEqual({ min: 50, max: 90 });
+      expect(range2).toEqual({ min:  0, max: 30 });
+    });
+
+    it('returns null when there is no overlap', function() {
+      var range1 = window.Distributor.overlapRange({ min: 0, max: 100 }, { min: 150, max: 200 });
+      var range2 = window.Distributor.overlapRange({ min: 0, max:  30 }, { min:  50, max:  90 });
+      expect(range1).toBe(null);
+      expect(range2).toBe(null);
+    });
+  });
+
+  it('centers one item on the overlapping range', function() {
+    var loc1 = window.Distributor.distribute(1, { min: 0, max: 100 }, { min: 50, max: 150 });
+    var loc2 = window.Distributor.distribute(1, { min: 0, max: 100 }, { min: 20, max:  50 });
+
+    expect(loc1).toEqual([[75], [75]])
+    expect(loc2).toEqual([[35], [35]])
+  });
+});
