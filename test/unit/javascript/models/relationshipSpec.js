@@ -33,4 +33,6 @@ describe('Relationship', function() {
     expect(r.svgPath()).toBe('M100,90 L130,90 L170,160 L200,160');
   });
 
+  it('can be placed', function() {
+  });
 });

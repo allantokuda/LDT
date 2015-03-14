@@ -44,4 +44,7 @@ window.Relationship = function(id, entity1, entity2) {
       label2     : this.endpoints[1].label
     };
   };
+
+  this.place = function() {
+  };
 };

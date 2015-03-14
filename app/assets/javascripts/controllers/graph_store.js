@@ -33,6 +33,7 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
         self.graph.entities = [];
         self.graph.relationships = [];
         self.graph.endpoints = [];
+        self.graph.paths = [];
         self.graph.pan.x = response.data.pan_x || 0;
         self.graph.pan.y = response.data.pan_y || 0;
         self.graph.zoom = response.data.zoom || 1;
@@ -42,21 +43,22 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
         });
 
         _.each(response.data.relationships, function(hash) {
-           var e1 = _.find(self.graph.entities, function(e){
-             return e.id == hash.entity1_id;
-           });
-           var e2 = _.find(self.graph.entities, function(e){
-             return e.id == hash.entity2_id;
-           });
+          
+          var e1 = _.find(self.graph.entities, function(e){
+            return e.id == hash.entity1_id;
+          });
+          var e2 = _.find(self.graph.entities, function(e){
+            return e.id == hash.entity2_id;
+          });
 
-           var r = new window.Relationship(hash.id, e1, e2);
+          var r = new window.Relationship(hash.id, e1, e2);
 
-           r.endpoints[0].label  = hash.label1;
-           r.endpoints[0].symbol = hash.symbol1;
-           r.endpoints[1].label  = hash.label2;
-           r.endpoints[1].symbol = hash.symbol2;
+          r.endpoints[0].label  = hash.label1;
+          r.endpoints[0].symbol = hash.symbol1;
+          r.endpoints[1].label  = hash.label2;
+          r.endpoints[1].symbol = hash.symbol2;
 
-           self.addRelationship(r);
+          self.addRelationship(r);
         });
 
         self.next_entity_id       = self.nextID(self.graph.entities);
