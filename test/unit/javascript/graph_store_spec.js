@@ -208,6 +208,10 @@ describe('GraphStore', function() {
     it('should delete the associated endpoints from the graph', function() {
       expect(GraphStore.graph.endpoints.length).toBe(0);
     });
+
+    it('should delete any empty paths', function() {
+      expect(_.keys(GraphStore.graph.paths).length).toBe(0);
+    });
   });
 
   describe('#createRelationship', function() {

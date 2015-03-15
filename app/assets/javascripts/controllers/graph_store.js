@@ -172,6 +172,20 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
 
     // Remove relationship
     self.graph.relationships = _.without(self.graph.relationships, relationship_to_delete);
+
+    // Remove Path if empty
+    var key;
+    var e1_id = relationship_to_delete.entity1_id;
+    var e2_id = relationship_to_delete.entity2_id;
+    if (e1_id < e2_id) {
+      key = e1_id + '-' + e2_id;
+    } else {
+      key = e2_id + '-' + e1_id;
+    }
+    this.graph.paths[key].removeRelationship(relationship_to_delete);
+    if (this.graph.paths[key].relationships.length === 0) {
+      delete this.graph.paths[key];
+    }
   };
 
   this.deselectAll = function() {
