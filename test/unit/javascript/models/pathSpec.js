@@ -75,6 +75,8 @@ describe('Path Model', function() {
       p1.update();
       p2.update();
 
+      expect(r1.place).toHaveBeenCalled();
+      expect(r2.place).toHaveBeenCalled();
       expect(r1.place.calls[0].args[0]).toEqual({side: 'right',  x: 100, y:  75});
       expect(r1.place.calls[0].args[1]).toEqual({side: 'left',   x: 200, y:  75});
       expect(r2.place.calls[0].args[0]).toEqual({side: 'bottom', x:  75, y: 100});
@@ -103,6 +105,8 @@ describe('Path Model', function() {
       p1.update();
       p2.update();
 
+      expect(r1.place).toHaveBeenCalled();
+      expect(r2.place).toHaveBeenCalled();
       expect(r1.place.calls[0].args[0]).toEqual({side: 'right',  x: 100, y:  90});
       expect(r1.place.calls[0].args[1]).toEqual({side: 'left',   x: 200, y: 200});
       expect(r2.place.calls[0].args[0]).toEqual({side: 'bottom', x:  90, y: 100});
@@ -125,10 +129,37 @@ describe('Path Model', function() {
 
       p1.update();
 
+      expect(r1.place).toHaveBeenCalled();
+      expect(r2.place).toHaveBeenCalled();
       expect(r1.place.calls[0].args[0]).toEqual({side: 'right', x: 100, y: 60});
       expect(r1.place.calls[0].args[1]).toEqual({side: 'left',  x: 200, y: 60});
       expect(r2.place.calls[0].args[0]).toEqual({side: 'right', x: 100, y: 90});
       expect(r2.place.calls[0].args[1]).toEqual({side: 'left',  x: 200, y: 90});
+    });
+
+    it('handles reflexive relationships, routing them around each other', function() {
+      var e = new Entity({ x: 0, y:  0, width: 100, height: 110 });
+
+      //      ____
+      //  ___|1   |
+      // |___|    |
+      //  ___|    |
+      // |___|    |
+      //     |____|
+
+      var p = new window.Path(e, e); // reflexive
+
+      p.addRelationship(r1);
+      p.addRelationship(r2);
+
+      p.update();
+
+      expect(r1.place).toHaveBeenCalled();
+      expect(r2.place).toHaveBeenCalled();
+      expect(r1.place.calls[0].args[0]).toEqual({side: 'left', x: 0, y: 10});
+      expect(r1.place.calls[0].args[1]).toEqual({side: 'left', x: 0, y: 40});
+      expect(r2.place.calls[0].args[0]).toEqual({side: 'left', x: 0, y: 70});
+      expect(r2.place.calls[0].args[1]).toEqual({side: 'left', x: 0, y: 100});
     });
   });
 });

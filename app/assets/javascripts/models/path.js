@@ -41,10 +41,10 @@ window.Path = function(entity1, entity2) {
     };
   }
 
-  //callback method
-  this.update = function() {
+  var updateNonReflexive = function() {
     var e1 = boxRange(entity1);
     var e2 = boxRange(entity2);
+    var direction;
 
     var distancePerDirection = {
       right:  e2.x.min - e1.x.max,
@@ -55,7 +55,7 @@ window.Path = function(entity1, entity2) {
 
     // Find the general direction from entity1 to entity2.
     // This is the direction with the largest distance between entities.
-    var direction = _.max(DIRECTIONS, function(direction) {
+    direction = _.max(DIRECTIONS, function(direction) {
       return distancePerDirection[direction];
     }, this);
 
@@ -116,6 +116,33 @@ window.Path = function(entity1, entity2) {
       r.place(placement1, placement2);
     });
   }.bind(this);
+
+  var updateReflexive = function() {
+    var range = { min: entity1.y, max: entity1.y + entity1.height };
+    var arrayLocations = window.Distributor.distribute(this.relationships.length*2, range);
+
+    _.each(this.relationships, function(r, i) {
+      r.place(
+        {
+          side: 'left',
+          x: entity1.x,
+          y: arrayLocations[0][i*2]
+        },
+        {
+          side: 'left',
+          x: entity1.x,
+          y: arrayLocations[0][i*2+1]
+        }
+      );
+    });
+  }.bind(this);
+
+  //callback method
+  if (entity1 == entity2) {
+    this.update = updateReflexive;
+  } else {
+    this.update = updateNonReflexive;
+  }
 
   // Entities and their callback functions should always be defined,
   // except in unit tests.

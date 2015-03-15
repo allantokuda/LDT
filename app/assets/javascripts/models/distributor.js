@@ -29,6 +29,7 @@ window.Distributor = {
   },
 
   distribute: function(count, range1, range2) {
+    if (range2 === undefined) range2 = range1;
     var overlap = this.overlapRange(range1, range2);
     var minSpace = count * ARROWHEAD_WIDTH;
     var distRanges;
