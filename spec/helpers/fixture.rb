@@ -3,11 +3,11 @@ class Fixture
 
   def initialize(filename, context, option=nil)
     @filename = filename
-    @record_mode = (option == :record)
+    @record_mode = !File.exist?(filename)
     @context = context # wherein an RSpec "expect" can be called
     @row = -1
-
     record_mode ? clear_file : read_file
+    puts "WARNING: Fixture file " + filename + " not found! Now creating it."
   end
 
   def next(data_row)

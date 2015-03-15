@@ -1,6 +1,7 @@
 'use strict';
 
 var ARROWHEAD_WIDTH = 20;
+var MAX_SPREAD = 2;
 
 window.Distributor = {
 
@@ -32,10 +33,20 @@ window.Distributor = {
     if (range2 === undefined) range2 = range1;
     var overlap = this.overlapRange(range1, range2);
     var minSpace = count * ARROWHEAD_WIDTH;
+    var maxSpace = count * ARROWHEAD_WIDTH * MAX_SPREAD;
     var distRanges;
 
     if (overlap && overlap.max - overlap.min > minSpace) {
-      distRanges = [overlap, overlap];
+      if (overlap.max - overlap.min > maxSpace) {
+        var center = 0.5*(overlap.max + overlap.min);
+        var fullSpreadRange = {
+          min: center - 0.5*maxSpace,
+          max: center + 0.5*maxSpace
+        }
+        distRanges = [fullSpreadRange, fullSpreadRange];
+      } else {
+        distRanges = [overlap, overlap];
+      }
     } else {
       if (range1.min < range2.min) {
         distRanges = [
