@@ -43,16 +43,14 @@ describe('Path Model', function() {
   });
 
   describe('endpoint placement', function() {
-    var r1, r2, r3;
+    var r1, r2;
 
     beforeEach(function() {
       r1 = { id: 'r1', place: function(){} };
       r2 = { id: 'r2', place: function(){} };
-      r3 = { id: 'r3', place: function(){} };
 
       spyOn(r1, 'place');
       spyOn(r2, 'place');
-      spyOn(r3, 'place');
     });
 
     it('calculates best sides for attachment and applies them to relationships', function() {
@@ -77,16 +75,10 @@ describe('Path Model', function() {
       p1.update();
       p2.update();
 
-      var r1_endpoint1 = r1.place.calls[0].args[0];
-      var r1_endpoint2 = r1.place.calls[0].args[1];
-      var r2_endpoint1 = r2.place.calls[0].args[0];
-      var r2_endpoint2 = r2.place.calls[0].args[1];
-
-      expect(r1_endpoint1).toEqual({side: 'right', x: 100, y: 75});
-      expect(r1_endpoint2).toEqual({side: 'left', x: 200, y: 75});
-
-      expect(r2_endpoint1).toEqual({side: 'bottom', x: 75, y: 100});
-      expect(r2_endpoint2).toEqual({side: 'top', x: 75, y: 200});
+      expect(r1.place.calls[0].args[0]).toEqual({side: 'right',  x: 100, y:  75});
+      expect(r1.place.calls[0].args[1]).toEqual({side: 'left',   x: 200, y:  75});
+      expect(r2.place.calls[0].args[0]).toEqual({side: 'bottom', x:  75, y: 100});
+      expect(r2.place.calls[0].args[1]).toEqual({side: 'top',    x:  75, y: 200});
     });
 
     it('keeps endpoints connecting within entity bounds when entities are diagonal', function() {
@@ -111,8 +103,32 @@ describe('Path Model', function() {
       p1.update();
       p2.update();
 
-      expect(r1.place).toHaveBeenCalledWith({ x: 100, y:  90, side: 'right' }, { x: 200, y: 200, side: 'left'})
-      expect(r2.place).toHaveBeenCalledWith({ x:  90, y: 100, side: 'bottom'}, { x: 200, y: 200, side: 'top' })
+      expect(r1.place.calls[0].args[0]).toEqual({side: 'right',  x: 100, y:  90});
+      expect(r1.place.calls[0].args[1]).toEqual({side: 'left',   x: 200, y: 200});
+      expect(r2.place.calls[0].args[0]).toEqual({side: 'bottom', x:  90, y: 100});
+      expect(r2.place.calls[0].args[1]).toEqual({side: 'top',    x: 200, y: 200});
+    });
+
+    it('handles sibling relationships, routing them together', function() {
+      var e1 = new Entity({ x:   0, y:  0, width: 100, height: 100 });
+      var e2 = new Entity({ x: 200, y: 50, width: 100, height: 100 });
+
+      //  ___
+      // |1  | ___  ___
+      // |___| ___ |2  |
+      //           |___|
+
+      var p1 = new window.Path(e1, e2); // diagonal but slightly more "horizontal" than "vertical"
+
+      p1.addRelationship(r1);
+      p1.addRelationship(r2);
+
+      p1.update();
+
+      expect(r1.place.calls[0].args[0]).toEqual({side: 'right', x: 100, y: 60});
+      expect(r1.place.calls[0].args[1]).toEqual({side: 'left',  x: 200, y: 60});
+      expect(r2.place.calls[0].args[0]).toEqual({side: 'right', x: 100, y: 90});
+      expect(r2.place.calls[0].args[1]).toEqual({side: 'left',  x: 200, y: 90});
     });
   });
 });

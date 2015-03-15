@@ -39,4 +39,9 @@ describe('Distributor', function() {
     expect(loc1).toEqual([[90], [160]]);
     expect(loc2).toEqual([[160], [90]]);
   });
+
+  it('distributes two items as far apart as possible within available overlap', function() {
+    var loc = window.Distributor.distribute(2, { min: 0, max: 100 }, { min: 0, max: 100 });
+    expect(loc).toEqual([[10, 90], [10, 90]]);
+  });
 });

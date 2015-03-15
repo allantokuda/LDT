@@ -50,7 +50,20 @@ window.Distributor = {
     }
 
     return _.map(distRanges, function(range) {
-      return [0.5*(range.min + range.max)];
+      if (count == 1) {
+        return [0.5*(range.min + range.max)];
+      } else if (count > 1) {
+        var start = range.min + 0.5*ARROWHEAD_WIDTH;
+        var step = (range.max - range.min - ARROWHEAD_WIDTH) / (count - 1);
+        var result = [];
+        _.times(count, function(i) {
+          result.push(start + step * i);
+        });
+        return result;
+      } else {
+        // maybe if count is zero? Generally should not happen..
+        return [];
+      }
     });
   }
 };
