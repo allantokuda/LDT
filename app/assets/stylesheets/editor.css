@@ -191,7 +191,7 @@ path.click-area {
 }
 
 .getting-started {
-  position: absolute;
+  position: fixed;
   left: 100px;
   top: 90px;
   width: 200px;
