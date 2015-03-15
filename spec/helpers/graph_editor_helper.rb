@@ -131,3 +131,11 @@
       expect(find(attribute_selector)[:class].split(' ')).to_not include "identifier"
     end
   end
+
+  def zoom_in
+    find('#zoom-in-button').click
+  end
+
+  def zoom_out
+    find('#zoom-out-button').click
+  end
