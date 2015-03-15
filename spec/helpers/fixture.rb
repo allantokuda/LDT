@@ -3,12 +3,13 @@ class Fixture
 
   def initialize(filename, context, option=nil)
     @filename = filename
-    @record_mode = !File.exist?(filename)
+    @record_mode = ENV['RECORD_FIXTURE'] == 'on' # prefix rspec command with RECORD_FIXTURE=on to enable recording during test development
     @context = context # wherein an RSpec "expect" can be called
     @row = -1
+
     if record_mode
       clear_file
-      puts "WARNING: Fixture file " + filename + " not found! Now creating it."
+      puts "Writing new data to fixture file " + filename
     else
       read_file
     end
@@ -18,6 +19,7 @@ class Fixture
     @row += 1
     if record_mode
       write_line data_row
+      puts data_row
       data_row
     else
       @context.expect(@data[@row]).to(@context.eq(data_row))

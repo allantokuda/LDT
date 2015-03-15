@@ -18,7 +18,7 @@ describe 'Sibling relationships', js: true do
   it 'allows multiple relationships to be drawn between the same two entities' do
     visit '/'
 
-    # Add :record option to record new
+    # Prefix rspec command with RECORD_FIXTURE=on to record new
     @fixture = Fixture.new fixture_filename, self
 
     window_size 900, 900

@@ -17,7 +17,7 @@ describe 'Relationship straightness', js: true do
   it 'is ensured whenever possible' do
     visit '/'
 
-    # Add :record option to record new
+    # Prefix rspec command with RECORD_FIXTURE=on to record new
     @fixture = Fixture.new fixture_filename, self
 
     window_size 900, 900

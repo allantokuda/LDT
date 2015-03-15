@@ -146,11 +146,11 @@ window.Endpoint = function(endpoint) {
   };
 
   this.arrowheadPath = function() {
-    return "M" + this.x + ',' + this.y + window.arrowheadSVG[this.symbol][this.sideName];
+    return "M" + Math.round(this.x) + ',' + Math.round(this.y) + window.arrowheadSVG[this.symbol][this.sideName];
   };
 
   this.boxPath = function() {
-    return "M" + this.x + ',' + this.y + window.arrowheadSVG['box'][this.sideName];
+    return "M" + Math.round(this.x) + ',' + Math.round(this.y) + window.arrowheadSVG['box'][this.sideName];
   };
 
   this.toggleArrowhead = function(toggleIdentifier) {
