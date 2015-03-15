@@ -189,3 +189,28 @@ path.click-area {
   margin-top: 1em;
   margin-left: 2em;
 }
+
+.getting-started {
+  position: absolute;
+  left: 100px;
+  top: 90px;
+  width: 200px;
+  z-index: 6;
+  border: 1px solid #ccc;
+  padding: 0px;
+  background: #ffd;
+}
+
+.getting-started p {
+  margin: 1em;
+}
+
+.getting-started svg {
+  border: none;
+}
+
+.getting-started svg polyline {
+  fill: #ffd;
+  stroke:#ccc;
+  stroke-width:1;
+}

@@ -13,6 +13,18 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
   $scope.graph.zoom = 1;
   $scope.status_message = 'Loading...';
 
+  $scope.foo = 'bar';
+  $scope.getting_started_messages = [
+    {
+      message: "Click here and then click in the canvas area below to create a new entity.",
+      x: 128
+    },
+    {
+      message: "Once you've created some entities, click here and then choose two entities to create a relationship between them.",
+      x: 150
+    }
+  ];
+
   //TODO: use Angular router to handle this more cleanly
   var graphID;
   var path_regex = /graphs\/([^\/]+)\/edit/;
@@ -29,8 +41,14 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
 
         $scope.$apply();
         $scope.updateSvgSize();
+
+        console.log(GraphStore.graph.entities);
+        if (GraphStore.graph.entities.length == 0) {
+          $scope.getting_started_message_num = 0;
+        }
       }
     );
+  } else {
   }
 
   // Click event handlers
@@ -176,6 +194,16 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
     $scope.$broadcast('relocateIfAttachedToEntity', entityID);
   });
 
+  function afterClickNewEntityButton() {
+    hideGhostEntityPriorToDragEvent();
+    $scope.getting_started_message_num = -1;
+  }
+
+  function hideGhostEntityPriorToDragEvent() {
+    $('.ghost-entity').css('left', '-1000px');
+    $('.ghost-entity').css('top', '-1000px');
+  }
+
   // TODO consider moving this to a directive
   $(document).mouseup($scope.updateSvgSize);
 
@@ -184,7 +212,7 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
   $scope.newCommand             = function() { window.location = '/graphs/new'; };
   $scope.openCommand            = function() { window.location = '/graphs/'; };
   $scope.selectCommand          = function() { $scope.$apply(setMode('select')); };
-  $scope.newEntityCommand       = function() { $scope.$apply(setMode('new_entity')); };
+  $scope.newEntityCommand       = function() { afterClickNewEntityButton(); $scope.$apply(setMode('new_entity')); };
   $scope.newRelationshipCommand = function() { $scope.$apply(setMode('new_relationship_start')); };
   $scope.deleteItemCommand      = function() { $scope.$apply(setMode('delete_item')); };
   $scope.labelCommand           = function() { $scope.$apply(setMode('label_pick')); };
