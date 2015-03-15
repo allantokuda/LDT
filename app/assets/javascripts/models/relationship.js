@@ -10,12 +10,9 @@ window.Relationship = function(id, entity1, entity2) {
   this.standardOrientation = entity1.id < entity2.id;
 
   this.endpoints = [
-    new window.Endpoint({ entity: entity1, otherEntity: entity2 }),
-    new window.Endpoint({ entity: entity2, otherEntity: entity1 })
+    new window.Endpoint({}),
+    new window.Endpoint({})
   ];
-
-  this.endpoints[0].partner = this.endpoints[1];
-  this.endpoints[1].partner = this.endpoints[0];
 
   function svgPolyline(points) {
     if (points.length >= 2) {
@@ -40,8 +37,8 @@ window.Relationship = function(id, entity1, entity2) {
   this.saveObject = function() {
     return {
       id         : this.id,
-      entity1_id : this.endpoints[0].entity.id,
-      entity2_id : this.endpoints[1].entity.id,
+      entity1_id : this.entity1_id,
+      entity2_id : this.entity2_id,
       symbol1    : this.endpoints[0].symbol,
       symbol2    : this.endpoints[1].symbol,
       label1     : this.endpoints[0].label,

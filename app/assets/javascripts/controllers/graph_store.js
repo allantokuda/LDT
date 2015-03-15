@@ -132,24 +132,18 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
 
   this.deleteEntity = function(entity_to_delete) {
 
-    var endpoints_to_delete = entity_to_delete.clearAllEndpoints();
+    // Remove all connected relationships and their endpoints
+    _.each(self.graph.relationships, function(r) {
+      if (r.entity1_id == entity_to_delete.id || r.entity2_id == entity_to_delete.id) {
 
-    // Delete endpoints from associated entities' sides
-    _.each(self.graph.entities, function(entity) {
-      _.each(endpoints_to_delete, function(endpoint) {
-        entity.removeEndpoint(endpoint.partner);
-      });
-    });
+        self.graph.endpoints = _.reject(self.graph.endpoints, function(endpoint) {
+          return endpoint == r.endpoints[0] || endpoint == r.endpoints[1];
+        });
 
-    // Remove all connected relationships
-    self.graph.relationships = _.reject(self.graph.relationships, function(r) {
-      return r.endpoints[0].entity == entity_to_delete || r.endpoints[1].entity == entity_to_delete;
-    });
-
-    // Remove all connected endpoints
-    self.graph.endpoints = _.reject(self.graph.endpoints, function(endpoint) {
-      return endpoint.entity      == entity_to_delete ||
-             endpoint.otherEntity == entity_to_delete;
+        self.graph.relationships = _.reject(self.graph.relationships, function(relationship) {
+          return relationship == r;
+        });
+      }
     });
 
     // Remove entity
@@ -162,10 +156,6 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
     var endpoints = relationship_to_delete.endpoints;
 
     _.each(endpoints, function(endpoint_to_delete) {
-
-      // Remove connected endpoints from sides
-      endpoint_to_delete.entity.removeEndpoint(endpoint_to_delete);
-
       // Remove all connected endpoints from graph
       self.graph.endpoints = _.without(self.graph.endpoints, endpoint_to_delete);
     });

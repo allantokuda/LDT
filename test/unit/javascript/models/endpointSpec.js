@@ -2,7 +2,7 @@
 
 describe('Endpoint', function() {
   it('provides an arrowhead SVG path', function() {
-    var e = new window.Endpoint({ entity: {}, otherEntity: {}, label: 'example', symbol: '?' });
+    var e = new window.Endpoint({ label: 'example', symbol: '?' });
     e.x = 220.1;
     e.y = 93.1;
     e.sideName = 'left';

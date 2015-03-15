@@ -1,11 +1,8 @@
 'use strict';
 
 window.Endpoint = function(endpoint) {
-
-  this.entity       = endpoint.entity;
-  this.otherEntity  = endpoint.otherEntity;
-  this.label        = endpoint.label  || '';
-  this.symbol       = endpoint.symbol || '?';
+  this.label  = endpoint.label  || '';
+  this.symbol = endpoint.symbol || '?';
 
   this.setOutwardVector = function() {
     switch(this.sideName) {

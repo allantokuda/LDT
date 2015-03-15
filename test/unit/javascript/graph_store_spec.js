@@ -129,8 +129,6 @@ describe('GraphStore', function() {
       // and the items below should not need to be tested here.
 
       expect(loadedData.entities[0].x).toEqual(exampleGraphData.entities[0].x);
-      expect(loadedData.relationships[0].endpoints[0].entity.id).toEqual(exampleGraphData.relationships[0].entity1_id);
-
       expect(loadedData.endpoints[0].x).toEqual(100);
       expect(loadedData.endpoints[0].y).toEqual(60);
     });
@@ -188,10 +186,6 @@ describe('GraphStore', function() {
 
     it('should delete all connected relationships', function() {
       expect(GraphStore.graph.relationships.length).toBe(0);
-    });
-
-    it('should delete endpoints from associated entities', function() {
-      expect(e1.endpoints['right'].length).toBe(0);
     });
   });
 

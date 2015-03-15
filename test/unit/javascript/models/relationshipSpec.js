@@ -15,16 +15,6 @@ describe('Relationship', function() {
     expect(r.id).toBe(0);
   });
 
-  it('makes endpoints that have references to the supplied entities', function() {
-    expect(r.endpoints[0].entity).toBe(entity1);
-    expect(r.endpoints[1].entity).toBe(entity2);
-  });
-
-  it('makes endpoints that have references to each other', function() {
-    expect(r.endpoints[0].partner).toBe(r.endpoints[1]);
-    expect(r.endpoints[1].partner).toBe(r.endpoints[0]);
-  });
-
   it('calculates a SVG path string', function() {
     r.place({ x: 100, y: 90, side: 'right' }, { x: 200, y: 160, side: 'left' });
     expect(r.svgPath()).toBe('M100,90 L130,90 L170,160 L200,160');
