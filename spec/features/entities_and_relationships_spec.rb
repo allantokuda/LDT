@@ -63,4 +63,18 @@ describe 'Entities and relationships', js: true do
     expect_label 0, 'be supported by'
     expect_label 1, 'support'
   end
+
+  it 'does not matter which entity you pick first when drawing a relationship' do
+    visit '/'
+
+    create_entity 100, 200
+    create_entity 600, 200
+
+    # click in reverse order: newer and then older entity
+    create_relationship 1, 0
+
+    # Question marks on both sides
+    expect_arrowhead 0, "M220,275m7,-3 l0,-4 l4,0 l0,2 l2,0 m2,0 l2,0"
+    expect_arrowhead 1, "M600,275m-7,3 l0,4 l-4,0 l0,-2 l-2,0 m-2,0 l-2,0"
+  end
 end

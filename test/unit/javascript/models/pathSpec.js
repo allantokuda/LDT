@@ -2,8 +2,15 @@
 
 describe('Path Model', function() {
   describe('relationship ownership', function() {
+    var e1, e2, p;
+
+    beforeEach(function() {
+      e1 = { x:   0, y: 0, width: 100, height: 100 };
+      e2 = { x: 200, y: 0, width: 100, height: 100 };
+      p = new window.Path(e1, e2);
+    });
+
     it('stores relationship objects', function() {
-      var p = new window.Path();
       var r = {};
       p.addRelationship(r);
       expect(p.relationships.length).toEqual(1);
@@ -11,7 +18,6 @@ describe('Path Model', function() {
     });
 
     it('de-duplicates', function() {
-      var p = new window.Path();
       var r1 = {};
       var r2 = {};
       p.addRelationship(r1);
@@ -23,7 +29,6 @@ describe('Path Model', function() {
     });
 
     it('allows relationships to be deleted', function() {
-      var p = new window.Path();
       var r1 = new window.Relationship(0, { id: 1 }, { id: 2 });
       p.addRelationship(r1);
       p.removeRelationship(r1);
@@ -34,8 +39,8 @@ describe('Path Model', function() {
   describe('response to entity change', function() {
     it("subscribes to its entities' change events", function() {
       var callback1, callback2;
-      var e1 = { addChangeCallback: function(fn) { callback1 = fn; } }
-      var e2 = { addChangeCallback: function(fn) { callback2 = fn; } }
+      var e1 = { x:   0, y: 0, width: 100, height: 100, addChangeCallback: function(fn) { callback1 = fn; } };
+      var e2 = { x: 200, y: 0, width: 100, height: 100, addChangeCallback: function(fn) { callback2 = fn; } };
       var p = new window.Path(e1, e2);
       expect(callback1).toBe(p.update);
       expect(callback2).toBe(p.update);

@@ -26,10 +26,7 @@ describe('Relationship', function() {
   });
 
   it('calculates a SVG path string', function() {
-    r.endpoints[0].relocate();
-    r.endpoints[1].relocate();
-    r.endpoints[0].negotiateCoordinates();
-    r.endpoints[1].negotiateCoordinates();
+    r.place({ x: 100, y: 90, side: 'right' }, { x: 200, y: 160, side: 'left' });
     expect(r.svgPath()).toBe('M100,90 L130,90 L170,160 L200,160');
   });
 

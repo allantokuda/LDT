@@ -4,7 +4,6 @@ window.Path = function(entity1, entity2) {
   self = this;
 
   var DIRECTIONS = ['up', 'down', 'left', 'right'];
-  var SIDES = ['top', 'bottom', 'left', 'right'];
 
   this.relationships = [];
 
@@ -150,4 +149,6 @@ window.Path = function(entity1, entity2) {
     entity1.addChangeCallback(this.update);
     entity2.addChangeCallback(this.update);
   }
+
+  this.update();
 };

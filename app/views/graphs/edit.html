@@ -87,7 +87,6 @@
         <div class="endpoint"
              ng-class="endpoint.sideName"
              ng-repeat="endpoint in graph.endpoints"
-             ng-controller="EndpointCtrl"
              ng-click="handleLabelClick(label.id,$event)"
              ng-style="{ left: graph.pan.x + endpoint.x, top: graph.pan.y + endpoint.y }"
              select-with="dblclick as endpoint"
