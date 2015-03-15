@@ -26,15 +26,31 @@ window.Path = function(entity1, entity2) {
     return _.find(self.relationships, function(r){
       return r === subject;
     });
-  };
+  }
+
+  function boxRange(entity) {
+    return {
+      x: {
+        min: entity.x,
+        max: entity.x + entity.width
+      },
+      y: {
+        min: entity.y,
+        max: entity.y + entity.height
+      }
+    };
+  }
 
   //callback method
   this.update = function() {
+    var e1 = boxRange(entity1);
+    var e2 = boxRange(entity2);
+
     var distancePerDirection = {
-      left:   entity1.x - entity2.x - entity2.width,
-      right:  entity2.x - entity1.x - entity1.width,
-      up:     entity1.y - entity2.y - entity2.height,
-      down:   entity2.y - entity1.y - entity1.height
+      right:  e2.x.min - e1.x.max,
+      left:   e1.x.min - e2.x.max,
+      down:   e2.y.min - e1.y.max,
+      up:     e1.y.min - e2.y.max,
     };
 
     // Find the general direction from entity1 to entity2.
@@ -43,59 +59,62 @@ window.Path = function(entity1, entity2) {
       return distancePerDirection[direction];
     }, this);
 
-    var x1, x2, y1, y2, side1, side2;
+    var fixedAxis, arrayAxis, loc1, loc2, side1, side2;
     switch(direction) {
       case 'right':
-        x1 = entity1.x + entity1.width;
-        x2 = entity2.x;
+        fixedAxis = 'x';
+        arrayAxis = 'y';
+        loc1 = 'max'; // from an entity's max coordinate
+        loc2 = 'min'; // to other entity's min coordinate
         side1 = 'right';
         side2 = 'left';
         break;
 
       case 'left':
-        x1 = entity1.x;
-        x2 = entity2.x + entity2.width;
+        fixedAxis = 'x';
+        arrayAxis = 'y';
+        loc1 = 'min';
+        loc2 = 'max';
         side1 = 'left';
         side2 = 'right';
         break;
 
       case 'down':
-        y1 = entity1.y + entity1.height;
-        y2 = entity2.y;
+        fixedAxis = 'y';
+        arrayAxis = 'x';
+        loc1 = 'max';
+        loc2 = 'min';
         side1 = 'bottom';
         side2 = 'top';
         break;
 
       case 'up':
-        y1 = entity1.y + entity1.height;
-        y2 = entity2.y;
+        fixedAxis = 'y';
+        arrayAxis = 'x';
+        loc1 = 'min';
+        loc2 = 'max';
         side1 = 'top';
         side2 = 'bottom';
         break;
     }
 
-    if (direction == 'left' || direction == 'right') {
-      var arrayAxis = 'y';
-      var yCenter = 0.5*(entity1.y + 0.5*entity1.height + entity2.y + 0.5*entity2.height) //temporary rough average
+    var range1 = { min: e1[arrayAxis].min, max: e1[arrayAxis].max };
+    var range2 = { min: e2[arrayAxis].min, max: e2[arrayAxis].max };
 
-      //TODO add array for siblings, and edge overflow prevention
-      _.each(this.relationships, function(r) {
-        r.place({ x: x1, y: yCenter, side: side1 },
-                { x: x2, y: yCenter, side: side2 });
-      });
+    var arrayLocations = window.Distributor.distribute(this.relationships.length, range1, range2);
 
-    } else {
-      var arrayAxis = 'x';
-      var xCenter = 0.5*(entity1.x + 0.5*entity1.width + entity2.x + 0.5*entity2.width) //temporary rough average
+    _.each(this.relationships, function(r, i) {
+      var placement1 = { side: side1 };
+      var placement2 = { side: side2 };
 
-      //TODO add array for siblings, and edge overflow prevention
-      _.each(this.relationships, function(r) {
-        r.place({ x: xCenter, y: y1, side: side1 },
-                { x: xCenter, y: y2, side: side2 });
-      });
+      placement1[fixedAxis] = e1[fixedAxis][loc1];
+      placement2[fixedAxis] = e2[fixedAxis][loc2];
 
-    }
+      placement1[arrayAxis] = arrayLocations[0][i];
+      placement2[arrayAxis] = arrayLocations[1][i];
 
+      r.place(placement1, placement2);
+    });
   }.bind(this);
 
   // Entities and their callback functions should always be defined,

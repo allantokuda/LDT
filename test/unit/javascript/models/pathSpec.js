@@ -42,30 +42,77 @@ describe('Path Model', function() {
     });
   });
 
-  describe('path calculation', function() {
-    var e1, e2, e3, r1, r2, r3;
+  describe('endpoint placement', function() {
+    var r1, r2, r3;
 
     beforeEach(function() {
-      e1 = new Entity({ x:   0, y:   0, width: 100, height: 100 });
-      e2 = new Entity({ x: 200, y:  50, width: 100, height: 100 });
-      e3 = new Entity({ x:  50, y: 200, width: 100, height: 100 });
-
       r1 = { id: 'r1', place: function(){} };
       r2 = { id: 'r2', place: function(){} };
+      r3 = { id: 'r3', place: function(){} };
 
       spyOn(r1, 'place');
       spyOn(r2, 'place');
+      spyOn(r3, 'place');
     });
 
     it('calculates best sides for attachment and applies them to relationships', function() {
+      var e1 = new Entity({ x:   0, y:   0, width: 100, height: 100 });
+      var e2 = new Entity({ x: 200, y:  50, width: 100, height: 100 });
+      var e3 = new Entity({ x:  50, y: 200, width: 100, height: 100 });
+
+      //  ___
+      // |1  |    ___
+      // |___|---|2  |
+      //    |    |___|
+      //    ___
+      //   |3  |
+      //   |___|
+
       var p1 = new window.Path(e1, e2); // roughly horizontal
-      var p2 = new window.Path(e1, e3); // diagoal but slightly more "vertical" than "horizontal"
+      var p2 = new window.Path(e1, e3); // roughly vertical
+
       p1.addRelationship(r1);
       p2.addRelationship(r2);
+
       p1.update();
       p2.update();
-      expect(r1.place).toHaveBeenCalledWith({ x: 100, y:  75, side: 'right' }, { x: 200, y:  75, side: 'left'})
-      expect(r2.place).toHaveBeenCalledWith({ x:  75, y: 100, side: 'bottom'}, { x:  75, y: 200, side: 'top' })
+
+      var r1_endpoint1 = r1.place.calls[0].args[0];
+      var r1_endpoint2 = r1.place.calls[0].args[1];
+      var r2_endpoint1 = r2.place.calls[0].args[0];
+      var r2_endpoint2 = r2.place.calls[0].args[1];
+
+      expect(r1_endpoint1).toEqual({side: 'right', x: 100, y: 75});
+      expect(r1_endpoint2).toEqual({side: 'left', x: 200, y: 75});
+
+      expect(r2_endpoint1).toEqual({side: 'bottom', x: 75, y: 100});
+      expect(r2_endpoint2).toEqual({side: 'top', x: 75, y: 200});
+    });
+
+    it('keeps endpoints connecting within entity bounds when entities are diagonal', function() {
+      var e1 = new Entity({ x:   0, y:   0, width: 100, height: 100 });
+      var e2 = new Entity({ x: 200, y: 190, width: 100, height: 100 });
+      var e3 = new Entity({ x: 190, y: 200, width: 100, height: 100 });
+
+      //  ___
+      // |1  |
+      // |___|
+      //      \
+      //       \____
+      //       |2,3||
+      //       |___||
+
+      var p1 = new window.Path(e1, e2); // diagonal but slightly more "horizontal" than "vertical"
+      var p2 = new window.Path(e1, e3); // diagonal but slightly more "vertical" than "horizontal"
+
+      p1.addRelationship(r1);
+      p2.addRelationship(r2);
+
+      p1.update();
+      p2.update();
+
+      expect(r1.place).toHaveBeenCalledWith({ x: 100, y:  90, side: 'right' }, { x: 200, y: 200, side: 'left'})
+      expect(r2.place).toHaveBeenCalledWith({ x:  90, y: 100, side: 'bottom'}, { x: 200, y: 200, side: 'top' })
     });
   });
 });

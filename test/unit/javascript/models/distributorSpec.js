@@ -31,4 +31,12 @@ describe('Distributor', function() {
     expect(loc1).toEqual([[75], [75]])
     expect(loc2).toEqual([[35], [35]])
   });
+
+  it('minimizes the harshness of diagonal paths, down to arrowhead width', function() {
+    var loc1 = window.Distributor.distribute(1, { min:   0, max: 100 }, { min: 150, max: 250 });
+    var loc2 = window.Distributor.distribute(1, { min: 150, max: 250 }, { min:   0, max: 100 });
+
+    expect(loc1).toEqual([[90], [160]]);
+    expect(loc2).toEqual([[160], [90]]);
+  });
 });

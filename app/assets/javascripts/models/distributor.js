@@ -14,10 +14,43 @@ window.Distributor = {
       return null;
   },
 
-  distribute: function(count, range1, range2) {
-    var range = this.overlapRange(range1, range2);
-    var rangeCenter = 0.5*(range.max + range.min)
+  topPortion: function(portion, range) {
+    return {
+      min: range.max - portion,
+      max: range.max
+    }
+  },
 
-    return [[rangeCenter], [rangeCenter]];
+  btmPortion: function(portion, range) {
+    return {
+      min: range.min,
+      max: range.min + portion
+    }
+  },
+
+  distribute: function(count, range1, range2) {
+    var overlap = this.overlapRange(range1, range2);
+    var minSpace = count * ARROWHEAD_WIDTH;
+    var distRanges;
+
+    if (overlap && overlap.max - overlap.min > minSpace) {
+      distRanges = [overlap, overlap];
+    } else {
+      if (range1.min < range2.min) {
+        distRanges = [
+          this.topPortion(minSpace, range1),
+          this.btmPortion(minSpace, range2)
+        ]
+      } else {
+        distRanges = [
+          this.btmPortion(minSpace, range1),
+          this.topPortion(minSpace, range2)
+        ]
+      }
+    }
+
+    return _.map(distRanges, function(range) {
+      return [0.5*(range.min + range.max)];
+    });
   }
 };

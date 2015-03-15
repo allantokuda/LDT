@@ -243,9 +243,9 @@ describe('GraphStore', function() {
   });
 
   it('groups relationships into paths', function() {
-    var e1 = { id: 1 };
-    var e2 = { id: 2 };
-    var e3 = { id: 3 };
+    var e1 = { id: 1, x: 0, y: 0, width: 0, height: 0 };
+    var e2 = { id: 2, x: 0, y: 0, width: 0, height: 0 };
+    var e3 = { id: 3, x: 0, y: 0, width: 0, height: 0 };
 
     var r1 = { pathKey: '1-2', place: function() {} };
     var r2 = { pathKey: '1-2', place: function() {} };
