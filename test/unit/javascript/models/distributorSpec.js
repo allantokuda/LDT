@@ -49,4 +49,14 @@ describe('Distributor', function() {
     var loc = window.Distributor.distribute(2, { min: 0, max: 200 }, { min: 0, max: 200 });
     expect(loc).toEqual([[70, 130], [70, 130]]);
   });
+
+  it('does the best it can when there is insufficient space to attach', function() {
+    var loc = window.Distributor.distribute(3, { min: 0, max: 30 }, { min: 30, max: 60 });
+    expect(loc).toEqual([[10, 15, 20], [40, 45, 50]]);
+  });
+
+  it('keeps items spaced on the wide side even while the opposite side is crammed', function() {
+    var loc = window.Distributor.distribute(2, { min: 20, max: 50 }, { min: 0, max: 100 });
+    expect(loc).toEqual([[30, 40], [25, 45]]);
+  });
 });

@@ -34,8 +34,9 @@ window.Distributor = {
     var overlap = this.overlapRange(range1, range2);
     var minSpace = count * ARROWHEAD_WIDTH;
     var maxSpace = count * ARROWHEAD_WIDTH * MAX_SPREAD;
-    var distRanges;
+    var distRanges = [];
 
+    // possible to draw straight, well spaced relationships
     if (overlap && overlap.max - overlap.min > minSpace) {
       if (overlap.max - overlap.min > maxSpace) {
         var center = 0.5*(overlap.max + overlap.min);
@@ -47,18 +48,41 @@ window.Distributor = {
       } else {
         distRanges = [overlap, overlap];
       }
+
+    // impossible to draw straight, well-spaced relationships
     } else {
-      if (range1.min < range2.min) {
-        distRanges = [
-          this.topPortion(minSpace, range1),
-          this.btmPortion(minSpace, range2)
-        ]
-      } else {
-        distRanges = [
-          this.btmPortion(minSpace, range1),
-          this.topPortion(minSpace, range2)
-        ]
-      }
+      var ranges = [range1, range2]
+
+      _.times(2, function(i) {
+        var sideCenter = 0.5*(ranges[i].max + ranges[i].min);
+        var otherSideCenter = 0.5*(ranges[1-i].max + ranges[1-i].min);
+
+        // Current side has enough room.
+        if (ranges[i].max - ranges[i].min > minSpace) {
+
+          // Other side is aligned with current side.
+          if (ranges[i].max > otherSideCenter + 0.5*minSpace &&
+              ranges[i].min < otherSideCenter - 0.5*minSpace) {
+            distRanges[i] = {
+              min: otherSideCenter - 0.5*minSpace,
+              max: otherSideCenter + 0.5*minSpace
+            }
+
+          // Other side is offset from current side.
+          } else {
+            if (sideCenter < otherSideCenter) {
+              distRanges[i] = this.topPortion(minSpace, ranges[i]);
+            } else {
+              distRanges[i] = this.btmPortion(minSpace, ranges[i]);
+            }
+          }
+        // Current side itself does not have enough room
+        } else {
+          // just cram it all in there anyway
+          distRanges[i] = ranges[i];
+        }
+
+      }, this);
     }
 
     return _.map(distRanges, function(range) {

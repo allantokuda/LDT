@@ -6,8 +6,12 @@ class Fixture
     @record_mode = !File.exist?(filename)
     @context = context # wherein an RSpec "expect" can be called
     @row = -1
-    record_mode ? clear_file : read_file
-    puts "WARNING: Fixture file " + filename + " not found! Now creating it."
+    if record_mode
+      clear_file
+      puts "WARNING: Fixture file " + filename + " not found! Now creating it."
+    else
+      read_file
+    end
   end
 
   def next(data_row)

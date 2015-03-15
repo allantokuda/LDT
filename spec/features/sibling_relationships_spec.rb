@@ -32,5 +32,8 @@ describe 'Sibling relationships', js: true do
 
     12.times { move_and_check 1, 0, 30 }
 
+    resize_entity 1, :bottom, -90
+
+    12.times { move_and_check 1, 0, -30 }
   end
 end
