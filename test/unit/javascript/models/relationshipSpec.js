@@ -38,7 +38,7 @@ describe('Relationship', function() {
     expect(r1.endpoints[1].outwardVector).toEqual({ x: 1, y: 0 });
   });
 
-  it('when placing, obscures that its entities may not be stored in standard order (smaller entity ID first is standard, larger first is reverse)', function() {
+  it('when placing, keeps its entities stored in the same order they are requested in the UI (smaller entity ID may not be first)', function() {
 
     var e1 = new Entity({ id: 2 });
     var e2 = new Entity({ id: 1 });
@@ -48,14 +48,13 @@ describe('Relationship', function() {
     // place() method takes smaller entity ID first, then larger
     r1.place({ x: 17, y: 18, side: 'top' }, { x: 116, y: 65, side: 'bottom' });
 
-    // these are placed in opposite order
-    expect(r1.endpoints[0].x).toEqual(116);
-    expect(r1.endpoints[0].y).toEqual(65);
-    expect(r1.endpoints[0].sideName).toEqual('bottom');
-    expect(r1.endpoints[0].outwardVector).toEqual({ x: 0, y: 1 });
-    expect(r1.endpoints[1].x).toEqual(17);
-    expect(r1.endpoints[1].y).toEqual(18);
-    expect(r1.endpoints[1].sideName).toEqual('top');
-    expect(r1.endpoints[1].outwardVector).toEqual({ x: 0, y:-1 });
+    expect(r1.endpoints[0].x).toEqual(17);
+    expect(r1.endpoints[0].y).toEqual(18);
+    expect(r1.endpoints[0].sideName).toEqual('top');
+    expect(r1.endpoints[0].outwardVector).toEqual({ x: 0, y:-1 });
+    expect(r1.endpoints[1].x).toEqual(116);
+    expect(r1.endpoints[1].y).toEqual(65);
+    expect(r1.endpoints[1].sideName).toEqual('bottom');
+    expect(r1.endpoints[1].outwardVector).toEqual({ x: 0, y: 1 });
   });
 });
