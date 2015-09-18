@@ -5,7 +5,7 @@ var app = angular.module('LDT.controllers');
 // This controller is at the top of the application and bootstraps it.
 // - Instantiates $scope.editor which contains editor UI state
 // - Defines editor event handlers
-app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStore) {
+app.controller('EditorCtrl', ['$scope', 'GraphStore', 'SyntaxAnalyzer', function($scope, GraphStore, SyntaxAnalyzer) {
 
   $scope.editor = {};
   $scope.graph = GraphStore.graph;
@@ -43,13 +43,13 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
         $scope.$apply();
         $scope.updateSvgSize();
 
-        console.log(GraphStore.graph.entities);
         if (GraphStore.graph.entities.length == 0) {
           $scope.getting_started_message_num = 0;
         }
+
+        $scope.relationshipAnnotations = SyntaxAnalyzer.getRelationshipAnnotations();
       }
     );
-  } else {
   }
 
   // Click event handlers

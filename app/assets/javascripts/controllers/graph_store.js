@@ -201,4 +201,14 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
 
     this.graph.paths[key].update();
   };
+
+  this.getEntity = function(entityId) {
+    return _.find(this.graph.entities, function(e) {
+      return e.id === entityId;
+    });
+  };
+
+  this.getAllRelationships = function() {
+    return this.graph.relationships;
+  };
 }]);
