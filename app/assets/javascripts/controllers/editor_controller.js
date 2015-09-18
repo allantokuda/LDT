@@ -24,6 +24,7 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
       x: 150
     }
   ];
+	$scope.showSyntaxErrors = false;
 
   //TODO: use Angular router to handle this more cleanly
   var graphID;
@@ -220,6 +221,7 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
   $scope.identifierBarCommand   = function() { $scope.$apply(setMode('identifier_bar')); };
   $scope.zoomInCommand          = function() { $scope.$apply($scope.graph.zoom *= 1.5); $scope.updateSvgSize(); };
   $scope.zoomOutCommand         = function() { $scope.$apply($scope.graph.zoom /= 1.5); $scope.updateSvgSize(); };
+  $scope.syntaxErrorsCommand    = function() { $scope.$apply(toggleSyntaxErrors()); };
 
   function setMode(mode) {
     $scope.editor.mode = mode;
@@ -237,5 +239,9 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', function($scope, GraphStor
   }
 
   setMode('select');
+
+	function toggleSyntaxErrors() {
+		$scope.showSyntaxErrors = !$scope.showSyntaxErrors;
+	}
 
 }]);

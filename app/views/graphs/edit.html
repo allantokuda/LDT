@@ -1,4 +1,4 @@
-<div id="editor" ng-controller="EditorCtrl" ng-class="editor.mode">
+<div id="editor" ng-controller="EditorCtrl" ng-class="editor.mode + ' ' + (showSyntaxErrors ? 'showSyntaxErrors' : '')">
 
   <div id="loading-indicator" ng-hide="graph.id">{{status_message}}</div>
   <div id="graph" ng-show="graph.id">
@@ -33,6 +33,9 @@
           <div class="positioner"><div id="save-message" ng-class="editor.saveStatus">{{ editor.saveMessage }}</div></div>
           <button action hotkey="c-s" id="save-button">Save</button>
           <button action hotkey="c-n" id="new-button">New</button>
+          <span class="toolbar-separator">&nbsp;</span>
+					<button action hotkey="x" id="syntax-errors-button">Synta<u>x</u> Errors</button>
+					<!--<label><input type="checkbox" name="showSyntaxErrors" action></input>Syntax Errors</label>-->
       </div>
     </div>
 
@@ -117,6 +120,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="svg-paths">
           <g transform="translate({{graph.pan.x}},{{graph.pan.y}})">
             <!-- embedded "stroke: black" style here for Safari which won't recognize styles applied to <path> elements by CSS class -->
+            <path ng-class="{syntaxError: r.syntaxError()}" ng-repeat="r in graph.relationships" ng-attr-d="{{r.svgPath()}}" catch-input><title>{{r.syntaxErrors}}</title></path>
             <path id="relationship-{{r.id}}" class="relationship" ng-repeat="r in graph.relationships" ng-attr-d="{{r.svgPath()}}"       style="stroke: black"></path>
             <path id="endpoint-{{$index}}"   class="arrowhead"    ng-repeat="e in graph.endpoints"     ng-attr-d="{{e.arrowheadPath()}}" style="stroke: black"></path>
             <path id="click-area-{{$index}}" class="click-area"   ng-repeat="e in graph.endpoints"     ng-attr-d="{{e.boxPath()}}" ng-click="handleArrowClick(e,$event)" catch-input></path>
