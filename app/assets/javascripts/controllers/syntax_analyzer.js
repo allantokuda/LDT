@@ -6,11 +6,12 @@ angular.module('LDT.controllers').service('SyntaxAnalyzer', ['GraphStore', funct
     return GraphStore.getAllRelationships().map(function(relationship) {
       var r = shorthandRelationship(relationship);
       var errors = relationshipSyntaxErrors(r);
+      console.log(errors);
 
       return {
         isError: errors.length > 0,
         svgPath: relationship.svgPath(),
-        annotationMessage: errors
+        annotationMessages: errors
       }
     });
   }

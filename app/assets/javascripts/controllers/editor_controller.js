@@ -47,9 +47,13 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', 'SyntaxAnalyzer', function
           $scope.getting_started_message_num = 0;
         }
 
-        $scope.relationshipAnnotations = SyntaxAnalyzer.getRelationshipAnnotations();
+        updateAnnotations();
       }
     );
+  }
+
+  function updateAnnotations() {
+    $scope.relationshipAnnotations = SyntaxAnalyzer.getRelationshipAnnotations();
   }
 
   // Click event handlers
@@ -62,6 +66,7 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', 'SyntaxAnalyzer', function
     setMode('select');
 
     $scope.updateSvgSize();
+    updateAnnotations();
   };
 
   $scope.handleEntityClick = function(entity) {
@@ -81,6 +86,8 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', 'SyntaxAnalyzer', function
       default:
         break;
     }
+
+    updateAnnotations();
   };
 
   $scope.handleRelationshipClick = function(relationship) {
@@ -88,12 +95,16 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', 'SyntaxAnalyzer', function
       GraphStore.deleteRelationship(relationship);
       setMode('select');
     }
+
+    updateAnnotations();
   };
 
   $scope.handleAttributeClick = function(entityID, attributeIndex, ev) {
     if ($scope.editor.mode == 'identifier_bar') {
       $scope.toggleAttributeIdentifier(entityID, attributeIndex);
     }
+
+    updateAnnotations();
   };
 
   $scope.handleArrowClick = function(arrow, ev) {
@@ -113,6 +124,8 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', 'SyntaxAnalyzer', function
       default:
         break;
     }
+
+    updateAnnotations();
   };
 
   function setSaveMessage(status, message) {
