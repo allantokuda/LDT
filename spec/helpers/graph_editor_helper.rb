@@ -101,6 +101,11 @@
     find("#click-area-#{endpoint_id}").click
   end
 
+  def toggle_identifier_bar(endpoint_id)
+    find('#identifier-bar-button').click
+    find("#click-area-#{endpoint_id}").click
+  end
+
   def check_location(element_selector, expected_x, expected_y)
     expect(find(element_selector).native.location.x).to eq expected_x
     expect(find(element_selector).native.location.y).to eq expected_y

@@ -68,33 +68,33 @@ angular.module('LDT.controllers').service('SyntaxAnalyzer', ['GraphStore', funct
   }
 
   function oneLabelSyntaxError(r) {
-    return (!r.label1 != !r.label2) ? "ERROR: A relationship must have either two labels or zero labels\n" : ""
+    return (!r.label1 != !r.label2) ? "ERROR: A relationship must have either two labels or zero labels.\n" : ""
   }
 
   function oneOneUnlabeledSyntaxError(r) {
-    return (!r.labeled && r.oneOne) ? "ERROR: A one-one relationship must have labels\n" : ""
+    return (!r.labeled && r.oneOne) ? "ERROR: A one-one relationship must have labels.\n" : ""
   }
 
   function multiIdOnOneOneLinkSyntaxError(r) {
     return ((r.id1 && r.atid1 && r.oneOne) ||
-            (r.id2 && r.atid2 && r.oneOne)) ? "ERROR: A multiple-descriptor identifier cannot include a link of a one-one relationship\n" : ""
+            (r.id2 && r.atid2 && r.oneOne)) ? "ERROR: A multiple-descriptor identifier cannot include a link of a one-one relationship.\n" : ""
   }
 
   function singleIdOnDegreeOneLinkOfOneManyRelationshipSyntaxError(r) {
     return ((r.id1 && !r.atid1 && r.one2 && r.many1) ||
-            (r.id2 && !r.atid2 && r.one1 && r.many2)) ? "ERROR: A single-descriptor identifier cannot include the degree-one link of a one-many relationship\n" : ""
+            (r.id2 && !r.atid2 && r.one1 && r.many2)) ? "ERROR: A single-descriptor identifier cannot include the degree-one link of a one-many relationship.\n" : ""
   }
 
   function multiIdOnDegreeManyLinkOfOneManyRelationshipSyntaxError(r) {
     return ((r.id1 && r.atid1 && r.one1 && r.many2) ||
-            (r.id2 && r.atid2 && r.one2 && r.many1)) ? "ERROR: A multiple-descriptor identifier cannot include the degree-many link of a one-many relationship\n" : ""
+            (r.id2 && r.atid2 && r.one2 && r.many1)) ? "ERROR: A multiple-descriptor identifier cannot include the degree-many link of a one-many relationship.\n" : ""
   }
 
   function unlabledReflexiveSyntaxError(r) {
-    return (!r.labeled && r.reflex) ? "ERROR: All reflexive relationships must have labels" : ""
+    return (!r.labeled && r.reflex) ? "ERROR: All reflexive relationships must have labels.\n" : ""
   }
 
   function reflexiveInIdentifierSyntaxError(r) {
-    return (r.reflex && (r.id1 || r.id2)) ? "ERROR: No link of a reflexive relationship can contribute to an identifier" : ""
+    return (r.reflex && (r.id1 || r.id2)) ? "ERROR: No link of a reflexive relationship can contribute to an identifier.\n" : ""
   }
 }]);
