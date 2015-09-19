@@ -17,8 +17,8 @@ describe 'Entity deletion', js: true do
     change_degree 0
     change_degree 1
 
-    expect_arrowhead 0, 'M220,275m0,0 l0,0'
-    expect_arrowhead 1, 'M300,275m0,0 l0,0'
+    expect_arrowhead 0, 'M220,275m0,0 l10,0'
+    expect_arrowhead 1, 'M300,275m0,0 l-10,0'
 
     expect(all('.click-area').count).to eq 2
   end

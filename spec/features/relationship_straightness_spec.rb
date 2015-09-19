@@ -22,8 +22,8 @@ describe 'Relationship straightness', js: true do
 
     window_size 900, 900
 
-    create_entity 200, 300
-    create_entity   0, 100
+    create_entity 250, 350
+    create_entity  50, 150
 
     create_relationship 0, 1
 

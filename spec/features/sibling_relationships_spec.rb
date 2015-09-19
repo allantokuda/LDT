@@ -23,9 +23,9 @@ describe 'Sibling relationships', js: true do
 
     window_size 900, 900
 
-    create_entity 100, 200
-    create_entity 300, 100
-    create_entity 500, 200
+    create_entity 150, 250
+    create_entity 350, 150
+    create_entity 550, 250
 
     3.times { create_relationship 0, 1 }
     create_relationship 0, 2

@@ -22,7 +22,7 @@ describe 'Graph panning', js: true do
     check_location '#entity-0', 150, 150
     check_location '#entity-1', 350, 150
 
-    check_location '#endpoint-0', 273, 214
-    check_location '#endpoint-1', 329, 224
+    check_location '#endpoint-0', 275, 216
+    check_location '#endpoint-1', 331, 226
   end
 end
