@@ -15,6 +15,18 @@ angular.module('LDT.controllers').service('SyntaxAnalyzer', ['GraphStore', funct
     });
   }
 
+  function numDescriptorsInIdentifier(entityId) {
+    var entity = GraphStore.getEntity(entityId);
+    var count = entity.attributes.split('*').length - 1;
+    entity.getRelationships().forEach(function(r) {
+      if (r.entity1_id === entityId && r.endpoints[0].symbol.match('identifier') ||
+          r.entity2_id === entityId && r.endpoints[1].symbol.match('identifier')) {
+        count++;
+      }
+    });
+    return count;
+  }
+
   function shorthandRelationship(relationship) {
     var r = {
       id1:    !!relationship.endpoints[0].symbol.match('identifier'),
@@ -27,8 +39,8 @@ angular.module('LDT.controllers').service('SyntaxAnalyzer', ['GraphStore', funct
       label2:   relationship.endpoints[1].label.trim().length > 0,
       be1:      relationship.endpoints[0].label.toLowerCase() == 'be',
       be2:      relationship.endpoints[1].label.toLowerCase() == 'be',
-      atid1:    isEntityPartiallyIdentifiedByAnyOfItsAttributes(relationship.entity1_id),
-      atid2:    isEntityPartiallyIdentifiedByAnyOfItsAttributes(relationship.entity2_id),
+      multi1:   numDescriptorsInIdentifier(relationship.entity1_id) > 1,
+      multi2:   numDescriptorsInIdentifier(relationship.entity2_id) > 1,
       reflex:   relationship.entity1_id == relationship.entity2_id,
     }
 
@@ -75,18 +87,18 @@ angular.module('LDT.controllers').service('SyntaxAnalyzer', ['GraphStore', funct
   }
 
   function multiIdOnOneOneLinkSyntaxError(r) {
-    return ((r.id1 && r.atid1 && r.oneOne) ||
-            (r.id2 && r.atid2 && r.oneOne)) ? "ERROR: A multiple-descriptor identifier cannot include a link of a one-one relationship.\n" : ""
+    return ((r.id1 && r.multi1 && r.oneOne) ||
+            (r.id2 && r.multi2 && r.oneOne)) ? "ERROR: A multiple-descriptor identifier cannot include a link of a one-one relationship.\n" : ""
   }
 
   function singleIdOnDegreeOneLinkOfOneManyRelationshipSyntaxError(r) {
-    return ((r.id1 && !r.atid1 && r.one2 && r.many1) ||
-            (r.id2 && !r.atid2 && r.one1 && r.many2)) ? "ERROR: A single-descriptor identifier cannot include the degree-one link of a one-many relationship.\n" : ""
+    return ((r.id1 && !r.multi1 && r.one2 && r.many1) ||
+            (r.id2 && !r.multi2 && r.one1 && r.many2)) ? "ERROR: A single-descriptor identifier cannot include the degree-one link of a one-many relationship.\n" : ""
   }
 
   function multiIdOnDegreeManyLinkOfOneManyRelationshipSyntaxError(r) {
-    return ((r.id1 && r.atid1 && r.one1 && r.many2) ||
-            (r.id2 && r.atid2 && r.one2 && r.many1)) ? "ERROR: A multiple-descriptor identifier cannot include the degree-many link of a one-many relationship.\n" : ""
+    return ((r.id1 && r.multi1 && r.one1 && r.many2) ||
+            (r.id2 && r.multi2 && r.one2 && r.many1)) ? "ERROR: A multiple-descriptor identifier cannot include the degree-many link of a one-many relationship.\n" : ""
   }
 
   function unlabledReflexiveSyntaxError(r) {

@@ -11,6 +11,8 @@ window.Entity = function(entity) {
   this.name       = entity.name;
   this.attributes = entity.attributes;
 
+  this.relationships = [];
+
   this.saveObject = function() {
     return {
       id         : this.id,
@@ -31,5 +33,17 @@ window.Entity = function(entity) {
     _.each(callbacks, function(callback) {
       callback();
     });
+  };
+
+  this.attachRelationship = function(r) {
+    this.relationships = _.union(this.relationships, [r]);
+  };
+
+  this.removeRelationship = function(r) {
+    this.relationships = _.without(this.relationships, r);
+  };
+
+  this.getRelationships = function() {
+    return this.relationships;
   };
 };

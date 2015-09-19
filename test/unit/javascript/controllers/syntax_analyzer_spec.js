@@ -6,15 +6,15 @@ describe('SyntaxAnalyzer', function(){
   beforeEach(module('LDT.controllers'));
   beforeEach(inject(function (_GraphStore_, _SyntaxAnalyzer_) {
 
-    entity1 = {
+    entity1 = new Entity({
       name: 'a',
-      attributes: "aaa*\naaa1\naaa2"
-    };
+      attributes: "a_identifier*\na_non_id1\na_non_id2"
+    });
 
-    entity2 = {
+    entity2 = new Entity({
       name: 'b',
-      attributes: "bbb*\nbbb1\nbbb2"
-    };
+      attributes: "b_identifier*\nb_non_id1\nb_non_id2"
+    });
 
     entities = [entity1, entity2];
 
@@ -37,6 +37,9 @@ describe('SyntaxAnalyzer', function(){
 
     relationships = [relationship];
 
+    entity1.attachRelationship(relationship);
+    entity2.attachRelationship(relationship);
+
     GraphStore = _GraphStore_;
     SyntaxAnalyzer = _SyntaxAnalyzer_;
     spyOn(GraphStore, 'getEntity').andCallFake(function(entityId) {
@@ -55,7 +58,7 @@ describe('SyntaxAnalyzer', function(){
     expect(a.length).toBe(0);
   });
 
-  it('should not annotate an clean graph', function() {
+  it('should not annotate an error-free graph', function() {
     var a = SyntaxAnalyzer.getRelationshipAnnotations();
     expect(a.length).toBe(1);
     expect(a[0].isError).toBe(false);
@@ -126,5 +129,35 @@ describe('SyntaxAnalyzer', function(){
     var a = SyntaxAnalyzer.getRelationshipAnnotations();
     expect(a[0].isError).toBe(true);
     expect(a[0].annotationMessage).toMatch("No link of a reflexive relationship can contribute to an identifier");
+  });
+
+  it('considers all attached relationships in determining whether an entity has multiple descriptors', function() {
+
+    var endpoint3 = {
+      symbol: 'chickenfoot',
+      label: ''
+    };
+
+    var r2 = {
+      entity1_id: 0,
+      entity2_id: 1,
+      svgPath: function() { return '' },
+      endpoints: [endpoint1, endpoint3]
+    };
+
+    relationships.push(r2);
+    entity1.attachRelationship(r2);
+    entity2.attachRelationship(r2);
+
+    entity2.attributes = 'non_identifier1\nnon_identifier2';
+
+    var a = SyntaxAnalyzer.getRelationshipAnnotations();
+    expect(a[0].isError).toBe(true);
+    expect(a[0].annotationMessage).toMatch("A single-descriptor identifier cannot include the degree-one link of a one-many relationship");
+
+    endpoint3.symbol = 'chickenfoot_identifier';
+
+    var a = SyntaxAnalyzer.getRelationshipAnnotations();
+    expect(a[0].isError).toBe(false);
   });
 });

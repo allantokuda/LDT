@@ -58,8 +58,7 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
           r.endpoints[1].label  = hash.label2;
           r.endpoints[1].symbol = hash.symbol2;
 
-          self.appendToPath(e1, e2, r);
-          self.addRelationship(r);
+          self.addRelationship(e1, e2, r);
         });
 
         self.next_entity_id       = self.nextID(self.graph.entities);
@@ -100,15 +99,17 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
   this.createRelationship = function(entity1, entity2) {
     var id = self.next_relationship_id++;
     var r = new window.Relationship(id, entity1, entity2);
-    self.appendToPath(entity1, entity2, r);
-    self.addRelationship(r);
+    self.addRelationship(entity1, entity2, r);
     return r;
   };
 
-  this.addRelationship = function(r) {
+  this.addRelationship = function(e1, e2, r) {
+    self.appendToPath(e1, e2, r);
     self.graph.relationships.push(r);
     self.graph.endpoints.push(r.endpoints[0]);
     self.graph.endpoints.push(r.endpoints[1]);
+    e1.attachRelationship(r);
+    e2.attachRelationship(r);
   };
 
   this.createEntity = function(locX,locY) {
