@@ -10,7 +10,7 @@ angular.module('LDT.controllers').service('SyntaxAnalyzer', ['GraphStore', funct
       return {
         isError: errors.length > 0,
         svgPath: relationship.svgPath(),
-        annotationMessages: errors
+        annotationMessage: errors
       }
     });
   }
