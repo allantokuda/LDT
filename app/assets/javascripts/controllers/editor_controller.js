@@ -7,6 +7,8 @@ var app = angular.module('LDT.controllers');
 // - Defines editor event handlers
 app.controller('EditorCtrl', ['$scope', 'GraphStore', 'SyntaxAnalyzer', function($scope, GraphStore, SyntaxAnalyzer) {
 
+  var GUIDE_ENABLED = "guideEnabled";
+
   $scope.editor = {};
   $scope.graph = GraphStore.graph;
   $scope.graph.pan = { x: 0, y: 0 };
@@ -24,7 +26,7 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', 'SyntaxAnalyzer', function
       x: 150
     }
   ];
-	$scope.showSyntaxErrors = false;
+	$scope.guideEnabled = localStorage.getItem(GUIDE_ENABLED) !== null || false;
 
   //TODO: use Angular router to handle this more cleanly
   var graphID;
@@ -234,7 +236,7 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', 'SyntaxAnalyzer', function
   $scope.identifierBarCommand   = function() { $scope.$apply(setMode('identifier_bar')); };
   $scope.zoomInCommand          = function() { $scope.$apply($scope.graph.zoom *= 1.5); $scope.updateSvgSize(); };
   $scope.zoomOutCommand         = function() { $scope.$apply($scope.graph.zoom /= 1.5); $scope.updateSvgSize(); };
-  $scope.syntaxErrorsCommand    = function() { $scope.$apply(toggleSyntaxErrors()); };
+  $scope.guideCommand           = function() { $scope.$apply(toggleGuide()); };
 
   function setMode(mode) {
     $scope.editor.mode = mode;
@@ -253,8 +255,14 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', 'SyntaxAnalyzer', function
 
   setMode('select');
 
-	function toggleSyntaxErrors() {
-		$scope.showSyntaxErrors = !$scope.showSyntaxErrors;
+	function toggleGuide() {
+		$scope.guideEnabled = !$scope.guideEnabled;
+
+    if ($scope.guideEnabled) {
+      localStorage.setItem(GUIDE_ENABLED, true);
+    } else {
+      localStorage.removeItem(GUIDE_ENABLED);
+    }
 	}
 
 }]);

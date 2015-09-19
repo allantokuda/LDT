@@ -1,4 +1,4 @@
-<div id="editor" ng-controller="EditorCtrl" ng-class="editor.mode + ' ' + (showSyntaxErrors ? 'showSyntaxErrors' : '')">
+<div id="editor" ng-controller="EditorCtrl" ng-class="editor.mode + ' ' + (guideEnabled ? 'guide-enabled' : '')">
 
   <div id="loading-indicator" ng-hide="graph.id">{{status_message}}</div>
   <div id="graph" ng-show="graph.id">
@@ -34,7 +34,7 @@
           <button action hotkey="c-s" id="save-button">Save</button>
           <button action hotkey="c-n" id="new-button">New</button>
           <span class="toolbar-separator">&nbsp;</span>
-					<button action hotkey="x" id="syntax-errors-button">Synta<u>x</u> Errors</button>
+					<button action hotkey="g" id="guide-button"><u>G</u>uide</button>
 					<!--<label><input type="checkbox" name="showSyntaxErrors" action></input>Syntax Errors</label>-->
       </div>
     </div>

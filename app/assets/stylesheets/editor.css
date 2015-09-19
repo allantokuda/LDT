@@ -112,7 +112,7 @@ span.toolbar-separator {
 #editor.label_enter #label-button,
 #editor.chickenfoot #chickenfoot-button,
 #editor.identifier_bar #identifier-bar-button,
-#editor.showSyntaxErrors #syntax-errors-button
+#editor.guide-enabled #guide-button
  { background-color: #bbb; }
 
 path {
@@ -126,7 +126,7 @@ path.relationship, path.arrowhead {
 
 path.click-path { fill: none; stroke: none; }
 
-#editor.showSyntaxErrors path.syntaxError {
+#editor.guide-enabled path.syntaxError {
   fill: none;
   stroke: rgba(255,0,0,0.25);
   stroke-width: 30px;

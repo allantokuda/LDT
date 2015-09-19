@@ -22,7 +22,9 @@ describe 'Syntax highlighting', js: true do
 
     window_size 900, 900
 
-    find('#syntax-errors-button').click
+    if (all('div.guide-enabled').length == 0)
+      find('#guide-button').click
+    end
 
     create_entity 150, 150
     create_entity 450, 150
@@ -34,6 +36,8 @@ describe 'Syntax highlighting', js: true do
 
     expect(find('.syntaxError title')).to have_text 'ERROR: Both links of a relationship cannot contribute to identifiers.'
     expect(find('.syntaxError title')).to have_text 'ERROR: A one-one relationship must have labels.'
+
+    find('#guide-button').click
   end
 
   # TODO test the that the highlighting follows the content as it's dragged around
