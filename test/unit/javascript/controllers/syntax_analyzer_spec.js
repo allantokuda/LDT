@@ -160,4 +160,33 @@ describe('SyntaxAnalyzer', function(){
     var a = SyntaxAnalyzer.getRelationshipAnnotations();
     expect(a[0].isError).toBe(false);
   });
+
+  it('warns about many-many relationships', function() {
+    endpoint1.symbol = 'chickenfoot';
+    endpoint2.symbol = 'chickenfoot';
+    var a = SyntaxAnalyzer.getRelationshipAnnotations();
+    expect(a[0].isError).toBe(false);
+    expect(a[0].isWarning).toBe(true);
+    expect(a[0].annotationMessage).toMatch("The many-many relationship is a rare shape. Consider evolving into an intersection entity");
+  });
+
+  it('warns about one-many collection entities', function() {
+    endpoint1.symbol = 'identifier';
+    endpoint2.symbol = 'chickenfoot';
+    entity1.attributes = 'non_identifier'
+    var a = SyntaxAnalyzer.getRelationshipAnnotations();
+    expect(a[0].isError).toBe(false);
+    expect(a[0].isWarning).toBe(true);
+    expect(a[0].annotationMessage).toMatch("The one-many collection entity is a rare shape");
+  });
+
+  it('warns about many-many collection entities', function() {
+    endpoint1.symbol = 'chickenfoot_identifier';
+    endpoint2.symbol = 'chickenfoot';
+    entity1.attributes = 'non_identifier'
+    var a = SyntaxAnalyzer.getRelationshipAnnotations();
+    expect(a[0].isError).toBe(false);
+    expect(a[0].isWarning).toBe(true);
+    expect(a[0].annotationMessage).toMatch("The many-many collection entity is a rare shape");
+  });
 });

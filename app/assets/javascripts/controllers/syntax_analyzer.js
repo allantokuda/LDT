@@ -6,11 +6,13 @@ angular.module('LDT.controllers').service('SyntaxAnalyzer', ['GraphStore', funct
     return GraphStore.getAllRelationships().map(function(relationship) {
       var r = shorthandRelationship(relationship);
       var errors = relationshipSyntaxErrors(r);
+      var warnings = relationshipSyntaxWarnings(r);
 
       return {
         isError: errors.length > 0,
+        isWarning: errors.length == 0 && warnings.length > 0,
         svgPath: function() { return relationship.svgPath() },
-        annotationMessage: errors
+        annotationMessage: errors || warnings
       }
     });
   }
@@ -65,6 +67,13 @@ angular.module('LDT.controllers').service('SyntaxAnalyzer', ['GraphStore', funct
     ).trimRight();
   }
 
+  function relationshipSyntaxWarnings(r) {
+    return (
+      manyToMany(r) +
+      oneManyCollectionEntity(r) +
+      manyManyCollectionEntity(r)
+    ).trimRight();
+  }
 
   function isEntityPartiallyIdentifiedByAnyOfItsAttributes(entityId) {
     return !!GraphStore.getEntity(entityId).attributes.match("\\*$\|\\*\n");
@@ -107,5 +116,20 @@ angular.module('LDT.controllers').service('SyntaxAnalyzer', ['GraphStore', funct
 
   function reflexiveInIdentifierSyntaxError(r) {
     return (r.reflex && (r.id1 || r.id2)) ? "ERROR: No link of a reflexive relationship can contribute to an identifier.\n" : ""
+  }
+
+  function manyToMany(r) {
+    return (r.many1 && r.many2 && !r.id1 && !r.id2) ?  "NOTE: The many-many relationship is a rare shape. Consider evolving into an intersection entity.\n" : ""
+  }
+
+  function oneManyCollectionEntity(r) {
+    return (r.id1 && !r.multi1 && r.one1 && r.many2 ||
+            r.id2 && !r.multi2 && r.one2 && r.many1) ? "NOTE: The one-many collection entity is a rare shape.\n" : ""
+  }
+
+  function manyManyCollectionEntity(r) {
+    return r.many1 && r.many2 && (r.id1 || r.id2) ? "NOTE: The many-many collection entity is a rare shape.\n" : ""
+           // Ask Carlis if the shape is specific to when the collection entity has a one-part identifier, the collection part
+           //r.many1 && r.many2 && (r.id1 && !r.multi1 || r.id2 && !r.multi2) ? "NOTE: The many-many collection entity is a rare shape.\n" : ""
   }
 }]);

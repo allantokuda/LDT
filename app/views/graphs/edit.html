@@ -120,7 +120,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="svg-paths">
           <g transform="translate({{graph.pan.x}},{{graph.pan.y}})">
             <!-- embedded "stroke: black" style here for Safari which won't recognize styles applied to <path> elements by CSS class -->
-            <path ng-repeat="a in relationshipAnnotations" ng-class="{syntaxError: a.isError}" ng-attr-d="{{a.svgPath()}}" catch-input><title>{{a.annotationMessage}}</title></path>
+            <path ng-repeat="a in relationshipAnnotations" ng-class="{syntaxError: a.isError, syntaxWarning: a.isWarning}" ng-attr-d="{{a.svgPath()}}" catch-input><title>{{a.annotationMessage}}</title></path>
             <path class="relationship" ng-repeat="r in graph.relationships" id="relationship-{{r.id}}" ng-attr-d="{{r.svgPath()}}"       style="stroke: black"></path>
             <path class="arrowhead"    ng-repeat="e in graph.endpoints"     id="endpoint-{{$index}}"   ng-attr-d="{{e.arrowheadPath()}}" style="stroke: black"></path>
             <path class="click-area"   ng-repeat="e in graph.endpoints"     id="click-area-{{$index}}" ng-attr-d="{{e.boxPath()}}" ng-click="handleArrowClick(e,$event)" catch-input></path>
