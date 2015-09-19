@@ -63,7 +63,8 @@ angular.module('LDT.controllers').service('SyntaxAnalyzer', ['GraphStore', funct
       singleIdOnDegreeOneLinkOfOneManyRelationshipSyntaxError(r) +
       multiIdOnDegreeManyLinkOfOneManyRelationshipSyntaxError(r) +
       unlabledReflexiveSyntaxError(r) +
-      reflexiveInIdentifierSyntaxError(r)
+      reflexiveInIdentifierSyntaxError(r) +
+      reflexiveToBeSyntaxError(r)
     ).trimRight();
   }
 
@@ -116,6 +117,10 @@ angular.module('LDT.controllers').service('SyntaxAnalyzer', ['GraphStore', funct
 
   function reflexiveInIdentifierSyntaxError(r) {
     return (r.reflex && (r.id1 || r.id2)) ? "ERROR: No link of a reflexive relationship can contribute to an identifier.\n" : ""
+  }
+
+  function reflexiveToBeSyntaxError(r) {
+    return r.reflex && r.be ? "ERROR: No reflexive relationship is a to-be relationship.\n" : ""
   }
 
   function manyToMany(r) {

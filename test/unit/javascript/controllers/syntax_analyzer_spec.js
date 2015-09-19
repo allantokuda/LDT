@@ -131,6 +131,18 @@ describe('SyntaxAnalyzer', function(){
     expect(a[0].annotationMessage).toMatch("No link of a reflexive relationship can contribute to an identifier");
   });
 
+  it('reflexiveToBeSyntaxError', function() {
+    relationship.entity1_id = 1;
+    relationship.entity2_id = 1;
+    endpoint1.symbol = 'none'
+    endpoint2.symbol = 'chickenfoot'
+    endpoint1.label = 'be'
+    endpoint2.label = 'be'
+    var a = SyntaxAnalyzer.getRelationshipAnnotations();
+    expect(a[0].isError).toBe(true);
+    expect(a[0].annotationMessage).toMatch("No reflexive relationship is a to-be relationship");
+  });
+
   it('considers all attached relationships in determining whether an entity has multiple descriptors', function() {
 
     var endpoint3 = {
@@ -189,4 +201,12 @@ describe('SyntaxAnalyzer', function(){
     expect(a[0].isWarning).toBe(true);
     expect(a[0].annotationMessage).toMatch("The many-many collection entity is a rare shape");
   });
+
+  //TODO errors to cover:
+  //"Within any LDS, each entity, attribute, relationship and link has an official name that is unique."
+  //"Between any pair of entities, there is at most one to-be relationship."
+  //"Between any pair of entities, there is at most one unlabeled relationship."
+  //"Each entity has at least one identifier."
+  //"No identifier can be a strict subset of another."
+  //"The LDS cannot contain any cycles of identification dependency."
 });
