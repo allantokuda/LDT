@@ -3,6 +3,7 @@ require 'spec_helper'
 describe 'Graph panning', js: true do
   it 'allows the graph view to be infinitely panned by dragging' do
     visit '/'
+    window_size 1200, 900
 
     create_entity 100, 100
     create_entity 300, 100

@@ -3,6 +3,10 @@ require 'spec_helper'
 describe 'Default graph', js: true do
   it 'Has a default name which can be changed, saved, and retrieved' do
     visit '/'
+
+    # Ensure buttons are in one row
+    window_size 1200, 900
+
     expect_graph_name 'Untitled Graph'
 
     # Can be changed to an arbitrary name

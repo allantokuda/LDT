@@ -20,14 +20,14 @@ describe 'Syntax highlighting', js: true do
     # Prefix rspec command with RECORD_FIXTURE=on to record new
     @fixture = Fixture.new fixture_filename, self
 
-    window_size 900, 900
+    window_size 1200, 900
 
     if (all('div.guide-enabled').length == 0)
       find('#guide-button').click
     end
 
-    create_entity 150, 150
-    create_entity 450, 150
+    create_entity 150, 200
+    create_entity 450, 200
 
     create_relationship 0, 1
 

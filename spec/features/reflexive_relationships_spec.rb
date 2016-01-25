@@ -16,7 +16,7 @@ describe 'Reflexive relationships', js: true do
 
     window_size 400, 700
 
-    create_entity 100, 200
+    create_entity 100, 250
     resize_entity 0, :bottom, 100
 
     # create three reflexive relationships, checking appearance after creating each

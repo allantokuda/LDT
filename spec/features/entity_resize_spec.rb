@@ -7,11 +7,11 @@ describe 'Entity resize', js: true do
 
     window_size 900, 900
 
-    create_entity 200, 350
-    create_entity   0, 350
-    create_entity 200, 100
-    create_entity 400, 350
-    create_entity 200, 600
+    create_entity 200, 450
+    create_entity   0, 450
+    create_entity 200, 200
+    create_entity 400, 450
+    create_entity 200, 700
 
     (1..4).each { |n| create_relationship 0, n }
 
@@ -23,9 +23,9 @@ describe 'Entity resize', js: true do
     save
     refresh
 
-    expect(endpoint_location(0)).to eq [180, 425]
-    expect(endpoint_location(1)).to eq [120, 425]
-    expect(endpoint_location(2)).to eq [260, 330]
-    expect(endpoint_location(3)).to eq [260, 250]
+    expect(endpoint_location(0)).to eq [180, 525]
+    expect(endpoint_location(1)).to eq [120, 525]
+    expect(endpoint_location(2)).to eq [260, 430]
+    expect(endpoint_location(3)).to eq [260, 350]
   end
 end

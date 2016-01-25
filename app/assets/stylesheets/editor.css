@@ -141,7 +141,7 @@ path.click-path { fill: none; stroke: none; }
 #editor.delete_item path.click-path {
   fill: none;
   stroke: rgba(255,230,230,0.75);
-  stroke-width: 20px;
+  stroke-width: 30px;
 }
 
 #editor.delete_item path.click-path:hover {

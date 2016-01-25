@@ -58,7 +58,7 @@
 
   def finish_editing
     # finish editing by clicking on an unoccupied location on the canvas
-    find('#canvas').click_at(1,1)
+    find('#canvas').click_at(200,200)
   end
 
   def create_relationship(entity_id1, entity_id2)
