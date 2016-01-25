@@ -5,7 +5,7 @@ var app = angular.module('LDT.controllers');
 // This controller is at the top of the application and bootstraps it.
 // - Instantiates $scope.editor which contains editor UI state
 // - Defines editor event handlers
-app.controller('EditorCtrl', ['$scope', 'GraphStore', 'SyntaxAnalyzer', function($scope, GraphStore, SyntaxAnalyzer) {
+app.controller('EditorCtrl', ['$scope', '$timeout', 'GraphStore', 'SyntaxAnalyzer', function($scope, $timeout, GraphStore, SyntaxAnalyzer) {
 
   var GUIDE_ENABLED = "guideEnabled";
 
@@ -28,6 +28,11 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', 'SyntaxAnalyzer', function
   ];
 	$scope.guideEnabled = localStorage.getItem(GUIDE_ENABLED) !== null || false;
 
+  $scope.$watch('graph.name', function(newValue, oldValue) {
+    $scope.$emit('titlechange', newValue);
+  });
+
+
   //TODO: use Angular router to handle this more cleanly
   var graphID;
   var path_regex = /graphs\/([^\/]+)\/edit/;
@@ -38,12 +43,12 @@ app.controller('EditorCtrl', ['$scope', 'GraphStore', 'SyntaxAnalyzer', function
   if (graphID) {
     GraphStore.load(graphID).then(
       function(graph) {
-        $scope.$watch('graph.name', function(newValue, oldValue) {
-          $scope.$emit('titlechange', newValue);
-        });
 
-        $scope.$apply();
-        $scope.updateSvgSize();
+        // Update SVG size in next digest loop, after the DOM has rendered,
+        // to account for the actual locations of the entities
+        $timeout(function() {
+          $scope.updateSvgSize();
+        });
 
         if (GraphStore.graph.entities.length == 0) {
           $scope.getting_started_message_num = 0;
