@@ -212,7 +212,7 @@ path.click-area {
 .getting-started {
   position: fixed;
   left: 100px;
-  top: 90px;
+  top: 96px;
   width: 200px;
   z-index: 6;
   border: 1px solid #ccc;

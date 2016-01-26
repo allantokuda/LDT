@@ -19,11 +19,11 @@ app.controller('EditorCtrl', ['$scope', '$timeout', 'GraphStore', 'SyntaxAnalyze
   $scope.getting_started_messages = [
     {
       message: "Click here and then click in the canvas area below to create a new entity.",
-      x: 128
+      left: '8.5em'
     },
     {
       message: "Once you've created some entities, click here and then choose two entities to create a relationship between them.",
-      x: 150
+      left: '19em'
     }
   ];
 	$scope.guideEnabled = localStorage.getItem(GUIDE_ENABLED) !== null || false;
