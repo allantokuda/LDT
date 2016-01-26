@@ -5,7 +5,7 @@ describe 'Entity resize', js: true do
   it 'is ensured whenever possible' do
     visit '/'
 
-    window_size 900, 900
+    window_size 1200, 900
 
     create_entity 200, 450
     create_entity   0, 450

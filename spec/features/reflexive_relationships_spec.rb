@@ -14,7 +14,7 @@ describe 'Reflexive relationships', js: true do
     # Prefix rspec command with RECORD_FIXTURE=on to record new
     @fixture = Fixture.new fixture_filename, self
 
-    window_size 400, 700
+    window_size 1200, 900
 
     create_entity 100, 250
     resize_entity 0, :bottom, 100

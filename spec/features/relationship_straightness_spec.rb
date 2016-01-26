@@ -20,7 +20,7 @@ describe 'Relationship straightness', js: true do
     # Prefix rspec command with RECORD_FIXTURE=on to record new
     @fixture = Fixture.new fixture_filename, self
 
-    window_size 900, 900
+    window_size 1200, 900
 
     create_entity 200, 400
     create_entity   0, 200
