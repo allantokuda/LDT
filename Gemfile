@@ -31,6 +31,7 @@ group :development, :test do
   # Needed to expose generators and rake tasks
   gem 'capybara'
   gem 'selenium-webdriver'
+  gem 'geckodriver-helper'
 end
 
 group :development do
