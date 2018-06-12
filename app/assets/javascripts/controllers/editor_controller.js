@@ -115,13 +115,12 @@ app.controller('EditorCtrl', ['$scope', '$timeout', 'GraphStore', 'SyntaxAnalyze
   };
 
   $scope.handleArrowClick = function(arrow, ev) {
+    console.log('handle arrow click')
     switch($scope.editor.mode) {
       case 'chickenfoot':
-        // Use shift key to toggler identifier
         arrow.toggleArrowhead(false);
         break;
       case 'identifier_bar':
-        // Use shift key to toggler identifier
         arrow.toggleArrowhead(true);
         break;
       case 'label_pick':

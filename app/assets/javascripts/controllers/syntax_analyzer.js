@@ -11,7 +11,7 @@ angular.module('LDT.controllers').service('SyntaxAnalyzer', ['GraphStore', funct
       return {
         isError: errors.length > 0,
         isWarning: errors.length == 0 && warnings.length > 0,
-        svgPath: function() { return relationship.svgPath() },
+        svgPath: function() { return relationship.clickablePath() },
         annotationMessage: errors || warnings
       }
     });

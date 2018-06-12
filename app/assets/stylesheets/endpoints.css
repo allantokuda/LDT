@@ -10,6 +10,19 @@ div.endpoint div.label {
   width: 1px;
 }
 
+div.endpoint .degree-unknown-symbol {
+  display: block;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+}
+
+div.endpoint.right  .degree-unknown-symbol { left:   1px; top:  -9px; }
+div.endpoint.left   .degree-unknown-symbol { left: -20px; top:  -9px; }
+div.endpoint.top    .degree-unknown-symbol { left:   0px; top: -10px; }
+div.endpoint.bottom .degree-unknown-symbol { left: -22px; top: -10px; }
+
 div.endpoint.right  div.label { left:  30px; top: -18px; }
 div.endpoint.left   div.label { left: -32px; top:   2px; }
 div.endpoint.top    div.label { left:  29px; top: -18px; }
@@ -21,6 +34,16 @@ div.endpoint.top, div.endpoint.bottom {
       -ms-transform: rotate(-90deg);
        -o-transform: rotate(-90deg);
           transform: rotate(-90deg);
+}
+
+
+div.endpoint.top    .degree-unknown-symbol,
+div.endpoint.bottom .degree-unknown-symbol {
+  -webkit-transform: rotate( 90deg);
+     -moz-transform: rotate( 90deg);
+      -ms-transform: rotate( 90deg);
+       -o-transform: rotate( 90deg);
+          transform: rotate( 90deg);
 }
 
 div.endpoint div.label          span  { display: block; }

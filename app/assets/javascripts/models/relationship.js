@@ -20,16 +20,27 @@ window.Relationship = function(id, entity1, entity2) {
     }
   }
 
-  this.svgPath = function() {
+  function mapArrowTipToBase(arrowTip) {
+    return {
+      x: (arrowTip.x + arrowTip.outwardVector.x * ARROWHEAD_LENGTH),
+      y: (arrowTip.y + arrowTip.outwardVector.y * ARROWHEAD_LENGTH)
+    };
+  }
 
-    var arrowBases = _.map(this.endpoints, function(tip) {
-      return {
-        x: (tip.x + tip.outwardVector.x * ARROWHEAD_LENGTH),
-        y: (tip.y + tip.outwardVector.y * ARROWHEAD_LENGTH)
-      };
-    }.bind(this));
+  this.linePath = function() {
+    return svgPolyline([
+      mapArrowTipToBase(this.endpoints[0]),
+      mapArrowTipToBase(this.endpoints[1])
+    ])
+  }
 
-    return svgPolyline([this.endpoints[0], arrowBases[0], arrowBases[1], this.endpoints[1]]);
+  this.clickablePath = function() {
+    return svgPolyline([
+      this.endpoints[0],
+      mapArrowTipToBase(this.endpoints[0]),
+      mapArrowTipToBase(this.endpoints[1]),
+      this.endpoints[1]
+    ])
   };
 
   this.saveObject = function() {
