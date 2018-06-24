@@ -18,7 +18,9 @@
 
   def create_entity(x,y)
     find('#new-entity-button').click
-    find('#canvas').click_at(x,y)
+
+    # 6/24/2018: discovering some tests off by -5px, -2px.  Capybara seems to be mis-clicking by this much.  Adjusting here for now.
+    find('#canvas').click_at(x + 5, y + 2)
   end
 
   def delete_entity(entity_id)
