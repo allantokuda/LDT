@@ -119,7 +119,7 @@ angular.module('LDT.controllers').service('GraphStore', ['$q', '$http', function
       y: locY,
       width: 120,
       height: 150,
-      name: "New Entity",
+      name: "new entity",
       attributes: ""
     }));
   };
