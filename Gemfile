@@ -1,34 +1,24 @@
 source 'https://rubygems.org'
-ruby "2.1.2"
+ruby "2.5.3"
 
-gem 'rails', '4.0.1'
+gem 'rails', '4.2.11'
 
 gem 'sass-rails'
 gem 'coffee-rails'
-gem 'uglifier', '>= 1.0.3'
+gem 'uglifier'
 gem 'underscore-rails'
 
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
-
+gem 'json'
 gem 'execjs'
-gem 'therubyracer'
-gem 'libv8', '~> 3.11.8'
+gem 'therubyracer', '~> 0.12'
+gem 'libv8'
 gem 'pg'
-gem "haml", "~> 3.1.7"
+gem "haml"
 gem "haml-rails"
 
 group :development, :test do
   gem 'pry'
-	gem 'rspec', '~> 3.1' # need 3.1 for :have_attributes matcher
-  # gem 'zeus'
-  # gem 'guard'
-  # gem 'guard-rspec'
-  # gem 'guard-zeus'
-  # Needed to expose generators and rake tasks
+	gem 'rspec'
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'geckodriver-helper'
