@@ -49,7 +49,7 @@ class GraphsController < ApplicationController
   # POST /graphs.json
   def create
     if current_user_id
-      user_params = graph_params[:graph].merge({ :user_id => current_user_id })
+      user_params = create_params[:graph].merge({ :user_id => current_user_id })
       @graph = Graph.create_from_request user_params
 
       respond_to do |format|
@@ -69,7 +69,7 @@ class GraphsController < ApplicationController
   # PUT /graphs/1
   # PUT /graphs/1.json
   def update
-    @graph.update_attributes_from_request(params)
+    @graph.update_attributes_from_request(update_params)
     head :no_content
   end
 
@@ -108,7 +108,19 @@ class GraphsController < ApplicationController
 
   private
 
-  def graph_params
-    params.permit(:id, :name, :entities, :relationships, :pan_x, :pan_y)
+  def create_params
+    params.permit(
+      :id, :name, :pan_x, :pan_y,
+      entities: [:id, :x, :y, :width, :height, :name, :attributes],
+      relationships: [:id, :entity1_id, :entity2_id, :symbol1, :symbol2, :label1, :label2]
+    )
+  end
+
+  def update_params
+    params.permit(
+      :name, :pan_x, :pan_y, # can't update ID
+      entities: [:id, :x, :y, :width, :height, :name, :attributes],
+      relationships: [:id, :entity1_id, :entity2_id, :symbol1, :symbol2, :label1, :label2]
+    )
   end
 end

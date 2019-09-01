@@ -21,26 +21,21 @@ class Graph < ActiveRecord::Base
     self.string_id ||= self.class.generate_string_id
   end
 
-  def self.create_from_request(params_graph_json)
-    self.create(self.parse_base_parameters(params_graph_json))
+  def self.create_from_request(params)
+    self.create(self.class.parse_base_parameters(params))
   end
 
-  def update_attributes_from_request(params_graph_json)
-    params_graph_json["entities"]      ||= []
-    params_graph_json["relationships"] ||= []
-    update_attributes(self.class.parse_base_parameters(params_graph_json))
+  def update_attributes_from_request(params)
+    params["entities"]      ||= []
+    params["relationships"] ||= []
+    update_attributes(self.class.parse_base_parameters(params))
   end
 
-  # Leave the entities and relationships unparsed for storage in JSON
-  def self.parse_base_parameters(graph)
-    graph = graph.symbolize_keys.select{ |k| editable_attributes.include? k }
-    graph[:entities]      = JSON.unparse graph[:entities]
-    graph[:relationships] = JSON.unparse graph[:relationships]
-    graph
-  end
-
-  def self.editable_attributes
-    [ :name, :pan_x, :pan_y, :entities, :relationships ]
+  # Save the entities and relationships in JSON
+  def self.parse_base_parameters(params)
+    params[:entities]      = params[:entities     ].select(&:present?).to_json
+    params[:relationships] = params[:relationships].select(&:present?).to_json
+    params
   end
 
   def representation
