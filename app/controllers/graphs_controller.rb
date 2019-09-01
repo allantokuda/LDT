@@ -1,7 +1,7 @@
 class GraphsController < ApplicationController
 
-  before_filter :authorize, :only => [:create]
-  before_filter :load_and_authorize_graph, :only => [:show, :update, :destroy]
+  before_action :authorize, :only => [:create]
+  before_action :load_and_authorize_graph, :only => [:show, :update, :destroy]
 
   # GET /graphs
   # GET /graphs.json
