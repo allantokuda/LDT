@@ -3,6 +3,7 @@ require 'spec_helper'
 describe 'Getting started tooltips', js: true do
   it 'displays when there are no entities, then hides when you create one' do
     visit '/'
+    window_size 1200, 900
 
     expect(find('.getting-started')).to have_content 'Click here'
 

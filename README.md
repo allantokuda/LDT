@@ -128,6 +128,9 @@ karma start karma.conf.js
 
 ### Running acceptance tests
 
+Install Chromedriver:
+https://github.com/SeleniumHQ/selenium/wiki/ChromeDriver
+
 As of January 2015 an issue exists between Selenium and Firefox 35. Install Firefox 34.
 http://stackoverflow.com/questions/27960085/cucumber-capybara-error-arguments0-is-undefined-seleniumwebdrivererror
 

@@ -3,6 +3,7 @@ require 'spec_helper'
 describe 'Entity deletion', js: true do
   it 'cascades to deleting all of its relationships' do
     visit '/'
+    window_size 1200, 900
 
     create_entity 100, 200
     create_entity 300, 200

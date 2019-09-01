@@ -3,6 +3,7 @@ require 'spec_helper'
 describe 'Entities and relationships', js: true do
   it 'can be drawn' do
     visit '/'
+    window_size 1200, 900
 
     create_entity 100, 200
     create_entity 600, 200

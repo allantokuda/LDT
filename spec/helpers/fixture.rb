@@ -22,7 +22,7 @@ class Fixture
       puts data_row
       data_row
     else
-      @context.expect(@data[@row]).to(@context.eq(data_row))
+      @context.expect(data_row).to(@context.eq(@data[@row]))
     end
   end
 

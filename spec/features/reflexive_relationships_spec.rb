@@ -10,11 +10,10 @@ describe 'Reflexive relationships', js: true do
 
   it 'allows relationships to be drawn from an entity to itself' do
     visit '/'
+    window_size 1200, 900
 
     # Prefix rspec command with RECORD_FIXTURE=on to record new
     @fixture = Fixture.new fixture_filename, self
-
-    window_size 1200, 900
 
     create_entity 100, 250
     resize_entity 0, :bottom, 100

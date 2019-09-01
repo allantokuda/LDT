@@ -4,7 +4,6 @@ describe 'Canvas zoom', js: true do
 
   it 'allows different amounts of the graph to be shown on screen or on paper at once' do
     visit '/'
-
     window_size 1200, 900
 
     create_entity 100, 200

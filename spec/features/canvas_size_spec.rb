@@ -15,8 +15,9 @@ describe 'Canvas', js: true do
     expect(w).to be > 1200
     expect(w).to be < 1400
 
-    expect(h).to be > 700
-    expect(h).to be < 900
+    # Actually pretty short (~664px) because of "Chrome is being controlled by automated test software" indicator
+    expect(h).to be > 650
+    expect(h).to be < 680
 
     window_size 1400, 900
     find('#svg-paths').click
@@ -38,14 +39,14 @@ describe 'Canvas', js: true do
     window_size 1200, 1000
 
     create_entity 200, 200
-    find('#canvas').drag(-2000, -2000)
+    6.times { find('#canvas').drag(-300, -300) }
     create_entity(200, 200)
-    find('#canvas').drag(2000, 2000)
+    6.times { find('#canvas').drag(300, 300) }
 
     w = find('#svg-paths').native.style(:width ).to_i
     h = find('#svg-paths').native.style(:height).to_i
 
-    expect(find('#svg-paths')).to have_approx_size({ width: w+100, height: w+130, tolerance: 100 })
+    expect(find('#svg-paths')).to have_approx_size({ width: w, height: h, tolerance: 100 })
 
     expect(w).to be > 1900
     expect(h).to be > 1900
@@ -53,7 +54,7 @@ describe 'Canvas', js: true do
     save
     refresh
 
-    expect(find('#svg-paths')).to have_approx_size({ width: w+100, height: w+130, tolerance: 100 })
+    expect(find('#svg-paths')).to have_approx_size({ width: w, height: w, tolerance: 100 })
   end
 end
 
