@@ -17,8 +17,8 @@ describe 'Entities and relationships', js: true do
     create_relationship 0, 1
 
     # Question marks on both sides
-    expect_arrowhead 0, "M220,275m7,-3 l0,-4 l4,0 l0,2 l2,0 m2,0 l2,0"
-    expect_arrowhead 1, "M600,275m-7,3 l0,4 l-4,0 l0,-2 l-2,0 m-2,0 l-2,0"
+    expect_arrowhead 0, "M220,270m30,0 l-10,0"
+    expect_arrowhead 1, "M600,270m-30,0 l10,0"
 
     find('#chickenfoot-button').click
     find('#click-area-0').click # click once to have a degree-one link
@@ -27,7 +27,7 @@ describe 'Entities and relationships', js: true do
 
     # One on left, many on right
     expect_arrowhead 0, "M220,275m0,0 l10,0"
-    expect_arrowhead 1, "M600,275m0,10 l-20,-10 l20,-10"
+    expect_arrowhead 1, "M600,270m-30,0 l10,0"
 
     find('#identifier-bar-button').click
     find('#click-area-1').click
@@ -76,7 +76,7 @@ describe 'Entities and relationships', js: true do
 
     # Question marks on both sides
 
-    expect_arrowhead 0, "M600,275m-7,3 l0,4 l-4,0 l0,-2 l-2,0 m-2,0 l-2,0"
-    expect_arrowhead 1, "M220,275m7,-3 l0,-4 l4,0 l0,2 l2,0 m2,0 l2,0"
+    expect_arrowhead 0, "M600,270m-30,0 l10,0"
+    expect_arrowhead 1, "M220,270m30,0 l-10,0"
   end
 end

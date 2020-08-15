@@ -13,6 +13,7 @@ div.endpoint div.label {
 div.endpoint .degree-unknown-symbol {
   display: block;
   position: absolute;
+  z-index: -1; /* prevent receiving clicks when interacting with endpoints */
   width: 20px;
   height: 20px;
   text-align: center;
