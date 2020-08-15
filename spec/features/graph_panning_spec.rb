@@ -20,10 +20,10 @@ describe 'Graph panning', js: true do
   end
 
   def check_locations
-    check_location '#entity-0', 150, 250
-    check_location '#entity-1', 350, 250
+    check_location '#entity-0', 150, 245
+    check_location '#entity-1', 350, 245
 
-    check_location '#endpoint-0', 270, 318
-    check_location '#endpoint-1', 333, 325
+    check_location '#endpoint-0', 270, 320
+    check_location '#endpoint-1', 320, 320
   end
 end

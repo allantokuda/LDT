@@ -110,8 +110,8 @@
   end
 
   def check_location(element_selector, expected_x, expected_y)
-    expect(find(element_selector).native.location.x).to eq expected_x
-    expect(find(element_selector).native.location.y).to eq expected_y
+    loc = find(element_selector).native.location
+    expect([loc.x, loc.y]).to eq [expected_x, expected_y]
   end
 
   def endpoint_location(endpoint_id)

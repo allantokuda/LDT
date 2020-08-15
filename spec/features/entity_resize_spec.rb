@@ -23,9 +23,9 @@ describe 'Entity resize', js: true do
     save
     refresh
 
-    expect(endpoint_location(0)).to eq [180, 525]
-    expect(endpoint_location(1)).to eq [120, 525]
+    expect(endpoint_location(0)).to eq [180, 520]
+    expect(endpoint_location(1)).to eq [120, 520]
     expect(endpoint_location(2)).to eq [260, 430]
-    expect(endpoint_location(3)).to eq [260, 350]
+    expect(endpoint_location(3)).to eq [260, 345]
   end
 end
