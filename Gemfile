@@ -15,6 +15,7 @@ gem 'libv8'
 gem 'pg'
 gem "haml"
 gem "haml-rails"
+gem 'sprockets', '~> 3' # want to move to webpacker instead of upgrading sprockets
 
 group :development, :test do
   gem 'pry'
