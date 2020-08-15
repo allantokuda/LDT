@@ -18,6 +18,8 @@ RSpec.configure do |config|
 end
 
 Capybara.server = :puma
-Capybara.app_host = 'http://localhost:3000'
+Capybara.app_host = 'http://localhost:13000'
+Capybara.server_host = "localhost"
+Capybara.server_port = "13000"
 Capybara.javascript_driver = :selenium_chrome
 
