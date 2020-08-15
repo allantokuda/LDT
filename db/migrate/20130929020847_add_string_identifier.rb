@@ -1,4 +1,4 @@
-class AddStringIdentifier < ActiveRecord::Migration
+class AddStringIdentifier < ActiveRecord::Migration[5.2]
   def up
     add_column :graphs, :string_id, :string
     Graph.all.each do |g|

@@ -83,20 +83,22 @@ sudo apt-get install libpq-dev
 The following steps will create a database and user in postgresql:
 
 
-First launch a `postgresql` CLI
+First launch a `psql` command line
 
 
 ```
 sudo -u postgres psql
 ```
 
-Create a database and user
+Create a database and user (in psql):
 
 ```
-postgres=# create database lds_dev;
-postgres=# create user lds with password 'chickenfoot';
-postgres=# grant all privileges on database lds_dev to lds;
-postgres=# \q
+create user lds createdb password 'chickenfoot';
+create database lds_dev owner lds;
+create database lds_test owner lds;
+grant all privileges on database lds_dev to lds;
+grant all privileges on database lds_test to lds;
+\q
 ```
 
 
@@ -111,7 +113,7 @@ bundle install
 Migrate the DB
 
 ```
-rake db:migrate
+rake db:migrate db:test:prepare
 ```
 
 ### Running the app

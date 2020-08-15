@@ -1,4 +1,4 @@
-class AddRelationshipAttributes < ActiveRecord::Migration
+class AddRelationshipAttributes < ActiveRecord::Migration[5.2]
   def change
     add_column :relationships, :label1, :string
     add_column :relationships, :label2, :string
