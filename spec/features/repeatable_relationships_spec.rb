@@ -6,8 +6,8 @@ describe 'Editor', js: true do
     visit '/'
     window_size 1200, 900
 
-    left  = "M220,280m7,-3 l0,-4 l4,0 l0,2 l2,0 m2,0 l2,0"
-    right = "M400,280m-7,3 l0,4 l-4,0 l0,-2 l-2,0 m-2,0 l-2,0"
+    left  = "M220,275m30,0 l-10,0"
+    right = "M400,275m-30,0 l10,0"
 
     create_entity 100, 200
     create_entity 400, 210

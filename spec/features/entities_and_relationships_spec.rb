@@ -26,14 +26,14 @@ describe 'Entities and relationships', js: true do
     find('#click-area-1').click # click a second time to create a degree-many link
 
     # One on left, many on right
-    expect_arrowhead 0, "M220,275m0,0 l10,0"
-    expect_arrowhead 1, "M600,270m-30,0 l10,0"
+    expect_arrowhead 0, "M220,270m30,0 l-30,0"
+    expect_arrowhead 1, "M600,270m-30,0 l30,0 m0,10 l-20,-10 l20,-10"
 
     find('#identifier-bar-button').click
     find('#click-area-1').click
 
     # One on left, and Many plus Bar on right
-    expect_arrowhead 1, "M600,275m0,10 l-20,-10 l20,-10 m-25,20 l0,-20"
+    expect_arrowhead 1, "M600,270m-30,0 l30,0 m0,10 l-20,-10 l20,-10 m-25,20 l0,-20"
 
     set_label 0, 'be supported by'
     set_label 1, 'support'
@@ -54,12 +54,12 @@ describe 'Entities and relationships', js: true do
 
     # Default entity is 100x120 and we placed these at y=200.
     # Relationship y equals entity's (y + height/2) = (200 + 120/2) = 260
-    expect(find('#click-area-0').native.location.y).to eq 260
-    expect(find('#click-area-1').native.location.y).to eq 260
+    expect(find('#click-area-0').native.location.y).to eq 255
+    expect(find('#click-area-1').native.location.y).to eq 255
 
     # One on left, and Many plus Bar on right
-    expect_arrowhead 0, "M220,275m0,0 l10,0"
-    expect_arrowhead 1, "M600,275m0,10 l-20,-10 l20,-10 m-25,20 l0,-20"
+    expect_arrowhead 0, "M220,270m30,0 l-30,0"
+    expect_arrowhead 1, "M600,270m-30,0 l30,0 m0,10 l-20,-10 l20,-10 m-25,20 l0,-20"
 
     expect_label 0, 'be supported by'
     expect_label 1, 'support'
