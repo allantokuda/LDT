@@ -72,7 +72,11 @@
 
   def delete_relationship(relationship_id)
     find('#delete-item-button').click
-    find("#click-path-#{relationship_id}").click
+    # Workaround for error:
+    # Selenium::WebDriver::Error::ElementNotInteractableError: element not interactable: element has zero size
+    # This technically works for reflexive relationships too for now while they are all constrained to have horizontal endpoints
+    click_path = find("#click-path-#{relationship_id}")
+    click_path.click_at(click_path.native.size.width/2,0)
   end
 
   def expect_arrowhead(endpoint_id, path_data)
