@@ -5,6 +5,13 @@ node_js:
   - "0.11"
   - "0.10"
 
+services:
+  - xvfb
+  - postgresql
+
+addons:
+    postgresql: '9.3'
+
 # Configure postgres user
 before_script:
   - psql -c "CREATE USER lds WITH PASSWORD 'chickenfoot';" -U postgres
@@ -12,6 +19,3 @@ before_script:
 # Allow Firefox to operate in framebuffer
 before_install:
   - "export DISPLAY=:99.0"
-
-services:
-  - xvfb
