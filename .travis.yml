@@ -9,9 +9,6 @@ services:
   - xvfb
   - postgresql
 
-addons:
-    postgresql: '9.3'
-
 # Configure postgres user
 before_script:
   - psql -c "CREATE USER lds WITH PASSWORD 'chickenfoot';" -U postgres
