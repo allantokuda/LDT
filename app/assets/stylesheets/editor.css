@@ -110,7 +110,7 @@ span.toolbar-separator {
 #editor.delete_item #delete-item-button,
 #editor.label_pick #label-button,
 #editor.label_enter #label-button,
-#editor.chickenfoot #chickenfoot-button,
+#editor.degree #degree-button,
 #editor.identifier_bar #identifier-bar-button,
 #editor.guide-enabled #guide-button
  { background-color: #bbb; }
@@ -150,14 +150,14 @@ path.click-path { fill: none; stroke: none; }
 
 
 #editor.label_pick     path.click-area,
-#editor.chickenfoot    path.click-area,
+#editor.degree         path.click-area,
 #editor.identifier_bar path.click-area {
   fill: rgba(0,255,0,0.15);
   stroke: none;
 }
 
 #editor.label_pick     path.click-area:hover,
-#editor.chickenfoot    path.click-area:hover,
+#editor.degree         path.click-area:hover,
 #editor.identifier_bar path.click-area:hover {
   fill: rgba(0,255,0,0.35);
 }

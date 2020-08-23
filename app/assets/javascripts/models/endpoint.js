@@ -28,7 +28,8 @@ window.Endpoint = function(endpoint) {
         case 'identifier':             this.symbol = 'none'; break;
         case 'chickenfoot':            this.symbol = 'chickenfoot_identifier'; break;
         case 'chickenfoot_identifier': this.symbol = 'chickenfoot'; break;
-        case '?':                      this.symbol = 'identifier'; break;
+        case '?':                      this.symbol = '?_identifier'; break;
+        case '?_identifier':           this.symbol = '?'; break;
         default: break;
       }
     } else {
@@ -38,6 +39,7 @@ window.Endpoint = function(endpoint) {
         case 'identifier':             this.symbol = 'chickenfoot_identifier'; break;
         case 'chickenfoot_identifier': this.symbol = 'identifier'; break;
         case '?':                      this.symbol = 'none'; break;
+        case '?_identifier':           this.symbol = 'identifier'; break;
         default: break;
       }
     }

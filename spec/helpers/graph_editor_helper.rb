@@ -104,7 +104,7 @@
   end
 
   def change_degree(endpoint_id)
-    find('#chickenfoot-button').click
+    find('#degree-button').click
     find("#click-area-#{endpoint_id}").click
   end
 

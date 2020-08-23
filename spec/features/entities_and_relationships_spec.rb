@@ -20,7 +20,7 @@ describe 'Entities and relationships', js: true do
     expect_arrowhead 0, "M220,270m30,0 l-10,0"
     expect_arrowhead 1, "M600,270m-30,0 l10,0"
 
-    find('#chickenfoot-button').click
+    find('#degree-button').click
     find('#click-area-0').click # click once to have a degree-one link
     find('#click-area-1').click # click once, then
     find('#click-area-1').click # click a second time to create a degree-many link

@@ -31,6 +31,8 @@ describe 'Syntax highlighting', js: true do
 
     create_relationship 0, 1
 
+    change_degree 0
+    change_degree 1
     toggle_identifier_bar 0
     toggle_identifier_bar 1
 

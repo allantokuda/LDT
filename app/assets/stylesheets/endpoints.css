@@ -17,6 +17,7 @@ div.endpoint .degree-unknown-symbol {
   width: 20px;
   height: 20px;
   text-align: center;
+  user-select: none;
 }
 
 div.endpoint.right  .degree-unknown-symbol { left:   1px; top:  -9px; }

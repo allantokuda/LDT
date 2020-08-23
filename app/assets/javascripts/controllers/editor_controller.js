@@ -117,7 +117,7 @@ app.controller('EditorCtrl', ['$scope', '$timeout', 'GraphStore', 'SyntaxAnalyze
   $scope.handleArrowClick = function(arrow, ev) {
     console.log('handle arrow click')
     switch($scope.editor.mode) {
-      case 'chickenfoot':
+      case 'degree':
         arrow.toggleArrowhead(false);
         break;
       case 'identifier_bar':
@@ -236,7 +236,7 @@ app.controller('EditorCtrl', ['$scope', '$timeout', 'GraphStore', 'SyntaxAnalyze
   $scope.newRelationshipCommand = function() { $scope.$apply(setMode('new_relationship_start')); };
   $scope.deleteItemCommand      = function() { $scope.$apply(setMode('delete_item')); };
   $scope.labelCommand           = function() { $scope.$apply(setMode('label_pick')); };
-  $scope.chickenFootCommand     = function() { $scope.$apply(setMode('chickenfoot')); };
+  $scope.degreeCommand          = function() { $scope.$apply(setMode('degree')); };
   $scope.identifierBarCommand   = function() { $scope.$apply(setMode('identifier_bar')); };
   $scope.zoomInCommand          = function() { $scope.$apply($scope.graph.zoom *= 1.5); $scope.updateSvgSize(); };
   $scope.zoomOutCommand         = function() { $scope.$apply($scope.graph.zoom /= 1.5); $scope.updateSvgSize(); };
