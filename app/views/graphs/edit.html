@@ -85,7 +85,7 @@
 
                 <div class="attribute"
                      id="entity-{{entity.id}}-attribute-{{$index}}"
-                     ng-repeat="attribute in entity.attributes.split('\n')"
+                     ng-repeat="attribute in entity.attributes.split('\n') track by attribute + '_' + $index"
                      ng-class="cssClass(attribute)"
                      ng-click="handleAttributeClick(entity.id,$index,$event)"
                      catch-input>
