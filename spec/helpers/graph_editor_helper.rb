@@ -21,7 +21,8 @@
 
     # 6/24/2018: discovering some tests off by -5px, -2px.  Capybara seems to be mis-clicking by this much.  Adjusting here for now.
     # 9/1/2019: repeat issue after changing to Chrome. Change to -6px, 0px.
-    find('#canvas').click_at(x + 5, y)
+    # 1/16/2021: update again with latest Chrome.
+    find('#canvas').click_at(x + 5, y - 5)
   end
 
   def delete_entity(entity_id)
