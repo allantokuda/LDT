@@ -99,7 +99,6 @@
         <div class="endpoint"
              ng-class="endpoint.sideName"
              ng-repeat="endpoint in graph.endpoints"
-             ng-click="handleLabelClick(label.id,$event)"
              ng-style="{ left: graph.pan.x + endpoint.x, top: graph.pan.y + endpoint.y }"
              select-with="dblclick as endpoint"
              catch-input
@@ -111,8 +110,7 @@
                 <span catch-input id="label-{{$index}}">{{endpoint.label}}</span>
 
                 <input ng-model="endpoint.label" no-drag
-                       id="label-input-{{$index}}"
-                       ng-click="handleLabelClick(label.id,$event)">
+                       id="label-input-{{$index}}">
 
             </div>
         </div>

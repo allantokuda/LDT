@@ -15,7 +15,6 @@ app.controller('EditorCtrl', ['$scope', '$timeout', 'GraphStore', 'SyntaxAnalyze
   $scope.graph.zoom = 1;
   $scope.status_message = 'Loading...';
 
-  $scope.foo = 'bar';
   $scope.getting_started_messages = [
     {
       message: "Click here and then click in the canvas area below to create a new entity.",
@@ -115,7 +114,6 @@ app.controller('EditorCtrl', ['$scope', '$timeout', 'GraphStore', 'SyntaxAnalyze
   };
 
   $scope.handleArrowClick = function(arrow, ev) {
-    console.log('handle arrow click')
     switch($scope.editor.mode) {
       case 'degree':
         arrow.toggleArrowhead(false);
