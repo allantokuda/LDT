@@ -1,5 +1,5 @@
 # config valid only for this Capistrano version
-lock '3.14.1'
+lock '3.16.0'
 
 set :application, 'ldt'
 set :repo_url, 'git@github.com:allantokuda/ldt.git'
