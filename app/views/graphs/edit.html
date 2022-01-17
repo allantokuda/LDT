@@ -105,9 +105,6 @@
              catch-input
              auto-focus="input on dblclick">
 
-            <span class="degree-unknown-symbol noselect"
-                  ng-if="endpoint.symbol[0] === '?'">?</span>
-
             <div class="label"
                  ng-class="{selected: endpoint.selected===true}">
 
@@ -124,6 +121,7 @@
           <g transform="translate({{graph.pan.x}},{{graph.pan.y}})">
             <!-- embedded "stroke: black" style here for Safari which won't recognize styles applied to <path> elements by CSS class -->
             <path ng-repeat="a in relationshipAnnotations" ng-class="{syntaxError: a.isError, syntaxWarning: a.isWarning}" ng-attr-d="{{a.svgPath()}}" catch-input><title>{{a.annotationMessage}}</title></path>
+            <text ng-repeat="e in graph.endpoints | filter: { symbol: '?' }" x="{{e.questionMarkX()}}" y="{{e.questionMarkY()}}">?</text>
             <path class="relationship" ng-repeat="r in graph.relationships" id="relationship-{{r.id}}" ng-attr-d="{{r.linePath()}}"       style="stroke: black"></path>
             <path class="arrowhead"    ng-repeat="e in graph.endpoints"     id="endpoint-{{$index}}"   ng-attr-d="{{e.arrowheadPath()}}" style="stroke: black"></path>
             <path class="click-area"   ng-repeat="e in graph.endpoints"     id="click-area-{{$index}}" ng-attr-d="{{e.boxPath()}}" ng-click="handleArrowClick(e,$event)" catch-input></path>

@@ -79,4 +79,20 @@ describe 'Entities and relationships', js: true do
     expect_arrowhead 0, "M600,270m-30,0 l10,0"
     expect_arrowhead 1, "M220,270m30,0 l-10,0"
   end
+
+  it 'allows changing degree when verticially aligned' do
+    visit '/'
+
+    create_entity 100, 200
+    create_entity 100, 500
+    create_relationship 0, 1
+
+    find('#degree-button').click
+    find('#click-area-0').click
+    find('#click-area-0').click
+    find('#click-area-1').click
+    find('#click-area-1').click
+    expect_arrowhead 0, "M160,345m0,30 l0,-30 m10,0 l-10,20 l-10,-20"
+    expect_arrowhead 1, "M160,495m0,-30 l0,30 m-10,0 l10,-20 l10,20"
+  end
 end

@@ -10,15 +10,6 @@ div.endpoint div.label {
   width: 1px;
 }
 
-div.endpoint .degree-unknown-symbol {
-  display: block;
-  position: absolute;
-  z-index: -1; /* prevent receiving clicks when interacting with endpoints */
-  width: 20px;
-  height: 20px;
-  text-align: center;
-}
-
 /* https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting */
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
@@ -28,11 +19,6 @@ div.endpoint .degree-unknown-symbol {
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
-
-div.endpoint.right  .degree-unknown-symbol { left:   1px; top:  -9px; }
-div.endpoint.left   .degree-unknown-symbol { left: -20px; top:  -9px; }
-div.endpoint.top    .degree-unknown-symbol { left:   0px; top: -10px; }
-div.endpoint.bottom .degree-unknown-symbol { left: -22px; top: -10px; }
 
 div.endpoint.right  div.label { left:  30px; top: -18px; }
 div.endpoint.left   div.label { left: -32px; top:   2px; }
@@ -47,15 +33,6 @@ div.endpoint.top, div.endpoint.bottom {
           transform: rotate(-90deg);
 }
 
-
-div.endpoint.top    .degree-unknown-symbol,
-div.endpoint.bottom .degree-unknown-symbol {
-  -webkit-transform: rotate( 90deg);
-     -moz-transform: rotate( 90deg);
-      -ms-transform: rotate( 90deg);
-       -o-transform: rotate( 90deg);
-          transform: rotate( 90deg);
-}
 
 div.endpoint div.label          span  { display: block; }
 div.endpoint div.label.selected span  { display: none; }

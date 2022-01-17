@@ -21,6 +21,22 @@ window.Endpoint = function(endpoint) {
     return "M" + Math.round(this.x) + ',' + Math.round(this.y) + window.arrowheadSVG['box'][this.sideName];
   };
 
+  this.questionMarkX = function() {
+    switch(this.sideName) {
+      case 'right': return this.x + 7;
+      case 'left': return this.x - 14;
+      default: return this.x - 3;
+    }
+  };
+
+  this.questionMarkY = function() {
+    switch(this.sideName) {
+      case 'bottom': return this.y + 15;
+      case 'top': return this.y - 6;
+      default: return this.y + 4;
+    }
+  };
+
   this.toggleArrowhead = function(toggleIdentifier) {
     if (toggleIdentifier) {
       switch(this.symbol) {
