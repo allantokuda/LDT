@@ -1,6 +1,6 @@
 Capybara::Node::Element.class_eval do
   def element_center
-    driver.browser.action.move_to(native)
+    driver.browser.action.tap { |builder| builder.default_move_duration = 0 }.move_to(native)
   end
 
   # double click center of element
