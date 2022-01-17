@@ -18,7 +18,7 @@
     -->
     <div id="window-top">
       <input id="graph-name" ng-model="graph.name" catch-input no-drag>
-      <div id="toolbar">
+      <div id="toolbar" class="noselect">
           <button action hotkey="s" id="select-button"><u>S</u>elect</button>
           <button action hotkey="e" id="new-entity-button">New <u>E</u>ntity</button>
           <button action hotkey="r" id="new-relationship-button">New <u>R</u>elationship</button>
@@ -48,7 +48,7 @@
       <p style="margin-top: -5px">{{ getting_started_messages[getting_started_message_num].message }}</p>
     </div>
 
-    <div id="canvas" move-and-resize="graph.pan" relative-click="handleCanvasClick" deselector ng-style="{ transform: 'scale(' + graph.zoom + ')' }">
+    <div id="canvas" class="noselect" move-and-resize="graph.pan" relative-click="handleCanvasClick" deselector ng-style="{ transform: 'scale(' + graph.zoom + ')' }">
 
         <div class="ghost-entity" stick-to-mouse>Click to place new entity</div>
 
