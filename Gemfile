@@ -15,7 +15,7 @@ gem 'libv8'
 gem 'pg'
 gem "haml"
 gem "haml-rails"
-gem 'sprockets', '~> 3' # want to move to webpacker instead of upgrading sprockets
+gem 'sprockets', '~> 3'
 
 group :development, :test do
   gem 'pry'
@@ -30,7 +30,6 @@ group :development do
 end
 
 group :test do
-  gem 'cucumber-rails', :require => false
   gem 'database_cleaner'
   gem 'launchy'
 end
