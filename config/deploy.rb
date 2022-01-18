@@ -1,7 +1,7 @@
 # config valid only for this Capistrano version
 lock '3.16.0'
 
-set :application, 'ldt'
+set :application, 'erdraw'
 set :repo_url, 'git@github.com:allantokuda/ldt.git'
 
 set :ssh_options, { :forward_agent => true }
@@ -34,6 +34,10 @@ set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public
 
 # Default value for keep_releases is 5
 # set :keep_releases, 5
+
+set :rbenv_type, :user
+set :rbenv_ruby, File.read('.ruby-version').strip
+set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} /usr/bin/rbenv exec"
 
 namespace :deploy do
 

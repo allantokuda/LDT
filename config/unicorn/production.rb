@@ -4,17 +4,17 @@ GC.respond_to?(:copy_on_write_friendly=) and GC.copy_on_write_friendly = true
 check_client_connection false
 timeout 30
 
-pid         "/home/ruby/ldt/shared/tmp/pids/unicorn.pid"
-listen      "/home/ruby/ldt/shared/sockets/unicorn.sock", backlog: 6
-stderr_path "/home/ruby/ldt/shared/log/unicorn.log"
-stdout_path "/home/ruby/ldt/shared/log/unicorn.log"
+pid         "/home/ruby/erdraw/shared/tmp/pids/unicorn.pid"
+listen      "/home/ruby/erdraw/shared/sockets/unicorn.sock", backlog: 6
+stderr_path "/home/ruby/erdraw/shared/log/unicorn.log"
+stdout_path "/home/ruby/erdraw/shared/log/unicorn.log"
 
 # via http://unicorn.bogomips.org/Sandbox.html
 # See section on BUNDLER_GEMFILE for Capistrano users
 # We need this since we automatically run deploy:clean to
 # cleanup old releases.
 before_exec do |server|
- ENV["BUNDLE_GEMFILE"] = "/home/ruby/ldt/current/Gemfile"
+ ENV["BUNDLE_GEMFILE"] = "/home/ruby/erdraw/current/Gemfile"
 end
 
 before_fork do |server, worker|
@@ -27,7 +27,7 @@ before_fork do |server, worker|
  # we send it a QUIT.
  #
  # Using this method we get 0 downtime deploys.
- old_pid = '/home/ruby/ldt/shared/tmp/pids/unicorn.pid.oldbin'
+ old_pid = '/home/ruby/erdraw/shared/tmp/pids/unicorn.pid.oldbin'
 
  if File.exists?(old_pid) && server.pid != old_pid
    begin

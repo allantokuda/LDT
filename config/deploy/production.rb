@@ -16,7 +16,7 @@
 # server list. The second argument is a, or duck-types, Hash and is
 # used to set extended properties on the server.
 
-server '162.243.239.213', user: 'ruby', roles: %w{web app}, my_property: :my_value
+server '147.182.135.248', user: 'ruby', roles: %w{web app}, my_property: :my_value
 
 set :rails_env, 'production'
 set :unicorn_config_path, 'config/unicorn/production.rb'
